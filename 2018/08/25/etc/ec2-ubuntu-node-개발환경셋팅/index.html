@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>EC2 우분투 Node 개발환경 셋팅 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"ec2 셋팅\n보안그룹 \n\nSSH / Postgresql / HTTP / HTTPS  허용\n\n\n탄력적 IP 생성 후 인스턴스 셋팅\n\nssh 접속\n\n\n우분투의 경우 ubuntu@를 붙임\nssh -i /path/my-key-pair.pem ubuntu@public-dns-hostname\nhttps://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html#TroubleshootingInstancesConnectingMindTerm\nroot password 변경\nsudo passwd root\n\nlocale 설정12345localesudo apt install language-pack-kosudo locale-gen ko_KR.UTF-8sudo dpkg-reconfigure localessudo update-locale LANG=ko_KR.UTF-8 LC_MESSAGES=POSIX\n\ntimezone 설정\nsudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime\n\nKST 확인\n\ndate\n\nvim 8.0\nsudo add-apt-repository ppa:jonathonf/vim\nsudo apt-get update\nsudo apt-get install vim vim-gtk\n\nzsh\n sudo apt install zsh\nsudo vi /etc/pam.d/chsh\n\nauth       required   pam_shells.so  : required =&gt; sufficient로 변경\n\nchsh -s /usr/bin/zsh \ncurl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh\n\n\n sudo reboot\necho $SHELL\n\n위 커맨드로 /usr/bin/zsh가 나오면 okay.\nnode12curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -sudo apt-get install -y nodejs\n\nnvm\ncurl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash\n\n\n sudo vi ~/.zshrc 에서 아래 내용 추가\nexport NVM_DIR=”$HOME/.nvm”\n[ -s “$NVM_DIR/nvm.sh” ] &amp;&amp; . “$NVM_DIR/nvm.sh”\n\n\n\n이미지 편집이미지 편집 기능이 필요하지 않으면 스킵.\nc compiler, libpng, zlib\n\nsudo apt install graphicsmagick build-essential\n\nlibjpeg\n\nwget https://www.ijg.org/files/jpegsrc.v9c.tar.gz\ntar xzf jpegsrc.v9c.tar.gz\ncd jpeg-9b\n./configure –prefix=/usr/local/libjpeg\nmake\nsudo make install\n\ngraphicmagick 의 gm 커맨드와 oh-my-zsh gm 커맨드가 겹치므로\nOH-MY-ZSH의 gm을 제거해줘야 한다 : \n\nvi  ~/.oh-my-zsh/plugins/git/git.plugin.zsh 에서 alias gm 주석 처리\n\nglobal yarn\ncurl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add    \necho “deb https://dl.yarnpkg.com/debian/ stable main” | sudo tee /etc/apt/sources.list.d/yarn.list\nsudo apt update\nsudo apt install yarn\nyarn config set prefix ~/.yarn-global\nyarn config get prefix\ncat ~/.yarnrc\npath\nvi ~./.zshrc 추가 =&gt; export PATH=”$PATH:yarn global bin“\n\n\n\n\n#test 해보장\nyarn global add knex gm pg imagemagick\n\npostgresql\nwget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | sudo apt-key add -\necho “deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main” | sudo tee /etc/apt/sources.list.d/postgresql.list\nsudo apt-get update &amp;&amp; sudo apt-get install postgresql\nsudo service postgresql start\nsudo su - postgres\npsql\nCREATE USER bglamour WITH PASSWORD ‘bglamour’;\ncreate database bglam_local;\npsql postgres -U username : postgres DB에 username 롤로 접속\n\n","dateCreated":"2018-08-25T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2018-08-25T19:28:10+09:00","description":"","headline":"EC2 우분투 Node 개발환경 셋팅","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"}</script>
+    <meta name="description" content="ec2 셋팅 보안그룹   SSH / Postgresql / HTTP / HTTPS  허용   탄력적 IP 생성 후 인스턴스 셋팅  ssh 접속   우분투의 경우 ubuntu@를 붙임 ssh -i /path/my-key-pair.pem ubuntu@public-dns-hostname https://docs.aws.amazon.com/ko_kr/AWSEC2/l">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="EC2 우분투 Node 개발환경 셋팅">
+<meta property="og:url" content="https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="ec2 셋팅 보안그룹   SSH / Postgresql / HTTP / HTTPS  허용   탄력적 IP 생성 후 인스턴스 셋팅  ssh 접속   우분투의 경우 ubuntu@를 붙임 ssh -i /path/my-key-pair.pem ubuntu@public-dns-hostname https://docs.aws.amazon.com/ko_kr/AWSEC2/l">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="EC2 우분투 Node 개발환경 셋팅">
+<meta name="twitter:description" content="ec2 셋팅 보안그룹   SSH / Postgresql / HTTP / HTTPS  허용   탄력적 IP 생성 후 인스턴스 셋팅  ssh 접속   우분투의 경우 ubuntu@를 붙임 ssh -i /path/my-key-pair.pem ubuntu@public-dns-hostname https://docs.aws.amazon.com/ko_kr/AWSEC2/l">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            EC2 우분투 Node 개발환경 셋팅
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-08-25T19:28:10+09:00">
+	
+		    2018.08.25
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/etc/">etc</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="ec2-셋팅"><a href="#ec2-셋팅" class="headerlink" title="ec2 셋팅"></a>ec2 셋팅</h3><ul>
+<li><p>보안그룹 </p>
+<ul>
+<li>SSH / Postgresql / HTTP / HTTPS  허용</li>
+</ul>
+</li>
+<li><p>탄력적 IP 생성 후 인스턴스 셋팅</p>
+</li>
+<li><p>ssh 접속</p>
+</li>
+</ul>
+<p>우분투의 경우 ubuntu@를 붙임</p>
+<p>ssh -i <em>/path/my-key-pair</em>.pem ubuntu@<em>public-dns-hostname</em></p>
+<p><a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html#TroubleshootingInstancesConnectingMindTerm" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html#TroubleshootingInstancesConnectingMindTerm</a></p>
+<h3 id="root-password-변경"><a href="#root-password-변경" class="headerlink" title="root password 변경"></a>root password 변경</h3><blockquote>
+<p>sudo passwd root</p>
+</blockquote>
+<h3 id="locale-설정"><a href="#locale-설정" class="headerlink" title="locale 설정"></a>locale 설정</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">locale</span><br><span class="line">sudo apt install language-pack-ko</span><br><span class="line">sudo locale-gen ko_KR.UTF-<span class="number">8</span></span><br><span class="line">sudo dpkg-reconfigure locales</span><br><span class="line">sudo update-locale LANG=ko_KR.UTF-<span class="number">8</span> LC_MESSAGES=POSIX</span><br></pre></td></tr></table></figure>
+
+<h3 id="timezone-설정"><a href="#timezone-설정" class="headerlink" title="timezone 설정"></a>timezone 설정</h3><blockquote>
+<p>sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime</p>
+</blockquote>
+<p>KST 확인</p>
+<blockquote>
+<p>date</p>
+</blockquote>
+<h3 id="vim-8-0"><a href="#vim-8-0" class="headerlink" title="vim 8.0"></a>vim 8.0</h3><blockquote>
+<p>sudo add-apt-repository ppa:jonathonf/vim</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install vim vim-gtk</p>
+</blockquote>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><blockquote>
+<p> sudo apt install zsh</p>
+<p>sudo vi /etc/pam.d/chsh</p>
+</blockquote>
+<p>auth       required   pam_shells.so  : required =&gt; sufficient로 변경</p>
+<blockquote>
+<p>chsh -s /usr/bin/zsh </p>
+<p>curl -L <a href="https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh" target="_blank" rel="noopener">https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh</a> | sh</p>
+</blockquote>
+<blockquote>
+<p> sudo reboot</p>
+<p>echo $SHELL</p>
+</blockquote>
+<p>위 커맨드로 /usr/bin/zsh가 나오면 okay.</p>
+<h2 id="node"><a href="#node" class="headerlink" title="node"></a>node</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm"><a href="#nvm" class="headerlink" title="nvm"></a>nvm</h3><ul>
+<li><p>curl -o- <a href="https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh" target="_blank" rel="noopener">https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh</a> | bash</p>
+</li>
+<li><blockquote>
+<p> sudo vi ~/.zshrc 에서 아래 내용 추가</p>
+<p>export NVM_DIR=”$HOME/.nvm”</p>
+<p>[ -s “$NVM_DIR/nvm.sh” ] &amp;&amp; . “$NVM_DIR/nvm.sh”</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="이미지-편집"><a href="#이미지-편집" class="headerlink" title="이미지 편집"></a>이미지 편집</h3><p>이미지 편집 기능이 필요하지 않으면 스킵.</p>
+<p>c compiler, libpng, zlib</p>
+<blockquote>
+<p>sudo apt install graphicsmagick build-essential</p>
+</blockquote>
+<p>libjpeg</p>
+<ul>
+<li>wget <a href="https://www.ijg.org/files/jpegsrc.v9c.tar.gz" target="_blank" rel="noopener">https://www.ijg.org/files/jpegsrc.v9c.tar.gz</a></li>
+<li>tar xzf jpegsrc.v9c.tar.gz</li>
+<li>cd jpeg-9b</li>
+<li>./configure –prefix=/usr/local/libjpeg</li>
+<li>make</li>
+<li>sudo make install</li>
+</ul>
+<p>graphicmagick 의 gm 커맨드와 oh-my-zsh gm 커맨드가 겹치므로</p>
+<p>OH-MY-ZSH의 gm을 제거해줘야 한다 : </p>
+<blockquote>
+<p>vi  ~/.oh-my-zsh/plugins/git/git.plugin.zsh 에서 alias gm 주석 처리</p>
+</blockquote>
+<h3 id="global-yarn"><a href="#global-yarn" class="headerlink" title="global yarn"></a>global yarn</h3><ul>
+<li>curl -sS <a href="https://dl.yarnpkg.com/debian/pubkey.gpg" target="_blank" rel="noopener">https://dl.yarnpkg.com/debian/pubkey.gpg</a> | sudo apt-key add    </li>
+<li>echo “deb <a href="https://dl.yarnpkg.com/debian/" target="_blank" rel="noopener">https://dl.yarnpkg.com/debian/</a> stable main” | sudo tee /etc/apt/sources.list.d/yarn.list</li>
+<li>sudo apt update</li>
+<li>sudo apt install yarn</li>
+<li>yarn config set prefix ~/.yarn-global</li>
+<li>yarn config get prefix</li>
+<li>cat ~/.yarnrc</li>
+<li>path<ul>
+<li>vi ~./.zshrc 추가 =&gt; export PATH=”$PATH:<code>yarn global bin</code>“</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>#test 해보장</p>
+<p>yarn global add knex gm pg imagemagick</p>
+</blockquote>
+<h3 id="postgresql"><a href="#postgresql" class="headerlink" title="postgresql"></a>postgresql</h3><ul>
+<li>wget -q <a href="https://www.postgresql.org/media/keys/ACCC4CF8.asc" target="_blank" rel="noopener">https://www.postgresql.org/media/keys/ACCC4CF8.asc</a> -O- | sudo apt-key add -</li>
+<li>echo “deb <a href="http://apt.postgresql.org/pub/repos/apt/" target="_blank" rel="noopener">http://apt.postgresql.org/pub/repos/apt/</a> xenial-pgdg main” | sudo tee /etc/apt/sources.list.d/postgresql.list</li>
+<li>sudo apt-get update &amp;&amp; sudo apt-get install postgresql</li>
+<li>sudo service postgresql start</li>
+<li>sudo su - postgres</li>
+<li>psql</li>
+<li>CREATE USER bglamour WITH PASSWORD ‘bglamour’;</li>
+<li>create database bglam_local;</li>
+<li>psql postgres -U username : postgres DB에 username 롤로 접속</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/08/29/CSS/element-bottom-위치-3가지-방법/"
+                    data-tooltip="element를 bottom에 위치시키는 3가지 방법"
+                    aria-label="PREVIOUS: element를 bottom에 위치시키는 3가지 방법"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/08/24/Node.js/blob-객체-컨트롤/"
+                    data-tooltip="파일 업로드를 위한 blob 객체 컨트롤"
+                    aria-label="NEXT: 파일 업로드를 위한 blob 객체 컨트롤"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/08/29/CSS/element-bottom-위치-3가지-방법/"
+                    data-tooltip="element를 bottom에 위치시키는 3가지 방법"
+                    aria-label="PREVIOUS: element를 bottom에 위치시키는 3가지 방법"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/08/24/Node.js/blob-객체-컨트롤/"
+                    data-tooltip="파일 업로드를 위한 blob 객체 컨트롤"
+                    aria-label="NEXT: 파일 업로드를 위한 blob 객체 컨트롤"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/';
+              
+            this.page.identifier = '2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

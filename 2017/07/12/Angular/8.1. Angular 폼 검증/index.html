@@ -1,0 +1,663 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>08.1. Angular 폼 검증 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Form 을 검증하기 위해서는 템플릿 주도인 내장 검증기와 모델주도인 외부 검증모듈이 있다.\n템플릿 주도 검증템플릿 외부에 별도의 검증 모듈을 두지 않고, 템플릿 내에서 검증되게 하는 방법으로 검증대상이 적고 단순한 검증을 수행할때 적합한 방식이다.\n내장 검증기로는 required, minlength, maxlength, pattern가 있다.\n12345678910111213141516import &#123; Component &#125; from '@angular/core';@Component(&#123;  template: `  \t아이디 : &lt;input type=\"text\" [(ngModel)]=\"user.userId\" minlength=\"2\" maxlength=\"5\" #userId=\"ngModel\" required&gt;&#123;&#123;userId.valid&#125;&#125;  &lt;div *ngIf=\"userId.valid\"&gt;    완료  &lt;/div&gt;`,  styles: [`   .ng-touched&#123; font-weight: bold; &#125;  `]&#125;)export class FormComponent &#123;  user = &#123; userId: '', userName: '' &#125;;&#125;\n\n#userId의 의미는 참조변수이다. input태그의 value값을 가져오기 위해서는 참조변수를 #userId과 같이 등록한후 {{{userId.value}}를 입력하면 된다.\n검증 결과를 확인하기 위해서는 참조변수에 #userId = &quot;ngModel&quot; 을 할당한뒤 {{userId.valid}}로 확인할 수 있다.\n엘리먼트의 검증상태위의 {{userName.valid}} 외에도 다른 상태정보를 확인할 수 있다.\n\nvalid : 검증 통과 true, 실패 false\nuntouched : 포커스를 주지 않았을 경우 true\ntouched : 포커스를 뒀다가 포커스를 잃어버린 경우\npristine : 값이 한번도 입력되지 않았을 경우\ndirty : 값이 한 번이라도 입력된 경우\nerros : 검증 실패 이유들이 담겨 있음 {{userName.error | json}} 으로 확인해보자\n\n폼 참조변수를 이용한 검증폼 엘리먼트와 연결된 참조변수를 이용해서 검증을 해보자\n\nNgForm 모듈 필요\n\nimport { NgForm } from &#39;@angular/forms&#39;;\n\n폼 엘리먼트와 참조변수 연결\n\n&lt;form #f=&quot;ngForm&quot;&gt; ... ngForm을 참조변수 #f에 연결한다.\n\nf.valid를 통해 하나의 변수로 검사 가능\n\n1234567891011121314151617181920212223import &#123; Component &#125; from '@angular/core';import &#123; NgForm &#125; from '@angular/forms';@Component(&#123;  template: `  &lt;form #f=\"ngForm\"&gt;    아이디 :    &lt;input type=\"text\" name=\"userId\" [(ngModel)]=\"user.userId\" #userId=\"ngModel\" minlength=\"2\" maxlength=\"5\" required&gt;&#123;&#123;userId.valid&#125;&#125;    비밀번호 :    &lt;input type=\"password\" name=\"password\" [(ngModel)]=\"user.userPassword\" #password=\"ngModel\" minlength=\"4\" maxlength=\"12\" required&gt;&#123;&#123;password.valid&#125;&#125;    이름 :    &lt;input type=\"text\" [(ngModel)]=\"user.userName\" #name=\"ngModel\" [ngModelOptions]=\"&#123;standalone: true&#125;\" required&gt;&#123;&#123;name.valid&#125;&#125;    &lt;div *ngIf=\"f.valid\"&gt;      완료 &#123;&#123;f.value | json&#125;&#125;, &#123;&#123;f.valid&#125;&#125;    &lt;/div&gt;  &lt;/form&gt;`,  styles: [`   .ng-touched&#123; font-weight: bold; &#125;  `]&#125;)export class FormComponent &#123;  user = &#123; userId: '', userName: '' &#125;;&#125;\n\n{{standalone: true}}를 하면 f.valid에 영향을 미치지 않으며, name property를 입력하지 않아도 된다.\n\n모델 주도 검증템플릿 외부 모듈에서 검증이 수행된다. 검증과정이 반복적이고 복잡할 경우 고려한다.\n폼 그룹 기반 검증폼 참조변수는 템플릿 내부에서만 사용할 수 있기 때문에, 클래스와의 연결을 고려한 폼 그룹 방식을 사용한다.\n&lt;form [formGroup]=&quot;form&quot;&gt; ..., &lt;div [formGroup]=&quot;form&quot;&gt;...\n폼 그룹은 &lt;form&gt; 엘리먼트 외에 엘리먼트의 사용 또한 허용한다. form 변수는 클래스 내부에 정의된 FromGroup 객체이다. 폼 그룹을 통해 클래스에서 검증기를 선언할 수 있다.\n\nValidators.required\nValidators.minLength(5)\nValidators.maxLength(5)\nValidators.pattern(“[a-zA-Z]+”)\n\n12345678910111213141516171819202122232425262728293031323334353637383940import &#123; Component &#125; from '@angular/core';import &#123; FormGroup, FormControl, Validators &#125; from \"@angular/forms\";@Component(&#123;  template: `  &lt;form [formGroup]=\"form\" (ngSubmit)=\"onSubmit($event)\"&gt;    소문자 : &lt;input formControlName=\"lowerCase\" pattern=\"[a-z]&#123;3&#125;\"&gt;    &lt;br&gt; 대문자 : &lt;input formControlName=\"upperCase\"&gt;&lt;br&gt;    &lt;button type=\"submit\" *ngIf=\"form.valid\"&gt;확인&lt;/button&gt;  &lt;/form&gt;  &lt;div&gt;    &lt;button (click)=\"setValue()\"&gt;값 채우기&lt;/button&gt;    &lt;button (click)=\"reset()\"&gt;리셋&lt;/button&gt;    &lt;button (click)=\"patch()\"&gt;패치&lt;/button&gt;  &lt;/div&gt;&lt;br&gt;`&#125;)export class FormComponent &#123;  form = new FormGroup(&#123;    lowerCase: new FormControl('', Validators.required),    upperCase: new FormControl('', Validators.compose([Validators.required, Validators.pattern(\"[A-Z]&#123;3&#125;\")]))  &#125;);  setValue() &#123;    this.form.setValue(&#123; lowerCase: 'abc', upperCase: 'ABC' &#125;);  &#125;  reset() &#123;    this.form.setValue(&#123; lowerCase: '', upperCase: '' &#125;);  &#125;  onSubmit(event) &#123;    console.log(\"this.form.value\", this.form.value.lowerCase, this.form.value.upperCase);    console.log(\"this.form.value\", this.form.get('lowerCase').value, this.form.get('upperCase').value);  &#125;  patch() &#123;    this.form.patchValue(&#123; lowerCase: 'one' &#125;);    this.form.patchValue(&#123; upperCase: 'ONE' &#125;);  &#125;&#125;\n\n두개이상의 Validators를 조합하기 위해서는 compose를 사용한다.\nngSubmit 속성을 통해 onSubmit() 메서드 호출을 한다. this.form.get(&#39;lowerCase&#39;).value 혹은 this.form.value.lowerCase와 같은 방식으로 값을 가져올 수 있다.\n커스텀 검증기복잡한 검증을 수행하기 위해선 커스텀 검증기를 추가해야함. 컴포넌트 외부에 정의함.\n\ninput-validator.ts\n\n1234567891011import &#123; FormControl &#125; from '@angular/forms';export class InputValidator &#123;  static startsWithNumber(control: FormControl) &#123;    var valid = /^\\d/.test(control.value);    if(valid &amp;&amp; control.value != \"\" &amp;&amp; !isNaN(control.value.charAt(0))) &#123;      return &#123; startsWithNumber: true &#125;;    &#125;    return null;  &#125;&#125;\n\n폼 검증 상태&lt;form [formGroup]=&quot;form&quot;&gt; ...  폼그룹 기반의 검증시에 검증 상태를 알아보자.\n{{form.valid}}\n\nform.valid : 폼 내부 전체적인 검증상태 확인\nForm.touched : 폼 전체적인 방문 여부\nForm.value | json : 폼 내부 값들을 출력해줌\nForm.controls.email.value : 특정 엘리먼트 속성 값 가져옴\nForm.controls.email.touched\nForm.controls.email.errors | json \n\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱\n","dateCreated":"2017-07-12T10:00:52+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:52+09:00","description":"","headline":"08.1. Angular 폼 검증","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"}</script>
+    <meta name="description" content="Form 을 검증하기 위해서는 템플릿 주도인 내장 검증기와 모델주도인 외부 검증모듈이 있다. 템플릿 주도 검증템플릿 외부에 별도의 검증 모듈을 두지 않고, 템플릿 내에서 검증되게 하는 방법으로 검증대상이 적고 단순한 검증을 수행할때 적합한 방식이다. 내장 검증기로는 required, minlength, maxlength, pattern가 있다. 123456">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="08.1. Angular 폼 검증">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Form 을 검증하기 위해서는 템플릿 주도인 내장 검증기와 모델주도인 외부 검증모듈이 있다. 템플릿 주도 검증템플릿 외부에 별도의 검증 모듈을 두지 않고, 템플릿 내에서 검증되게 하는 방법으로 검증대상이 적고 단순한 검증을 수행할때 적합한 방식이다. 내장 검증기로는 required, minlength, maxlength, pattern가 있다. 123456">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="08.1. Angular 폼 검증">
+<meta name="twitter:description" content="Form 을 검증하기 위해서는 템플릿 주도인 내장 검증기와 모델주도인 외부 검증모듈이 있다. 템플릿 주도 검증템플릿 외부에 별도의 검증 모듈을 두지 않고, 템플릿 내에서 검증되게 하는 방법으로 검증대상이 적고 단순한 검증을 수행할때 적합한 방식이다. 내장 검증기로는 required, minlength, maxlength, pattern가 있다. 123456">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            08.1. Angular 폼 검증
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:52+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Form 을 검증하기 위해서는 템플릿 주도인 <code>내장 검증기</code>와 모델주도인 <code>외부 검증모듈</code>이 있다.</p>
+<h2 id="템플릿-주도-검증"><a href="#템플릿-주도-검증" class="headerlink" title="템플릿 주도 검증"></a>템플릿 주도 검증</h2><p>템플릿 외부에 별도의 검증 모듈을 두지 않고, 템플릿 내에서 검증되게 하는 방법으로 검증대상이 적고 <strong>단순한 검증</strong>을 수행할때 적합한 방식이다.</p>
+<p>내장 검증기로는 <code>required, minlength, maxlength, pattern</code>가 있다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  	아이디 : &lt;input type="text" [(ngModel)]="user.userId" minlength="2" maxlength="5" #userId="ngModel" required&gt;&#123;&#123;userId.valid&#125;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;div *ngIf="userId.valid"&gt;</span></span><br><span class="line"><span class="string">    완료</span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span>,</span><br><span class="line">  styles: [<span class="string">`</span></span><br><span class="line"><span class="string">   .ng-touched&#123; font-weight: bold; &#125;</span></span><br><span class="line"><span class="string">  `</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> FormComponent &#123;</span><br><span class="line">  user = &#123; userId: <span class="string">''</span>, userName: <span class="string">''</span> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>#userId의 의미는 참조변수이다. input태그의 value값을 가져오기 위해서는 참조변수를 <code>#userId</code>과 같이 등록한후 {{{userId.value}}를 입력하면 된다.</p>
+<p><strong>검증 결과를 확인하기 위해서</strong>는 참조변수에 <code>#userId = &quot;ngModel&quot;</code> 을 할당한뒤 {{userId.valid}}로 확인할 수 있다.</p>
+<h4 id="엘리먼트의-검증상태"><a href="#엘리먼트의-검증상태" class="headerlink" title="엘리먼트의 검증상태"></a>엘리먼트의 검증상태</h4><p>위의 {{userName.valid}} 외에도 다른 상태정보를 확인할 수 있다.</p>
+<ol>
+<li>valid : 검증 통과 true, 실패 false</li>
+<li>untouched : 포커스를 주지 않았을 경우 true</li>
+<li>touched : 포커스를 뒀다가 포커스를 잃어버린 경우</li>
+<li>pristine : 값이 한번도 입력되지 않았을 경우</li>
+<li>dirty : 값이 한 번이라도 입력된 경우</li>
+<li>erros : 검증 실패 이유들이 담겨 있음 {{userName.error | json}} 으로 확인해보자</li>
+</ol>
+<h4 id="폼-참조변수를-이용한-검증"><a href="#폼-참조변수를-이용한-검증" class="headerlink" title="폼 참조변수를 이용한 검증"></a>폼 참조변수를 이용한 검증</h4><p>폼 엘리먼트와 연결된 참조변수를 이용해서 검증을 해보자</p>
+<ul>
+<li>NgForm 모듈 필요</li>
+</ul>
+<p><code>import { NgForm } from &#39;@angular/forms&#39;;</code></p>
+<ul>
+<li>폼 엘리먼트와 참조변수 연결</li>
+</ul>
+<p><code>&lt;form #f=&quot;ngForm&quot;&gt; ...</code> ngForm을 참조변수 #f에 연결한다.</p>
+<ul>
+<li>f.valid를 통해 하나의 변수로 검사 가능</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NgForm &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;form #f="ngForm"&gt;</span></span><br><span class="line"><span class="string">    아이디 :</span></span><br><span class="line"><span class="string">    &lt;input type="text" name="userId" [(ngModel)]="user.userId" #userId="ngModel" minlength="2" maxlength="5" required&gt;&#123;&#123;userId.valid&#125;&#125;</span></span><br><span class="line"><span class="string">    비밀번호 :</span></span><br><span class="line"><span class="string">    &lt;input type="password" name="password" [(ngModel)]="user.userPassword" #password="ngModel" minlength="4" maxlength="12" required&gt;&#123;&#123;password.valid&#125;&#125;</span></span><br><span class="line"><span class="string">    이름 :</span></span><br><span class="line"><span class="string">    &lt;input type="text" [(ngModel)]="user.userName" #name="ngModel" [ngModelOptions]="&#123;standalone: true&#125;" required&gt;&#123;&#123;name.valid&#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;div *ngIf="f.valid"&gt;</span></span><br><span class="line"><span class="string">      완료 &#123;&#123;f.value | json&#125;&#125;, &#123;&#123;f.valid&#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;`</span>,</span><br><span class="line">  styles: [<span class="string">`</span></span><br><span class="line"><span class="string">   .ng-touched&#123; font-weight: bold; &#125;</span></span><br><span class="line"><span class="string">  `</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> FormComponent &#123;</span><br><span class="line">  user = &#123; userId: <span class="string">''</span>, userName: <span class="string">''</span> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+{{standalone: true}}를 하면 f.valid에 영향을 미치지 않으며, name property를 입력하지 않아도 된다.
+
+<h2 id="모델-주도-검증"><a href="#모델-주도-검증" class="headerlink" title="모델 주도 검증"></a>모델 주도 검증</h2><p>템플릿 외부 모듈에서 검증이 수행된다. <strong>검증과정이 반복적이고 복잡할 경우</strong> 고려한다.</p>
+<h4 id="폼-그룹-기반-검증"><a href="#폼-그룹-기반-검증" class="headerlink" title="폼 그룹 기반 검증"></a>폼 그룹 기반 검증</h4><p>폼 참조변수는 템플릿 내부에서만 사용할 수 있기 때문에, 클래스와의 연결을 고려한 <code>폼 그룹 방식</code>을 사용한다.</p>
+<p><code>&lt;form [formGroup]=&quot;form&quot;&gt; ...</code>, <code>&lt;div [formGroup]=&quot;form&quot;&gt;...</code></p>
+<p>폼 그룹은 <code>&lt;form&gt;</code> 엘리먼트 외에 엘리먼트의 사용 또한 허용한다. <code>form</code> 변수는 클래스 내부에 정의된 FromGroup 객체이다. 폼 그룹을 통해 클래스에서 검증기를 선언할 수 있다.</p>
+<ul>
+<li>Validators.required</li>
+<li>Validators.minLength(5)</li>
+<li>Validators.maxLength(5)</li>
+<li>Validators.pattern(“[a-zA-Z]+”)</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormGroup, FormControl, Validators &#125; <span class="keyword">from</span> <span class="string">"@angular/forms"</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;form [formGroup]="form" (ngSubmit)="onSubmit($event)"&gt;</span></span><br><span class="line"><span class="string">    소문자 : &lt;input formControlName="lowerCase" pattern="[a-z]&#123;3&#125;"&gt;</span></span><br><span class="line"><span class="string">    &lt;br&gt; 대문자 : &lt;input formControlName="upperCase"&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    &lt;button type="submit" *ngIf="form.valid"&gt;확인&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;</span></span><br><span class="line"><span class="string">  &lt;div&gt;</span></span><br><span class="line"><span class="string">    &lt;button (click)="setValue()"&gt;값 채우기&lt;/button&gt;</span></span><br><span class="line"><span class="string">    &lt;button (click)="reset()"&gt;리셋&lt;/button&gt;</span></span><br><span class="line"><span class="string">    &lt;button (click)="patch()"&gt;패치&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/div&gt;&lt;br&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> FormComponent &#123;</span><br><span class="line">  form = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    lowerCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.required),</span><br><span class="line">    upperCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.compose([Validators.required, Validators.pattern(<span class="string">"[A-Z]&#123;3&#125;"</span>)]))</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  setValue() &#123;</span><br><span class="line">    <span class="keyword">this</span>.form.setValue(&#123; lowerCase: <span class="string">'abc'</span>, upperCase: <span class="string">'ABC'</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  reset() &#123;</span><br><span class="line">    <span class="keyword">this</span>.form.setValue(&#123; lowerCase: <span class="string">''</span>, upperCase: <span class="string">''</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  onSubmit(event) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"this.form.value"</span>, <span class="keyword">this</span>.form.value.lowerCase, <span class="keyword">this</span>.form.value.upperCase);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"this.form.value"</span>, <span class="keyword">this</span>.form.get(<span class="string">'lowerCase'</span>).value, <span class="keyword">this</span>.form.get(<span class="string">'upperCase'</span>).value);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  patch() &#123;</span><br><span class="line">    <span class="keyword">this</span>.form.patchValue(&#123; lowerCase: <span class="string">'one'</span> &#125;);</span><br><span class="line">    <span class="keyword">this</span>.form.patchValue(&#123; upperCase: <span class="string">'ONE'</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>두개이상의 Validators를 조합하기 위해서는 compose를 사용한다.</p>
+<p><code>ngSubmit</code> 속성을 통해 <code>onSubmit()</code> 메서드 호출을 한다. <code>this.form.get(&#39;lowerCase&#39;).value</code> 혹은 <code>this.form.value.lowerCase</code>와 같은 방식으로 값을 가져올 수 있다.</p>
+<h4 id="커스텀-검증기"><a href="#커스텀-검증기" class="headerlink" title="커스텀 검증기"></a>커스텀 검증기</h4><p>복잡한 검증을 수행하기 위해선 커스텀 검증기를 추가해야함. 컴포넌트 외부에 정의함.</p>
+<ul>
+<li>input-validator.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; FormControl &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> InputValidator &#123;</span><br><span class="line">  <span class="keyword">static</span> startsWithNumber(control: FormControl) &#123;</span><br><span class="line">    <span class="keyword">var</span> valid = <span class="regexp">/^\d/</span>.test(control.value);</span><br><span class="line">    <span class="keyword">if</span>(valid &amp;&amp; control.value != <span class="string">""</span> &amp;&amp; !<span class="built_in">isNaN</span>(control.value.charAt(<span class="number">0</span>))) &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123; startsWithNumber: <span class="literal">true</span> &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="폼-검증-상태"><a href="#폼-검증-상태" class="headerlink" title="폼 검증 상태"></a>폼 검증 상태</h4><p><code>&lt;form [formGroup]=&quot;form&quot;&gt; ...</code>  폼그룹 기반의 검증시에 검증 상태를 알아보자.</p>
+{{form.valid}}
+<ul>
+<li>form.valid : 폼 내부 전체적인 검증상태 확인</li>
+<li>Form.touched : 폼 전체적인 방문 여부</li>
+<li>Form.value | json : 폼 내부 값들을 출력해줌</li>
+<li>Form.controls.email.value : 특정 엘리먼트 속성 값 가져옴</li>
+<li>Form.controls.email.touched</li>
+<li>Form.controls.email.errors | json </li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    data-tooltip="09. Angular 템플릿 문법"
+                    aria-label="PREVIOUS: 09. Angular 템플릿 문법"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/7.1. Angular 가드/"
+                    data-tooltip="07.1. Angular 가드"
+                    aria-label="NEXT: 07.1. Angular 가드"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    data-tooltip="09. Angular 템플릿 문법"
+                    aria-label="PREVIOUS: 09. Angular 템플릿 문법"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/7.1. Angular 가드/"
+                    data-tooltip="07.1. Angular 가드"
+                    aria-label="NEXT: 07.1. Angular 가드"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/8.1. Angular 폼 검증/';
+              
+            this.page.identifier = '2017/07/12/Angular/8.1. Angular 폼 검증/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

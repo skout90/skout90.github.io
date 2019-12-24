@@ -1,0 +1,613 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"css 단위로 rem을 사용한다.\n\n_variables.scss\n12345678910111213141516171819202122232425262728293031$browser-context: 20; // 브라우저의 기본 폰트@function rem($pixels, $context: $browser-context) &#123;  @return #&#123;$pixels/$context&#125;rem;&#125;$primary-color: #FF6D70;@mixin pad-h ($left, $right) &#123;  padding-left: $left !important;  padding-right: $right !important;&#125;%ellipsis &#123;  word-break: break-all;  white-space: nowrap;  text-overflow: ellipsis;  overflow: hidden;&#125;// 사용시@import \"./variables\";.page &#123;  &amp;__icon-container &#123;    margin-top: rem(100);    @include pad-h(rem(40), rem(40));    color: $primary-color;    @extend %ellipsis;  &#125;&#125;\n\n@mixin을 이용한 @include의 경우는 정의된 CSS를 각각 선언해주며 @extend 공통 CSS를 만들고 추가해주는 차이가 있다.\n\n_reset.scss\n123456789101112131415161718192021222324html &#123;  height: auto;  // 브라우저에서 사용자가 디폴트 폰트 사이즈를 변경할 수 있으므로 %로 설정한다.  // default 16px, 환산 20px, browswer-context와 맞춰줌  font-size: 125% !important;&#125;@media screen and (max-width: 700px) &#123;  html &#123;    font-size: 81.3% !important; // 환산 13px;  &#125;  body &#123;    line-height: 1.34;  &#125;&#125;@media screen and (max-width: 467px) &#123;  html &#123;    font-size: 62.5% !important; // 환산 10px;  &#125;  body &#123;    line-height: 1.34;  &#125;&#125;\n\n\n\nRefenrece [css에서의 em과 %] : https://aboooks.tistory.com/142\n","dateCreated":"2019-10-15T18:43:13+09:00","dateModified":"2019-12-24T10:25:16+09:00","datePublished":"2019-10-15T18:43:13+09:00","description":"","headline":"SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"}</script>
+    <meta name="description" content="css 단위로 rem을 사용한다.  _variables.scss 12345678910111213141516171819202122232425262728293031$browser-context: 20; // 브라우저의 기본 폰트@function rem($pixels, $context: $browser-context) &amp;#123;  @return #&amp;#123;$">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장">
+<meta property="og:url" content="https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="css 단위로 rem을 사용한다.  _variables.scss 12345678910111213141516171819202122232425262728293031$browser-context: 20; // 브라우저의 기본 폰트@function rem($pixels, $context: $browser-context) &amp;#123;  @return #&amp;#123;$">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-24T01:25:16.360Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장">
+<meta name="twitter:description" content="css 단위로 rem을 사용한다.  _variables.scss 12345678910111213141516171819202122232425262728293031$browser-context: 20; // 브라우저의 기본 폰트@function rem($pixels, $context: $browser-context) &amp;#123;  @return #&amp;#123;$">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-10-15T18:43:13+09:00">
+	
+		    2019.10.15
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/CSS/">CSS</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>css 단위로 <code>rem</code>을 사용한다.</p>
+<ul>
+<li><p>_variables.scss</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$browser-context</span>: <span class="number">20</span>; <span class="comment">// 브라우저의 기본 폰트</span></span><br><span class="line"></span><br><span class="line">@function rem(<span class="variable">$pixels</span>, <span class="variable">$context</span>: <span class="variable">$browser-context</span>) &#123;</span><br><span class="line">  @return #&#123;$pixels/$context&#125;rem;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$primary-color</span>: <span class="number">#FF6D70</span>;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">mixin</span> pad-h (<span class="variable">$left</span>, <span class="variable">$right</span>) &#123;</span><br><span class="line">  <span class="attribute">padding-left</span>: <span class="variable">$left</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">padding-right</span>: <span class="variable">$right</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">%ellipsis &#123;</span><br><span class="line">  <span class="attribute">word-break</span>: break-all;</span><br><span class="line">  <span class="attribute">white-space</span>: nowrap;</span><br><span class="line">  <span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용시</span></span><br><span class="line">@<span class="keyword">import</span> <span class="string">"./variables"</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.page</span> &#123;</span><br><span class="line">  &amp;__icon-container &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: rem(<span class="number">100</span>);</span><br><span class="line">    @<span class="keyword">include</span> pad-h(rem(<span class="number">40</span>), rem(<span class="number">40</span>));</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$primary-color</span>;</span><br><span class="line">    @<span class="keyword">extend</span> %ellipsis;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@mixin</code>을 이용한 <code>@include</code>의 경우는 정의된 CSS를 각각 선언해주며 <code>@extend</code> 공통 CSS를 만들고 추가해주는 차이가 있다.</p>
+</li>
+<li><p>_reset.scss</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">height</span>: auto;</span><br><span class="line">  <span class="comment">// 브라우저에서 사용자가 디폴트 폰트 사이즈를 변경할 수 있으므로 %로 설정한다.</span></span><br><span class="line">  <span class="comment">// default 16px, 환산 20px, browswer-context와 맞춰줌</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">125%</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">media</span> screen and (max-width: 700px) &#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">81.3%</span> <span class="meta">!important</span>; <span class="comment">// 환산 13px;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.34</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">media</span> screen and (max-width: 467px) &#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">62.5%</span> <span class="meta">!important</span>; <span class="comment">// 환산 10px;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.34</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Refenrece"><a href="#Refenrece" class="headerlink" title="Refenrece"></a>Refenrece</h2><p> [css에서의 em과 %] : <a href="https://aboooks.tistory.com/142" target="_blank" rel="noopener">https://aboooks.tistory.com/142</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/16/CSS/CSS-scroll-image-bounce/"
+                    data-tooltip="scroll시 이미지 bounce 시키기"
+                    aria-label="PREVIOUS: scroll시 이미지 bounce 시키기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/16/CSS/overflow-scroll-right-padding-problem/"
+                    data-tooltip="overflow scroll 일시 right margin이 안먹는 문제"
+                    aria-label="NEXT: overflow scroll 일시 right margin이 안먹는 문제"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/16/CSS/CSS-scroll-image-bounce/"
+                    data-tooltip="scroll시 이미지 bounce 시키기"
+                    aria-label="PREVIOUS: scroll시 이미지 bounce 시키기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/16/CSS/overflow-scroll-right-padding-problem/"
+                    data-tooltip="overflow scroll 일시 right margin이 안먹는 문제"
+                    aria-label="NEXT: overflow scroll 일시 right margin이 안먹는 문제"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2019/10/15/CSS/SCSS-실사용팁-반응형처리/';
+              
+            this.page.identifier = '2019/10/15/CSS/SCSS-실사용팁-반응형처리/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

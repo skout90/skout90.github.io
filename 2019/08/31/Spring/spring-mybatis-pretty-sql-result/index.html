@@ -1,0 +1,628 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>Spring Mybatis Query 결과를 보기 좋게 정렬해보자 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"mybatis로 나오는 spring 쿼리를 보기 좋게 포매팅 해보자.\nlog4j : 속도, 로그 래벨, 멀티스레드 안정성을 고려한 로딩 라이브러리\nslf4j : log4j와 같은 로깅 라이브러리의 인터페이스 역할\nlogback : log4j의 강화판이라고 보면 될듯\nlog4j -&gt; slf4j -&gt; logback 순서대로 적용된다.\n개념은 https://goddaehee.tistory.com/45 사이트에 잘 정리해두셨다.\n\npom.xml\n\n123456789101112131415161718192021222324252627282930313233&lt;!-- log4jdbc-remix --&gt;&lt;dependency&gt;    &lt;groupId&gt;org.lazyluke&lt;/groupId&gt;    &lt;artifactId&gt;log4jdbc-remix&lt;/artifactId&gt;    &lt;version&gt;0.2.7&lt;/version&gt;&lt;/dependency&gt;&lt;!-- logback --&gt;&lt;dependency&gt;    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;    &lt;artifactId&gt;jcl-over-slf4j&lt;/artifactId&gt;    &lt;version&gt;1.7.13&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;    &lt;artifactId&gt;log4j-over-slf4j&lt;/artifactId&gt;    &lt;version&gt;1.7.13&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;    &lt;artifactId&gt;logback-core&lt;/artifactId&gt;    &lt;version&gt;1.1.3&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;    &lt;version&gt;1.1.3&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.bgee.log4jdbc-log4j2&lt;/groupId&gt;    &lt;artifactId&gt;log4jdbc-log4j2-jdbc4&lt;/artifactId&gt;    &lt;version&gt;1.16&lt;/version&gt;  &lt;/dependency&gt;\n\n\ncontext-datasource.xml\n\n1234567891011121314151617181920212223242526272829303132333435363738394041&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;&lt;beans xmlns=\"http://www.springframework.org/schema/beans\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:aop=\"http://www.springframework.org/schema/aop\" xmlns:tx=\"http://www.springframework.org/schema/tx\" xmlns:context=\"http://www.springframework.org/schema/context\" xmlns:jee=\"http://www.springframework.org/schema/jee\" xsi:schemaLocation=\"\t\thttp://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd\t\thttp://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd\t\thttp://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd\t\thttp://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd\t\thttp://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd\"&gt;    &lt;bean id=\"dataSourceSpied\" class=\"org.springframework.jdbc.datasource.DriverManagerDataSource\"&gt;        &lt;property name=\"driverClassName\" value=\"net.sf.log4jdbc.sql.jdbcapi.DriverSpy\"&gt;&lt;/property&gt;        &lt;property name=\"url\" value=\"jdbc:oracle:thin:@url:port:SID\"&gt;&lt;/property&gt;        &lt;property name=\"username\" value=\"\"&gt;&lt;/property&gt;        &lt;property name=\"password\" value=\"\"&gt;&lt;/property&gt;    &lt;/bean&gt;    &lt;bean id=\"dataSource\" class=\"net.sf.log4jdbc.Log4jdbcProxyDataSource\"&gt;        &lt;constructor-arg ref=\"dataSourceSpied\" /&gt;        &lt;property name=\"logFormatter\"&gt;            &lt;bean class=\"net.sf.log4jdbc.tools.Log4JdbcCustomFormatter\"&gt;                &lt;property name=\"loggingType\" value=\"MULTI_LINE\" /&gt;                &lt;property name=\"sqlPrefix\" value=\"SQL : \" /&gt;            &lt;/bean&gt;        &lt;/property&gt;    &lt;/bean&gt;    &lt;bean id=\"sqlSessionFactory\" class=\"org.mybatis.spring.SqlSessionFactoryBean\"&gt;        &lt;property name=\"dataSource\" ref=\"dataSource\" /&gt;        &lt;property name=\"mapperLocations\"&gt;            &lt;list&gt;                &lt;value&gt;classpath:/config/sql/*.xml&lt;/value&gt;                &lt;value&gt;classpath:/config/sql/*/*.xml&lt;/value&gt;                &lt;value&gt;classpath:/config/sql/*/*/*.xml&lt;/value&gt;                &lt;value&gt;classpath:/config/sql/*/*/*/*.xml&lt;/value&gt;            &lt;/list&gt;        &lt;/property&gt;        &lt;property name=\"configLocation\" value=\"classpath:/config/mybatis/mybatis-config.xml\" /&gt;    &lt;/bean&gt;        ...&lt;/beans&gt;\n\n\nsrc/main/resources/logback.xml\n\n123456789101112131415161718192021222324252627282930313233343536373839&lt;?xml version=\"1.0\" encoding=\"UTF-8\" ?&gt;&lt;configuration&gt;    &lt;appender name=\"console\" class=\"ch.qos.logback.core.ConsoleAppender\"&gt;        &lt;encoder&gt;            &lt;pattern&gt;%d&#123;HH:mm:ss&#125; %-5level - %msg%n&lt;/pattern&gt;        &lt;/encoder&gt;    &lt;/appender&gt;    &lt;appender name=\"file_log\" class=\"ch.qos.logback.core.rolling.RollingFileAppender\"&gt;        &lt;file&gt;/app/log/ssp_api.log&lt;/file&gt;        &lt;rollingPolicy class=\"ch.qos.logback.core.rolling.TimeBasedRollingPolicy\"&gt;            &lt;fileNamePattern&gt;/app/log/ssp_api.%d&#123;yyyy-MM-dd&#125;.%i.log&lt;/fileNamePattern&gt;            &lt;timeBasedFileNamingAndTriggeringPolicy class=\"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP\"&gt;                &lt;!-- or whenever the file size reaches 100MB --&gt;                &lt;maxFileSize&gt;100MB&lt;/maxFileSize&gt;            &lt;/timeBasedFileNamingAndTriggeringPolicy&gt;            &lt;maxHistory&gt;30&lt;/maxHistory&gt;        &lt;/rollingPolicy&gt;        &lt;encoder class=\"ch.qos.logback.classic.encoder.PatternLayoutEncoder\"&gt;            &lt;pattern&gt;%d&#123;HH:mm:ss.SSS&#125; &#123;%thread&#125; %-5level %logger&#123;32&#125; - %msg%n&lt;/pattern&gt;        &lt;/encoder&gt;    &lt;/appender&gt;    &lt;!-- &lt;logger name=\"org.springframework\" level=\"debug\"/&gt; &lt;logger name=\"org.apache.http.wire\" level=\"error\" /&gt; &lt;logger name=\"org.apache.http.client\" level=\"error\" /&gt; --&gt;    &lt;logger name=\"org.springframework\" level=\"info\" /&gt;    &lt;logger name=\"org.mybatis.spring\" level=\"info\" /&gt;    &lt;logger name=\"jdbc\"                level=\"OFF\" /&gt;    &lt;logger name=\"jdbc.sqlonly\"        level=\"INFO\" /&gt;  &lt;!-- 파라미터를 셋팅해서 출력--&gt;    &lt;logger name=\"jdbc.resultsettable\" level=\"INFO\" /&gt;  &lt;!-- 결과값을 보여줌--&gt;    &lt;logger name=\"jdbc.sqltiming\"      level=\"INFO\" /&gt;    &lt;logger name=\"log4jdbc.debug\"      level=\"INFO\" /&gt;        &lt;root level=\"debug\"&gt;        &lt;appender-ref ref=\"console\" /&gt;        &lt;appender-ref ref=\"file_log\" /&gt;    &lt;/root&gt;&lt;/configuration&gt;\n\n\nsrc/main/resources/log4jdbc.log4j2.properties\n\n12log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegatorlog4jdbc.dump.sql.maxlinelength=0\n\nReferencehttps://addio3305.tistory.com/66\nhttps://goddaehee.tistory.com/45\n","dateCreated":"2019-08-31T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2019-08-31T19:28:10+09:00","description":"","headline":"Spring Mybatis Query 결과를 보기 좋게 정렬해보자","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"}</script>
+    <meta name="description" content="mybatis로 나오는 spring 쿼리를 보기 좋게 포매팅 해보자. log4j : 속도, 로그 래벨, 멀티스레드 안정성을 고려한 로딩 라이브러리 slf4j : log4j와 같은 로깅 라이브러리의 인터페이스 역할 logback : log4j의 강화판이라고 보면 될듯 log4j -&amp;gt; slf4j -&amp;gt; logback 순서대로 적용된다. 개념은 http">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Spring Mybatis Query 결과를 보기 좋게 정렬해보자">
+<meta property="og:url" content="https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="mybatis로 나오는 spring 쿼리를 보기 좋게 포매팅 해보자. log4j : 속도, 로그 래벨, 멀티스레드 안정성을 고려한 로딩 라이브러리 slf4j : log4j와 같은 로깅 라이브러리의 인터페이스 역할 logback : log4j의 강화판이라고 보면 될듯 log4j -&amp;gt; slf4j -&amp;gt; logback 순서대로 적용된다. 개념은 http">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.105Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Mybatis Query 결과를 보기 좋게 정렬해보자">
+<meta name="twitter:description" content="mybatis로 나오는 spring 쿼리를 보기 좋게 포매팅 해보자. log4j : 속도, 로그 래벨, 멀티스레드 안정성을 고려한 로딩 라이브러리 slf4j : log4j와 같은 로깅 라이브러리의 인터페이스 역할 logback : log4j의 강화판이라고 보면 될듯 log4j -&amp;gt; slf4j -&amp;gt; logback 순서대로 적용된다. 개념은 http">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Spring Mybatis Query 결과를 보기 좋게 정렬해보자
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-08-31T19:28:10+09:00">
+	
+		    2019.08.31
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Spring/">Spring</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>mybatis로 나오는 spring 쿼리를 보기 좋게 포매팅 해보자.</p>
+<p>log4j : 속도, 로그 래벨, 멀티스레드 안정성을 고려한 로딩 라이브러리</p>
+<p>slf4j : log4j와 같은 로깅 라이브러리의 인터페이스 역할</p>
+<p>logback : log4j의 강화판이라고 보면 될듯</p>
+<p>log4j -&gt; slf4j -&gt; logback 순서대로 적용된다.</p>
+<p>개념은 <a href="https://goddaehee.tistory.com/45" target="_blank" rel="noopener">https://goddaehee.tistory.com/45</a> 사이트에 잘 정리해두셨다.</p>
+<ul>
+<li><strong>pom.xml</strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- log4jdbc-remix --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.lazyluke<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4jdbc-remix<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.2.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- logback --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jcl-over-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-over-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.13<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.bgee.log4jdbc-log4j2<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4jdbc-log4j2-jdbc4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.16<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>context-datasource.xml</strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span> <span class="attr">xmlns:tx</span>=<span class="string">"http://www.springframework.org/schema/tx"</span> <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span> <span class="attr">xmlns:jee</span>=<span class="string">"http://www.springframework.org/schema/jee"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSourceSpied"</span> <span class="attr">class</span>=<span class="string">"org.springframework.jdbc.datasource.DriverManagerDataSource"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driverClassName"</span> <span class="attr">value</span>=<span class="string">"net.sf.log4jdbc.sql.jdbcapi.DriverSpy"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:oracle:thin:@url:port:SID"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"dataSource"</span> <span class="attr">class</span>=<span class="string">"net.sf.log4jdbc.Log4jdbcProxyDataSource"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">ref</span>=<span class="string">"dataSourceSpied"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"logFormatter"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"loggingType"</span> <span class="attr">value</span>=<span class="string">"MULTI_LINE"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sqlPrefix"</span> <span class="attr">value</span>=<span class="string">"SQL : "</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sqlSessionFactory"</span> <span class="attr">class</span>=<span class="string">"org.mybatis.spring.SqlSessionFactoryBean"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"dataSource"</span> <span class="attr">ref</span>=<span class="string">"dataSource"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mapperLocations"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:/config/sql/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:/config/sql/*/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:/config/sql/*/*/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:/config/sql/*/*/*/*.xml<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"configLocation"</span> <span class="attr">value</span>=<span class="string">"classpath:/config/mybatis/mybatis-config.xml"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>src/main/resources/logback.xml</strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"console"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss&#125; %-5level - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"file_log"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span>/app/log/ssp_api.log<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>/app/log/ssp_api.%d&#123;yyyy-MM-dd&#125;.%i.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timeBasedFileNamingAndTriggeringPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP"</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- or whenever the file size reaches 100MB --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">maxFileSize</span>&gt;</span>100MB<span class="tag">&lt;/<span class="name">maxFileSize</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">timeBasedFileNamingAndTriggeringPolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">maxHistory</span>&gt;</span>30<span class="tag">&lt;/<span class="name">maxHistory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.encoder.PatternLayoutEncoder"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;HH:mm:ss.SSS&#125; &#123;%thread&#125; %-5level %logger&#123;32&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- &lt;logger name="org.springframework" level="debug"/&gt; &lt;logger name="org.apache.http.wire" level="error" /&gt; &lt;logger name="org.apache.http.client" level="error" /&gt; --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"org.springframework"</span> <span class="attr">level</span>=<span class="string">"info"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"org.mybatis.spring"</span> <span class="attr">level</span>=<span class="string">"info"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"jdbc"</span>                <span class="attr">level</span>=<span class="string">"OFF"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"jdbc.sqlonly"</span>        <span class="attr">level</span>=<span class="string">"INFO"</span> /&gt;</span>  <span class="comment">&lt;!-- 파라미터를 셋팅해서 출력--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"jdbc.resultsettable"</span> <span class="attr">level</span>=<span class="string">"INFO"</span> /&gt;</span>  <span class="comment">&lt;!-- 결과값을 보여줌--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"jdbc.sqltiming"</span>      <span class="attr">level</span>=<span class="string">"INFO"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"log4jdbc.debug"</span>      <span class="attr">level</span>=<span class="string">"INFO"</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"debug"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"console"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"file_log"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>src/main/resources/log4jdbc.log4j2.properties</strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator</span><br><span class="line">log4jdbc.dump.sql.maxlinelength=0</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://addio3305.tistory.com/66" target="_blank" rel="noopener">https://addio3305.tistory.com/66</a></p>
+<p><a href="https://goddaehee.tistory.com/45" target="_blank" rel="noopener">https://goddaehee.tistory.com/45</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/16/CSS/overflow-scroll-right-padding-problem/"
+                    data-tooltip="overflow scroll 일시 right margin이 안먹는 문제"
+                    aria-label="PREVIOUS: overflow scroll 일시 right margin이 안먹는 문제"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/08/30/Web/apache-server-file-setting/"
+                    data-tooltip="Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                    aria-label="NEXT: Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/09/16/CSS/overflow-scroll-right-padding-problem/"
+                    data-tooltip="overflow scroll 일시 right margin이 안먹는 문제"
+                    aria-label="PREVIOUS: overflow scroll 일시 right margin이 안먹는 문제"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/08/30/Web/apache-server-file-setting/"
+                    data-tooltip="Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                    aria-label="NEXT: Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2019/08/31/Spring/spring-mybatis-pretty-sql-result/';
+              
+            this.page.identifier = '2019/08/31/Spring/spring-mybatis-pretty-sql-result/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>07.1. Angular 가드 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"앵귤러2의 가드를 사용해서, 로그인 서비스를 만들어보자.\n로그인 페이지\n로그인 컴포넌트\n\nngIf 지시자를 활용해 화면 표시 상태 결정.\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960import &#123; Component &#125; from '@angular/core';import &#123; Router, NavigationExtras &#125; from '@angular/router';import &#123; AuthService &#125; from './auth.service';@Component(&#123;  template: `    &lt;h3&gt;LOGIN&lt;/h3&gt; &#123;&#123;message&#125;&#125;    &lt;p&gt;      &lt;input type=\"text\" [(ngModel)]=\"userId\" placeholder=\"사용자 아이디\" *ngIf=\"!authService.isLogin\"&gt;      &lt;button (click)=\"login()\"  *ngIf=\"!authService.isLogin\"&gt;로그인&lt;/button&gt;      &lt;button (click)=\"logout()\" *ngIf=\"authService.isLogin\"&gt;로그아웃&lt;/button&gt;    &lt;/p&gt;`&#125;)export class LoginComponent &#123;  message: string; userId: string;  constructor(public authService: AuthService, public router: Router) &#123;    this.setMessage();  &#125;  setMessage() &#123;    this.message = (this.authService.isLogin ? this.authService.userId + '님 환영합니다.' : '로그인 필요');  &#125;  private doLogin() &#123;    this.setMessage();    if (this.authService.isLogin) &#123;      let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/admin';      let navigationExtras: NavigationExtras = &#123;        preserveQueryParams: true,        preserveFragment: true      &#125;;      this.router.navigate([redirect], navigationExtras);    &#125; else &#123;      alert('로그인을 할 수 없습니다.');    &#125;  &#125;  login() &#123;    if (!this.userId) &#123;      alert('id를 입력해주세요');      return;    &#125;    this.message = '로그인을 진행해주세요';    return this.authService.checkId(this.userId).then(children =&gt; &#123;      if (children) &#123;        this.authService.login(this.userId).subscribe(() =&gt; this.doLogin());      &#125; else &#123;        alert('아이디가 없습니다');      &#125;      this.setMessage();    &#125;);  &#125;  logout() &#123;    this.authService.logout();    this.setMessage();  &#125;&#125;\n\nrouter의 navigate 함수를 통해 로그인 성공시, 페이지 이동.\n로그인 버튼을 누르면 login() 메서드가 실행, authService.checkId() 실행.\n\nAuth 서비스\n\n12345678910111213141516171819202122232425262728293031323334353637import &#123; Injectable &#125; from '@angular/core';import &#123; Observable &#125; from 'rxjs/Observable';import 'rxjs/add/observable/of';import 'rxjs/add/operator/do';import 'rxjs/add/operator/delay';export class User &#123;  constructor(public id: number, public name: string) &#123; &#125;&#125;const USERS = [  new User(1, '첫번째 사용자'),  new User(2, '두번째 사용자'),  new User(3, '세번째 사용자')];export let userPromise = Promise.resolve(USERS);@Injectable()export class AuthService &#123;  isLogin: boolean = false;  redirectUrl: string;  userId: string;  checkId(userId: string): Promise&lt;User&gt; &#123;    return userPromise      .then(children =&gt; children.find(children =&gt; children.id === +userId));  &#125;  login(userId: string): Observable&lt;boolean&gt; &#123;    return Observable.of(true).delay(500).do(val =&gt; this.isLogin = true).do(val =&gt; this.userId = userId);  &#125;  logout(): void &#123;    this.isLogin = false;  &#125;&#125;\n\n시뮬레이션을 위해 목객체 사용.\n\n권한 접근 제어 : AuthGuard 서비스\n\n1234567891011121314151617181920212223242526272829303132333435363738394041import &#123; Injectable &#125; from '@angular/core';import &#123; CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, NavigationExtras, CanLoad, Route &#125; from '@angular/router';import &#123; AuthService &#125; from './auth.service';@Injectable()export class AuthGuard implements CanActivate, CanActivateChild, CanLoad &#123;  constructor(private authService: AuthService, private router: Router) &#123; &#125;  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean &#123;    let url: string = state.url;    return this.checkLogin(url);  &#125;  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean &#123;    return this.canActivate(route, state);  &#125;  // lazy load 사용시, canLoad 사용.  canLoad(route: Routce): boolean &#123;    let url = `/$&#123;route.path&#125;`;    if(window.confirm(\"자식 라우트가 모두 로드 되었습니다. 진행하시겠습니까?\"))&#123;      return this.checkLogin(url);    &#125;else&#123;      return false;    &#125;      &#125;  checkLogin(url: string): boolean &#123;    if (this.authService.isLogin) &#123; return true; &#125;    this.authService.redirectUrl = url;    let sessionId = 1234;    let navigationExtras: NavigationExtras = &#123;      queryParams: &#123; 'session_id': sessionId &#125;,      fragment: 'anchor'    &#125;;    this.router.navigate(['/login'], navigationExtras);    return false;  &#125;&#125;\n\nURL에 세션 매개변수 정보를 전달하기 위해, NavigationExtras를 사용. session_id와 앵커를 url에 붙임. (결과 : http://localhostL4200/login?session_id=1234#anchor)\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱 지음\n","dateCreated":"2017-07-12T10:00:51+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:51+09:00","description":"","headline":"07.1. Angular 가드","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"}</script>
+    <meta name="description" content="앵귤러2의 가드를 사용해서, 로그인 서비스를 만들어보자. 로그인 페이지 로그인 컴포넌트  ngIf 지시자를 활용해 화면 표시 상태 결정. 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960import &amp;#123">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="07.1. Angular 가드">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="앵귤러2의 가드를 사용해서, 로그인 서비스를 만들어보자. 로그인 페이지 로그인 컴포넌트  ngIf 지시자를 활용해 화면 표시 상태 결정. 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960import &amp;#123">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.081Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="07.1. Angular 가드">
+<meta name="twitter:description" content="앵귤러2의 가드를 사용해서, 로그인 서비스를 만들어보자. 로그인 페이지 로그인 컴포넌트  ngIf 지시자를 활용해 화면 표시 상태 결정. 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960import &amp;#123">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            07.1. Angular 가드
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:51+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>앵귤러2의 가드를 사용해서, 로그인 서비스를 만들어보자.</p>
+<h2 id="로그인-페이지"><a href="#로그인-페이지" class="headerlink" title="로그인 페이지"></a>로그인 페이지</h2><ul>
+<li><strong>로그인 컴포넌트</strong></li>
+</ul>
+<p>ngIf 지시자를 활용해 화면 표시 상태 결정.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Router, NavigationExtras &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./auth.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;h3&gt;LOGIN&lt;/h3&gt; &#123;&#123;message&#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;p&gt;</span></span><br><span class="line"><span class="string">      &lt;input type="text" [(ngModel)]="userId" placeholder="사용자 아이디" *ngIf="!authService.isLogin"&gt;</span></span><br><span class="line"><span class="string">      &lt;button (click)="login()"  *ngIf="!authService.isLogin"&gt;로그인&lt;/button&gt;</span></span><br><span class="line"><span class="string">      &lt;button (click)="logout()" *ngIf="authService.isLogin"&gt;로그아웃&lt;/button&gt;</span></span><br><span class="line"><span class="string">    &lt;/p&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> LoginComponent &#123;</span><br><span class="line">  message: <span class="built_in">string</span>; userId: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> authService: AuthService, <span class="keyword">public</span> router: Router</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.setMessage();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setMessage() &#123;</span><br><span class="line">    <span class="keyword">this</span>.message = (<span class="keyword">this</span>.authService.isLogin ? <span class="keyword">this</span>.authService.userId + <span class="string">'님 환영합니다.'</span> : <span class="string">'로그인 필요'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> doLogin() &#123;</span><br><span class="line">    <span class="keyword">this</span>.setMessage();</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.authService.isLogin) &#123;</span><br><span class="line">      <span class="keyword">let</span> redirect = <span class="keyword">this</span>.authService.redirectUrl ? <span class="keyword">this</span>.authService.redirectUrl : <span class="string">'/admin'</span>;</span><br><span class="line">      <span class="keyword">let</span> navigationExtras: NavigationExtras = &#123;</span><br><span class="line">        preserveQueryParams: <span class="literal">true</span>,</span><br><span class="line">        preserveFragment: <span class="literal">true</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">this</span>.router.navigate([redirect], navigationExtras);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      alert(<span class="string">'로그인을 할 수 없습니다.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  login() &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.userId) &#123;</span><br><span class="line">      alert(<span class="string">'id를 입력해주세요'</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">this</span>.message = <span class="string">'로그인을 진행해주세요'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.authService.checkId(<span class="keyword">this</span>.userId).then(<span class="function"><span class="params">children</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (children) &#123;</span><br><span class="line">        <span class="keyword">this</span>.authService.login(<span class="keyword">this</span>.userId).subscribe(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">this</span>.doLogin());</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        alert(<span class="string">'아이디가 없습니다'</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">this</span>.setMessage();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logout() &#123;</span><br><span class="line">    <span class="keyword">this</span>.authService.logout();</span><br><span class="line">    <span class="keyword">this</span>.setMessage();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>router의 navigate 함수를 통해 로그인 성공시, 페이지 이동.</p>
+<p>로그인 버튼을 누르면 <code>login()</code> 메서드가 실행, <code>authService.checkId()</code> 실행.</p>
+<ul>
+<li><strong>Auth 서비스</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs/Observable'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'rxjs/add/observable/of'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'rxjs/add/operator/do'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'rxjs/add/operator/delay'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> User &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> id: <span class="built_in">number</span>, <span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> USERS = [</span><br><span class="line">  <span class="keyword">new</span> User(<span class="number">1</span>, <span class="string">'첫번째 사용자'</span>),</span><br><span class="line">  <span class="keyword">new</span> User(<span class="number">2</span>, <span class="string">'두번째 사용자'</span>),</span><br><span class="line">  <span class="keyword">new</span> User(<span class="number">3</span>, <span class="string">'세번째 사용자'</span>)</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> userPromise = <span class="built_in">Promise</span>.resolve(USERS);</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AuthService &#123;</span><br><span class="line">  isLogin: <span class="built_in">boolean</span> = <span class="literal">false</span>;</span><br><span class="line">  redirectUrl: <span class="built_in">string</span>;</span><br><span class="line">  userId: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  checkId(userId: <span class="built_in">string</span>): <span class="built_in">Promise</span>&lt;User&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> userPromise</span><br><span class="line">      .then(<span class="function"><span class="params">children</span> =&gt;</span> children.find(<span class="function"><span class="params">children</span> =&gt;</span> children.id === +userId));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  login(userId: <span class="built_in">string</span>): Observable&lt;<span class="built_in">boolean</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> Observable.of(<span class="literal">true</span>).delay(<span class="number">500</span>).do(<span class="function"><span class="params">val</span> =&gt;</span> <span class="keyword">this</span>.isLogin = <span class="literal">true</span>).do(<span class="function"><span class="params">val</span> =&gt;</span> <span class="keyword">this</span>.userId = userId);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  logout(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isLogin = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>시뮬레이션을 위해 목객체 사용.</p>
+<ul>
+<li><strong>권한 접근 제어 : AuthGuard 서비스</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, NavigationExtras, CanLoad, Route &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AuthService &#125; <span class="keyword">from</span> <span class="string">'./auth.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AuthGuard <span class="keyword">implements</span> CanActivate, CanActivateChild, CanLoad &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> authService: AuthService, <span class="keyword">private</span> router: Router</span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> url: <span class="built_in">string</span> = state.url;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.checkLogin(url);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.canActivate(route, state);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// lazy load 사용시, canLoad 사용.</span></span><br><span class="line">  canLoad(route: Routce): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> url = <span class="string">`/<span class="subst">$&#123;route.path&#125;</span>`</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">window</span>.confirm(<span class="string">"자식 라우트가 모두 로드 되었습니다. 진행하시겠습니까?"</span>))&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.checkLogin(url);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;    </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  checkLogin(url: <span class="built_in">string</span>): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.authService.isLogin) &#123; <span class="keyword">return</span> <span class="literal">true</span>; &#125;</span><br><span class="line">    <span class="keyword">this</span>.authService.redirectUrl = url;</span><br><span class="line">    <span class="keyword">let</span> sessionId = <span class="number">1234</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> navigationExtras: NavigationExtras = &#123;</span><br><span class="line">      queryParams: &#123; <span class="string">'session_id'</span>: sessionId &#125;,</span><br><span class="line">      fragment: <span class="string">'anchor'</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.router.navigate([<span class="string">'/login'</span>], navigationExtras);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL에 세션 매개변수 정보를 전달하기 위해, NavigationExtras를 사용. session_id와 앵커를 url에 붙임. (결과 : <a href="http://localhostL4200/login?session_id=1234#anchor" target="_blank" rel="noopener">http://localhostL4200/login?session_id=1234#anchor</a>)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱 지음</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    data-tooltip="08.1. Angular 폼 검증"
+                    aria-label="PREVIOUS: 08.1. Angular 폼 검증"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/5. Angular 서비스/"
+                    data-tooltip="05. Angular 서비스"
+                    aria-label="NEXT: 05. Angular 서비스"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    data-tooltip="08.1. Angular 폼 검증"
+                    aria-label="PREVIOUS: 08.1. Angular 폼 검증"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/5. Angular 서비스/"
+                    data-tooltip="05. Angular 서비스"
+                    aria-label="NEXT: 05. Angular 서비스"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/7.1. Angular 가드/';
+              
+            this.page.identifier = '2017/07/12/Angular/7.1. Angular 가드/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,722 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>03.1. Object 내장객체 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"속성\nObject.prototype\n\n모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, 모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.\n다음 코드를 보자\n1234567891011121314151617var person = &#123;    name   : \"child of earth\",  \tage    : 0,\tnature : \"cool\",  \teat    : function() &#123;        alert(this.name + \"is eating\");    &#125;&#125;var narendra = Object.create(person);narendra.name = \"Narendra Sisdoiya\";narendra.age = 29;narendra.eat();narendra.hasOwnProperty(\"eat\"); // falsenarendra.hasOwnProperty(\"name\"); // truenarendra.hasOwnPropery(\"nature\"); // false\n\n\n내장 객체인 Object와, Object.prototype이 있다.\n\n자세한 내용은 상속과 prototype 포스팅 참조\n\n\nObject.prototype.constructor\n\n객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, instance of 연산자가 더 안전하다.\n123456789var o = &#123;&#125;;o.constructor === Object; // trueo instanceof Object // truevar a = [];a.constructor === Array; // truevar n = new Number(3);n.constructor === Number; // true\n\n\nObject.prototype.__proto__\n\n객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.\n123var a = &#123;&#125;;a.__proto__ === Object; // falsea.__proto__ === Object.prototype; // true\n\n메서드\nObject.hasOwnPropery()\n\n상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.\n12345o = new Object();o.prop = 'exists';o.hasOwnProperty('prop');             // returns trueo.hasOwnProperty('toString');         // returns falseo.hasOwnProperty('hasOwnProperty');   // returns false\n\n\nObject.create()\n\nconstructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. \n12345function object(o) &#123;    function F() &#123;&#125;  \tF.prototype = o;  \treturn new F();&#125;\n\n\nObject.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)\n\n1234567var person = &#123; name: \"hi\", friends : [\"hi\", \"ho\"] &#125;// p1, p2는 person 객체를 공유하게 된다.var p1 = Object.create(person);var p2 = Object.create(person);var p3 = Object.create(person, &#123; name : &#123; value : \"Gre\"&#125; &#125;)// 두번째 파라미터는 Object.defineProperties와 유사하다.\n\n\n생성자 함수를 만들어 create를 사용할 경우\n\n123456789101112131415161718192021222324252627// Shape - 상위클래스function Shape() &#123;  this.x = 0;  this.y = 0;&#125;// 상위클래스 메서드Shape.prototype.move = function(x, y) &#123;  this.x += x;  this.y += y;  console.info('Shape moved.');&#125;;// Rectangle - 하위클래스function Rectangle() &#123;  Shape.call(this); // super 생성자 호출.&#125;// 하위클래스는 상위클래스를 확장Rectangle.prototype = Object.create(Shape.prototype);Rectangle.prototype.constructor = Rectangle;var rect = new Rectangle();console.log('Is rect an instance of Rectangle?', rect instanceof Rectangle); // trueconsole.log('Is rect an instance of Shape?', rect instanceof Shape); // truerect.move(1, 1); // Outputs, 'Shape moved.'\n\n\nObject.create(Shape.prototype) : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.\nShape.call(this) : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.\n\n\nObject.defineProperties()\n\n데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.\n12345678910111213141516var obj = &#123;&#125;;Object.defineProperties(obj, &#123;  '_x': &#123;    value: 0,    writable: true  &#125;,  'x': &#123;    get: function() &#123;       return this._x;    &#125;,    set: function(newValue) &#123;       this._x = newValue+1;    &#125;  &#125;,  '_y': &#123; ... &#125;&#125;);\n\nconfigurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.\n\n언제 사용할까?\n\n12345678910// defineProperties 사용하지 않을때Object.prototype.imFunc = function() &#123;    console.log('aa');&#125;var a = new Object();for(var b in a) &#123;   console.log(b);&#125;// 결과 : imFunc\n\nfor in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자\n12345678910111213Object.defineProperty(Object.prototype, 'imFunc', &#123;\tenumerable: false,  \tconfigurable: false,  \twritable: false,  \tvalue: function() &#123;    \tconsole.log('aa');  \t&#125;&#125;);for(var b in a) &#123;   console.log(b);&#125;// imFunc가 순회되지 않는다!\n\n\nObject.getOwnPropertyDescriptor()\n\n접근자/데이터 프로퍼티 객체를 읽어온다.\n12345// 위 예제에서 이어짐var descriptor = Object.getOwnPropertyDescriptor(obj, \"_x\");alert(descriptor.value); // 0alert(descriptor.configurable); // falsealert(descriptor.get);\n\n\nObject.preventExtensions(), Object.isExtensible()\n\n새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.\n\nObject.seal(), Object.isSealed()\n\n새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.\n\nObject.getOwnPropertyNames()\n\n\n파라미터 : object\n리턴 :  문자열 배열\n\n12345678var arr = ['a', 'b', 'c'];console.log(Object.getOwnPropertyNames(arr).sort()); // logs [\"0\", \"1\", \"2\", \"length\"]// Array-like objectvar obj = &#123; 0: 'a', 1: 'b', 2: 'c' &#125;;console.log(Object.getOwnPropertyNames(obj).sort()); // logs [\"0\", \"1\", \"2\"]\n\n\nObject.getPrototypeOf()\n\nprototype을 리턴한다.\n1234Object.getPrototypeOf('foo');// TypeError: \"foo\" is not an object (ES5 code)Object.getPrototypeOf('foo');// String.prototype                  (ES2015 code)\n\nES6\nObject.assign()\n\nObject 병합하기\n\n파라미터 : 타겟, 소스\n\n1234567var o1 = &#123; a: 1 &#125;;var o2 = &#123; a: 1, b: 2 &#125;;var o3 = &#123; c: 3 &#125;;var obj = Object.assign(o1, o2, o3);console.log(obj); // &#123; a: 1, b: 2, c: 3 &#125;console.log(o1);  // &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.\n\n\nObject.freeze()\n\n객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.\nES8\nObject.entries()\n\n열거 가능한 객체를 [key, value] 배열로 만들어 리턴함\n\n파라미터 : key, value 쌍의 객체\n리턴 : key, value 쌍의 배열\n\n123456789101112var obj = &#123; foo: 'bar', baz: 42 &#125;;console.log(Object.entries(obj));// [ ['foo', 'bar'], ['baz', 42] ]var obj = &#123;a: 5, b: 7, c: 9&#125;;for (var [key, value] of Object.entries(obj)) &#123;    console.log(key + ' ' + value); // \"a 5\", \"b 7\", \"c 9\"&#125;Object.entries(obj).forEach(([key, value]) =&gt; &#123;    console.log(key + ' ' + value); // \"a 5\", \"b 7\", \"c 9\"     &#125;);\n\nReferencehttps://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67\nhttp://unikys.tistory.com/320\nhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/\n","dateCreated":"2017-09-01T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-01T19:28:10+09:00","description":"","headline":"03.1. Object 내장객체","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"}</script>
+    <meta name="description" content="속성 Object.prototype  모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, 모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다. 다음 코드를 보자 1234567891011121314151617var person = &amp;#123;    name   : &quot;child of earth&quot;,  	age    : 0,	nature">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="03.1. Object 내장객체">
+<meta property="og:url" content="https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="속성 Object.prototype  모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, 모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다. 다음 코드를 보자 1234567891011121314151617var person = &amp;#123;    name   : &quot;child of earth&quot;,  	age    : 0,	nature">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="03.1. Object 내장객체">
+<meta name="twitter:description" content="속성 Object.prototype  모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, 모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다. 다음 코드를 보자 1234567891011121314151617var person = &amp;#123;    name   : &quot;child of earth&quot;,  	age    : 0,	nature">
+<meta name="twitter:image" content="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            03.1. Object 내장객체
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-01T19:28:10+09:00">
+	
+		    2017.09.01
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
+<li><strong>Object.prototype</strong></li>
+</ul>
+<p>모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, <strong>모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.</strong></p>
+<p>다음 코드를 보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name   : <span class="string">"child of earth"</span>,</span><br><span class="line">  	age    : <span class="number">0</span>,</span><br><span class="line">	nature : <span class="string">"cool"</span>,</span><br><span class="line">  	eat    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name + <span class="string">"is eating"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narendra = <span class="built_in">Object</span>.create(person);</span><br><span class="line">narendra.name = <span class="string">"Narendra Sisdoiya"</span>;</span><br><span class="line">narendra.age = <span class="number">29</span>;</span><br><span class="line">narendra.eat();</span><br><span class="line"></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"eat"</span>); <span class="comment">// false</span></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"name"</span>); <span class="comment">// true</span></span><br><span class="line">narendra.hasOwnPropery(<span class="string">"nature"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030" alt="object prototype에 대한 이미지 검색결과"></p>
+<p>내장 객체인 Object와, Object.prototype이 있다.</p>
+<blockquote>
+<p>자세한 내용은 상속과 prototype 포스팅 참조</p>
+</blockquote>
+<ul>
+<li><strong>Object.prototype.constructor</strong></li>
+</ul>
+<p>객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, <code>instance of</code> 연산자가 더 안전하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">o.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [];</span><br><span class="line">a.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">3</span>);</span><br><span class="line">n.constructor === <span class="built_in">Number</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.prototype.__proto__</strong></li>
+</ul>
+<p>객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
+<li><strong>Object.hasOwnPropery()</strong></li>
+</ul>
+<p>상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">o.prop = <span class="string">'exists'</span>;</span><br><span class="line">o.hasOwnProperty(<span class="string">'prop'</span>);             <span class="comment">// returns true</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'toString'</span>);         <span class="comment">// returns false</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'hasOwnProperty'</span>);   <span class="comment">// returns false</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.create()</strong></li>
+</ul>
+<p>constructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  	F.prototype = o;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Object.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"hi"</span>, <span class="attr">friends</span> : [<span class="string">"hi"</span>, <span class="string">"ho"</span>] &#125;</span><br><span class="line"><span class="comment">// p1, p2는 person 객체를 공유하게 된다.</span></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p3 = <span class="built_in">Object</span>.create(person, &#123; <span class="attr">name</span> : &#123; <span class="attr">value</span> : <span class="string">"Gre"</span>&#125; &#125;)</span><br><span class="line"><span class="comment">// 두번째 파라미터는 Object.defineProperties와 유사하다.</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>생성자 함수를 만들어 create를 사용할 경우</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Shape - 상위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shape</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 상위클래스 메서드</span></span><br><span class="line">Shape.prototype.move = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x += x;</span><br><span class="line">  <span class="keyword">this</span>.y += y;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Shape moved.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rectangle - 하위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Rectangle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  Shape.call(<span class="keyword">this</span>); <span class="comment">// super 생성자 호출.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하위클래스는 상위클래스를 확장</span></span><br><span class="line">Rectangle.prototype = <span class="built_in">Object</span>.create(Shape.prototype);</span><br><span class="line">Rectangle.prototype.constructor = Rectangle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rect = <span class="keyword">new</span> Rectangle();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Rectangle?'</span>, rect <span class="keyword">instanceof</span> Rectangle); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Shape?'</span>, rect <span class="keyword">instanceof</span> Shape); <span class="comment">// true</span></span><br><span class="line">rect.move(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// Outputs, 'Shape moved.'</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>Object.create(Shape.prototype)</code> : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.</li>
+<li><code>Shape.call(this)</code> : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.</li>
+</ol>
+<ul>
+<li><strong>Object.defineProperties()</strong></li>
+</ul>
+<p>데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'_x'</span>: &#123;</span><br><span class="line">    value: <span class="number">0</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'x'</span>: &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._x;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">this</span>._x = newValue+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'_y'</span>: &#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>configurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.</p>
+<blockquote>
+<p>언제 사용할까?</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defineProperties 사용하지 않을때</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.imFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 결과 : imFunc</span></span><br></pre></td></tr></table></figure>
+
+<p>for in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">'imFunc'</span>, &#123;</span><br><span class="line">	enumerable: <span class="literal">false</span>,</span><br><span class="line">  	configurable: <span class="literal">false</span>,</span><br><span class="line">  	writable: <span class="literal">false</span>,</span><br><span class="line">  	value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// imFunc가 순회되지 않는다!</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.getOwnPropertyDescriptor()</strong></li>
+</ul>
+<p>접근자/데이터 프로퍼티 객체를 읽어온다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 이어짐</span></span><br><span class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, <span class="string">"_x"</span>);</span><br><span class="line">alert(descriptor.value); <span class="comment">// 0</span></span><br><span class="line">alert(descriptor.configurable); <span class="comment">// false</span></span><br><span class="line">alert(descriptor.get);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.preventExtensions(), Object.isExtensible()</strong></li>
+</ul>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.</p>
+<ul>
+<li><strong>Object.seal(), Object.isSealed()</strong></li>
+</ul>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.</p>
+<ul>
+<li><strong>Object.getOwnPropertyNames()</strong></li>
+</ul>
+<blockquote>
+<p>파라미터 : object</p>
+<p>리턴 :  문자열 배열</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(arr).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2", "length"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Array-like object</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="number">0</span>: <span class="string">'a'</span>, <span class="number">1</span>: <span class="string">'b'</span>, <span class="number">2</span>: <span class="string">'c'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2"]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.getPrototypeOf()</strong></li>
+</ul>
+<p>prototype을 리턴한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// TypeError: "foo" is not an object (ES5 code)</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// String.prototype                  (ES2015 code)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><ul>
+<li><strong>Object.assign()</strong></li>
+</ul>
+<p>Object 병합하기</p>
+<blockquote>
+<p>파라미터 : 타겟, 소스</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.freeze()</strong></li>
+</ul>
+<p>객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.</p>
+<h3 id="ES8"><a href="#ES8" class="headerlink" title="ES8"></a>ES8</h3><ul>
+<li><strong>Object.entries()</strong></li>
+</ul>
+<p>열거 가능한 객체를 [key, value] 배열로 만들어 리턴함</p>
+<blockquote>
+<p>파라미터 : key, value 쌍의 객체</p>
+<p>리턴 : key, value 쌍의 배열</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="string">'bar'</span>, <span class="attr">baz</span>: <span class="number">42</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"><span class="comment">// [ ['foo', 'bar'], ['baz', 42] ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>: <span class="number">5</span>, <span class="attr">b</span>: <span class="number">7</span>, <span class="attr">c</span>: <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(obj)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj).forEach(<span class="function">(<span class="params">[key, value]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"     </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
+<p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/03/CSS/CSS-마진겹침현상/"
+                    data-tooltip="CSS 마진 겹침 현상"
+                    aria-label="PREVIOUS: CSS 마진 겹침 현상"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/CSS/CSS-flex레이아웃/"
+                    data-tooltip="FLEX 레이아웃 정리"
+                    aria-label="NEXT: FLEX 레이아웃 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/03/CSS/CSS-마진겹침현상/"
+                    data-tooltip="CSS 마진 겹침 현상"
+                    aria-label="PREVIOUS: CSS 마진 겹침 현상"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/CSS/CSS-flex레이아웃/"
+                    data-tooltip="FLEX 레이아웃 정리"
+                    aria-label="NEXT: FLEX 레이아웃 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/01/Javascript/3.1. javascript-Object내장객체/';
+              
+            this.page.identifier = '2017/09/01/Javascript/3.1. javascript-Object내장객체/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

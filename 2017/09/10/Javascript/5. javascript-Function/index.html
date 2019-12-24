@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>05. Function - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"함수의 선언우리가 흔히 사용하는 함수 = Function 객체의 인스턴스이다.  함수이름 = 함수 객체를 가리키는 포인터 이다. 따라서 오버로딩이 불가능하다.\n123456// 함수선언function sum(v1, v2) &#123; return v1 + v2; &#125;// 함수 표현식var sum = function(v1, v2) &#123; return v1 + v2; &#125;; // 마지막 ';'// Funtion 객체 사용(권장X)var sum = new Function(\"v1\", \"v2\", \"return v1 + v2\");\n\n함수 선언식은 코드 실행전에도, 모든 실행 컨텍스트에서 접근이 가능하다.\n\nwhy? 함수 선언 호이스팅(끌어 올린다) 과정을 통해 실행 컨텍스트에 추가 되기 때문\n\n그렇지만 함수 표현식은 코드실행전 까지 사용이 불가능하다.\n12alert(sum(10, 10)); // 에러var sum = function(n1, v2) &#123; return v1 + v2; &#125;\n\n특징\n함수는 값이다.\n\nJavascript에서는 함수도 값이다. var a = function() {} = function a() {} 따라서 객체 안에 저장될 수 있다.(객체 안에 저장되면 메서드라고 불림)\n\n함수는 인자로 전달될 수 있다.\n\n함수는 값이기 때문에 인자로 전달 될 수도 있음.\n1234567891011121314function calculator (func, num) &#123;  return func(num);&#125;function increase (num) &#123;  return num + 1;&#125;function decrease (num) &#123;  return num - 1;&#125;alert(calculator(increase, 1));alert(calculator(decrease, 1));\n\n\n함수는 함수의 리턴값으로 사용될 수 있다.\n\n12345678910function calculator (mode) &#123;  var functions = &#123;    'increase' : function(num) &#123; return num+1 &#125;,    'decrease' : function(num) &#123; return num-1 &#125;,  &#125;  return functions.mode;&#125;alert(calculator('increase')(1)); // 2alert(calculator('decrease')(1)); // 0\n\ncalculator(‘increase’) = function increase(num) { return num+1 }\ncalculator(‘increase’)(1) = increase(1)\n\n함수는 배열의 값으로 사용될 수 있다\n\n12345678910var calculator = [  function (num) &#123; return num + 10; &#125;,  function (num) &#123; return num * num; &#125;,  function (num) &#123; return num / 10; &#125;];var num = 1;for (var i = 0; i &lt; calculator.length; i++) &#123;  num = calculator[i](num);  console.log(num); // 11, 121, 12.1&#125;\n\nReferencehttps://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array\n프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스\n","dateCreated":"2017-09-10T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-10T19:28:10+09:00","description":"","headline":"05. Function","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"}</script>
+    <meta name="description" content="함수의 선언우리가 흔히 사용하는 함수 = Function 객체의 인스턴스이다.  함수이름 = 함수 객체를 가리키는 포인터 이다. 따라서 오버로딩이 불가능하다. 123456// 함수선언function sum(v1, v2) &amp;#123; return v1 + v2; &amp;#125;// 함수 표현식var sum = function(v1, v2) &amp;#123; retur">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="05. Function">
+<meta property="og:url" content="https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="함수의 선언우리가 흔히 사용하는 함수 = Function 객체의 인스턴스이다.  함수이름 = 함수 객체를 가리키는 포인터 이다. 따라서 오버로딩이 불가능하다. 123456// 함수선언function sum(v1, v2) &amp;#123; return v1 + v2; &amp;#125;// 함수 표현식var sum = function(v1, v2) &amp;#123; retur">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="05. Function">
+<meta name="twitter:description" content="함수의 선언우리가 흔히 사용하는 함수 = Function 객체의 인스턴스이다.  함수이름 = 함수 객체를 가리키는 포인터 이다. 따라서 오버로딩이 불가능하다. 123456// 함수선언function sum(v1, v2) &amp;#123; return v1 + v2; &amp;#125;// 함수 표현식var sum = function(v1, v2) &amp;#123; retur">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            05. Function
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-10T19:28:10+09:00">
+	
+		    2017.09.10
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="함수의-선언"><a href="#함수의-선언" class="headerlink" title="함수의 선언"></a><strong>함수의 선언</strong></h3><p>우리가 흔히 사용하는 <code>함수 = Function 객체의 인스턴스</code>이다.  <code>함수이름 = 함수 객체를 가리키는 포인터</code> 이다. 따라서 오버로딩이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수선언</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br><span class="line"><span class="comment">// 함수 표현식</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;; <span class="comment">// 마지막 ';'</span></span><br><span class="line"><span class="comment">// Funtion 객체 사용(권장X)</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"v1"</span>, <span class="string">"v2"</span>, <span class="string">"return v1 + v2"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>함수 선언식은 코드 실행전에도, 모든 실행 컨텍스트에서 접근이 가능하다.</p>
+<blockquote>
+<p>why? 함수 선언 호이스팅(끌어 올린다) 과정을 통해 실행 컨텍스트에 추가 되기 때문</p>
+</blockquote>
+<p>그렇지만 함수 표현식은 코드실행전 까지 사용이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(sum(<span class="number">10</span>, <span class="number">10</span>)); <span class="comment">// 에러</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">n1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>함수는 값이다.</strong></li>
+</ul>
+<p>Javascript에서는 함수도 값이다. <code>var a = function() {}</code> = <code>function a() {}</code> 따라서 객체 안에 저장될 수 있다.(객체 안에 저장되면 메서드라고 불림)</p>
+<ul>
+<li><strong>함수는 인자로 전달될 수 있다.</strong></li>
+</ul>
+<p>함수는 값이기 때문에 인자로 전달 될 수도 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increase</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrease</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(increase, <span class="number">1</span>));</span><br><span class="line">alert(calculator(decrease, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>함수는 함수의 리턴값으로 사용될 수 있다.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">mode</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> functions = &#123;</span><br><span class="line">    <span class="string">'increase'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num+<span class="number">1</span> &#125;,</span><br><span class="line">    <span class="string">'decrease'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num<span class="number">-1</span> &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> functions.mode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(<span class="string">'increase'</span>)(<span class="number">1</span>)); <span class="comment">// 2</span></span><br><span class="line">alert(calculator(<span class="string">'decrease'</span>)(<span class="number">1</span>)); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>calculator(‘increase’) = function increase(num) { return num+1 }</p>
+<p>calculator(‘increase’)(1) = increase(1)</p>
+<ul>
+<li><strong>함수는 배열의 값으로 사용될 수 있다</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> calculator = [</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num + <span class="number">10</span>; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num * num; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num / <span class="number">10</span>; &#125;</span><br><span class="line">];</span><br><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; calculator.length; i++) &#123;</span><br><span class="line">  num = calculator[i](num);</span><br><span class="line">  <span class="built_in">console</span>.log(num); <span class="comment">// 11, 121, 12.1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
+<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/"
+                    data-tooltip="05.1. Function 내장객체"
+                    aria-label="PREVIOUS: 05.1. Function 내장객체"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/06/CSS/CSS-float레이아웃/"
+                    data-tooltip="float로 레이아웃 만들기"
+                    aria-label="NEXT: float로 레이아웃 만들기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/"
+                    data-tooltip="05.1. Function 내장객체"
+                    aria-label="PREVIOUS: 05.1. Function 내장객체"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/06/CSS/CSS-float레이아웃/"
+                    data-tooltip="float로 레이아웃 만들기"
+                    aria-label="NEXT: float로 레이아웃 만들기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/10/Javascript/5. javascript-Function/';
+              
+            this.page.identifier = '2017/09/10/Javascript/5. javascript-Function/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

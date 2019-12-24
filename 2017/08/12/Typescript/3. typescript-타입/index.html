@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>03. Typescript 타입 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"타입스크립트의 자료형에 대해 알아보자.\nECMAScript 표준에 따른 Primitive Type(기본 자료형)Wrapper 타입과/Primitive Type이 있는데, Primitive Type쓰는 것을 권장함.\n\nBoolean/boolean\nNumber/number\nString/string\nnull : 값으로 할당된 것을 null 이라고 함, 모든 자료형에 할당될 수 있음.\nundefined : 값을 할당하지 않은 변수\nSymbol\n\n123456let sym = Symbol();let obj = &#123;  [sym]: \"value\"&#125;;console.log(obj[sym]); // value\n\n\nArray : Array&lt;타입&gt;, 타입[]\n\n12const array:number[] = [1, 2, 3, 4, 5];const array2:Array&lt;number&gt; = [1, 2, 3, 4, 5];\n\n추가 타입\nAny : 최대한 쓰지 않는 것이 TypeScript를 잘쓰는 길이라는 의견이 있음.\nVoid(함수 리턴)\nNever(함수 리턴) \nEnum\n\n1234enum Color &#123; Red, Green=2, Blue&#125;let c: Color = Color.Green;console.log(c); // 2console.log(Color[c]); // Green\n\n\nTuple : Array의 변칙 형태로, 배열인데 타입이 한가지가 아닌 경우.\n\n1const tu : [number, string] = [0, \"일\"];\n\nTemplate String행에 걸쳐있거나, 표현식을 넣을 수 있는 문자열.\nUnion Typestring | null | defined 식으로 사용.\nType Assertions실제로 해당 타입으로 바꾸는 것이 아니라, 컴파일러에게 타입 체크를 할 시에만 타입스크립트 컴파일러에게 알려주는 것.\n12let strLength: number = (&lt;string&gt;someValue).length;let strLength: number = (someValue as string).length;\n\nType Allias타입 이름의 별칭을 지정\n1234567type MyType = string | number;let myStr: MyType = 'hello';let myNum: MyType = 1;// tupletype MyTuple = [string, number];let another: MyTuple = ['Anna', 1];\n\nReferencehttps://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/\n","dateCreated":"2017-08-12T01:00:00+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-08-12T01:00:00+09:00","description":"","headline":"03. Typescript 타입","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"}</script>
+    <meta name="description" content="타입스크립트의 자료형에 대해 알아보자. ECMAScript 표준에 따른 Primitive Type(기본 자료형)Wrapper 타입과/Primitive Type이 있는데, Primitive Type쓰는 것을 권장함.  Boolean/boolean Number/number String/string null : 값으로 할당된 것을 null 이라고 함, 모든 자료">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="03. Typescript 타입">
+<meta property="og:url" content="https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="타입스크립트의 자료형에 대해 알아보자. ECMAScript 표준에 따른 Primitive Type(기본 자료형)Wrapper 타입과/Primitive Type이 있는데, Primitive Type쓰는 것을 권장함.  Boolean/boolean Number/number String/string null : 값으로 할당된 것을 null 이라고 함, 모든 자료">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="03. Typescript 타입">
+<meta name="twitter:description" content="타입스크립트의 자료형에 대해 알아보자. ECMAScript 표준에 따른 Primitive Type(기본 자료형)Wrapper 타입과/Primitive Type이 있는데, Primitive Type쓰는 것을 권장함.  Boolean/boolean Number/number String/string null : 값으로 할당된 것을 null 이라고 함, 모든 자료">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            03. Typescript 타입
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-08-12T01:00:00+09:00">
+	
+		    2017.08.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Typescript/">Typescript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>타입스크립트의 자료형에 대해 알아보자.</p>
+<h3 id="ECMAScript-표준에-따른-Primitive-Type-기본-자료형"><a href="#ECMAScript-표준에-따른-Primitive-Type-기본-자료형" class="headerlink" title="ECMAScript 표준에 따른 Primitive Type(기본 자료형)"></a>ECMAScript 표준에 따른 Primitive Type(기본 자료형)</h3><p>Wrapper 타입과/Primitive Type이 있는데, Primitive Type쓰는 것을 권장함.</p>
+<ul>
+<li>Boolean/boolean</li>
+<li>Number/number</li>
+<li>String/string</li>
+<li>null : 값으로 할당된 것을 null 이라고 함, 모든 자료형에 할당될 수 있음.</li>
+<li>undefined : 값을 할당하지 않은 변수</li>
+<li>Symbol</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sym = Symbol();</span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  [sym]: <span class="string">"value"</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj[sym]); <span class="comment">// value</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Array : Array&lt;타입&gt;, 타입[]</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array:<span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">const</span> array2:<span class="built_in">Array</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<h3 id="추가-타입"><a href="#추가-타입" class="headerlink" title="추가 타입"></a>추가 타입</h3><ul>
+<li>Any : 최대한 쓰지 않는 것이 TypeScript를 잘쓰는 길이라는 의견이 있음.</li>
+<li>Void(함수 리턴)</li>
+<li>Never(함수 리턴) </li>
+<li>Enum</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Color &#123; Red, Green=<span class="number">2</span>, Blue&#125;</span><br><span class="line"><span class="keyword">let</span> c: Color = Color.Green;</span><br><span class="line"><span class="built_in">console</span>.log(c); <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(Color[c]); <span class="comment">// Green</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Tuple : Array의 변칙 형태로, 배열인데 타입이 한가지가 아닌 경우.</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> tu : [<span class="built_in">number</span>, <span class="built_in">string</span>] = [<span class="number">0</span>, <span class="string">"일"</span>];</span><br></pre></td></tr></table></figure>
+
+<h2 id="Template-String"><a href="#Template-String" class="headerlink" title="Template String"></a>Template String</h2><p>행에 걸쳐있거나, 표현식을 넣을 수 있는 문자열.</p>
+<h2 id="Union-Type"><a href="#Union-Type" class="headerlink" title="Union Type"></a>Union Type</h2><p>string | null | defined 식으로 사용.</p>
+<h2 id="Type-Assertions"><a href="#Type-Assertions" class="headerlink" title="Type Assertions"></a>Type Assertions</h2><p>실제로 해당 타입으로 바꾸는 것이 아니라, 컴파일러에게 타입 체크를 할 시에만 타입스크립트 컴파일러에게 알려주는 것.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> strLength: <span class="built_in">number</span> = (&lt;<span class="built_in">string</span>&gt;someValue).length;</span><br><span class="line"><span class="keyword">let</span> strLength: <span class="built_in">number</span> = (someValue <span class="keyword">as</span> <span class="built_in">string</span>).length;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Type-Allias"><a href="#Type-Allias" class="headerlink" title="Type Allias"></a>Type Allias</h2><p>타입 이름의 별칭을 지정</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyType = <span class="built_in">string</span> | <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">let</span> myStr: MyType = <span class="string">'hello'</span>;</span><br><span class="line"><span class="keyword">let</span> myNum: MyType = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// tuple</span></span><br><span class="line"><span class="keyword">type</span> MyTuple = [<span class="built_in">string</span>, <span class="built_in">number</span>];</span><br><span class="line"><span class="keyword">let</span> another: MyTuple = [<span class="string">'Anna'</span>, <span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/" target="_blank" rel="noopener">https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    data-tooltip="07. Typescript 데코레이터(Decorator)"
+                    aria-label="PREVIOUS: 07. Typescript 데코레이터(Decorator)"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/6. typescript-이터레이터/"
+                    data-tooltip="06. Typescript 이터레이터(iterator)"
+                    aria-label="NEXT: 06. Typescript 이터레이터(iterator)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    data-tooltip="07. Typescript 데코레이터(Decorator)"
+                    aria-label="PREVIOUS: 07. Typescript 데코레이터(Decorator)"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/6. typescript-이터레이터/"
+                    data-tooltip="06. Typescript 이터레이터(iterator)"
+                    aria-label="NEXT: 06. Typescript 이터레이터(iterator)"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/08/12/Typescript/3. typescript-타입/';
+              
+            this.page.identifier = '2017/08/12/Typescript/3. typescript-타입/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

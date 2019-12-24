@@ -1,0 +1,635 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>09.1. 바인딩 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"단방향 바인딩(One-way Binding)외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌.\n1234567891011121314...@Component(&#123;    templateUrl: `\t\t&lt;input type=\"text\" [value]=\"like\"&gt;\t\t&#123;&#123; like &#125;&#125;\t\t&lt;button class=\"&#123;&#123;myclass&#125;&#125;\"&gt;&#123;&#123;myclass&#125;&#125;&lt;/button&gt;\t`,    styles: [`\t.my-italic &#123; font-style: italic; &#125;`]&#125;)export class MainPageComponent &#123;    like: string = \"lala\";    myClass = \"my-italic\";&#125;\n\n\n\ninput에 입력을 해도 외부의 값에는 반영이 안되는 것을 알 수 있다.\n\n\n프로퍼티 바인딩\n\n[속성] 또는 bind-속성 형태로 사용\n12345&lt;input type=\"text\" [value]=\"like\"&gt;&lt;input type=\"text\" bind-value=\"like\"&gt;&lt;button class=\"&#123;&#123;myclass&#125;&#125;\"&gt;&#123;&#123;myclass&#125;&#125;&lt;/button&gt;&lt;button [ngClass]=\"myclass\"&gt;&#123;&#123;myclass&#125;&#125;&lt;/button&gt;\n\n\n클래스 바인딩\n\nCSS로 정의한 클래스 이름에 접근, 할당되야할 값은 반드시 boolean형\n1&lt;div [class.positive]=\"isPositive\"&gt;상태&lt;/div&gt;\n\n\n스타일 바인딩\n\nCSS로 정의한 클래스 이름에 접근, 할당 되야할 값은 구체적인 스타일 이름\n1&lt;div [style.color]=\"isPositive? 'blue':'black'\"&gt;상태&lt;/div&gt;\n\n\n이벤트 바인딩\n\n(이벤트) 또는 bind-이벤트 형태로 사용\n12&lt;button (click)=\"onSave()\"&gt;저장&lt;/button&gt;&lt;button on-click=\"onSave()\"&gt;저장&lt;/button&gt;\n\n\n이벤트 정보 : https://developer.mozilla.org/en-US/docs/Web/Events\n\n양방향 바인딩(Two-way Binding)외부&amp;내부 상태변화를 전달 및 반영함. [(ngModel)] 또는 bindon-ngModel을 사용.\n1234&lt;input type=\"text\" [(ngModel)]=\"city\"&gt;&lt;input type=\"text\" bindon-ngModel=\"city\"&gt;&lt;input [value]=\"city\" (input)=\"city=$event.target.value\"&gt;\n\n실행 순서상 이벤트 바인딩인 ()가 처리되고, 프로퍼티 바인딩인 []가 처리 된다.\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱 지음\n","dateCreated":"2017-06-12T10:00:50+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-06-12T10:00:50+09:00","description":"","headline":"09.1. 바인딩","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"}</script>
+    <meta name="description" content="단방향 바인딩(One-way Binding)외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌. 1234567891011121314...@Component(&amp;#123;    templateUrl: `		&amp;lt;input type=&quot;text&quot; [value]=&quot;like&quot;&amp;gt;		&amp;#123;&amp;#123; like &amp;#">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="09.1. 바인딩">
+<meta property="og:url" content="https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="단방향 바인딩(One-way Binding)외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌. 1234567891011121314...@Component(&amp;#123;    templateUrl: `		&amp;lt;input type=&quot;text&quot; [value]=&quot;like&quot;&amp;gt;		&amp;#123;&amp;#123; like &amp;#">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://i.imgur.com/dyuaa0U.png">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="09.1. 바인딩">
+<meta name="twitter:description" content="단방향 바인딩(One-way Binding)외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌. 1234567891011121314...@Component(&amp;#123;    templateUrl: `		&amp;lt;input type=&quot;text&quot; [value]=&quot;like&quot;&amp;gt;		&amp;#123;&amp;#123; like &amp;#">
+<meta name="twitter:image" content="http://i.imgur.com/dyuaa0U.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            09.1. 바인딩
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-06-12T10:00:50+09:00">
+	
+		    2017.06.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="단방향-바인딩-One-way-Binding"><a href="#단방향-바인딩-One-way-Binding" class="headerlink" title="단방향 바인딩(One-way Binding)"></a>단방향 바인딩(One-way Binding)</h2><p>외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">    templateUrl: <span class="string">`</span></span><br><span class="line"><span class="string">		&lt;input type="text" [value]="like"&gt;</span></span><br><span class="line"><span class="string">		&#123;&#123; like &#125;&#125;</span></span><br><span class="line"><span class="string">		&lt;button class="&#123;&#123;myclass&#125;&#125;"&gt;&#123;&#123;myclass&#125;&#125;&lt;/button&gt;</span></span><br><span class="line"><span class="string">	`</span>,</span><br><span class="line">    styles: [<span class="string">`</span></span><br><span class="line"><span class="string">	.my-italic &#123; font-style: italic; &#125;`</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainPageComponent &#123;</span><br><span class="line">    like: <span class="built_in">string</span> = <span class="string">"lala"</span>;</span><br><span class="line">    myClass = <span class="string">"my-italic"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://i.imgur.com/dyuaa0U.png" alt="img"></p>
+<blockquote>
+<p>input에 입력을 해도 외부의 값에는 반영이 안되는 것을 알 수 있다.</p>
+</blockquote>
+<ul>
+<li>프로퍼티 바인딩</li>
+</ul>
+<p>[속성] 또는 bind-속성 형태로 사용</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> [value]=<span class="string">"like"</span>&gt;</span><br><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> bind-value=<span class="string">"like"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;button <span class="keyword">class</span>=<span class="string">"&#123;&#123;myclass&#125;&#125;"</span>&gt;&#123;&#123;myclass&#125;&#125;&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;button [ngClass]="myclass"&gt;&#123;&#123;myclass&#125;&#125;&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>클래스 바인딩</li>
+</ul>
+<p>CSS로 정의한 클래스 이름에 접근, 할당되야할 값은 <code>반드시 boolean형</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [<span class="keyword">class</span>.positive]=<span class="string">"isPositive"</span>&gt;상태&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>스타일 바인딩</li>
+</ul>
+<p>CSS로 정의한 클래스 이름에 접근, 할당 되야할 값은 <code>구체적인 스타일 이름</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [style.color]=<span class="string">"isPositive? 'blue':'black'"</span>&gt;상태&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>이벤트 바인딩</li>
+</ul>
+<p>(이벤트) 또는 bind-이벤트 형태로 사용</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;button (click)=<span class="string">"onSave()"</span>&gt;저장&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;button on-click="onSave()"&gt;저장&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>이벤트 정보 : <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/Events</a></p>
+</blockquote>
+<h2 id="양방향-바인딩-Two-way-Binding"><a href="#양방향-바인딩-Two-way-Binding" class="headerlink" title="양방향 바인딩(Two-way Binding)"></a>양방향 바인딩(Two-way Binding)</h2><p>외부&amp;내부 상태변화를 전달 및 반영함. [(ngModel)] 또는 bindon-ngModel을 사용.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> [(ngModel)]=<span class="string">"city"</span>&gt;</span><br><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> bindon-ngModel=<span class="string">"city"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;input [value]=<span class="string">"city"</span> (input)=<span class="string">"city=$event.target.value"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>실행 순서상 이벤트 바인딩인 ()가 처리되고, 프로퍼티 바인딩인 []가 처리 된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱 지음</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/06/12/Angular/11. Angular 이벤트/"
+                    data-tooltip="11. Angular 이벤트"
+                    aria-label="PREVIOUS: 11. Angular 이벤트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/06/12/Angular/11. Angular 이벤트/"
+                    data-tooltip="11. Angular 이벤트"
+                    aria-label="PREVIOUS: 11. Angular 이벤트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/06/12/Angular/09.1. 바인딩/';
+              
+            this.page.identifier = '2017/06/12/Angular/09.1. 바인딩/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

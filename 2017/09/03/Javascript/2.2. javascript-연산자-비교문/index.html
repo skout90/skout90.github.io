@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>02.2. Javascript 연산자, 비교 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"==과 =====는 값이 동일한지 비교, 자동으로 형변환해서 비교한다\n===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다.\nJS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장.\nswitch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.)\n연산자!객체, “”, NaN에도 적용이 가능, Boolean과 같은 효과.\n12var a = &#123;&#125;;console.log(!!a); // true\n\n&amp;&amp;값이 boolean이 아닐시\n\n둘중 하나라도, null/NaN/undefined라면 null/NaN/undefined 반환.\n객체 &amp;&amp; (_)  : 앞 피연산자가 객체라면, 두번째 피연산자 반환.\ntrue &amp;&amp; (객체) : 앞 피연산자가 true 일때만, 뒤 연산자 반환\n\n||값이 boolen이 아닐시\n\n둘 모두 null/NaN/undefined라면, null/NaN/undefined 반환\n(객체) || _ : 앞 피연산자가 객체라면, 첫번째 객체 반환\nfalse ||  (객체) : 뒤 피연산자 반환.\n\n+1235 + \"5\" // 55\"abc =\" + 3 + 8 // abc385 - true // 4\n\n&lt;1var result = \"Brick\" &lt; \"alphabet\"; // true\n\n사전식 배열로 비교하려면, toLowerCase()를 사용해서 비교하자. JS 비교는 대문자가 더 앞서 위치함.\n객체 비교12345var o1 = &#123;a: 1&#125;;var o2 = &#123;a: 2&#125;;o1 == o2; // falseJSON.stringify(o1) == JSON.stringify(o2); // true\n\no1과 o2는 객체 그 자체가 아니라, 객체를 가리키는 포인터이기 때문에 동등비교가 되지 않는다. 따라서 JSON.stringify를 통해 비교하는 것이 좋다고 한다.\nReferencehttp://enarastudent.tistory.com/entry/null과-undefined의-차이\nhttps://stackoverflow.com/questions/1068834/object-comparison-in-javascript\n","dateCreated":"2017-09-03T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-03T19:28:10+09:00","description":"","headline":"02.2. Javascript 연산자, 비교","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"}</script>
+    <meta name="description" content="==과 =====는 값이 동일한지 비교, 자동으로 형변환해서 비교한다 ===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다. JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장. switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.) 연산자!객">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="02.2. Javascript 연산자, 비교">
+<meta property="og:url" content="https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="==과 =====는 값이 동일한지 비교, 자동으로 형변환해서 비교한다 ===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다. JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장. switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.) 연산자!객">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="02.2. Javascript 연산자, 비교">
+<meta name="twitter:description" content="==과 =====는 값이 동일한지 비교, 자동으로 형변환해서 비교한다 ===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다. JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장. switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.) 연산자!객">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            02.2. Javascript 연산자, 비교
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-03T19:28:10+09:00">
+	
+		    2017.09.03
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="과"><a href="#과" class="headerlink" title="==과 ==="></a>==과 ===</h2><p>==는 값이 동일한지 비교, 자동으로 형변환해서 비교한다</p>
+<p>===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다.</p>
+<p>JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장.</p>
+<p>switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.)</p>
+<h2 id="연산자"><a href="#연산자" class="headerlink" title="연산자"></a>연산자</h2><h4 id><a href="#" class="headerlink" title="!"></a>!</h4><p>객체, “”, NaN에도 적용이 가능, Boolean과 같은 효과.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(!!a); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="amp-amp"><a href="#amp-amp" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h4><p>값이 boolean이 아닐시</p>
+<ol>
+<li>둘중 하나라도, null/NaN/undefined라면 null/NaN/undefined 반환.</li>
+<li>객체 &amp;&amp; (_)  : 앞 피연산자가 객체라면, 두번째 피연산자 반환.</li>
+<li>true &amp;&amp; (객체) : 앞 피연산자가 true 일때만, 뒤 연산자 반환</li>
+</ol>
+<h4 id="-1"><a href="#-1" class="headerlink" title="||"></a>||</h4><p>값이 boolen이 아닐시</p>
+<ol>
+<li>둘 모두 null/NaN/undefined라면, null/NaN/undefined 반환</li>
+<li>(객체) || _ : 앞 피연산자가 객체라면, 첫번째 객체 반환</li>
+<li>false ||  (객체) : 뒤 피연산자 반환.</li>
+</ol>
+<h4 id="-2"><a href="#-2" class="headerlink" title="+"></a>+</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> + <span class="string">"5"</span> <span class="comment">// 55</span></span><br><span class="line"><span class="string">"abc ="</span> + <span class="number">3</span> + <span class="number">8</span> <span class="comment">// abc38</span></span><br><span class="line"><span class="number">5</span> - <span class="literal">true</span> <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="lt"><a href="#lt" class="headerlink" title="&lt;"></a>&lt;</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="string">"Brick"</span> &lt; <span class="string">"alphabet"</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>사전식 배열로 비교하려면, toLowerCase()를 사용해서 비교하자. JS 비교는 대문자가 더 앞서 위치함.</p>
+<h2 id="객체-비교"><a href="#객체-비교" class="headerlink" title="객체 비교"></a>객체 비교</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;<span class="attr">a</span>: <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line">o1 == o2; <span class="comment">// false</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(o1) == <span class="built_in">JSON</span>.stringify(o2); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>o1과 o2는 객체 그 자체가 아니라, 객체를 가리키는 포인터이기 때문에 동등비교가 되지 않는다. 따라서 JSON.stringify를 통해 비교하는 것이 좋다고 한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
+<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/05/Javascript/1. javascript란/"
+                    data-tooltip="01. Javascript란?"
+                    aria-label="PREVIOUS: 01. Javascript란?"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/03/CSS/CSS-마진겹침현상/"
+                    data-tooltip="CSS 마진 겹침 현상"
+                    aria-label="NEXT: CSS 마진 겹침 현상"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/05/Javascript/1. javascript란/"
+                    data-tooltip="01. Javascript란?"
+                    aria-label="PREVIOUS: 01. Javascript란?"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/03/CSS/CSS-마진겹침현상/"
+                    data-tooltip="CSS 마진 겹침 현상"
+                    aria-label="NEXT: CSS 마진 겹침 현상"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/03/Javascript/2.2. javascript-연산자-비교문/';
+              
+            this.page.identifier = '2017/09/03/Javascript/2.2. javascript-연산자-비교문/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

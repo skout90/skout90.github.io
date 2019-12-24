@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>Git Pull Request 방법 정리 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"\n저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다.\n로컬 저장소와 원격 저장소 추가\n\n\n로컬 저장소를 클론\n\n\n$ git clone fork깃주소 폴더명\n\n\n로컬 저장소에 원격저장소[원본 프로젝트] 추가\n\n\n$ git remote add upstream 원본깃주소\n\n원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해도 무관\n\n작업은 매번 Branch를 만들어서 Branch 단위로 한다.\n\n\n브랜치 생성\n\n\n$ git branch [브랜치명]\n\n\n브랜치 이동\n\n\n$ git checkout [브랜치명]\n\n\n작업 내역 커밋\n\n\n인덱스 확인, 등록, 커밋\n\n\n$ git status\n$ git add .\n$ git commit -m ‘[메세지]’\n\n\n원본 저장소 내역 업데이트\n\n\n원본 저장소의 소스를 로컬 저장소로 가져옴.\n\n\n$ git fetch upstream\n\n\n커밋 내역을 합침\n\n\n$ git rebase upstream/master\n\n\nPull Request 보내기\n\n\npush 하기\n\n\n$ git push origin [브랜치명]\n\n\nfork 한 저장소에서 pull request 작성\n\ngithub 포크한 저장소로 이동후, Crete Pull Request를 눌러 변경 사항 확인 및 pull request 메세지를 작성한다.\n\n원본 저장소에서 변경사항 Merge 하기\n\n\n원본 저장소의 pull request 메뉴에서 Merge 버튼을 눌러 변경사항 Merge\n\nOr\n\n직접 명령어 입력\n\n\n$ git checkout master\n$ git remote add [기여자별칭] 기여자깃주소\n$ git fetch [기여자별칭]\n$ git rebase [기여자별칭/브랜치명]\n$ git push origin master\n\n그외 명령어\n\n리모트 저장소 목록 확인\n\n\n$ git remote -v\n\n\n리모트 저장소 삭제\n\n\n $ git remote rm [별칭 이름]\n\nReferencehttp://dogfeet.github.io/articles/2012/how-to-github.html\nhttps://www.slideshare.net/mobile/jungseobshin/github-pull-request\n","dateCreated":"2017-07-24T13:54:01+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-24T13:54:01+09:00","description":"","headline":"Git Pull Request 방법 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/24/GIT/pull_request/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/24/GIT/pull_request/"}</script>
+    <meta name="description" content="저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다. 로컬 저장소와 원격 저장소 추가   로컬 저장소를 클론   $ git clone fork깃주소 폴더명   로컬 저장소에 원격저장소[원본 프로젝트] 추가   $ git remote add upstream 원본깃주소  원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Git Pull Request 방법 정리">
+<meta property="og:url" content="https://skout90.github.io/2017/07/24/GIT/pull_request/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다. 로컬 저장소와 원격 저장소 추가   로컬 저장소를 클론   $ git clone fork깃주소 폴더명   로컬 저장소에 원격저장소[원본 프로젝트] 추가   $ git remote add upstream 원본깃주소  원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.092Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git Pull Request 방법 정리">
+<meta name="twitter:description" content="저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다. 로컬 저장소와 원격 저장소 추가   로컬 저장소를 클론   $ git clone fork깃주소 폴더명   로컬 저장소에 원격저장소[원본 프로젝트] 추가   $ git remote add upstream 원본깃주소  원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Git Pull Request 방법 정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-24T13:54:01+09:00">
+	
+		    2017.07.24
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/GIT/">GIT</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <ol>
+<li>저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다.</li>
+<li>로컬 저장소와 원격 저장소 추가</li>
+</ol>
+<ul>
+<li>로컬 저장소를 클론</li>
+</ul>
+<blockquote>
+<p>$ git clone fork깃주소 폴더명</p>
+</blockquote>
+<ul>
+<li>로컬 저장소에 원격저장소[원본 프로젝트] 추가</li>
+</ul>
+<blockquote>
+<p>$ git remote add upstream 원본깃주소</p>
+</blockquote>
+<p><em>원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해도 무관</em></p>
+<ol start="3">
+<li>작업은 매번 Branch를 만들어서 Branch 단위로 한다.</li>
+</ol>
+<ul>
+<li>브랜치 생성</li>
+</ul>
+<blockquote>
+<p>$ git branch [브랜치명]</p>
+</blockquote>
+<ul>
+<li>브랜치 이동</li>
+</ul>
+<blockquote>
+<p>$ git checkout [브랜치명]</p>
+</blockquote>
+<ol start="4">
+<li>작업 내역 커밋</li>
+</ol>
+<ul>
+<li>인덱스 확인, 등록, 커밋</li>
+</ul>
+<blockquote>
+<p>$ git status</p>
+<p>$ git add .</p>
+<p>$ git commit -m ‘[메세지]’</p>
+</blockquote>
+<ol start="5">
+<li>원본 저장소 내역 업데이트</li>
+</ol>
+<ul>
+<li>원본 저장소의 소스를 로컬 저장소로 가져옴.</li>
+</ul>
+<blockquote>
+<p>$ git fetch upstream</p>
+</blockquote>
+<ul>
+<li>커밋 내역을 합침</li>
+</ul>
+<blockquote>
+<p>$ git rebase upstream/master</p>
+</blockquote>
+<ol start="6">
+<li>Pull Request 보내기</li>
+</ol>
+<ul>
+<li>push 하기</li>
+</ul>
+<blockquote>
+<p>$ git push origin [브랜치명]</p>
+</blockquote>
+<ul>
+<li>fork 한 저장소에서 pull request 작성</li>
+</ul>
+<p>github 포크한 저장소로 이동후, <code>Crete Pull Request</code>를 눌러 변경 사항 확인 및 pull request 메세지를 작성한다.</p>
+<ol start="7">
+<li>원본 저장소에서 변경사항 Merge 하기</li>
+</ol>
+<ul>
+<li>원본 저장소의 pull request 메뉴에서 <code>Merge</code> 버튼을 눌러 변경사항 Merge</li>
+</ul>
+<p>Or</p>
+<ul>
+<li>직접 명령어 입력</li>
+</ul>
+<blockquote>
+<p>$ git checkout master</p>
+<p>$ git remote add [기여자별칭] 기여자깃주소</p>
+<p>$ git fetch [기여자별칭]</p>
+<p>$ git rebase [기여자별칭/브랜치명]</p>
+<p>$ git push origin master</p>
+</blockquote>
+<p><em>그외 명령어</em></p>
+<ul>
+<li>리모트 저장소 목록 확인</li>
+</ul>
+<blockquote>
+<p>$ git remote -v</p>
+</blockquote>
+<ul>
+<li>리모트 저장소 삭제</li>
+</ul>
+<blockquote>
+<p> $ git remote rm [별칭 이름]</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/how-to-github.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/how-to-github.html</a></p>
+<p><a href="https://www.slideshare.net/mobile/jungseobshin/github-pull-request" target="_blank" rel="noopener">https://www.slideshare.net/mobile/jungseobshin/github-pull-request</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/2.1. build-and-test/"
+                    data-tooltip="02.1. 빌드 및 테스트"
+                    aria-label="PREVIOUS: 02.1. 빌드 및 테스트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/GIT/merge_vs_rebase/"
+                    data-tooltip="Merge VS Rebase"
+                    aria-label="NEXT: Merge VS Rebase"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/2.1. build-and-test/"
+                    data-tooltip="02.1. 빌드 및 테스트"
+                    aria-label="PREVIOUS: 02.1. 빌드 및 테스트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/GIT/merge_vs_rebase/"
+                    data-tooltip="Merge VS Rebase"
+                    aria-label="NEXT: Merge VS Rebase"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/GIT/pull_request/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/24/GIT/pull_request/';
+              
+            this.page.identifier = '2017/07/24/GIT/pull_request/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

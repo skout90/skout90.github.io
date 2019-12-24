@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>08. Angular 폼 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.\n\n모델 생성\n\n폼 컨트롤러 컴포넌트를 생성\n\n앱 모듈에 작성한 폼컴포넌트추가.\n\n템플릿 생성,  ngModel로 양방향 데이터 바인딩을 함\n\n폼 검증을 수행\n\nngSubmit을 통해 submit을 컨트롤\n\n\nStep 1. 모델 생성생성자의 인자로 public 을 사용하면, 자동으로 해당 모델에 변수 값을 선언함.\n12345678910export class Prescription &#123;    constructor(        public psNo: number,        public userNo: number,        public mainDiseaseCd: string,        public subDiseaseCd: string,        public drugCd: string,        public timeDivision: string    ) &#123; &#125;&#125;\n\nStep2. 폼 컨트롤러123456789101112131415161718import &#123; Component &#125; from '@angular/core';import &#123; Prescription &#125; from './prescription.model';@Component(&#123;  selector: 'page-prescription',  templateUrl: 'prescription.html'&#125;)export class PrescriptionComponent &#123;  // user = &#123; userId: '', userName: '' &#125;;  timeDivison = ['MOR', 'EVE', 'NOON', 'NIGHT'];  model = new Prescription(1, 1, \"abc\", \"def\", \"aa\", this.timeDivison[0]);  submitted = false;  onSubmit() &#123;  &#125;  // 테스트를 위함  get diagnostic() &#123; return JSON.stringify(this.model) &#125;&#125;\n\nStep3. 앱 모듈작성한 폼 컴포넌트를 추가한다. \n12345678910111213141516171819import &#123; NgModule &#125;      from '@angular/core';import &#123; BrowserModule &#125; from '@angular/platform-browser';import &#123; FormsModule &#125;   from '@angular/forms'; import &#123; AppComponent &#125;  from './app.component';import &#123; PrescriptionComponent &#125; from './prescription.component'; @NgModule(&#123;  imports: [    BrowserModule,    FormsModule  ],  declarations: [    AppComponent,    PrescriptionComponent  ],  bootstrap: [ AppComponent ]&#125;)export class AppModule &#123; &#125;\n\n\nBrowserModule : 브라우저에서 실행하기 위한 모듈, 컴포넌트나 지시자, 파이프 같은 구성요소를 템플릿에 나타나게 하는 역할.\n\n\nFormsModule : NgModel 지시자나 내장 검증기 지시자 등을 포함.\n\n\ndelarations : imports에 입력한 모듈 내에서 선언된 내용들을 재선언 해서는 안된다.\n\nStep 4. 템플릿 작성1234567891011121314151617181920&#123;&#123;diagnostic&#125;&#125;&lt;form #prescriptionForm=\"ngForm\"&gt;  &lt;div&gt;    &lt;label for=\"mainDiseaseCd\"&gt;Main Disease CD&lt;/label&gt;    &lt;input type=\"text\" id=\"mainDiseaseCd\" required [(ngModel)]=\"model.mainDiseaseCd\" name=\"mainDiseaseCd\"&gt;  &lt;/div&gt;  &lt;div&gt;    &lt;label for=\"subDiseaseCd\"&gt;Sub Disease Cd&lt;/label&gt;    &lt;input type=\"text\" id=\"subDiseaseCd\" required [(ngModel)]=\"model.subDiseaseCd\" name=\"subDiseaseCd\"&gt;  &lt;/div&gt;  &lt;div&gt;    &lt;label for=\"timeDivision\"&gt;Time Division&lt;/label&gt;    &lt;select id=\"timeDivision\" required [(ngModel)]=\"model.timeDivision\" name=\"timeDivision\" #timeDivision=\"ngModel\"&gt;      &lt;option *ngFor=\"let timeDivision of timeDivisions\" [value]=\"timeDivision\"&gt;&#123;&#123;timeDivision&#125;&#125;&lt;/option&gt;    &lt;/select&gt;  &lt;/div&gt;  &lt;button type=\"submit\" class=\"btn btn-success\"&gt;Submit&lt;/button&gt;&lt;/form&gt;\n\n\n#prescriptionForm=&quot;ngForm&quot; : 해당 폼을 ngForm이 관리하도록 함. ngModel과 name 속성을 사용하여, 속성을 모니터링 함.\nrequired: 내장 검증기로, 필수값을 의미. 그외에도 minlength, maxlength, pattern 가 있다.\n[(ngModel)]=&quot;model.mainDiseaseCd&quot; name=&quot;mainDiseaseCd&quot; : ngModel과 name은 함께 선언해 주어야함. name 프로퍼티는 폼과 함께 컨트롤러에 등록되기 위해 필요하다.\n&lt;label for=&quot;timeDivision&quot;&gt; : input id태그와 label for 속성이 연결된다.\n#timeDivision=&quot;ngModel&quot;: 검증 결과를 확인하기 위해 timeDivision 참조변수에 ngModel을 할당한다. timeDivision.valid로 검증 결과를 확인할 수 있다.\n\nStep 5. 폼 검증 수행\n템플릿 파일 폼 검증 결과 문구 추가\n\n123456789...    &lt;div&gt;      &lt;label for=\"mainDiseaseCd\"&gt;Main Disease CD&lt;/label&gt;      &lt;input type=\"text\" id=\"mainDiseaseCd\" required [(ngModel)]=\"model.mainDiseaseCd\" name=\"mainDiseaseCd\" #mainDiseaseCd=\"ngModel\"&gt;    &lt;/div&gt;    &lt;div [hidden]=\"mainDiseaseCd.valid || mainDiseaseCd.pristine\"&gt;      mainDiseaseCd is required    &lt;/div&gt;...\n\n#mainDiseaseCd=&quot;ngModel&quot;: 검증 결과를 확인하기 위해 mainDiseaseCd참조변수에 ngModel을 할당한다. mainDiseaseCd.valid로 검증 결과를 확인할 수 있다.\n\ncss\n\n1234567.ng-valid[required], .ng-valid.required  &#123;  border-left: 5px solid #42A948; /* green */&#125;.ng-invalid:not(form)  &#123;  border-left: 5px solid #a94442; /* red */&#125;\n\nStep 6. submit 컨트롤다음과 같이 수정한다.\n1&lt;form (ngSubmit)=\"onSubmit()\" #prescriptionForm=\"ngForm\"&gt;\n\nReferencehttps://angular.io/guide/forms#create-an-initial-html-form-template\n","dateCreated":"2017-07-14T10:00:50+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-14T10:00:50+09:00","description":"","headline":"08. Angular 폼","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"}</script>
+    <meta name="description" content="Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.  모델 생성  폼 컨트롤러 컴포넌트를 생성  앱 모듈에 작성한 폼컴포넌트추가.  템플릿 생성,  ngModel로 양방향 데이터 바인딩을 함  폼 검증을 수행  ngSubmit을 통해 submit을 컨트롤   Step 1. 모델 생성생성자의 인자로 public 을 사용하면, 자동으로 해당 모델">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="08. Angular 폼">
+<meta property="og:url" content="https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.  모델 생성  폼 컨트롤러 컴포넌트를 생성  앱 모듈에 작성한 폼컴포넌트추가.  템플릿 생성,  ngModel로 양방향 데이터 바인딩을 함  폼 검증을 수행  ngSubmit을 통해 submit을 컨트롤   Step 1. 모델 생성생성자의 인자로 public 을 사용하면, 자동으로 해당 모델">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.081Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="08. Angular 폼">
+<meta name="twitter:description" content="Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.  모델 생성  폼 컨트롤러 컴포넌트를 생성  앱 모듈에 작성한 폼컴포넌트추가.  템플릿 생성,  ngModel로 양방향 데이터 바인딩을 함  폼 검증을 수행  ngSubmit을 통해 submit을 컨트롤   Step 1. 모델 생성생성자의 인자로 public 을 사용하면, 자동으로 해당 모델">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            08. Angular 폼
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-14T10:00:50+09:00">
+	
+		    2017.07.14
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.</p>
+<ol>
+<li><p><code>모델</code> 생성</p>
+</li>
+<li><p><code>폼 컨트롤러</code> 컴포넌트를 생성</p>
+</li>
+<li><p><code>앱 모듈</code>에 작성한 폼컴포넌트추가.</p>
+</li>
+<li><p><code>템플릿</code> 생성,  <code>ngModel</code>로 양방향 데이터 바인딩을 함</p>
+</li>
+<li><p><code>폼 검증</code>을 수행</p>
+</li>
+<li><p><code>ngSubmit</code>을 통해 submit을 컨트롤</p>
+</li>
+</ol>
+<h4 id="Step-1-모델-생성"><a href="#Step-1-모델-생성" class="headerlink" title="Step 1. 모델 생성"></a>Step 1. 모델 생성</h4><p>생성자의 인자로 public 을 사용하면, 자동으로 해당 모델에 변수 값을 선언함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Prescription &#123;</span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> psNo: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> userNo: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> mainDiseaseCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> subDiseaseCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> drugCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> timeDivision: <span class="built_in">string</span></span></span><br><span class="line"><span class="params">    </span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Step2-폼-컨트롤러"><a href="#Step2-폼-컨트롤러" class="headerlink" title="Step2. 폼 컨트롤러"></a>Step2. 폼 컨트롤러</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Prescription &#125; <span class="keyword">from</span> <span class="string">'./prescription.model'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'page-prescription'</span>,</span><br><span class="line">  templateUrl: <span class="string">'prescription.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionComponent &#123;</span><br><span class="line">  <span class="comment">// user = &#123; userId: '', userName: '' &#125;;</span></span><br><span class="line">  timeDivison = [<span class="string">'MOR'</span>, <span class="string">'EVE'</span>, <span class="string">'NOON'</span>, <span class="string">'NIGHT'</span>];</span><br><span class="line">  model = <span class="keyword">new</span> Prescription(<span class="number">1</span>, <span class="number">1</span>, <span class="string">"abc"</span>, <span class="string">"def"</span>, <span class="string">"aa"</span>, <span class="keyword">this</span>.timeDivison[<span class="number">0</span>]);</span><br><span class="line">  submitted = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  onSubmit() &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 테스트를 위함</span></span><br><span class="line">  <span class="keyword">get</span> diagnostic() &#123; <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.model) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Step3-앱-모듈"><a href="#Step3-앱-모듈" class="headerlink" title="Step3. 앱 모듈"></a>Step3. 앱 모듈</h4><p>작성한 폼 컴포넌트를 추가한다. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;      <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormsModule &#125;   <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;  <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionComponent &#125; <span class="keyword">from</span> <span class="string">'./prescription.component'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    FormsModule</span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionComponent</span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>BrowserModule : 브라우저에서 실행하기 위한 모듈, 컴포넌트나 지시자, 파이프 같은 구성요소를 템플릿에 나타나게 하는 역할.</li>
+</ul>
+<ul>
+<li>FormsModule : NgModel 지시자나 내장 검증기 지시자 등을 포함.</li>
+</ul>
+<ul>
+<li>delarations : imports에 입력한 모듈 내에서 선언된 내용들을 재선언 해서는 안된다.</li>
+</ul>
+<h4 id="Step-4-템플릿-작성"><a href="#Step-4-템플릿-작성" class="headerlink" title="Step 4. 템플릿 작성"></a>Step 4. 템플릿 작성</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;diagnostic&#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> #<span class="attr">prescriptionForm</span>=<span class="string">"ngForm"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span>Main Disease CD<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"mainDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.mainDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"subDiseaseCd"</span>&gt;</span>Sub Disease Cd<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"subDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.subDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"subDiseaseCd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"timeDivision"</span>&gt;</span>Time Division<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"timeDivision"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.timeDivision"</span> <span class="attr">name</span>=<span class="string">"timeDivision"</span> #<span class="attr">timeDivision</span>=<span class="string">"ngModel"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">option</span> *<span class="attr">ngFor</span>=<span class="string">"let timeDivision of timeDivisions"</span> [<span class="attr">value</span>]=<span class="string">"timeDivision"</span>&gt;</span>&#123;&#123;timeDivision&#125;&#125;<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-success"</span>&gt;</span>Submit<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>#prescriptionForm=&quot;ngForm&quot;</code> : 해당 폼을 ngForm이 관리하도록 함. ngModel과 name 속성을 사용하여, 속성을 모니터링 함.</li>
+<li><code>required</code>: 내장 검증기로, 필수값을 의미. 그외에도 <code>minlength, maxlength, pattern</code> 가 있다.</li>
+<li><code>[(ngModel)]=&quot;model.mainDiseaseCd&quot; name=&quot;mainDiseaseCd&quot;</code> : ngModel과 name은 함께 선언해 주어야함. name 프로퍼티는 폼과 함께 컨트롤러에 등록되기 위해 필요하다.</li>
+<li><code>&lt;label for=&quot;timeDivision&quot;&gt;</code> : <code>input id</code>태그와 <code>label for</code> 속성이 연결된다.</li>
+<li><code>#timeDivision=&quot;ngModel&quot;</code>: 검증 결과를 확인하기 위해 timeDivision 참조변수에 ngModel을 할당한다. timeDivision.valid로 검증 결과를 확인할 수 있다.</li>
+</ul>
+<h4 id="Step-5-폼-검증-수행"><a href="#Step-5-폼-검증-수행" class="headerlink" title="Step 5. 폼 검증 수행"></a>Step 5. 폼 검증 수행</h4><ul>
+<li>템플릿 파일 폼 검증 결과 문구 추가</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span>Main Disease CD<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"mainDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.mainDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"mainDiseaseCd"</span> #<span class="attr">mainDiseaseCd</span>=<span class="string">"ngModel"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> [<span class="attr">hidden</span>]=<span class="string">"mainDiseaseCd.valid || mainDiseaseCd.pristine"</span>&gt;</span></span><br><span class="line">      mainDiseaseCd is required</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>#mainDiseaseCd=&quot;ngModel&quot;</code>: 검증 결과를 확인하기 위해 mainDiseaseCd참조변수에 ngModel을 할당한다. mainDiseaseCd.valid로 검증 결과를 확인할 수 있다.</p>
+<ul>
+<li>css</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.ng-valid</span><span class="selector-attr">[required]</span>, <span class="selector-class">.ng-valid</span><span class="selector-class">.required</span>  &#123;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">5px</span> solid <span class="number">#42A948</span>; <span class="comment">/* green */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.ng-invalid</span><span class="selector-pseudo">:not(form)</span>  &#123;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">5px</span> solid <span class="number">#a94442</span>; <span class="comment">/* red */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Step-6-submit-컨트롤"><a href="#Step-6-submit-컨트롤" class="headerlink" title="Step 6. submit 컨트롤"></a>Step 6. submit 컨트롤</h4><p>다음과 같이 수정한다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> (<span class="attr">ngSubmit</span>)=<span class="string">"onSubmit()"</span> #<span class="attr">prescriptionForm</span>=<span class="string">"ngForm"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://angular.io/guide/forms#create-an-initial-html-form-template" target="_blank" rel="noopener">https://angular.io/guide/forms#create-an-initial-html-form-template</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Frontend/HTML5-태그-정리/"
+                    data-tooltip="HTML5 태그 정리"
+                    aria-label="PREVIOUS: HTML5 태그 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    data-tooltip="09. Angular 템플릿 문법"
+                    aria-label="NEXT: 09. Angular 템플릿 문법"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Frontend/HTML5-태그-정리/"
+                    data-tooltip="HTML5 태그 정리"
+                    aria-label="PREVIOUS: HTML5 태그 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    data-tooltip="09. Angular 템플릿 문법"
+                    aria-label="NEXT: 09. Angular 템플릿 문법"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/14/Angular/8. Angular 폼/';
+              
+            this.page.identifier = '2017/07/14/Angular/8. Angular 폼/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

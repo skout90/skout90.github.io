@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>02.3. 유효범위와 컨텍스트 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"유효범위(Scope)는 변수의 수명을 의미한다. JS에서 함수 내에 선언한 변수는 지역변수가 되고, 함수 밖에서 선언한 변수는 전역변수가 된다.\n\nvar 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.\n\n123456function fscope()&#123;\tvscope = 'xx';    console.log(vscope); // xx&#125;fscope();console.log(vscope); // xx\n\n함수 내에서 var를 생략했을 때는, 먼저 지역변수를 체크하고 없다면 전역변수로 변수를 할당한다. \n\n함수 스코프만 존재한다! : {} 스코프는 없음.\n\n1234for (var i = 0; i &lt; 1; i++) &#123;  var name = 'hahaha';&#125;alert(name); // hahaha -&gt; 잘 동작!\n\njava와 같은 {}함수 스코프를 쓰는 언어에서는 에러가 날 것이다.\n\n정적 유효범위(statical scoping), 혹은 렉시컬(lexical scoping)\n\n사용할때, 해당 함수 스코프에서 지역변수가 없으면 전역변수를 사용.\n123456789101112var i = 5;function a() &#123;  var i = 10;  b();&#125;function b() &#123;  document.write(i); // 5&#125;a();\n\n전역변수를 불가피하게 사용할 때익명함수를 활용하여, 전역 변수를 지역변수화.\n\n 익명함수 선언 및 호출 후 () 괄호로 묶어줌.\n\n12345678910111213(function() &#123;  var MYAPP = &#123;&#125;  MYAPP.calculator = &#123;    'left' : null,    'right' : null  &#125;  MYAPP.coordinate = &#123;    'left' : null,    'right' : null  &#125;  MYAPP.calculator.left = 10;  MYAPP.calculator.right = 20;&#125;())\n\n컨텍스트실행 컨텍스트는 다른 데이터가 접근 가능한지, 어떻게 행동할지(?) 규정되는 곳인다. 보통 this로 자신의 컨텍스트 값들을 접근할 수 있다.\n\n가장 바깥 컨텍스트는 전역 컨텍스트(Window)이다.\n함수 정의\nJS 인터프리터 : (전역변수 객체 + 해당 함수 객체)를 함수 내부 [[Scope]] 프로퍼티에 저장한다.\n\n\n함수 호출\n실행 컨텍스트 생성\n[[Scope]] 프로퍼티 복사\n스코프 체인 생성\narguments를 포함한 활성화 객체 만들어짐.\n스코프 체인 첫째에 활성화 객체가 위치하고, 둘째에 전역 밴수 객체가 위치.\n\n\n함수 실행 끝\n활성화 객체 파괴\n\n\n\n\n스코프 체인? 실행중인 컨텍스트가 접근할 수 있는 모든 변수와 함수에 순서가 정의되어 있다.\n\n123456789var color = \"blue\";function changeColor() &#123;    if(color === \"blue\") &#123;        color = \"red\";    &#125;  \telse &#123;        color = \"blue\";    &#125;&#125;\n\n\n위 changeColor()가 실행되면, 스코프 체인이 만들어지고, 체인의 앞쪽에는 함수자체의 변수객체와 전역 컨텍스트의 변수 객체가 들어 있다. color 변수는 함수자체의 스코프 체인에서 찾을 수 있으므로 접근이 가능하다. 없으면 스코프 체인을 따라 한단계 올라가, 전역 컨텍스트의 변수객체에 접근한다.\nReference프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스\nhttps://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95/\n","dateCreated":"2017-09-01T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-01T19:28:10+09:00","description":"","headline":"02.3. 유효범위와 컨텍스트","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"}</script>
+    <meta name="description" content="유효범위(Scope)는 변수의 수명을 의미한다. JS에서 함수 내에 선언한 변수는 지역변수가 되고, 함수 밖에서 선언한 변수는 전역변수가 된다.  var 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.  123456function fscope()&amp;#123;	vscope = &apos;xx&apos;;    console.log(vscope); // xx&amp;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="02.3. 유효범위와 컨텍스트">
+<meta property="og:url" content="https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="유효범위(Scope)는 변수의 수명을 의미한다. JS에서 함수 내에 선언한 변수는 지역변수가 되고, 함수 밖에서 선언한 변수는 전역변수가 된다.  var 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.  123456function fscope()&amp;#123;	vscope = &apos;xx&apos;;    console.log(vscope); // xx&amp;">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://i.imgur.com/UEmXjTS.png">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="02.3. 유효범위와 컨텍스트">
+<meta name="twitter:description" content="유효범위(Scope)는 변수의 수명을 의미한다. JS에서 함수 내에 선언한 변수는 지역변수가 되고, 함수 밖에서 선언한 변수는 전역변수가 된다.  var 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.  123456function fscope()&amp;#123;	vscope = &apos;xx&apos;;    console.log(vscope); // xx&amp;">
+<meta name="twitter:image" content="https://i.imgur.com/UEmXjTS.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            02.3. 유효범위와 컨텍스트
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-01T19:28:10+09:00">
+	
+		    2017.09.01
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>유효범위(Scope)는 변수의 수명을 의미한다. JS에서 <code>함수 내</code>에 선언한 변수는 지역변수가 되고, <code>함수 밖</code>에서 선언한 변수는 전역변수가 된다.</p>
+<ul>
+<li><strong>var 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fscope</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	vscope = <span class="string">'xx'</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(vscope); <span class="comment">// xx</span></span><br><span class="line">&#125;</span><br><span class="line">fscope();</span><br><span class="line"><span class="built_in">console</span>.log(vscope); <span class="comment">// xx</span></span><br></pre></td></tr></table></figure>
+
+<p>함수 내에서 <code>var</code>를 생략했을 때는, 먼저 지역변수를 체크하고 없다면 전역변수로 변수를 할당한다. </p>
+<ul>
+<li><strong>함수 스코프만 존재한다! : <code>{}</code> 스코프는 없음.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">1</span>; i++) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">'hahaha'</span>;</span><br><span class="line">&#125;</span><br><span class="line">alert(name); <span class="comment">// hahaha -&gt; 잘 동작!</span></span><br></pre></td></tr></table></figure>
+
+<p>java와 같은 <code>{}</code>함수 스코프를 쓰는 언어에서는 에러가 날 것이다.</p>
+<ul>
+<li><strong>정적 유효범위(statical scoping), 혹은 렉시컬(lexical scoping)</strong></li>
+</ul>
+<p>사용할때, 해당 함수 스코프에서 지역변수가 없으면 전역변수를 사용.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">10</span>;</span><br><span class="line">  b();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">document</span>.write(i); <span class="comment">// 5</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a();</span><br></pre></td></tr></table></figure>
+
+<h4 id="전역변수를-불가피하게-사용할-때"><a href="#전역변수를-불가피하게-사용할-때" class="headerlink" title="전역변수를 불가피하게 사용할 때"></a>전역변수를 불가피하게 사용할 때</h4><p>익명함수를 활용하여, 전역 변수를 지역변수화.</p>
+<blockquote>
+<p> 익명함수 선언 및 호출 후 <code>()</code> 괄호로 묶어줌.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> MYAPP = &#123;&#125;</span><br><span class="line">  MYAPP.calculator = &#123;</span><br><span class="line">    <span class="string">'left'</span> : <span class="literal">null</span>,</span><br><span class="line">    <span class="string">'right'</span> : <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  MYAPP.coordinate = &#123;</span><br><span class="line">    <span class="string">'left'</span> : <span class="literal">null</span>,</span><br><span class="line">    <span class="string">'right'</span> : <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  MYAPP.calculator.left = <span class="number">10</span>;</span><br><span class="line">  MYAPP.calculator.right = <span class="number">20</span>;</span><br><span class="line">&#125;())</span><br></pre></td></tr></table></figure>
+
+<h1 id="컨텍스트"><a href="#컨텍스트" class="headerlink" title="컨텍스트"></a>컨텍스트</h1><p>실행 <code>컨텍스트</code>는 다른 데이터가 접근 가능한지, 어떻게 행동할지(?) 규정되는 곳인다. 보통 <code>this</code>로 자신의 컨텍스트 값들을 접근할 수 있다.</p>
+<ul>
+<li>가장 바깥 컨텍스트는 전역 컨텍스트(Window)이다.</li>
+<li>함수 정의<ol>
+<li>JS 인터프리터 : (전역변수 객체 + 해당 함수 객체)를 함수 내부 [[Scope]] 프로퍼티에 저장한다.</li>
+</ol>
+</li>
+<li>함수 호출<ol>
+<li>실행 컨텍스트 생성</li>
+<li>[[Scope]] 프로퍼티 복사</li>
+<li>스코프 체인 생성</li>
+<li>arguments를 포함한 활성화 객체 만들어짐.</li>
+<li>스코프 체인 첫째에 활성화 객체가 위치하고, 둘째에 전역 밴수 객체가 위치.</li>
+</ol>
+</li>
+<li>함수 실행 끝<ol>
+<li>활성화 객체 파괴</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>스코프 체인? 실행중인 컨텍스트가 접근할 수 있는 모든 변수와 함수에 순서가 정의되어 있다.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(color === <span class="string">"blue"</span>) &#123;</span><br><span class="line">        color = <span class="string">"red"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  	<span class="keyword">else</span> &#123;</span><br><span class="line">        color = <span class="string">"blue"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/UEmXjTS.png" alt="img"></p>
+<p>위 changeColor()가 실행되면, 스코프 체인이 만들어지고, 체인의 앞쪽에는 <code>함수자체의 변수객체</code>와 <code>전역 컨텍스트의 변수 객체</code>가 들어 있다. color 변수는 <code>함수자체의 스코프 체인</code>에서 찾을 수 있으므로 접근이 가능하다. 없으면 스코프 체인을 따라 한단계 올라가, 전역 컨텍스트의 변수객체에 접근한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스</p>
+<p><a href="https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95/" target="_blank" rel="noopener">https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3. javascript-Object/"
+                    data-tooltip="03. Object"
+                    aria-label="PREVIOUS: 03. Object"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/cloud_function/"
+                    data-tooltip="Cloud Function"
+                    aria-label="NEXT: Cloud Function"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3. javascript-Object/"
+                    data-tooltip="03. Object"
+                    aria-label="PREVIOUS: 03. Object"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/cloud_function/"
+                    data-tooltip="Cloud Function"
+                    aria-label="NEXT: Cloud Function"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/';
+              
+            this.page.identifier = '2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

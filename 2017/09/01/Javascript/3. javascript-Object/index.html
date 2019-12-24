@@ -1,0 +1,661 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>03. Object - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다.\n선언 방법12345var person = new Object();var person = &#123;&#125;;var person = &#123; name: \"junho\", age: 29 &#125;;person.name;person['name'];\n\n객체 생성\n팩토리 패턴\n\n특정 객체 생성 과정 추상화\n1234567891011function CreatePerson(name, age) &#123;    var o = new Object();  \to.name = name;  \to.age = age;  \to.sayName = function() &#123;        alert(this.name);    &#125;    return o;&#125;var person = CreatePerson('junho', 28);\n\n그러나, 객체가 어떤 타입인지 알 수 없는 단점이 존재한다. 무조건 Object일것이기 때문에\n\n생성자 패턴\n\n12345678910function Person(name, age) &#123;    this.name = name;  \tthis.age = age;  \tthis.sayName = function() &#123;        alert(this.name);    &#125;&#125;var person = new Person('junho', 28); // new를 사용해야 한다!Person('junho', 28); // window 객체에 해당 프로퍼티 들이 추가된다.\n\n\nnew 연산자의 과정\n\n객체 생성\n생성자의 this값에 객체 할당\n객체에 프로퍼티 추가.\n새 객체 반환\n\n\n생성자 패턴에도 문제가 있는데, 아래처럼 여러 Person을 생성할 경우, this.sayName의 경우 똑같은 일을 함에도 불구하고 내부적으로는 this.sayName = new Function() 이 실행되어 Function 인스턴스가 2개 존재하게 된다.\n1234// 위 예제에서 계속var person = new Person('junho', 28);var person2 = new Person('lia', 24);alert(person.sayName == person2.sayName); // false\n\n위 문제를 해결하기 위한 생성자 패턴은 prototype을 배운 후에 더 공부해보자(Prototype과 상속 포스팅참조)\n프로퍼티\n데이터 프로퍼티\n[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)\n[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)\n[[Writable]] : 값 바꿀 수 있음 (default true)\n[[value]] : 프로퍼티의 실제 데이터 값 (default undefined)\n\n\n\n프로퍼티 저장시, 위 4가지 값이 할당 된다. 데이터 프로퍼티를 셋팅하기 위해서 Object.defineProperty를 이용하면 된다.\n12345678var person = &#123;&#125;;Object.defineProperty(person, 'name', &#123;    writable : false,  \tvalue : 'junho'&#125;);alert(person.name); // junhoperson.name = 'lia';alert(person.name); // junho\n\n\n접근자 프로퍼티\n[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)\n[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)\n\n\n\ngetter/setter 함수로 구성된다. 프로퍼티 값 바꿀 때 부수적 절차 필요한 경우 사용된다. 데이터 프로퍼티와는 달리 실제 데이터가 없다. 정의 위해서는 반드시 Object.defineProperty를 이용해야 한다.\n1234567891011121314151617var book = &#123; _year : 2004, edition: 1 &#125;;Object.defineProperty(book, \"year\", &#123;   get: function() &#123;       return this._year;   &#125;,   set: function(newValue) &#123;       if(newValue &gt; 2004) &#123;           this._year = newValue;           this.edition += (newValue - 2004);       &#125;   &#125;,   enumerable: true,   configurable: true&#125;);book.year = 2005;alert(book.edition); // 2\n\ngetter만 지정시 읽기전용이되며, setter만 지정시 프로퍼티를 읽을때 undefined를 반환한다.\n객체 반복객체에는 in을 쓰고, 배열에는 of 를 쓰자. 배열의 인덱스는 number지만, in을 쓸 경우 string형으로 리턴되기 때문이다. 겪어보지는 않았지만, 루프문이 무작위로 도는 경우도 있다고 한다.\n객체인배열오\n체인열오!\n1234var people = &#123;'name':'junho', 'old': 5&#125;;for(key in people) &#123;  console.log('key : ' + key + 'value : ' + people[key]);&#125;\n\nin 연산자에선 [[Enumberable]] 프로퍼티가 true 인 프로퍼티들이 모두 리턴된다. 프로토타입의 변수들 역시 리턴된다.\nReferencehttps://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67\nhttp://unikys.tistory.com/320\nhttps://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/\n프론트엔드 개발자를 위한 Javascript - 니콜라스 자카스\n","dateCreated":"2017-09-01T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-01T19:28:10+09:00","description":"","headline":"03. Object","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"}</script>
+    <meta name="description" content="Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다. 선언 방법12345var person = new Object();var person = &amp;#123;&amp;#125;;var person = &amp;#123; name: &quot;junho&quot;, age: 29 &amp;#125;;person.name;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="03. Object">
+<meta property="og:url" content="https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다. 선언 방법12345var person = new Object();var person = &amp;#123;&amp;#125;;var person = &amp;#123; name: &quot;junho&quot;, age: 29 &amp;#125;;person.name;">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="03. Object">
+<meta name="twitter:description" content="Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다. 선언 방법12345var person = new Object();var person = &amp;#123;&amp;#125;;var person = &amp;#123; name: &quot;junho&quot;, age: 29 &amp;#125;;person.name;">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            03. Object
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-01T19:28:10+09:00">
+	
+		    2017.09.01
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다.</p>
+<h3 id="선언-방법"><a href="#선언-방법" class="headerlink" title="선언 방법"></a>선언 방법</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"junho"</span>, <span class="attr">age</span>: <span class="number">29</span> &#125;;</span><br><span class="line">person.name;</span><br><span class="line">person[<span class="string">'name'</span>];</span><br></pre></td></tr></table></figure>
+
+<h1 id="객체-생성"><a href="#객체-생성" class="headerlink" title="객체 생성"></a>객체 생성</h1><ul>
+<li><strong>팩토리 패턴</strong></li>
+</ul>
+<p>특정 객체 생성 과정 추상화</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreatePerson</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">  	o.name = name;</span><br><span class="line">  	o.age = age;</span><br><span class="line">  	o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = CreatePerson(<span class="string">'junho'</span>, <span class="number">28</span>);</span><br></pre></td></tr></table></figure>
+
+<p>그러나, 객체가 어떤 타입인지 알 수 없는 단점이 존재한다. 무조건 Object일것이기 때문에</p>
+<ul>
+<li><strong>생성자 패턴</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  	<span class="keyword">this</span>.age = age;</span><br><span class="line">  	<span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">'junho'</span>, <span class="number">28</span>); <span class="comment">// new를 사용해야 한다!</span></span><br><span class="line">Person(<span class="string">'junho'</span>, <span class="number">28</span>); <span class="comment">// window 객체에 해당 프로퍼티 들이 추가된다.</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>new 연산자의 과정</p>
+<ol>
+<li>객체 생성</li>
+<li>생성자의 this값에 객체 할당</li>
+<li>객체에 프로퍼티 추가.</li>
+<li>새 객체 반환</li>
+</ol>
+</blockquote>
+<p>생성자 패턴에도 문제가 있는데, 아래처럼 여러 Person을 생성할 경우, this.sayName의 경우 똑같은 일을 함에도 불구하고 내부적으로는 <code>this.sayName = new Function()</code> 이 실행되어 Function 인스턴스가 2개 존재하게 된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 계속</span></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">'junho'</span>, <span class="number">28</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">'lia'</span>, <span class="number">24</span>);</span><br><span class="line">alert(person.sayName == person2.sayName); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p><em>위 문제를 해결하기 위한 생성자 패턴은 prototype을 배운 후에 더 공부해보자(Prototype과 상속 포스팅참조)</em></p>
+<h3 id="프로퍼티"><a href="#프로퍼티" class="headerlink" title="프로퍼티"></a>프로퍼티</h3><ul>
+<li><strong>데이터 프로퍼티</strong><ul>
+<li>[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)</li>
+<li>[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)</li>
+<li>[[Writable]] : 값 바꿀 수 있음 (default true)</li>
+<li>[[value]] : 프로퍼티의 실제 데이터 값 (default undefined)</li>
+</ul>
+</li>
+</ul>
+<p>프로퍼티 저장시, 위 4가지 값이 할당 된다. 데이터 프로퍼티를 셋팅하기 위해서 Object.defineProperty를 이용하면 된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'name'</span>, &#123;</span><br><span class="line">    writable : <span class="literal">false</span>,</span><br><span class="line">  	value : <span class="string">'junho'</span></span><br><span class="line">&#125;);</span><br><span class="line">alert(person.name); <span class="comment">// junho</span></span><br><span class="line">person.name = <span class="string">'lia'</span>;</span><br><span class="line">alert(person.name); <span class="comment">// junho</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>접근자 프로퍼티</strong><ul>
+<li>[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)</li>
+<li>[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)</li>
+</ul>
+</li>
+</ul>
+<p>getter/setter 함수로 구성된다. 프로퍼티 값 바꿀 때 부수적 절차 필요한 경우 사용된다. 데이터 프로퍼티와는 달리 실제 데이터가 없다. 정의 위해서는 반드시 Object.defineProperty를 이용해야 한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> book = &#123; <span class="attr">_year</span> : <span class="number">2004</span>, <span class="attr">edition</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(book, <span class="string">"year"</span>, &#123;</span><br><span class="line">   <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._year;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">if</span>(newValue &gt; <span class="number">2004</span>) &#123;</span><br><span class="line">           <span class="keyword">this</span>._year = newValue;</span><br><span class="line">           <span class="keyword">this</span>.edition += (newValue - <span class="number">2004</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   enumerable: <span class="literal">true</span>,</span><br><span class="line">   configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">book.year = <span class="number">2005</span>;</span><br><span class="line">alert(book.edition); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>getter만 지정시 읽기전용이되며, setter만 지정시 프로퍼티를 읽을때 undefined를 반환한다.</p>
+<h3 id="객체-반복"><a href="#객체-반복" class="headerlink" title="객체 반복"></a>객체 반복</h3><p><strong>객체</strong>에는 <strong>in</strong>을 쓰고, <strong>배열</strong>에는 <strong>of</strong> 를 쓰자. 배열의 인덱스는 number지만, in을 쓸 경우 string형으로 리턴되기 때문이다. 겪어보지는 않았지만, 루프문이 무작위로 도는 경우도 있다고 한다.</p>
+<p>객<strong>체인</strong><br>배<strong>열오</strong></p>
+<p><del>체인열오!</del></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> people = &#123;<span class="string">'name'</span>:<span class="string">'junho'</span>, <span class="string">'old'</span>: <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(key <span class="keyword">in</span> people) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'key : '</span> + key + <span class="string">'value : '</span> + people[key]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>in 연산자에선 [[Enumberable]] 프로퍼티가 true 인 프로퍼티들이 모두 리턴된다. 프로토타입의 변수들 역시 리턴된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
+<p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
+<p>프론트엔드 개발자를 위한 Javascript - 니콜라스 자카스</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/firebase/"
+                    data-tooltip="Firebase로 CRUD 기능 작성"
+                    aria-label="PREVIOUS: Firebase로 CRUD 기능 작성"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    data-tooltip="02.3. 유효범위와 컨텍스트"
+                    aria-label="NEXT: 02.3. 유효범위와 컨텍스트"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/firebase/"
+                    data-tooltip="Firebase로 CRUD 기능 작성"
+                    aria-label="PREVIOUS: Firebase로 CRUD 기능 작성"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                    data-tooltip="02.3. 유효범위와 컨텍스트"
+                    aria-label="NEXT: 02.3. 유효범위와 컨텍스트"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/01/Javascript/3. javascript-Object/';
+              
+            this.page.identifier = '2017/09/01/Javascript/3. javascript-Object/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>05. Angular 서비스 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬.\nAngular CLI 사용할 경우 \n\n$ ng g service\n\n정의서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.\n\n서비스\n\n12345678import &#123; Injectable &#125; from '@angular/core';@Injectable()export class HelloService &#123;  sayHello()&#123;    return \"Hello 서비스!\";  &#125;  constructor() &#123;&#125;&#125;\n\n\n컴포넌트\n\nproviders에 서비스를 등록해준다.\n123456789101112131415import &#123; Component &#125; from '@angular/core';import &#123; HelloService &#125; from './hello.service';@Component(&#123;  selector: 'hello',  template: `&#123;&#123;welcome&#125;&#125;`,  providers: [HelloService]&#125;)export class HelloComponent &#123;  welcome: string;  constructor(helloService: HelloService) &#123;    this.welcome = helloService.sayHello();      &#125;&#125;\n\n서비스를 통한 데이터 교환부모 컴포넌트에는 제공자 설정을 통해 주입. 자식 컴포넌트에는 제공자 설정을 하지 않고 서비스를 받아서 사용하면 같은 서비스를 통해 값 공유 가능.\n\n공유 서비스 정의\n\n1234567891011import &#123; Injectable &#125; from '@angular/core';@Injectable()export class SharedService &#123;  num: number;  message: string;  public names: string[] = [];  addName(data: string) &#123;    this.names.unshift(data);  &#125;&#125;\n\n\n자식 컴포넌트\n\n1234567891011import &#123; Component, Input &#125; from '@angular/core';import &#123; SharedService &#125; from './shared.service';@Component(&#123;  selector: 'car-component',  template: `car 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)=\"s.message='car'\"&gt;선택&lt;/button&gt;`&#125;)export class CarComponent &#123;  constructor(public s: SharedService) &#123;  &#125;&#125;\n\n12345678910import &#123; Component, Input &#125; from '@angular/core';import &#123; SharedService &#125; from './shared.service';@Component(&#123;  selector: 'taxi-component',  template: `taxi 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)=\"s.message='taxi'\"&gt;선택&lt;/button&gt;`&#125;)export class TaxiComponent &#123;  constructor(public s: SharedService) &#123;&#125;&#125;\n\n\n부모 컴포넌트\n\n12345678910111213141516import &#123; Component, Input &#125; from '@angular/core';import &#123; SharedService &#125; from './shared.service';@Component(&#123;  selector: 'parent-component',  template: `  부모 컴포넌트 : &#123;&#123;s.message&#125;&#125; &lt;button (click)=\"s.message='parent'\"&gt;선택&lt;/button&gt;&lt;br&gt;  &lt;car-component&gt;&lt;/car-component&gt;&lt;br&gt;  &lt;taxi-component&gt;&lt;/taxi-component&gt;`,  providers: [SharedService]&#125;)export class ParentComponent &#123;  constructor(public s: SharedService) &#123;    s.message = \"hello\";  &#125;&#125;\n\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱\n","dateCreated":"2017-07-12T10:00:50+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:50+09:00","description":"","headline":"05. Angular 서비스","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"}</script>
+    <meta name="description" content="컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬. Angular CLI 사용할 경우   $ ng g service  정의서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.  서비스  12345678import">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="05. Angular 서비스">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬. Angular CLI 사용할 경우   $ ng g service  정의서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.  서비스  12345678import">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="05. Angular 서비스">
+<meta name="twitter:description" content="컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬. Angular CLI 사용할 경우   $ ng g service  정의서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.  서비스  12345678import">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            05. Angular 서비스
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:50+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬.</p>
+<p>Angular CLI 사용할 경우 </p>
+<blockquote>
+<p>$ ng g service</p>
+</blockquote>
+<h2 id="정의"><a href="#정의" class="headerlink" title="정의"></a>정의</h2><p>서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.</p>
+<ul>
+<li>서비스</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloService &#123;</span><br><span class="line">  sayHello()&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello 서비스!"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>컴포넌트</li>
+</ul>
+<p>providers에 서비스를 등록해준다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HelloService &#125; <span class="keyword">from</span> <span class="string">'./hello.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'hello'</span>,</span><br><span class="line">  template: <span class="string">`&#123;&#123;welcome&#125;&#125;`</span>,</span><br><span class="line">  providers: [HelloService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloComponent &#123;</span><br><span class="line">  welcome: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">helloService: HelloService</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.welcome = helloService.sayHello();    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="서비스를-통한-데이터-교환"><a href="#서비스를-통한-데이터-교환" class="headerlink" title="서비스를 통한 데이터 교환"></a>서비스를 통한 데이터 교환</h2><p>부모 컴포넌트에는 제공자 설정을 통해 주입. 자식 컴포넌트에는 제공자 설정을 하지 않고 서비스를 받아서 사용하면 같은 서비스를 통해 값 공유 가능.</p>
+<ul>
+<li>공유 서비스 정의</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedService &#123;</span><br><span class="line">  num: <span class="built_in">number</span>;</span><br><span class="line">  message: <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">public</span> names: <span class="built_in">string</span>[] = [];</span><br><span class="line">  addName(data: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.names.unshift(data);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>자식 컴포넌트</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'car-component'</span>,</span><br><span class="line">  template: <span class="string">`car 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)="s.message='car'"&gt;선택&lt;/button&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CarComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'taxi-component'</span>,</span><br><span class="line">  template: <span class="string">`taxi 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)="s.message='taxi'"&gt;선택&lt;/button&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TaxiComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>부모 컴포넌트</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'parent-component'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  부모 컴포넌트 : &#123;&#123;s.message&#125;&#125; &lt;button (click)="s.message='parent'"&gt;선택&lt;/button&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">  &lt;car-component&gt;&lt;/car-component&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">  &lt;taxi-component&gt;&lt;/taxi-component&gt;`</span>,</span><br><span class="line">  providers: [SharedService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ParentComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;</span><br><span class="line">    s.message = <span class="string">"hello"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/7.1. Angular 가드/"
+                    data-tooltip="07.1. Angular 가드"
+                    aria-label="PREVIOUS: 07.1. Angular 가드"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/6. Angular 파이프/"
+                    data-tooltip="06. Angular 파이프"
+                    aria-label="NEXT: 06. Angular 파이프"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/7.1. Angular 가드/"
+                    data-tooltip="07.1. Angular 가드"
+                    aria-label="PREVIOUS: 07.1. Angular 가드"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/6. Angular 파이프/"
+                    data-tooltip="06. Angular 파이프"
+                    aria-label="NEXT: 06. Angular 파이프"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/5. Angular 서비스/';
+              
+            this.page.identifier = '2017/07/12/Angular/5. Angular 서비스/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

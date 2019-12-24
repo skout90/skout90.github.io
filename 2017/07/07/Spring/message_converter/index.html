@@ -1,0 +1,631 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>@RequestBody, @ResponseBody - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.\n\n예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.\n\n이러한 작업들을 해주는 어노테이션이 바로 @RequestBody 와 @ResponseBody 이다. 컨트롤러에 두 어노테이션을 추가해주면, JSON이나 key/value 방식 xml 등으로 송수신 할 수 있다.\n설정 방법\nspring-servlet.xml 설정파일\n\n123456789101112131415161718192021&lt;!-- 방법 1 : 직접 정의 --&gt;&lt;beans:bean id=\"jacksonMessageConverter\" class=\"org.springframework.http.converter.json.MappingJackson2HttpMessageConverter\"&gt;  &lt;beans:property name=\"supportedMediaTypes\"&gt;    &lt;beans:list&gt;      &lt;beans:value&gt;application/json;charset=UTF-8&lt;/beans:value&gt;    &lt;/beans:list&gt;  &lt;/beans:property&gt;&lt;/beans:bean&gt;&lt;beans:bean name=\"handlerAdapter\" class=\"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter\"&gt;  &lt;beans:property name=\"messageConverters\"&gt;    &lt;beans:list&gt;      &lt;!-- Json 컨버터 --&gt;      &lt;beans:ref bean=\"jacksonMessageConverter\" /&gt;      ...    &lt;/beans:list&gt;  &lt;/beans:property&gt;&lt;/beans:bean&gt;&lt;!-- 방법 2 : spring 3.1 이상에서 annotaion-driven을 사용하면 자동 등록 --&gt;&lt;annotation-driven /&gt;\n\n\nByteArrayHttpMessageConverter(*)\nHTTP 메시지와 byte 배열 사이의 변환을 처리한다. 컨텐츠 타입은  application/octet-stream이다.\n\nStringHttpMessageConverter(*)\nHTTP 메시지와 String 사이의 변환을 처리한다. 컨텐츠 타입은  text/plain;charset=ISO-8859-1이다.\n\nFormHttpMessageConverter(*)\nHTML 폼 데이터를 MultiValueMap으로 전달받을 때 사용된다. 지원하는 컨텐  츠 타입은 application-x-www-form-urlencorded이다.\n\nSourceHttpMessageConverter(*)\nHTTP 메시지와 javax.xml.transform.Source 사이 변환을 처리한다. 컨텐츠 타  입은 application/xml 또는 text/xml이다.\n\nMarshallingHttpMessageConverter(*)\n스프링의 Marshaller와 unMarshaller를 이용해서 XML HTTP 메시지와 객체 사  이의 변환을 처리한다. 컨텐츠 타입은 application/xml 또는 text/xml이다.\n\nMappingJacksonHttpMessageConverter(*)\nJackson 라이브러리를 이용해서 JSON HTTP 메시지와 객체 사이의 변환을 처리한다. 컨텐츠 타입은 applicaion/json이다.\n\n\nReferencehttp://devbox.tistory.com/entry/Spring-RequestBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EA%B3%BC-ReponseBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%EC%82%AC%EC%9A%A9\n","dateCreated":"2017-07-07T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-07T19:28:10+09:00","description":"","headline":"@RequestBody, @ResponseBody","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/07/Spring/message_converter/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/07/Spring/message_converter/"}</script>
+    <meta name="description" content="JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.  예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.  이">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="@RequestBody, @ResponseBody">
+<meta property="og:url" content="https://skout90.github.io/2017/07/07/Spring/message_converter/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.  예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.  이">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="@RequestBody, @ResponseBody">
+<meta name="twitter:description" content="JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.  예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.  이">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            @RequestBody, @ResponseBody
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-07T19:28:10+09:00">
+	
+		    2017.07.07
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Spring/">Spring</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.</p>
+<blockquote>
+<p>예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.</p>
+</blockquote>
+<p>이러한 작업들을 해주는 어노테이션이 바로 <code>@RequestBody</code> 와 <code>@ResponseBody</code> 이다. 컨트롤러에 두 어노테이션을 추가해주면, JSON이나 key/value 방식 xml 등으로 송수신 할 수 있다.</p>
+<h2 id="설정-방법"><a href="#설정-방법" class="headerlink" title="설정 방법"></a>설정 방법</h2><ul>
+<li>spring-servlet.xml 설정파일</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 방법 1 : 직접 정의 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">id</span>=<span class="string">"jacksonMessageConverter"</span> <span class="attr">class</span>=<span class="string">"org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">beans:property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">beans:list</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">beans:value</span>&gt;</span>application/json;charset=UTF-8<span class="tag">&lt;/<span class="name">beans:value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">beans:list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">beans:property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">name</span>=<span class="string">"handlerAdapter"</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">beans:property</span> <span class="attr">name</span>=<span class="string">"messageConverters"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">beans:list</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- Json 컨버터 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">beans:ref</span> <span class="attr">bean</span>=<span class="string">"jacksonMessageConverter"</span> /&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">beans:list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">beans:property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 방법 2 : spring 3.1 이상에서 annotaion-driven을 사용하면 자동 등록 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">annotation-driven</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>ByteArrayHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 byte 배열 사이의 변환을 처리한다. 컨텐츠 타입은  application/octet-stream이다.</p>
+</li>
+<li><p>StringHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 String 사이의 변환을 처리한다. 컨텐츠 타입은  text/plain;charset=ISO-8859-1이다.</p>
+</li>
+<li><p>FormHttpMessageConverter(*)</p>
+<p>HTML 폼 데이터를 MultiValueMap으로 전달받을 때 사용된다. 지원하는 컨텐  츠 타입은 application-x-www-form-urlencorded이다.</p>
+</li>
+<li><p>SourceHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 javax.xml.transform.Source 사이 변환을 처리한다. 컨텐츠 타  입은 application/xml 또는 text/xml이다.</p>
+</li>
+<li><p>MarshallingHttpMessageConverter(*)</p>
+<p>스프링의 Marshaller와 unMarshaller를 이용해서 XML HTTP 메시지와 객체 사  이의 변환을 처리한다. 컨텐츠 타입은 application/xml 또는 text/xml이다.</p>
+</li>
+<li><p>MappingJacksonHttpMessageConverter(*)</p>
+<p>Jackson 라이브러리를 이용해서 JSON HTTP 메시지와 객체 사이의 변환을 처리한다. 컨텐츠 타입은 applicaion/json이다.</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://devbox.tistory.com/entry/Spring-RequestBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EA%B3%BC-ReponseBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%EC%82%AC%EC%9A%A9" target="_blank" rel="noopener">http://devbox.tistory.com/entry/Spring-RequestBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EA%B3%BC-ReponseBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%EC%82%AC%EC%9A%A9</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/07/Spring/scheduler/"
+                    data-tooltip="심플하게 스프링 스케줄러 사용하기"
+                    aria-label="PREVIOUS: 심플하게 스프링 스케줄러 사용하기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/07/OS/memory/"
+                    data-tooltip="메모리"
+                    aria-label="NEXT: 메모리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/07/Spring/scheduler/"
+                    data-tooltip="심플하게 스프링 스케줄러 사용하기"
+                    aria-label="PREVIOUS: 심플하게 스프링 스케줄러 사용하기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/07/OS/memory/"
+                    data-tooltip="메모리"
+                    aria-label="NEXT: 메모리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/07/Spring/message_converter/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/07/Spring/message_converter/';
+              
+            this.page.identifier = '2017/07/07/Spring/message_converter/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

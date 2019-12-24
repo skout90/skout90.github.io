@@ -1,0 +1,647 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>01.1. Ionic App Component - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"ComponentW3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함.\nDecoratorDecorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.\n\n클래스 앞에 @Component를 해주면 그 클래스는 컴포넌트가 됌.\n변수 앞에  @Input 를 해주면 외부로 부터 값을 받음\n변수 앞에 @output를 해주면 외부로 값을 보냄.\n\nDecorator는 Typescript의 실험적인 구문으로,  tsconfig.json의 experimentalDecorators&quot; : true를 설정하면 사용할 수 있음(ionic-cli 자동셋팅)\nIonic2에서는 Typescript의 일부 Decorator만 사용 가능, 앵귤러와도 약간 다름.\n\nex) 앵귤러의 decorations 등을 아이오닉에서는 사용 불가\n\nIonic의 컴포넌트@Component 데코레이터로 장식된 클래스를 컴포넌트라고 통칭함.\n메타데이터메타에디터 : @Component 에는 하나의 객체 파라미터를 전달할 수 있음 이를 메타데이터라고 함.\n1234@Component(&#123;  selector: ... // 컴포넌트를 어디에 표시할지  template: ... // 컴포넌트 내용을 담는 곳&#125;)\n\n\napp.component.ts\n\n앱이 최초 실행되는 위치이다. \n12345678910import &#123; Component &#125; from '@angular/core';import &#123; HomePage &#125; from '../pages/home/home';@Component(&#123;  template: '&lt;ion-nav #content [root]=\"rootPage\"&gt;&lt;/ion-nav&gt;'&#125;)export class AppComponent &#123;  rootPage: any = TabsPage;  ...&#125;\n\n@Component의 메타데이터에, selector가 없는 대신 디폴트로 ion-app이 사용된다.\n[root] 는 DOM 속성으로, 어떤 페이지가 RootPage 인지 표시.\n#은 참조변수의 의미이다. 참조변수가 #content이라고 선언돼 있을때 root 페이지를 참조하려면 과 같이 접근한다.\n\nhome.ts\n\n앱 컴포넌트에서 참조한 HomePage\n1234567891011121314import &#123; Component &#125; from '@angular/core';import &#123; NavController &#125; from 'ionic-angular';@Component(&#123;\tselector: 'page-home',\ttemplateUrl: 'home.html'&#125;)export class HomePage &#123;\tconstructor(public navCtrl: NavController) &#123;      console.log(\"시작!\")\t&#125;&#125;\n\n\napp.module.ts\n\n어떤 페이지, 서비스를 사용하는지, 어떤 컴포넌트가 루트 컴포넌트인지.\n123456789101112131415161718192021...@NgModule(&#123;  declarations: [    MyApp,    HomePage,  ],  imports: [    IonicModule.forRoot(MyApp)  ],  bootstrap: [IonicApp],  entryComponents: [    MyApp,    HomePage,    ...  ],  providers: [    ...    &#123; provide: ErrorHandler, useClass: IonicErrorHandler &#125;  ]&#125;)export class AppModule &#123; &#125;\n\n@NgModule을 통해 AppModule을 장식\n\ndeclarations : 사용할 컴포넌트들 등록\n\nimports: [ IonicModule.forRoot(MyApp) ] : 루트 컴포넌트 등록(MyApp)\n\nentryComponents : 페이지 컴포넌트를 등록.\n\n\nReferencehttps://www.youtube.com/watch?v=zp3goVaR8Vg&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq&amp;index=9\n","dateCreated":"2017-07-24T14:43:13+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-24T14:43:13+09:00","description":"","headline":"01.1. Ionic App Component","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"}</script>
+    <meta name="description" content="ComponentW3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함. DecoratorDecorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.  클래스 앞에 @Component를 해주면 그 클래스는 컴포넌트가 됌. 변수 앞에  @Input 를 해주면">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="01.1. Ionic App Component">
+<meta property="og:url" content="https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="ComponentW3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함. DecoratorDecorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.  클래스 앞에 @Component를 해주면 그 클래스는 컴포넌트가 됌. 변수 앞에  @Input 를 해주면">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.093Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="01.1. Ionic App Component">
+<meta name="twitter:description" content="ComponentW3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함. DecoratorDecorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.  클래스 앞에 @Component를 해주면 그 클래스는 컴포넌트가 됌. 변수 앞에  @Input 를 해주면">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            01.1. Ionic App Component
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-24T14:43:13+09:00">
+	
+		    2017.07.24
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h3><p>W3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함.</p>
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>Decorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.</p>
+<ul>
+<li>클래스 앞에 <code>@Component</code>를 해주면 그 클래스는 컴포넌트가 됌.</li>
+<li>변수 앞에  <code>@Input</code> 를 해주면 외부로 부터 값을 받음</li>
+<li>변수 앞에 <code>@output</code>를 해주면 외부로 값을 보냄.</li>
+</ul>
+<p>Decorator는 Typescript의 실험적인 구문으로,  <code>tsconfig.json</code>의 <code>experimentalDecorators&quot; : true</code>를 설정하면 사용할 수 있음(ionic-cli 자동셋팅)</p>
+<p>Ionic2에서는 Typescript의 일부 Decorator만 사용 가능, 앵귤러와도 약간 다름.</p>
+<blockquote>
+<p>ex) 앵귤러의 decorations 등을 아이오닉에서는 사용 불가</p>
+</blockquote>
+<h3 id="Ionic의-컴포넌트"><a href="#Ionic의-컴포넌트" class="headerlink" title="Ionic의 컴포넌트"></a>Ionic의 컴포넌트</h3><p><code>@Component 데코레이터</code>로 장식된 클래스를 컴포넌트라고 통칭함.</p>
+<h3 id="메타데이터"><a href="#메타데이터" class="headerlink" title="메타데이터"></a>메타데이터</h3><p>메타에디터 : <code>@Component</code> 에는 하나의 객체 파라미터를 전달할 수 있음 이를 메타데이터라고 함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: ... <span class="comment">// 컴포넌트를 어디에 표시할지</span></span><br><span class="line">  template: ... <span class="comment">// 컴포넌트 내용을 담는 곳</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>app.component.ts</li>
+</ul>
+<p>앱이 최초 실행되는 위치이다. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HomePage &#125; <span class="keyword">from</span> <span class="string">'../pages/home/home'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  template: <span class="string">'&lt;ion-nav #content [root]="rootPage"&gt;&lt;/ion-nav&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123;</span><br><span class="line">  rootPage: any = TabsPage;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Component의 메타데이터에, <code>selector</code>가 없는 대신 디폴트로 <code>ion-app</code>이 사용된다.</p>
+<p><code>[root]</code> 는 DOM 속성으로, 어떤 페이지가 RootPage 인지 표시.</p>
+<p><strong>#은 참조변수의 의미</strong>이다. 참조변수가 #content이라고 선언돼 있을때 root 페이지를 참조하려면 과 같이 접근한다.</p>
+<ul>
+<li>home.ts</li>
+</ul>
+<p>앱 컴포넌트에서 참조한 HomePage</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">	selector: <span class="string">'page-home'</span>,</span><br><span class="line">	templateUrl: <span class="string">'home.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomePage &#123;</span><br><span class="line">	<span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"시작!"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>app.module.ts</li>
+</ul>
+<p>어떤 페이지, 서비스를 사용하는지, 어떤 컴포넌트가 루트 컴포넌트인지.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    MyApp,</span><br><span class="line">    HomePage,</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    IonicModule.forRoot(MyApp)</span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [IonicApp],</span><br><span class="line">  entryComponents: [</span><br><span class="line">    MyApp,</span><br><span class="line">    HomePage,</span><br><span class="line">    ...</span><br><span class="line">  ],</span><br><span class="line">  providers: [</span><br><span class="line">    ...</span><br><span class="line">    &#123; provide: ErrorHandler, useClass: IonicErrorHandler &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>@NgModule을 통해 AppModule을 장식</p>
+<ol>
+<li><p>declarations : 사용할 컴포넌트들 등록</p>
+</li>
+<li><p>imports: [ IonicModule.forRoot(MyApp) ] : 루트 컴포넌트 등록(MyApp)</p>
+</li>
+<li><p>entryComponents : 페이지 컴포넌트를 등록.</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=zp3goVaR8Vg&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq&amp;index=9" target="_blank" rel="noopener">https://www.youtube.com/watch?v=zp3goVaR8Vg&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq&amp;index=9</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/"
+                    data-tooltip="01. Ionic2의 프로젝트 구조"
+                    aria-label="PREVIOUS: 01. Ionic2의 프로젝트 구조"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/css_ionic_component/"
+                    data-tooltip="Ionic Component 한줄에 복수개 출력"
+                    aria-label="NEXT: Ionic Component 한줄에 복수개 출력"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/"
+                    data-tooltip="01. Ionic2의 프로젝트 구조"
+                    aria-label="PREVIOUS: 01. Ionic2의 프로젝트 구조"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/css_ionic_component/"
+                    data-tooltip="Ionic Component 한줄에 복수개 출력"
+                    aria-label="NEXT: Ionic Component 한줄에 복수개 출력"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/24/Ionic/1.1. app_component/';
+              
+            this.page.identifier = '2017/07/24/Ionic/1.1. app_component/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,660 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>NodeJs ORM을 위한 Bookshelf, Knex - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자.\nKnex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다.\n설치\n$ npm install knex –save$ npm install bookshelf –save// 아래와 같은 DB 엔진을 선택하여 설치$ npm install pg$ npm install mysql$ npm install mariasql$ npm install sqlite3\n\n\n초기화\n\n12345678910111213141516var knex = require('knex')(&#123;  client: 'mysql',  connection: &#123;    host     : '127.0.0.1',    user     : 'your_database_user',    password : 'your_database_password',    database : 'myapp_test',    charset  : 'utf8'  &#125;&#125;);var bookshelf = require('bookshelf')(knex);var User = bookshelf.Model.extend(&#123;  tableName: 'users'&#125;);\n\n쿼리 실행1234567891011121314151617// new 없이 모델 초기화let subscriber = User.forge();// 방법 4가지subscriber.query('where', 'other_id', '=', '5').fetch(). then((model)=&gt; &#123;&#125;);subscriber.query(&#123;where: &#123;other_id: '5'&#125;, orWhere: &#123;key: 'value'&#125;&#125;).fetch(). then((model)=&gt; &#123;&#125;);subscriber.query(function(qb) &#123;qb.where('other_person', 'LIKE', '%Demo').orWhere('other_id', '&gt;', 10);&#125;).fetch(). then((model)=&gt; &#123;&#125;);let qb = subscriber.query();qb.where(&#123;id: 1&#125;).select().then((resp)=&gt;&#123;&#125;);\n\n관계 정의.belongsToMany, .hasMany 와 같이 관계를 정의해줄 수 있다.\n12345678910111213141516171819202122232425262728293031...var User = bookshelf.Model.extend(&#123;  tableName: 'users',  posts: function() &#123;    return this.hasMany(Posts, 'userId');  &#125;  tags: function() &#123;  \treturn this.belongsToMany(Tag, 'posts', 'userId', 'tagId')    &#125;  wallet : function() &#123;  \treturn this.hasOne(Wallets, 'userId');    &#125;&#125;);var Posts = bookshelf.Model.extend(&#123;  tableName: 'posts',  tags: function() &#123;    return this.belongsToMany(Tag);  &#125;&#125;);var Wallets = booksehlf.Model.extend(&#123;    tableName: 'wallets',    user : function() &#123;        return this.belongsTo(Users, 'userId');    &#125;&#125;)var Tag = bookshelf.Model.extend(&#123;  tableName: 'tags'&#125;)\n\n\nhasOne\n\n\nreturn this.hasOne(Wallets, ‘userId’);  \n\n1: 0..1 의 관계이다.  Wallets에서 userId로 질의를한다. \n\nUser.forge().fetch({withRelated: [‘wallet’]})\nSELECT * FROM wallets WHERE userId = ‘사용자ID’;\n\n\nhanMany\n\n\nreturn this.hasMany(Posts, ‘userId’);\n\n1:다 의 관계를 갖는다.  Posts에서 userId로 질의를 한다.\n\nUser.forge().fetch({withRelated: [‘posts’]})\nSELECT * FROM posts WHERE  postId IN (userId들 ….)\n\n\nbelongsTo \n\n\nvar Wallet = .. 생략\nreturn this.belongsTo(Users, ‘userId’);\n\nUsers테이블에서 Wallet의 userId로 질의를 한다. 0..1 : 1 의 관계를 가진다.\n\nWallet.forge().fetch({withRelated: [‘user’]})\nSELECT * FROM users WHERE userId = ‘사용자’;\n\n\nbelongsToMany\n\n\nvar User = …\nreturn this.belongsToMany(Tag, ‘posts’, ‘userId’, ‘tagId’)  \n\nposts의 userId와 tagId를 사용하여, User와 Tag를 조인한다.\n조인할때 디폴트로 user의 id와 tag의 id를 사용한다.\n다른 포린키로 조인하려면, 5,6번째인자로 user의 foreignKey/tag의 foreignKey를 쓴다.\nReferencehttp://bookshelfjs.org/#Model-instance-has\n","dateCreated":"2017-08-15T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-08-15T19:28:10+09:00","description":"","headline":"NodeJs ORM을 위한 Bookshelf, Knex","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"}</script>
+    <meta name="description" content="Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자. Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다. 설치 $ npm install knex –save$ npm install bookshelf –save// 아래와 같은 DB 엔진을 선택하">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="NodeJs ORM을 위한 Bookshelf, Knex">
+<meta property="og:url" content="https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자. Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다. 설치 $ npm install knex –save$ npm install bookshelf –save// 아래와 같은 DB 엔진을 선택하">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NodeJs ORM을 위한 Bookshelf, Knex">
+<meta name="twitter:description" content="Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자. Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다. 설치 $ npm install knex –save$ npm install bookshelf –save// 아래와 같은 DB 엔진을 선택하">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            NodeJs ORM을 위한 Bookshelf, Knex
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-08-15T19:28:10+09:00">
+	
+		    2017.08.15
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자.</p>
+<p>Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install knex –save<br>$ npm install bookshelf –save<br>// 아래와 같은 DB 엔진을 선택하여 설치<br>$ npm install pg<br>$ npm install mysql<br>$ npm install mariasql<br>$ npm install sqlite3</p>
+</blockquote>
+<ul>
+<li>초기화</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> knex = <span class="built_in">require</span>(<span class="string">'knex'</span>)(&#123;</span><br><span class="line">  client: <span class="string">'mysql'</span>,</span><br><span class="line">  connection: &#123;</span><br><span class="line">    host     : <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    user     : <span class="string">'your_database_user'</span>,</span><br><span class="line">    password : <span class="string">'your_database_password'</span>,</span><br><span class="line">    database : <span class="string">'myapp_test'</span>,</span><br><span class="line">    charset  : <span class="string">'utf8'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bookshelf = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="쿼리-실행"><a href="#쿼리-실행" class="headerlink" title="쿼리 실행"></a>쿼리 실행</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 없이 모델 초기화</span></span><br><span class="line"><span class="keyword">let</span> subscriber = User.forge();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 방법 4가지</span></span><br><span class="line">subscriber.query(<span class="string">'where'</span>, <span class="string">'other_id'</span>, <span class="string">'='</span>, <span class="string">'5'</span>)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(&#123;<span class="attr">where</span>: &#123;<span class="attr">other_id</span>: <span class="string">'5'</span>&#125;, <span class="attr">orWhere</span>: &#123;<span class="attr">key</span>: <span class="string">'value'</span>&#125;&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(<span class="function"><span class="keyword">function</span>(<span class="params">qb</span>) </span>&#123;</span><br><span class="line">qb.where(<span class="string">'other_person'</span>, <span class="string">'LIKE'</span>, <span class="string">'%Demo'</span>).orWhere(<span class="string">'other_id'</span>, <span class="string">'&gt;'</span>, <span class="number">10</span>);&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> qb = subscriber.query();</span><br><span class="line">qb.where(&#123;<span class="attr">id</span>: <span class="number">1</span>&#125;).select()</span><br><span class="line">.then(<span class="function">(<span class="params">resp</span>)=&gt;</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="관계-정의"><a href="#관계-정의" class="headerlink" title="관계 정의"></a>관계 정의</h4><p>.belongsToMany, .hasMany 와 같이 관계를 정의해줄 수 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span>,</span><br><span class="line">  posts: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.hasMany(Posts, <span class="string">'userId'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag, <span class="string">'posts'</span>, <span class="string">'userId'</span>, <span class="string">'tagId'</span>)  </span><br><span class="line">  &#125;</span><br><span class="line">  wallet : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.hasOne(Wallets, <span class="string">'userId'</span>);  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Posts = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'posts'</span>,</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Wallets = booksehlf.Model.extend(&#123;</span><br><span class="line">    tableName: <span class="string">'wallets'</span>,</span><br><span class="line">    user : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.belongsTo(Users, <span class="string">'userId'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Tag = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'tags'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>hasOne</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasOne(Wallets, ‘userId’);  </p>
+</blockquote>
+<p>1: 0..1 의 관계이다.  Wallets에서 <code>userId</code>로 질의를한다. </p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘wallet’]})</p>
+<p>SELECT * FROM wallets WHERE userId = ‘사용자ID’;</p>
+</blockquote>
+<ul>
+<li><strong>hanMany</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasMany(Posts, ‘userId’);</p>
+</blockquote>
+<p>1:다 의 관계를 갖는다.  Posts에서 <code>userId</code>로 질의를 한다.</p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘posts’]})</p>
+<p>SELECT * FROM posts WHERE  postId IN (userId들 ….)</p>
+</blockquote>
+<ul>
+<li><strong>belongsTo</strong> </li>
+</ul>
+<blockquote>
+<p>var Wallet = .. 생략</p>
+<p>return this.belongsTo(Users, ‘userId’);</p>
+</blockquote>
+<p>Users테이블에서 Wallet의 userId로 질의를 한다. 0..1 : 1 의 관계를 가진다.</p>
+<blockquote>
+<p>Wallet.forge().fetch({withRelated: [‘user’]})</p>
+<p>SELECT * FROM users WHERE userId = ‘사용자’;</p>
+</blockquote>
+<ul>
+<li><strong>belongsToMany</strong></li>
+</ul>
+<blockquote>
+<p>var User = …</p>
+<p>return this.belongsToMany(Tag, ‘posts’, ‘userId’, ‘tagId’)  </p>
+</blockquote>
+<p>posts의 userId와 tagId를 사용하여, User와 Tag를 조인한다.</p>
+<p>조인할때 디폴트로 user의 id와 tag의 id를 사용한다.</p>
+<p>다른 포린키로 조인하려면, 5,6번째인자로 user의 foreignKey/tag의 foreignKey를 쓴다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://bookshelfjs.org/#Model-instance-has" target="_blank" rel="noopener">http://bookshelfjs.org/#Model-instance-has</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Web/REST란/"
+                    data-tooltip="REST 란"
+                    aria-label="PREVIOUS: REST 란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/4. 템플릿엔진/"
+                    data-tooltip="04. 템플릿 엔진 - EJS, Jade, Handlebars"
+                    aria-label="NEXT: 04. 템플릿 엔진 - EJS, Jade, Handlebars"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Web/REST란/"
+                    data-tooltip="REST 란"
+                    aria-label="PREVIOUS: REST 란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/4. 템플릿엔진/"
+                    data-tooltip="04. 템플릿 엔진 - EJS, Jade, Handlebars"
+                    aria-label="NEXT: 04. 템플릿 엔진 - EJS, Jade, Handlebars"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/';
+              
+            this.page.identifier = '2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

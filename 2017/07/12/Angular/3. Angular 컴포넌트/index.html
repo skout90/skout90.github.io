@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>03. Angular 컴포넌트 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술.\n웹 컴포넌트의 요소\nHTML 템플릿\n컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.\n\n템플릿 호출\n링크 엘리먼트를 이용해 호출\n&lt;link rel=&quot;import&quot; href=&quot;template.html&quot;&gt;\n\n쉐도우 DOM\n쉐도우 DOM은 문서 DOM 외부에 존재하기 때문에 문서 DOM에서 정의한 스타일이나 이벤트가 적용되지 않고 캡슐화됌.\n12345678910// 쉐도우 DOM으로 &lt;some-component&gt; 와 같이 상세내용은 캡슐화되어 보이지않음.@Component(&#123;  selector: 'some-component',  template: `    &lt;h1&gt;I am Shadow DOM!&lt;/h1&gt;    &lt;h2&gt;Nice to meet you :)&lt;/h2&gt;    &lt;ng-content&gt;&lt;/ng-content&gt;  `;&#125;)class SomeComponent &#123; /* ... */ &#125;\n\n123456789101112// DOM으로 캡슐화되지 않아, 사용자가 볼 수 있음.@Component(&#123;  selector: 'another-component',  directives: [SomeComponent],  template: `    &lt;some-component&gt;      &lt;h1&gt;Hi! I am Light DOM!&lt;/h1&gt;      &lt;h2&gt;So happy to see you!&lt;/h2&gt;    &lt;/some-component&gt;  `&#125;)class AnotherComponent &#123; /* ... */ &#125;\n\n커스텀 엘리먼트\n이름을 임의로 정의해서 만든 엘리먼트 &lt;hello-button&gt;&lt;/hello-button&gt;\n\n\n\n앵귤러2에서는 웹 컴포넌트를 활용하여 html의  블록 요소들을 컴포넌트화시켜 사용합니다.\n\n컴포넌트(Component) 생성12345678910import &#123; Component &#125; from '@angular/core';@Component(&#123;  selector: 'hello-world',   template: `\t&lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;\t&lt;textarea [(ngModel)]=\"title\"&gt;&lt;/textarea&gt;`,  styles: ['div &#123; background: blue; &#125;'] &#125;)export class HelloWorld &#123;  msg: string = \"hello\";&#125;\n\n\n정의\n\n@Component 장식자를 이용해 정의.\n\n지시자\n\nselector 속성에 컴포넌트를 등록하면 html파일이나, 다른 컴포넌트에\n\n\n\n형식으로 사용할 수 있다.\n\n템플릿속성, 스타일 속성\n\ntemplate, templateUrl : 내부, 외부 파일에 HTML과 템플릿 문법을 이용해 템플릿 정의.\nstyle, styleUrls : 내부, 외부 CSS 파일에 템플릿 스타일 적용.\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱\n","dateCreated":"2017-07-12T10:00:20+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:20+09:00","description":"","headline":"03. Angular 컴포넌트","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"}</script>
+    <meta name="description" content="Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술. 웹 컴포넌트의 요소 HTML 템플릿 컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.  템플릿 호출 링크 엘리먼트를 이용해 호출 &amp;lt;link rel=&amp;quot;import&amp;quot; href=&amp;quo">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="03. Angular 컴포넌트">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술. 웹 컴포넌트의 요소 HTML 템플릿 컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.  템플릿 호출 링크 엘리먼트를 이용해 호출 &amp;lt;link rel=&amp;quot;import&amp;quot; href=&amp;quo">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="03. Angular 컴포넌트">
+<meta name="twitter:description" content="Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술. 웹 컴포넌트의 요소 HTML 템플릿 컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.  템플릿 호출 링크 엘리먼트를 이용해 호출 &amp;lt;link rel=&amp;quot;import&amp;quot; href=&amp;quo">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            03. Angular 컴포넌트
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:20+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술.</p>
+<h2 id="웹-컴포넌트의-요소"><a href="#웹-컴포넌트의-요소" class="headerlink" title="웹 컴포넌트의 요소"></a>웹 컴포넌트의 요소</h2><ul>
+<li><p>HTML 템플릿</p>
+<p>컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.</p>
+</li>
+<li><p>템플릿 호출</p>
+<p>링크 엘리먼트를 이용해 호출</p>
+<p><code>&lt;link rel=&quot;import&quot; href=&quot;template.html&quot;&gt;</code></p>
+</li>
+<li><p>쉐도우 DOM</p>
+<p>쉐도우 DOM은 문서 DOM 외부에 존재하기 때문에 문서 DOM에서 정의한 스타일이나 이벤트가 적용되지 않고 캡슐화됌.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 쉐도우 DOM으로 &lt;some-component&gt; 와 같이 상세내용은 캡슐화되어 보이지않음.</span></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'some-component'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;h1&gt;I am Shadow DOM!&lt;/h1&gt;</span></span><br><span class="line"><span class="string">    &lt;h2&gt;Nice to meet you :)&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;ng-content&gt;&lt;/ng-content&gt;</span></span><br><span class="line"><span class="string">  `</span>;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">class</span> SomeComponent &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DOM으로 캡슐화되지 않아, 사용자가 볼 수 있음.</span></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'another-component'</span>,</span><br><span class="line">  directives: [SomeComponent],</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;some-component&gt;</span></span><br><span class="line"><span class="string">      &lt;h1&gt;Hi! I am Light DOM!&lt;/h1&gt;</span></span><br><span class="line"><span class="string">      &lt;h2&gt;So happy to see you!&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;/some-component&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">class</span> AnotherComponent &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>커스텀 엘리먼트</p>
+<p>이름을 임의로 정의해서 만든 엘리먼트 <code>&lt;hello-button&gt;&lt;/hello-button&gt;</code></p>
+</li>
+</ul>
+<blockquote>
+<p>앵귤러2에서는 웹 컴포넌트를 활용하여 html의 <nav> 블록 요소들을 컴포넌트화시켜 사용합니다.</nav></p>
+</blockquote>
+<h2 id="컴포넌트-Component-생성"><a href="#컴포넌트-Component-생성" class="headerlink" title="컴포넌트(Component) 생성"></a>컴포넌트(Component) 생성</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'hello-world'</span>, </span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">	&lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;</span></span><br><span class="line"><span class="string">	&lt;textarea [(ngModel)]="title"&gt;&lt;/textarea&gt;`</span>,</span><br><span class="line">  styles: [<span class="string">'div &#123; background: blue; &#125;'</span>] &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloWorld &#123;</span><br><span class="line">  msg: <span class="built_in">string</span> = <span class="string">"hello"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>정의</strong></li>
+</ul>
+<p>@Component 장식자를 이용해 정의.</p>
+<ul>
+<li><strong>지시자</strong></li>
+</ul>
+<p>selector 속성에 컴포넌트를 등록하면 html파일이나, 다른 컴포넌트에</p>
+<blockquote>
+<hellow-world>
+</hellow-world></blockquote>
+<p>형식으로 사용할 수 있다.</p>
+<ul>
+<li><strong>템플릿속성, 스타일 속성</strong></li>
+</ul>
+<p>template, templateUrl : 내부, 외부 파일에 HTML과 템플릿 문법을 이용해 템플릿 정의.</p>
+<p>style, styleUrls : 내부, 외부 CSS 파일에 템플릿 스타일 적용.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/4. Angular 모듈/"
+                    data-tooltip="04. Angular 모듈"
+                    aria-label="PREVIOUS: 04. Angular 모듈"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/2. Angular 프로젝트 구성/"
+                    data-tooltip="02. Angular 프로젝트의 구성"
+                    aria-label="NEXT: 02. Angular 프로젝트의 구성"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/4. Angular 모듈/"
+                    data-tooltip="04. Angular 모듈"
+                    aria-label="PREVIOUS: 04. Angular 모듈"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/2. Angular 프로젝트 구성/"
+                    data-tooltip="02. Angular 프로젝트의 구성"
+                    aria-label="NEXT: 02. Angular 프로젝트의 구성"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/3. Angular 컴포넌트/';
+              
+            this.page.identifier = '2017/07/12/Angular/3. Angular 컴포넌트/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

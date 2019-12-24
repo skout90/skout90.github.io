@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>05. Ionic Push - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"서버에서 아이오닉 앱으로 Push 메세지 수신기능 구현.\n구글 FCM을 활용한다. (Ionic 2, Angular 2 기반)\nCloud Client 셋팅아이오닉 서비스와 통신하기 위해서 Cloud Client 셋팅이 필요\n\n$ npm install @ionic/cloud-angular –save\n\nApp Id\n$ ionic io init\n\n위 명령어를 치면 ionic.config.json에 APP_ID 가 셋팅된다.\n이 APP_ID를 기억할것.\n안드로이드 Push ID 발급구글 Firebase로 이동해 Fcm Server Key/Sender Id를 발급받는다.\n프로젝트 생성 후, Settings-&gt;Cloud Messageing Tab에서 확인할 수 있다.\n발급 방법\nFirebase 링크\n설정\nsrc/app/app.module.ts\n\n위 파일에 아래와 같이 클라우드 셋팅 정보를 추가한다.\nAPP_ID에 위에서 메모한 정보를 입력\n12345678910111213141516171819202122232425262728293031import &#123; CloudSettings, CloudModule &#125; from '@ionic/cloud-angular';const cloudSettings: CloudSettings = &#123;  'core': &#123;    'app_id': 'APP_ID'  &#125;,  'push': &#123;    'sender_id': 'SENDER_ID',    'pluginConfig': &#123;      'ios': &#123;        'badge': true,        'sound': true      &#125;,      'android': &#123;        'iconColor': '#343434'      &#125;    &#125;  &#125;&#125;;@NgModule(&#123;  declarations: [ ... ],  imports: [    IonicModule.forRoot(MyApp),    CloudModule.forRoot(cloudSettings)  ],  bootstrap: [IonicApp],  entryComponents: [ ... ],  providers: [ ... ]&#125;)export class AppModule &#123;&#125;\n\nPush Plugin 설치위에서 발급받은 Sender_ID를 포함하여 아래 명령어를 입력\n\n$ cordova plugin add phonegap-plugin-push –variable SENDER_ID=12341234 –save\n\nPush 등록/메세지 수신 코드1234567891011121314151617181920212223242526272829303132333435import &#123; Component, OnInit &#125; from '@angular/core';import &#123; NavController, NavParams, Platform &#125; from 'ionic-angular';import &#123; Push, PushToken &#125; from '@ionic/cloud-angular';@Component(&#123;    selector: 'page-schedule',    templateUrl: 'schedule.html'&#125;)export class SchedulePage implements OnInit &#123;    constructor(        public navCtrl: NavController,        public navParams: NavParams,        public push: Push,        public platform: Platform    ) &#123;&#125;    ngOnInit() &#123;        if (this.platform.is('android')) &#123;            // 푸시 Register            this.push.register().then((t: PushToken) =&gt; &#123;                return this.push.saveToken(t);            &#125;).then((t: PushToken) =&gt; &#123;                console.log('Token saved:', t.token);            &#125;);                // 푸시 메세지 수신            this.push.rx.notification()                .subscribe((msg) =&gt; &#123;                    alert(msg.title + ': ' + msg.text);            &#125;);           &#125; else &#123;            console.log('not android');        &#125;    &#125;&#125;\n\n푸시를 등록할 페이지에 위와 같이 코드를 등록한다.\n웹에서 테스트하면, push not found… 와 같은 에러메세지가 나오므로\n에뮬레이터나 실제 디바이스에서 테스트 해야한다.\n\n 푸시 Register 부분은 로그인 이후에 넣는 것이 권장된다.\n\n푸시 수신 테스트(안드로이드)대시보드\n대시보드에서 앱설정으로 들어간 뒤 Settings -&gt; Certificates 에서 프로필을 생성한다.\n다음 생성된 프로필에 ‘Edit’에 들어간뒤 키를 넣어야 하는데.\n\nMY-RELEASE-KEY : 키 파일 이름\nMY_ALIAS_NAME : 식별 이름 \n\n위 내용을 본인에 맞게 수정 후 커맨드를 입력한다.\n\n12&gt; $ keytool -genkey -v -keystore MY-RELEASE-KEY.keystore -alias MY_ALIAS_NAME -keyalg RSA -keysize 2048 -validity 10000&gt;\n\n\n키 생성을 위한 정보를 입력하고 비밀번호를 입력하면. 프로젝트 root 폴더에 키가 생성된다.\n해당 키파일과 비밀번호를 위의 Ceftificates -&gt; Profile -&gt; Edit에 등록한다.\n\n\n등록 후 DashBoard -&gt; 프로젝트 선택 -&gt; Push 탭에서 푸시메세지를 발송해볼 수 있다.\n\n**에뮬레이터나, 실제 디바이스에서 테스트 해볼것\n푸시 발송\n리눅스에서 아래와 같이 curl을 이용하여 푸시를 테스트 해볼 수 있다.\n\n1234567891011curl -X POST \\  https://api.ionic.io/push/notifications \\  -H 'authorization: Bearer [아이오닉 API토큰값]' \\  -H 'content-type: application/json' \\  -d '&#123;    \"tokens\": [\"[디바이스토큰]\"],    \"profile\": \"[위에서 생성한 security profile]\",    \"notification\": &#123;        \"message\": \"Hello World! 안녕 친구들\"    &#125;&#125;'\n\n\nJava 버젼 코드\n\n아래는 아이오닉 푸시 래퍼를 이용하는 방법인데, 한글 전송시 한글이 깨지는 문제가 있어서 필자는 해결책을 찾지 못하였다(문제 코드에 코멘트 부탁드립니다.)\n12345678910111213141516171819202122232425HttpClient httpClient = HttpClientBuilder.create().build();HttpPost request = new HttpPost(API_PUSH_URL);// 헤더 설정request.addHeader(\"content-type\", \"application/json\");request.addHeader(\"Authorization\", \"Bearer \" + apiProp.getProperty(\"api.ionic.key\"));// 푸시 메세지 내용JSONObject messageObject = new JSONObject();messageObject.put(\"message\", URLEncoder.encode(title, \"UTF-8\").replaceAll(\"[+]\", \" \"));// 푸시 대상JSONArray jsonArray = new JSONArray();for (DataMap result : this.userService.selectList(new UserVo())) &#123;  jsonArray.add(result.get(\"deviceToken\"));&#125;// 파라미터JSONObject paramters = new JSONObject();paramters.put(\"tokens\", jsonArray.toString());paramters.put(\"profile\", apiProp.getProperty(\"api.ionic.profile\"));paramters.put(\"notification\", messageObject.toString());request.setEntity(new StringEntity(paramters.toString()));HttpResponse response = httpClient.execute(request);this.log.debug(new BasicResponseHandler().handleResponse(response));\n\n아이오닉 래퍼가 아닌, 구글 FCM을 활용하는 방법\n1234567891011121314151617181920212223private String sendAndroidPushNotification(String device_token, String topics, String title, String message)\t\tthrows Exception &#123;\tString pushMessage = null;\tif (device_token != null &amp;&amp; !device_token.equals(\"null\")) &#123;\t\tpushMessage = \"&#123;\\\"data\\\":&#123;\\\"title\\\":\\\"\" + title + \"\\\",\\\"message\\\":\\\"\" + message + \"\\\"&#125;,\\\"to\\\":\\\"\"\t\t\t\t+ device_token + \"\\\"&#125;\";\t&#125; else &#123;\t\tpushMessage = \"&#123;\\\"data\\\":&#123;\\\"title\\\":\\\"\" + title + \"\\\",\\\"message\\\":\\\"\" + message + \"\\\"&#125;,\\\"to\\\": \\\"/topics/\"\t\t\t\t+ topics + \"\\\"&#125;\";\t&#125;\t// Create connection to send FCM Message request.\tURL url = new URL(\"https://fcm.googleapis.com/fcm/send\");\tHttpURLConnection conn = (HttpURLConnection) url.openConnection();\tconn.setRequestProperty(\"Authorization\", \"key=\" + SERVER_KEY);\tconn.setRequestProperty(\"Content-Type\", \"application/json\");\tconn.setRequestMethod(\"POST\");\tconn.setDoOutput(true);\t// Send FCM message content.\tOutputStream outputStream = conn.getOutputStream();\toutputStream.write(pushMessage.getBytes());\treturn \"Android Push Notification: \" + conn.getResponseCode() + \" \" + conn.getResponseMessage() + \" - \" + pushMessage;&#125;\n\n서버키는 파이어베이스 대시보드 - 프로젝트 설정 - 클라우드 메세징 탭에서 확인이 가능하다.\n\n푸시 클릭시 action 설정\n\n아직 작성해보지는 않았지만 아래 소스처럼 셋팅을 하면 된다고 함.\nhttps://github.com/aggarwalankush/ionic-push-base/blob/master/src/app/app.ts\nReferenceIonic Doc Push\nhttp://docs.ionic.io/api/endpoints/push.html#post-notifications\nhttps://forum.ionicframework.com/t/ionic-push-notification-android-and-ios-working/64004/36\n","dateCreated":"2017-07-24T14:43:13+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-24T14:43:13+09:00","description":"","headline":"05. Ionic Push","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"}</script>
+    <meta name="description" content="서버에서 아이오닉 앱으로 Push 메세지 수신기능 구현. 구글 FCM을 활용한다. (Ionic 2, Angular 2 기반) Cloud Client 셋팅아이오닉 서비스와 통신하기 위해서 Cloud Client 셋팅이 필요  $ npm install @ionic/cloud-angular –save  App Id $ ionic io init  위 명령어를 치면">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="05. Ionic Push">
+<meta property="og:url" content="https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="서버에서 아이오닉 앱으로 Push 메세지 수신기능 구현. 구글 FCM을 활용한다. (Ionic 2, Angular 2 기반) Cloud Client 셋팅아이오닉 서비스와 통신하기 위해서 Cloud Client 셋팅이 필요  $ npm install @ionic/cloud-angular –save  App Id $ ionic io init  위 명령어를 치면">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="05. Ionic Push">
+<meta name="twitter:description" content="서버에서 아이오닉 앱으로 Push 메세지 수신기능 구현. 구글 FCM을 활용한다. (Ionic 2, Angular 2 기반) Cloud Client 셋팅아이오닉 서비스와 통신하기 위해서 Cloud Client 셋팅이 필요  $ npm install @ionic/cloud-angular –save  App Id $ ionic io init  위 명령어를 치면">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            05. Ionic Push
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-24T14:43:13+09:00">
+	
+		    2017.07.24
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>서버에서 아이오닉 앱으로 Push 메세지 수신기능 구현.</p>
+<p>구글 FCM을 활용한다. (Ionic 2, Angular 2 기반)</p>
+<h2 id="Cloud-Client-셋팅"><a href="#Cloud-Client-셋팅" class="headerlink" title="Cloud Client 셋팅"></a>Cloud Client 셋팅</h2><p>아이오닉 서비스와 통신하기 위해서 Cloud Client 셋팅이 필요</p>
+<blockquote>
+<p>$ npm install @ionic/cloud-angular –save</p>
+</blockquote>
+<h2 id="App-Id"><a href="#App-Id" class="headerlink" title="App Id"></a>App Id</h2><blockquote>
+<p>$ ionic io init</p>
+</blockquote>
+<p>위 명령어를 치면 <strong>ionic.config.json</strong>에 APP_ID 가 셋팅된다.</p>
+<p>이 APP_ID를 기억할것.</p>
+<h2 id="안드로이드-Push-ID-발급"><a href="#안드로이드-Push-ID-발급" class="headerlink" title="안드로이드 Push ID 발급"></a>안드로이드 Push ID 발급</h2><p>구글 Firebase로 이동해 Fcm Server Key/Sender Id를 발급받는다.</p>
+<p>프로젝트 생성 후, Settings-&gt;Cloud Messageing Tab에서 확인할 수 있다.</p>
+<p><a href="http://docs.ionic.io/services/profiles/#android-fcm-project--server-key" target="_blank" rel="noopener">발급 방법</a></p>
+<p><a href="https://console.firebase.google.com/" target="_blank" rel="noopener">Firebase 링크</a></p>
+<h2 id="설정"><a href="#설정" class="headerlink" title="설정"></a>설정</h2><ul>
+<li><strong>src/app/app.module.ts</strong></li>
+</ul>
+<p>위 파일에 아래와 같이 클라우드 셋팅 정보를 추가한다.</p>
+<p>APP_ID에 위에서 메모한 정보를 입력</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; CloudSettings, CloudModule &#125; <span class="keyword">from</span> <span class="string">'@ionic/cloud-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cloudSettings: CloudSettings = &#123;</span><br><span class="line">  <span class="string">'core'</span>: &#123;</span><br><span class="line">    <span class="string">'app_id'</span>: <span class="string">'APP_ID'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'push'</span>: &#123;</span><br><span class="line">    <span class="string">'sender_id'</span>: <span class="string">'SENDER_ID'</span>,</span><br><span class="line">    <span class="string">'pluginConfig'</span>: &#123;</span><br><span class="line">      <span class="string">'ios'</span>: &#123;</span><br><span class="line">        <span class="string">'badge'</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="string">'sound'</span>: <span class="literal">true</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">'android'</span>: &#123;</span><br><span class="line">        <span class="string">'iconColor'</span>: <span class="string">'#343434'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [ ... ],</span><br><span class="line">  imports: [</span><br><span class="line">    IonicModule.forRoot(MyApp),</span><br><span class="line">    CloudModule.forRoot(cloudSettings)</span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [IonicApp],</span><br><span class="line">  entryComponents: [ ... ],</span><br><span class="line">  providers: [ ... ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppModule</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Push-Plugin-설치"><a href="#Push-Plugin-설치" class="headerlink" title="Push Plugin 설치"></a>Push Plugin 설치</h2><p>위에서 발급받은 Sender_ID를 포함하여 아래 명령어를 입력</p>
+<blockquote>
+<p>$ cordova plugin add phonegap-plugin-push –variable SENDER_ID=12341234 –save</p>
+</blockquote>
+<h2 id="Push-등록-메세지-수신-코드"><a href="#Push-등록-메세지-수신-코드" class="headerlink" title="Push 등록/메세지 수신 코드"></a>Push 등록/메세지 수신 코드</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NavController, NavParams, Platform &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Push, PushToken &#125; <span class="keyword">from</span> <span class="string">'@ionic/cloud-angular'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">    selector: <span class="string">'page-schedule'</span>,</span><br><span class="line">    templateUrl: <span class="string">'schedule.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">SchedulePage</span> <span class="title">implements</span> <span class="title">OnInit</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(</span><br><span class="line">        public navCtrl: NavController,</span><br><span class="line">        public navParams: NavParams,</span><br><span class="line">        public push: Push,</span><br><span class="line">        public platform: Platform</span><br><span class="line">    ) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    ngOnInit() &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.platform.is(<span class="string">'android'</span>)) &#123;</span><br><span class="line">            <span class="comment">// 푸시 Register</span></span><br><span class="line">            <span class="keyword">this</span>.push.register().then(<span class="function">(<span class="params">t: PushToken</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.push.saveToken(t);</span><br><span class="line">            &#125;).then(<span class="function">(<span class="params">t: PushToken</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="built_in">console</span>.log(<span class="string">'Token saved:'</span>, t.token);</span><br><span class="line">            &#125;);</span><br><span class="line">    </span><br><span class="line">            <span class="comment">// 푸시 메세지 수신</span></span><br><span class="line">            <span class="keyword">this</span>.push.rx.notification()</span><br><span class="line">                .subscribe(<span class="function">(<span class="params">msg</span>) =&gt;</span> &#123;</span><br><span class="line">                    alert(msg.title + <span class="string">': '</span> + msg.text);</span><br><span class="line">            &#125;);   </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'not android'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>푸시를 등록할 페이지에 위와 같이 코드를 등록한다.</p>
+<p>웹에서 테스트하면, push not found… 와 같은 에러메세지가 나오므로</p>
+<p>에뮬레이터나 실제 디바이스에서 테스트 해야한다.</p>
+<blockquote>
+<p> 푸시 Register 부분은 로그인 이후에 넣는 것이 권장된다.</p>
+</blockquote>
+<h2 id="푸시-수신-테스트-안드로이드"><a href="#푸시-수신-테스트-안드로이드" class="headerlink" title="푸시 수신 테스트(안드로이드)"></a>푸시 수신 테스트(안드로이드)</h2><p><a href="https://apps.ionic.io/apps/" target="_blank" rel="noopener">대시보드</a></p>
+<p>대시보드에서 앱설정으로 들어간 뒤 Settings -&gt; Certificates 에서 프로필을 생성한다.</p>
+<p>다음 생성된 프로필에 ‘Edit’에 들어간뒤 키를 넣어야 하는데.</p>
+<ul>
+<li>MY-RELEASE-KEY : 키 파일 이름</li>
+<li>MY_ALIAS_NAME : 식별 이름 </li>
+</ul>
+<p>위 내용을 본인에 맞게 수정 후 커맨드를 입력한다.</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; $ keytool -genkey -v -keystore MY-RELEASE-KEY.keystore -alias MY_ALIAS_NAME -keyalg RSA -keysize 2048 -validity 10000</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li>키 생성을 위한 정보를 입력하고 비밀번호를 입력하면. 프로젝트 root 폴더에 키가 생성된다.</li>
+<li>해당 키파일과 비밀번호를 위의 Ceftificates -&gt; Profile -&gt; Edit에 등록한다.</li>
+</ul>
+<blockquote>
+<p>등록 후 DashBoard -&gt; 프로젝트 선택 -&gt; Push 탭에서 푸시메세지를 발송해볼 수 있다.</p>
+</blockquote>
+<p>**에뮬레이터나, 실제 디바이스에서 테스트 해볼것</p>
+<h2 id="푸시-발송"><a href="#푸시-발송" class="headerlink" title="푸시 발송"></a>푸시 발송</h2><ul>
+<li>리눅스에서 아래와 같이 curl을 이용하여 푸시를 테스트 해볼 수 있다.</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST \</span><br><span class="line">  https://api.ionic.io/push/notifications \</span><br><span class="line">  -H 'authorization: Bearer [아이오닉 API토큰값]' \</span><br><span class="line">  -H 'content-type: application/json' \</span><br><span class="line">  -d '&#123;</span><br><span class="line">    "tokens": ["[디바이스토큰]"],</span><br><span class="line">    "profile": "[위에서 생성한 security profile]",</span><br><span class="line">    "notification": &#123;</span><br><span class="line">        "message": "Hello World! 안녕 친구들"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Java 버젼 코드</li>
+</ul>
+<p>아래는 아이오닉 푸시 래퍼를 이용하는 방법인데, 한글 전송시 한글이 깨지는 문제가 있어서 필자는 해결책을 찾지 못하였다(문제 코드에 코멘트 부탁드립니다.)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">HttpClient httpClient = HttpClientBuilder.create().build();</span><br><span class="line">HttpPost request = <span class="keyword">new</span> HttpPost(API_PUSH_URL);</span><br><span class="line"><span class="comment">// 헤더 설정</span></span><br><span class="line">request.addHeader(<span class="string">"content-type"</span>, <span class="string">"application/json"</span>);</span><br><span class="line">request.addHeader(<span class="string">"Authorization"</span>, <span class="string">"Bearer "</span> + apiProp.getProperty(<span class="string">"api.ionic.key"</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 푸시 메세지 내용</span></span><br><span class="line">JSONObject messageObject = <span class="keyword">new</span> JSONObject();</span><br><span class="line">messageObject.put(<span class="string">"message"</span>, URLEncoder.encode(title, <span class="string">"UTF-8"</span>).replaceAll(<span class="string">"[+]"</span>, <span class="string">" "</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 푸시 대상</span></span><br><span class="line">JSONArray jsonArray = <span class="keyword">new</span> JSONArray();</span><br><span class="line"><span class="keyword">for</span> (DataMap result : <span class="keyword">this</span>.userService.selectList(<span class="keyword">new</span> UserVo())) &#123;</span><br><span class="line">  jsonArray.add(result.get(<span class="string">"deviceToken"</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 파라미터</span></span><br><span class="line">JSONObject paramters = <span class="keyword">new</span> JSONObject();</span><br><span class="line">paramters.put(<span class="string">"tokens"</span>, jsonArray.toString());</span><br><span class="line">paramters.put(<span class="string">"profile"</span>, apiProp.getProperty(<span class="string">"api.ionic.profile"</span>));</span><br><span class="line">paramters.put(<span class="string">"notification"</span>, messageObject.toString());</span><br><span class="line"></span><br><span class="line">request.setEntity(<span class="keyword">new</span> StringEntity(paramters.toString()));</span><br><span class="line">HttpResponse response = httpClient.execute(request);</span><br><span class="line"><span class="keyword">this</span>.log.debug(<span class="keyword">new</span> BasicResponseHandler().handleResponse(response));</span><br></pre></td></tr></table></figure>
+
+<p>아이오닉 래퍼가 아닌, 구글 FCM을 활용하는 방법</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">sendAndroidPushNotification</span><span class="params">(String device_token, String topics, String title, String message)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	String pushMessage = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">if</span> (device_token != <span class="keyword">null</span> &amp;&amp; !device_token.equals(<span class="string">"null"</span>)) &#123;</span><br><span class="line">		pushMessage = <span class="string">"&#123;\"data\":&#123;\"title\":\""</span> + title + <span class="string">"\",\"message\":\""</span> + message + <span class="string">"\"&#125;,\"to\":\""</span></span><br><span class="line">				+ device_token + <span class="string">"\"&#125;"</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		pushMessage = <span class="string">"&#123;\"data\":&#123;\"title\":\""</span> + title + <span class="string">"\",\"message\":\""</span> + message + <span class="string">"\"&#125;,\"to\": \"/topics/"</span></span><br><span class="line">				+ topics + <span class="string">"\"&#125;"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Create connection to send FCM Message request.</span></span><br><span class="line">	URL url = <span class="keyword">new</span> URL(<span class="string">"https://fcm.googleapis.com/fcm/send"</span>);</span><br><span class="line">	HttpURLConnection conn = (HttpURLConnection) url.openConnection();</span><br><span class="line">	conn.setRequestProperty(<span class="string">"Authorization"</span>, <span class="string">"key="</span> + SERVER_KEY);</span><br><span class="line">	conn.setRequestProperty(<span class="string">"Content-Type"</span>, <span class="string">"application/json"</span>);</span><br><span class="line">	conn.setRequestMethod(<span class="string">"POST"</span>);</span><br><span class="line">	conn.setDoOutput(<span class="keyword">true</span>);</span><br><span class="line">	<span class="comment">// Send FCM message content.</span></span><br><span class="line">	OutputStream outputStream = conn.getOutputStream();</span><br><span class="line">	outputStream.write(pushMessage.getBytes());</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"Android Push Notification: "</span> + conn.getResponseCode() + <span class="string">" "</span> + conn.getResponseMessage() + <span class="string">" - "</span> + pushMessage;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>서버키는 파이어베이스 대시보드 - 프로젝트 설정 - 클라우드 메세징 탭에서 확인이 가능하다.</p>
+<ul>
+<li>푸시 클릭시 action 설정</li>
+</ul>
+<p>아직 작성해보지는 않았지만 아래 소스처럼 셋팅을 하면 된다고 함.</p>
+<p><a href="https://github.com/aggarwalankush/ionic-push-base/blob/master/src/app/app.ts" target="_blank" rel="noopener">https://github.com/aggarwalankush/ionic-push-base/blob/master/src/app/app.ts</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://docs.ionic.io/services/push/" target="_blank" rel="noopener">Ionic Doc Push</a></p>
+<p><a href="http://docs.ionic.io/api/endpoints/push.html#post-notifications" target="_blank" rel="noopener">http://docs.ionic.io/api/endpoints/push.html#post-notifications</a></p>
+<p><a href="https://forum.ionicframework.com/t/ionic-push-notification-android-and-ios-working/64004/36" target="_blank" rel="noopener">https://forum.ionicframework.com/t/ionic-push-notification-android-and-ios-working/64004/36</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/4. mvc-http-request/"
+                    data-tooltip="04. MVC 패턴으로 Http request"
+                    aria-label="PREVIOUS: 04. MVC 패턴으로 Http request"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/3. 새-페이지-만들기/"
+                    data-tooltip="03. 새 페이지 만들기"
+                    aria-label="NEXT: 03. 새 페이지 만들기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/4. mvc-http-request/"
+                    data-tooltip="04. MVC 패턴으로 Http request"
+                    aria-label="PREVIOUS: 04. MVC 패턴으로 Http request"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/Ionic/3. 새-페이지-만들기/"
+                    data-tooltip="03. 새 페이지 만들기"
+                    aria-label="NEXT: 03. 새 페이지 만들기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/24/Ionic/5. Ionic-push/';
+              
+            this.page.identifier = '2017/07/24/Ionic/5. Ionic-push/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

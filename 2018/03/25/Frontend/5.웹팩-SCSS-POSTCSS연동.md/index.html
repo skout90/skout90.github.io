@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>05. 웹팩(Webpack) SCSS, POSTCSS 연동 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"scss파일도 sass-loader를 사용하더라.\nnode-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일\n\nnpm i sass-loader node-sass\n\n\nwebpack-dev.js\n\n12345678910111213141516...  module: &#123;    rules: [      ...      &#123;        test: /\\.scss$/,        use: [          &#123; loader: \"style-loader\" &#125;,          &#123; loader: \"css-loader\" &#125;,          &#123; loader: \"sass-loader\" &#125;        ]      &#125;,     ...    ]  &#125;,...\n\n\nsrc/main.js\n\n1234567require(\"babel-runtime/regenerator\")require(\"react-hot-loader/patch\")require(\"babel-register\")require(\"webpack-hot-middleware/client?reload=true\")require(\"./main.scss\");  // scss파일을 추가require(\"./index.html\");require(\"./app.js\")\n\n\nmain.scss\n\nSCSS 문법 작성\n끝.\nPOSTCSS여기에 원하는 CSS  코딩 방법을 골라 사용하는 POSTCSS도 연동할 수 있다.\n\nnpm i postcss-loader\n\n\nwebpack.dev.js\n\n123456789101112131415161718192021222324252627...  module: &#123;    rules: [      ...      &#123;        test: /\\.scss$/,        use: [          &#123; loader: \"style-loader\" &#125;,          &#123; loader: \"css-loader\" &#125;,          &#123; loader: \"postcss-loader\"&#125;, // 추가          &#123; loader: \"sass-loader\" &#125;        ]      &#125;,      // scss 없이 postcss 개별 연동도 가능!      //&#123;        //test: /\\.css$/,        //exclude: /node_modules/,        //use: [          //&#123; loader: \"style-loader\" &#125;,          //&#123; loader: \"css-loader\" &#125;,          //&#123; loader: \"postcss-loader\" &#125;        //]      //&#125;,     ...    ]  &#125;,...\n\n\npostcss.config.js\n\n원하는 CSS 모듈을 추가해준다.\n123456module.exports = &#123;    plugins: [        require('autoprefixer') // 자동으로 브라우저에 맞는 Css 프리픽스를 추가해준다.        // require('postcss-nested') scss 방식의 nested css 지원    ]&#125;\n\n\npostcss만 사용할 경우는 파일 확장자도 css로 쓰면 된다.\n\nReferencehttps://www.udemy.com/webpack-beyond-the-basics\n","dateCreated":"2018-03-25T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2018-03-25T19:28:10+09:00","description":"","headline":"05. 웹팩(Webpack) SCSS, POSTCSS 연동","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"}</script>
+    <meta name="description" content="scss파일도 sass-loader를 사용하더라. node-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일  npm i sass-loader node-sass   webpack-dev.js  12345678910111213141516...  module: &amp;#123;    rules: [      ...      &amp;#123;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="05. 웹팩(Webpack) SCSS, POSTCSS 연동">
+<meta property="og:url" content="https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="scss파일도 sass-loader를 사용하더라. node-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일  npm i sass-loader node-sass   webpack-dev.js  12345678910111213141516...  module: &amp;#123;    rules: [      ...      &amp;#123;">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.090Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="05. 웹팩(Webpack) SCSS, POSTCSS 연동">
+<meta name="twitter:description" content="scss파일도 sass-loader를 사용하더라. node-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일  npm i sass-loader node-sass   webpack-dev.js  12345678910111213141516...  module: &amp;#123;    rules: [      ...      &amp;#123;">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            05. 웹팩(Webpack) SCSS, POSTCSS 연동
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-03-25T19:28:10+09:00">
+	
+		    2018.03.25
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>scss파일도 sass-loader를 사용하더라.</p>
+<p>node-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일</p>
+<blockquote>
+<p>npm i sass-loader node-sass</p>
+</blockquote>
+<ul>
+<li>webpack-dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"style-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"css-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"sass-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">     ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src/main.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"babel-runtime/regenerator"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"react-hot-loader/patch"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"babel-register"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"webpack-hot-middleware/client?reload=true"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./main.scss"</span>);  <span class="comment">// scss파일을 추가</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./app.js"</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.scss</li>
+</ul>
+<p>SCSS 문법 작성</p>
+<p>끝.</p>
+<h2 id="POSTCSS"><a href="#POSTCSS" class="headerlink" title="POSTCSS"></a>POSTCSS</h2><p>여기에 원하는 CSS  코딩 방법을 골라 사용하는 POSTCSS도 연동할 수 있다.</p>
+<blockquote>
+<p>npm i postcss-loader</p>
+</blockquote>
+<ul>
+<li>webpack.dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"style-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"css-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"postcss-loader"</span>&#125;, <span class="comment">// 추가</span></span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"sass-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// scss 없이 postcss 개별 연동도 가능!</span></span><br><span class="line">      <span class="comment">//&#123;</span></span><br><span class="line">        <span class="comment">//test: /\.css$/,</span></span><br><span class="line">        <span class="comment">//exclude: /node_modules/,</span></span><br><span class="line">        <span class="comment">//use: [</span></span><br><span class="line">          <span class="comment">//&#123; loader: "style-loader" &#125;,</span></span><br><span class="line">          <span class="comment">//&#123; loader: "css-loader" &#125;,</span></span><br><span class="line">          <span class="comment">//&#123; loader: "postcss-loader" &#125;</span></span><br><span class="line">        <span class="comment">//]</span></span><br><span class="line">      <span class="comment">//&#125;,</span></span><br><span class="line">     ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>postcss.config.js</li>
+</ul>
+<p>원하는 CSS 모듈을 추가해준다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="built_in">require</span>(<span class="string">'autoprefixer'</span>) <span class="comment">// 자동으로 브라우저에 맞는 Css 프리픽스를 추가해준다.</span></span><br><span class="line">        <span class="comment">// require('postcss-nested') scss 방식의 nested css 지원</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>postcss만 사용할 경우는 파일 확장자도 css로 쓰면 된다.</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/25/Frontend/4.웹팩-React연동/"
+                    data-tooltip="04. 웹팩(webpack) React 연동"
+                    aria-label="PREVIOUS: 04. 웹팩(webpack) React 연동"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/18/Frontend/3.웹팩-핫리로딩/"
+                    data-tooltip="03. 웹팩(webpack) express 연동, 핫리로딩"
+                    aria-label="NEXT: 03. 웹팩(webpack) express 연동, 핫리로딩"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/25/Frontend/4.웹팩-React연동/"
+                    data-tooltip="04. 웹팩(webpack) React 연동"
+                    aria-label="PREVIOUS: 04. 웹팩(webpack) React 연동"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/03/18/Frontend/3.웹팩-핫리로딩/"
+                    data-tooltip="03. 웹팩(webpack) express 연동, 핫리로딩"
+                    aria-label="NEXT: 03. 웹팩(webpack) express 연동, 핫리로딩"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/';
+              
+            this.page.identifier = '2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

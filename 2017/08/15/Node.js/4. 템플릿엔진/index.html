@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>04. 템플릿 엔진 - EJS, Jade, Handlebars - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음.\nEJS(Embedded JavaScript)서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진\n\n설치 및 실행\n\n\n$ npm install -g express-generator\n$ express –ejs\n\n\n구조\napp.js\nbin\nwww\n\n\npackage.json\npublic\nimages\njavascripts\nstylesheets\nstyle.css\n\n\n\n\nroutes\nindex.js\nusers.js\n\n\nviews\nerror.ejs\nindex.ejs\n\n\n\n\n\n\n$ npm install\n\n생성후 위 명령어만 입력하면 package.js에 정의된 모듈이 모두 설치됌. bin 디렉터리 아래 www 파일이 생성되는데 node로 실행\n\n$ node bin/www\n\n웹 브라우정에서 http://127.0.0.1:3000 으로 접속하면. 빈화면에 Express Welcome to Express 라고 표시됌.\n\nEJS 기본 문법\n\nview/index.eja\n1234567891011&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;title&gt;&lt;%= title %&gt;&lt;/title&gt;    &lt;link rel='stylesheet' href='/stylesheets/style.css' /&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;h1&gt;&lt;%= title %&gt;&lt;/h1&gt;    &lt;p&gt;Welcome to &lt;%= title %&gt;&lt;/p&gt;  &lt;/body&gt;&lt;/html&gt;\n\n&lt;% %&gt; 안에 자바스크립트를 사용하면 됌. 변수 출력은 &lt;%= 변수 %&gt;로 가능.\n\nWelcome to Express 5번 출력하기\n\n12345678910111213&lt;!DOCTYPE html&gt;&lt;html&gt;  &lt;head&gt;    &lt;title&gt;&lt;%= title %&gt;&lt;/title&gt;    &lt;link rel='stylesheet' href='/stylesheets/style.css' /&gt;  &lt;/head&gt;  &lt;body&gt;    &lt;h1&gt;&lt;%= title %&gt;&lt;/h1&gt;    &lt;% for (var i = 0; i &lt; 5; i++) &#123; %&gt;    &lt;p&gt;Welcome to &lt;%= title %&gt;&lt;/p&gt;    &lt;% &#125; %&gt;  &lt;/body&gt;&lt;/html&gt;\n\n\ntitle 변수의 위치\n\nroutes/index.js\n123456789var express = require('express');var router = express.Router();/* GET home page. */router.get('/', function(req, res) &#123;  res.render('index', &#123; title: 'Express' &#125;);&#125;);module.exports = router;\n\n템플릿 엔진을 이용해서 HTML 생성 가능 아래 사이트 참조\nhttps://code.google.com/p/embeddedjavascript/wiki/ViewHelpers\nJadeHTML을 간략화한 템플릿 엔진\n\n$ npm install -g express-generator\n$ express\n\nexpress-generator에 아무 옵션을 주지 않으면 Jade로 어플리케이션을 생성\n\n구조\napp.js\nbin\nwww\n\n\npackage.json\npublic\nimages\njavascripts\nstylesheets\nstyle.css\n\n\n\n\nroutes\nindex.js\nusers.js\n\n\nviews\nerror.ejs\nindex.ejs\n\n\n\n\n\nEJS와 같이 npm install 입력하면 package.js에 정의된 모듈들이 설치.\n\n$ node bin/www\n\nhttp://127.0.0.1:3000으로 접속하면 Express Welcome to Express라고 나오는 것을 확인.\n\nviews/layout.jade\n\n1234567doctype htmlhtml  head    title= title    link(rel=&apos;stylesheet&apos;, href=&apos;/stylesheets/style.css&apos;)  body    block content\n\n\nviews/index.jade\n\n12345extends layoutblock content  h1= title  p Welcome to #&#123;title&#125;\n\nindex.jade는 extends layout 문법을 이용하여 layout.jade파일을 상속.\nlayout.jade, index.jade 파일 모두 block content가 있음.\nlayout.jade 파일에서 block을 선언하고, index.jade 파일에서 block을 정의\n\n변수 출력 :  ex) h1= title \n변수 할당 : ${ }\n\n\njade의 예제\n\n123456789extends layoutblock content  h1= title  p Welcome to #&#123;title&#125;  #&#123; items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;] &#125;  each item, i in items    li #&#123;item&#125;: #&#123;i&#125;\n\nroutes/index.js\n123456789var express = require(&apos;express&apos;);var router = express.Router();/* GET home page. */router.get(&apos;/&apos;, function(req, res) &#123;  res.render(&apos;index&apos;, &#123; title: &apos;Express&apos; &#125;);&#125;);module.exports = router;\n\nHandlebars템플릿 엔진 핸들바스의 사용법을 정리해보자.\n설치\n$ npm install –save handlebars\n\n템플릿 작성(.hbs)변수 바인딩, if문, each문의 예제\n1234567891011121314151617181920&lt;script id=\"entry-template\" type=\"text/x-handlebars-template\"&gt;  &lt;div class=\"entry\"&gt;    &lt;h1&gt;&#123;&#123;title&#125;&#125;&lt;/h1&gt;    &lt;div class=\"body\"&gt;      &#123;&#123;body&#125;&#125;    &lt;/div&gt;  &lt;/div&gt;  &lt;div id=\"comments\"&gt;    &#123;&#123;#each comments&#125;&#125;    &lt;h2&gt;&#123;&#123;title&#125;&#125;&gt;&lt;/h2&gt;    &lt;div&gt;&#123;&#123;body&#125;&#125;&lt;/div&gt;    &#123;&#123;/each&#125;&#125;  &lt;/div&gt;  &#123;&#123;#if author&#125;&#125;  \t&lt;h1&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125;&lt;/h1&gt;  &#123;&#123;else&#125;&#125;  \t&lt;h1&gt;Unknown Author&lt;/h1&gt;  &#123;&#123;/if&#125;&#125;&lt;/script&gt;\n\nJS code 작성1234567891011var source   = $(\"#entry-template\").html();var template = Handlebars.compile(source);var context = &#123;title: \"My New Post\",               body: \"This is my first post!\",               comments: [                 &#123; title: '1', body: 'xx'&#125;,    \t\t\t&#123; title: '2', body: 'yy'&#125;               ],               author: &#123; firstName: 'Nam', lastName: 'Junho'&#125;              &#125;;var html    = template(context);\n\npartial1234567&lt;div class=\"post\"&gt;  &#123;&#123;&gt; userMessage tagName=\"h1\" &#125;&#125;  &lt;h1&gt;Comments&lt;/h1&gt;  &#123;&#123;#each comments&#125;&#125;    &#123;&#123;&gt; userMessage tagName=\"h2\" &#125;&#125;  &#123;&#123;/each&#125;&#125;&lt;/div&gt;\n\n1234567891011Handlebars.registerPartial('userMessage',    '&lt;&#123;&#123;tagName&#125;&#125;&gt;By &#123;&#123;author.firstName&#125;&#125; &#123;&#123;author.lastName&#125;&#125;&lt;/&#123;&#123;tagName&#125;&#125;&gt;'    + '&lt;div class=\"body\"&gt;&#123;&#123;body&#125;&#125;&lt;/div&gt;');var context = &#123;  author: &#123;firstName: \"Alan\", lastName: \"Johnson\"&#125;,  body: \"I Love Handlebars\",  comments: [&#123;    author: &#123;firstName: \"Yehuda\", lastName: \"Katz\"&#125;,    body: \"Me too!\"  &#125;]&#125;;\n\n결과\n12345678&lt;div class=\"post\"&gt;  &lt;h1&gt;By Alan Johnson&lt;/h1&gt;  &lt;div class=\"body\"&gt;I Love Handlebars&lt;/div&gt;  &lt;h1&gt;Comments&lt;/h1&gt;  &lt;h2&gt;By Yehuda Katz&lt;/h2&gt;  &lt;div class=\"body\"&gt;Me Too!&lt;/div&gt;&lt;/div&gt;\n\nhelper위의 each나 if 는 내장 helper이며, 그 외에도 다양한 helper를 사용하기 위해서는 swag를 사용하면 된다\n\n$ npm install swag –save\n\n123456789&lt;!-- Browser --&gt;&lt;script src=&quot;../path_to/handlebars.js&quot;&gt;&lt;/script&gt;&lt;script src=&quot;../path_to/swag.js&quot;&gt;&lt;/script&gt;&lt;script&gt;Swag.registerHelpers(Handlebars);&lt;/script&gt;// NodeHandlebars = require(&apos;handlebars&apos;);Swag = require(&apos;swag&apos;);Swag.registerHelpers(Handlebars);\n\nstring, date, collections 등을 조작하는 다양한 헬퍼를 확인할 수 있다.\nhttps://github.com/elving/swag\nReferencehttp://pyrasis.com/nodejs/nodejs-HOWTO\nhttp://handlebarsjs.com/\n","dateCreated":"2017-08-15T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-08-15T19:28:10+09:00","description":"","headline":"04. 템플릿 엔진 - EJS, Jade, Handlebars","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"}</script>
+    <meta name="description" content="express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음. EJS(Embedded JavaScript)서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진  설치 및 실행   $ npm install -g express-gener">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="04. 템플릿 엔진 - EJS, Jade, Handlebars">
+<meta property="og:url" content="https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음. EJS(Embedded JavaScript)서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진  설치 및 실행   $ npm install -g express-gener">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="04. 템플릿 엔진 - EJS, Jade, Handlebars">
+<meta name="twitter:description" content="express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음. EJS(Embedded JavaScript)서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진  설치 및 실행   $ npm install -g express-gener">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            04. 템플릿 엔진 - EJS, Jade, Handlebars
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-08-15T19:28:10+09:00">
+	
+		    2017.08.15
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음.</p>
+<h2 id="EJS-Embedded-JavaScript"><a href="#EJS-Embedded-JavaScript" class="headerlink" title="EJS(Embedded JavaScript)"></a>EJS(Embedded JavaScript)</h2><p>서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진</p>
+<ul>
+<li>설치 및 실행</li>
+</ul>
+<blockquote>
+<p>$ npm install -g express-generator</p>
+<p>$ express –ejs</p>
+</blockquote>
+<ul>
+<li>구조<ul>
+<li>app.js</li>
+<li>bin<ul>
+<li>www</li>
+</ul>
+</li>
+<li>package.json</li>
+<li>public<ul>
+<li>images</li>
+<li>javascripts</li>
+<li>stylesheets<ul>
+<li>style.css</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>routes<ul>
+<li>index.js</li>
+<li>users.js</li>
+</ul>
+</li>
+<li>views<ul>
+<li>error.ejs</li>
+<li>index.ejs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>$ npm install</p>
+</blockquote>
+<p>생성후 위 명령어만 입력하면 package.js에 정의된 모듈이 모두 설치됌. bin 디렉터리 아래 <code>www</code> 파일이 생성되는데 node로 실행</p>
+<blockquote>
+<p>$ node bin/www</p>
+</blockquote>
+<p>웹 브라우정에서 <strong><a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a></strong> 으로 접속하면. 빈화면에 <strong>Express Welcome to Express</strong> 라고 표시됌.</p>
+<ul>
+<li>EJS 기본 문법</li>
+</ul>
+<p><code>view/index.eja</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">'stylesheet'</span> <span class="attr">href</span>=<span class="string">'/stylesheets/style.css'</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome to <span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;% %&gt;</code> 안에 자바스크립트를 사용하면 됌. 변수 출력은 <code>&lt;%= 변수 %&gt;</code>로 가능.</p>
+<ul>
+<li>Welcome to Express 5번 출력하기</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">'stylesheet'</span> <span class="attr">href</span>=<span class="string">'/stylesheets/style.css'</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    &lt;% for (var i = 0; i &lt; 5; i++) &#123; %&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome to <span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>title 변수의 위치</li>
+</ul>
+<p><code>routes/index.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> router = express.Router();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* GET home page. */</span></span><br><span class="line">router.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.render(<span class="string">'index'</span>, &#123; <span class="attr">title</span>: <span class="string">'Express'</span> &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = router;</span><br></pre></td></tr></table></figure>
+
+<p>템플릿 엔진을 이용해서 HTML 생성 가능 아래 사이트 참조</p>
+<p><a href="https://code.google.com/p/embeddedjavascript/wiki/ViewHelpers" target="_blank" rel="noopener">https://code.google.com/p/embeddedjavascript/wiki/ViewHelpers</a></p>
+<h2 id="Jade"><a href="#Jade" class="headerlink" title="Jade"></a>Jade</h2><p>HTML을 간략화한 템플릿 엔진</p>
+<blockquote>
+<p>$ npm install -g express-generator</p>
+<p>$ express</p>
+</blockquote>
+<p>express-generator에 아무 옵션을 주지 않으면 Jade로 어플리케이션을 생성</p>
+<ul>
+<li>구조<ul>
+<li>app.js</li>
+<li>bin<ul>
+<li>www</li>
+</ul>
+</li>
+<li>package.json</li>
+<li>public<ul>
+<li>images</li>
+<li>javascripts</li>
+<li>stylesheets<ul>
+<li>style.css</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>routes<ul>
+<li>index.js</li>
+<li>users.js</li>
+</ul>
+</li>
+<li>views<ul>
+<li>error.ejs</li>
+<li>index.ejs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>EJS와 같이 <code>npm install</code> 입력하면 package.js에 정의된 모듈들이 설치.</p>
+<blockquote>
+<p>$ node bin/www</p>
+</blockquote>
+<p><a href="http://127.0.0.1:3000으로" target="_blank" rel="noopener">http://127.0.0.1:3000으로</a> 접속하면 <strong>Express Welcome to Express</strong>라고 나오는 것을 확인.</p>
+<ul>
+<li>views/layout.jade</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title= title</span><br><span class="line">    link(rel=&apos;stylesheet&apos;, href=&apos;/stylesheets/style.css&apos;)</span><br><span class="line">  body</span><br><span class="line">    block content</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>views/index.jade</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">extends layout</span><br><span class="line"></span><br><span class="line">block content</span><br><span class="line">  h1= title</span><br><span class="line">  p Welcome to #&#123;title&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>index.jade</code>는 <code>extends layout</code> 문법을 이용하여 <code>layout.jade</code>파일을 상속.</p>
+<p>layout.jade, index.jade 파일 모두 <code>block content</code>가 있음.</p>
+<p>layout.jade 파일에서 block을 선언하고, index.jade 파일에서 block을 정의</p>
+<ul>
+<li>변수 출력 :  ex) <code>h1= title</code> </li>
+<li>변수 할당 : <code>${ }</code></li>
+</ul>
+<ul>
+<li>jade의 예제</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">extends layout</span><br><span class="line"></span><br><span class="line">block content</span><br><span class="line">  h1= title</span><br><span class="line">  p Welcome to #&#123;title&#125;</span><br><span class="line"></span><br><span class="line">  #&#123; items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;] &#125;</span><br><span class="line">  each item, i in items</span><br><span class="line">    li #&#123;item&#125;: #&#123;i&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>routes/index.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var router = express.Router();</span><br><span class="line"></span><br><span class="line">/* GET home page. */</span><br><span class="line">router.get(&apos;/&apos;, function(req, res) &#123;</span><br><span class="line">  res.render(&apos;index&apos;, &#123; title: &apos;Express&apos; &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">module.exports = router;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Handlebars"><a href="#Handlebars" class="headerlink" title="Handlebars"></a>Handlebars</h2><p>템플릿 엔진 핸들바스의 사용법을 정리해보자.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install –save handlebars</p>
+</blockquote>
+<h4 id="템플릿-작성-hbs"><a href="#템플릿-작성-hbs" class="headerlink" title="템플릿 작성(.hbs)"></a>템플릿 작성(.hbs)</h4><p>변수 바인딩, if문, each문의 예제</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"entry-template"</span> <span class="attr">type</span>=<span class="string">"text/x-handlebars-template"</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"entry"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><span class="template-variable">&#123;&#123;title&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span></span></span><br><span class="line"><span class="xml">      </span><span class="template-variable">&#123;&#123;body&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">each</span></span> comments&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span></span><span class="template-variable">&#123;&#123;title&#125;&#125;</span><span class="xml">&gt;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><span class="template-variable">&#123;&#123;body&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">each</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">if</span></span> author&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><span class="template-variable">&#123;&#123;firstName&#125;&#125;</span><span class="xml"> </span><span class="template-variable">&#123;&#123;lastName&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-variable">&#123;&#123;<span class="builtin-name">else</span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">h1</span>&gt;</span>Unknown Author<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">if</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="JS-code-작성"><a href="#JS-code-작성" class="headerlink" title="JS code 작성"></a>JS code 작성</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> source   = $(<span class="string">"#entry-template"</span>).html();</span><br><span class="line"><span class="keyword">var</span> template = Handlebars.compile(source);</span><br><span class="line"><span class="keyword">var</span> context = &#123;<span class="attr">title</span>: <span class="string">"My New Post"</span>,</span><br><span class="line">               body: <span class="string">"This is my first post!"</span>,</span><br><span class="line">               comments: [</span><br><span class="line">                 &#123; <span class="attr">title</span>: <span class="string">'1'</span>, <span class="attr">body</span>: <span class="string">'xx'</span>&#125;,</span><br><span class="line">    			&#123; <span class="attr">title</span>: <span class="string">'2'</span>, <span class="attr">body</span>: <span class="string">'yy'</span>&#125;</span><br><span class="line">               ],</span><br><span class="line">               author: &#123; <span class="attr">firstName</span>: <span class="string">'Nam'</span>, <span class="attr">lastName</span>: <span class="string">'Junho'</span>&#125;</span><br><span class="line">              &#125;;</span><br><span class="line"><span class="keyword">var</span> html    = template(context);</span><br></pre></td></tr></table></figure>
+
+<h4 id="partial"><a href="#partial" class="headerlink" title="partial"></a>partial</h4><figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"post"</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-variable">&#123;&#123;&gt; userMessage tagName="h1" &#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">each</span></span> comments&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    </span><span class="template-variable">&#123;&#123;&gt; userMessage tagName="h2" &#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">each</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Handlebars.registerPartial(<span class="string">'userMessage'</span>,</span><br><span class="line">    <span class="string">'&lt;&#123;&#123;tagName&#125;&#125;&gt;By &#123;&#123;author.firstName&#125;&#125; &#123;&#123;author.lastName&#125;&#125;&lt;/&#123;&#123;tagName&#125;&#125;&gt;'</span></span><br><span class="line">    + <span class="string">'&lt;div class="body"&gt;&#123;&#123;body&#125;&#125;&lt;/div&gt;'</span>);</span><br><span class="line"><span class="keyword">var</span> context = &#123;</span><br><span class="line">  author: &#123;<span class="attr">firstName</span>: <span class="string">"Alan"</span>, <span class="attr">lastName</span>: <span class="string">"Johnson"</span>&#125;,</span><br><span class="line">  body: <span class="string">"I Love Handlebars"</span>,</span><br><span class="line">  comments: [&#123;</span><br><span class="line">    author: &#123;<span class="attr">firstName</span>: <span class="string">"Yehuda"</span>, <span class="attr">lastName</span>: <span class="string">"Katz"</span>&#125;,</span><br><span class="line">    body: <span class="string">"Me too!"</span></span><br><span class="line">  &#125;]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>결과</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>By Alan Johnson<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span>I Love Handlebars<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h2</span>&gt;</span>By Yehuda Katz<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span>Me Too!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="helper"><a href="#helper" class="headerlink" title="helper"></a>helper</h4><p>위의 <code>each</code>나 <code>if</code> 는 내장 helper이며, 그 외에도 다양한 helper를 사용하기 위해서는 swag를 사용하면 된다</p>
+<blockquote>
+<p>$ npm install swag –save</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Browser --&gt;</span><br><span class="line">&lt;script src=&quot;../path_to/handlebars.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;../path_to/swag.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;Swag.registerHelpers(Handlebars);&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// Node</span><br><span class="line">Handlebars = require(&apos;handlebars&apos;);</span><br><span class="line">Swag = require(&apos;swag&apos;);</span><br><span class="line">Swag.registerHelpers(Handlebars);</span><br></pre></td></tr></table></figure>
+
+<p>string, date, collections 등을 조작하는 다양한 헬퍼를 확인할 수 있다.</p>
+<p><a href="https://github.com/elving/swag" target="_blank" rel="noopener">https://github.com/elving/swag</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
+<p><a href="http://handlebarsjs.com/" target="_blank" rel="noopener">http://handlebarsjs.com/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    data-tooltip="NodeJs ORM을 위한 Bookshelf, Knex"
+                    aria-label="PREVIOUS: NodeJs ORM을 위한 Bookshelf, Knex"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/3. 소켓통신/"
+                    data-tooltip="03. 소켓 통신"
+                    aria-label="NEXT: 03. 소켓 통신"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                    data-tooltip="NodeJs ORM을 위한 Bookshelf, Knex"
+                    aria-label="PREVIOUS: NodeJs ORM을 위한 Bookshelf, Knex"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/15/Node.js/3. 소켓통신/"
+                    data-tooltip="03. 소켓 통신"
+                    aria-label="NEXT: 03. 소켓 통신"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/08/15/Node.js/4. 템플릿엔진/';
+              
+            this.page.identifier = '2017/08/15/Node.js/4. 템플릿엔진/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,637 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>Node 모듈 cookieParser란 무엇인가 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어.\nrequest 객체에 cookies 속성이 부여된다.\n1234567891011var express      = require('express')var cookieParser = require('cookie-parser') var app = express()app.use(cookieParser()) app.get('/', function(req, res) &#123;  console.log('Cookies: ', req.cookies);&#125;) app.listen(8080)\n\n아래와 같이 커맨드를 날리면 쿠키 값을 확인할 수 있다.\n\n$ curl http://127.0.0.1:8080 –cookie “Cho=Kim;Greet=Hello” \n\n\ncookieParser(secret, options)\n\n\nsecret : signed 시키는 암호키로 string/array 형태 가능\noptions\nmaxAge : 만료 시간을 밀리초 단위로 설정\nexpires : 만료 날짜를 GMT 시간으로 설정\npath : cookie의 경로 default “/“\ndomain : 도메인 네임 default “loaded”\nsecure : https에서만 cookie 사용할 수 있도록 한다.\nhttpOnly : 웹서버를 통해서만 cookie 접근할 수 있도록 한다\nsigned : cookie가 서명되어야 할 지를 결정한다.\n\n\nres.cookie(쿠키명, 값, options)\n\nresponse(브라우저)에 쿠키 생성\n12345res.cookie('hasVisited', '1', &#123;    maxAge: 60*60*1000,    httpOnly: true,    path:'/visitors'&#125;);\n\n\nres.clearCookie(쿠키명, options)\n\n쿠키 제거, 경로를 지정했다면 options에 해당 경로를 넘겨 삭제할 수 있다.\n1res.clearCookie('hasVisited', &#123;path: '/visitors'&#125;)\n\nReferencehttps://www.npmjs.com/package/cookie-parser\nhttp://cinema4dr12.tistory.com/838\nhttp://nujabes403.blogspot.kr/2015/03/express-middleware-cookie-parser.html\n","dateCreated":"2017-10-24T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-10-24T19:28:10+09:00","description":"","headline":"Node 모듈 cookieParser란 무엇인가","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"}</script>
+    <meta name="description" content="요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어. request 객체에 cookies 속성이 부여된다. 1234567891011var express      = require(&apos;express&apos;)var cookieParser = require(&apos;cookie-parser&apos;) var app = express()app.use(cookieParser()) ap">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Node 모듈 cookieParser란 무엇인가">
+<meta property="og:url" content="https://skout90.github.io/2017/10/24/Node.js/cookieParser란/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어. request 객체에 cookies 속성이 부여된다. 1234567891011var express      = require(&apos;express&apos;)var cookieParser = require(&apos;cookie-parser&apos;) var app = express()app.use(cookieParser()) ap">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.102Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Node 모듈 cookieParser란 무엇인가">
+<meta name="twitter:description" content="요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어. request 객체에 cookies 속성이 부여된다. 1234567891011var express      = require(&apos;express&apos;)var cookieParser = require(&apos;cookie-parser&apos;) var app = express()app.use(cookieParser()) ap">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Node 모듈 cookieParser란 무엇인가
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-10-24T19:28:10+09:00">
+	
+		    2017.10.24
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어.</p>
+<p>request 객체에 cookies 속성이 부여된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express      = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">var</span> cookieParser = <span class="built_in">require</span>(<span class="string">'cookie-parser'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> app = express()</span><br><span class="line">app.use(cookieParser())</span><br><span class="line"> </span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Cookies: '</span>, req.cookies);</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<p>아래와 같이 커맨드를 날리면 쿠키 값을 확인할 수 있다.</p>
+<blockquote>
+<p>$ curl <a href="http://127.0.0.1:8080" target="_blank" rel="noopener">http://127.0.0.1:8080</a> –cookie “Cho=Kim;Greet=Hello” </p>
+</blockquote>
+<ul>
+<li>cookieParser(secret, options)</li>
+</ul>
+<blockquote>
+<p>secret : signed 시키는 암호키로 string/array 형태 가능</p>
+<p>options</p>
+<p>maxAge : 만료 시간을 밀리초 단위로 설정</p>
+<p>expires : 만료 날짜를 GMT 시간으로 설정</p>
+<p>path : cookie의 경로 default “/“</p>
+<p>domain : 도메인 네임 default “loaded”</p>
+<p>secure : https에서만 cookie 사용할 수 있도록 한다.</p>
+<p>httpOnly : 웹서버를 통해서만 cookie 접근할 수 있도록 한다</p>
+<p>signed : cookie가 서명되어야 할 지를 결정한다.</p>
+</blockquote>
+<ul>
+<li>res.cookie(쿠키명, 값, options)</li>
+</ul>
+<p>response(브라우저)에 쿠키 생성</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">res.cookie(<span class="string">'hasVisited'</span>, <span class="string">'1'</span>, &#123;</span><br><span class="line">    maxAge: <span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>,</span><br><span class="line">    httpOnly: <span class="literal">true</span>,</span><br><span class="line">    path:<span class="string">'/visitors'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>res.clearCookie(쿠키명, options)</li>
+</ul>
+<p>쿠키 제거, 경로를 지정했다면 options에 해당 경로를 넘겨 삭제할 수 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.clearCookie(<span class="string">'hasVisited'</span>, &#123;<span class="attr">path</span>: <span class="string">'/visitors'</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.npmjs.com/package/cookie-parser" target="_blank" rel="noopener">https://www.npmjs.com/package/cookie-parser</a></p>
+<p><a href="http://cinema4dr12.tistory.com/838" target="_blank" rel="noopener">http://cinema4dr12.tistory.com/838</a></p>
+<p><a href="http://nujabes403.blogspot.kr/2015/03/express-middleware-cookie-parser.html" target="_blank" rel="noopener">http://nujabes403.blogspot.kr/2015/03/express-middleware-cookie-parser.html</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/10/29/Web/웹컴포넌트와쉐도우돔/"
+                    data-tooltip="쉐도우 돔(Shadow Dom)이란"
+                    aria-label="PREVIOUS: 쉐도우 돔(Shadow Dom)이란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/10/24/Node.js/express-session/"
+                    data-tooltip="express session 정리"
+                    aria-label="NEXT: express session 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/10/29/Web/웹컴포넌트와쉐도우돔/"
+                    data-tooltip="쉐도우 돔(Shadow Dom)이란"
+                    aria-label="PREVIOUS: 쉐도우 돔(Shadow Dom)이란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/10/24/Node.js/express-session/"
+                    data-tooltip="express session 정리"
+                    aria-label="NEXT: express session 정리"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/10/24/Node.js/cookieParser란/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/10/24/Node.js/cookieParser란/';
+              
+            this.page.identifier = '2017/10/24/Node.js/cookieParser란/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

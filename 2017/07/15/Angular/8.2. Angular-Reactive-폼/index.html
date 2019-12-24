@@ -1,0 +1,625 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>08.2. Angular Reactive 폼 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"\nReactiveFormModule Import 하기\n\n\napp.module.ts\n\n12345678910111213141516171819import &#123; NgModule &#125;            from '@angular/core';import &#123; BrowserModule &#125;       from '@angular/platform-browser';import &#123; ReactiveFormsModule &#125; from '@angular/forms';  // &lt;-- #1 import moduleimport &#123; AppComponent &#125;        from './app.component';import &#123; PrescriptionModal &#125;   from '[path]'; // &lt;-- #1 import component@NgModule(&#123;  imports: [    BrowserModule,    ReactiveFormsModule // &lt;-- #2 add to @NgModule imports  ],  declarations: [    AppComponent,    PrescriptionModal, // &lt;-- #3 declare app component  ],  bootstrap: [ AppComponent ]&#125;)export class AppModule &#123; &#125;\n\n12345678910111213141516171819202122232425262728293031import &#123; Component &#125; from '@angular/core';import &#123; FormControl, FormGroup &#125; from '@angular/forms';@Component(&#123;  template: `  &lt;h2&gt;Hero Detail&lt;/h2&gt;  &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;  &lt;label&gt;Name:    &lt;input [formControl]=\"name\"&gt;  &lt;/label&gt;  &lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;  &lt;form [formGroup]=\"heroForm\" novalidate&gt;    &lt;div&gt;      &lt;label&gt;Name:        &lt;input formControlName=\"name\"&gt;      &lt;/label&gt;    &lt;/div&gt;  &lt;/form&gt;  &lt;p&gt;Form value: &#123;&#123; heroForm.value | json &#125;&#125;&lt;/p&gt;  &lt;p&gt;Form status: &#123;&#123; heroForm.status | json &#125;&#125;&lt;/p&gt;  `&#125;)export class PrescriptionModal &#123;  name = new FormControl();  heroForm = new FormGroup(&#123;    name: new FormControl()  &#125;);&#125;\n\n\nFormControl : 값이나 validity를 추적한다.\nFormGroup : 값이나 validity 추적을위한 AbstractControl 인스턴스 그룹.\nAbstractControl : FormControl, FormGroup, FormArray의 추상 클래스로, 프로퍼티나 common behaviors들을 제공한다.\n\n\nFormControl\n\nFormControl 초기화 : 초기값, validators, async validators 값이 인자로 들어간다.\n1234567form = new FormGroup(&#123;  lowerCase: new FormControl('', Validators.required),  upperCase: new FormControl('',               Validators.compose([                 Validators.required,                 Validators.pattern(\"[A-Z]&#123;3&#125;\")]))&#125;);\n\n템플릿에 [formControl]=&quot;폼컨트롤이름&quot;으로 적용한다.\n\nFormGroup\n\nFormGroup 초기화  : 폼 그룹 안에 폼컨트롤러를 선언해준다.\n, form에 [formGroup]=&quot;폼그룹이름&quot;으로 적용, input이나 select 태그에 formControlName=&quot;폼컨트롤이름&quot; 과 같이 적용한다.\n\nnovalidators\n\n&lt;form&gt; 태그 안에 novalidators는 브라우저가 원시 HTML 검증을 하지 않도록 해준다.\n","dateCreated":"2017-07-15T09:09:21+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-15T09:09:21+09:00","description":"","headline":"08.2. Angular Reactive 폼","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"}</script>
+    <meta name="description" content="ReactiveFormModule Import 하기   app.module.ts  12345678910111213141516171819import &amp;#123; NgModule &amp;#125;            from &apos;@angular/core&apos;;import &amp;#123; BrowserModule &amp;#125;       from &apos;@angular/platfo">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="08.2. Angular Reactive 폼">
+<meta property="og:url" content="https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="ReactiveFormModule Import 하기   app.module.ts  12345678910111213141516171819import &amp;#123; NgModule &amp;#125;            from &apos;@angular/core&apos;;import &amp;#123; BrowserModule &amp;#125;       from &apos;@angular/platfo">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="08.2. Angular Reactive 폼">
+<meta name="twitter:description" content="ReactiveFormModule Import 하기   app.module.ts  12345678910111213141516171819import &amp;#123; NgModule &amp;#125;            from &apos;@angular/core&apos;;import &amp;#123; BrowserModule &amp;#125;       from &apos;@angular/platfo">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            08.2. Angular Reactive 폼
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-15T09:09:21+09:00">
+	
+		    2017.07.15
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <ol>
+<li>ReactiveFormModule Import 하기</li>
+</ol>
+<ul>
+<li>app.module.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;            <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125;       <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ReactiveFormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;  <span class="comment">// &lt;-- #1 import module</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;        <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionModal &#125;   <span class="keyword">from</span> <span class="string">'[path]'</span>; <span class="comment">// &lt;-- #1 import component</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    ReactiveFormsModule <span class="comment">// &lt;-- #2 add to @NgModule imports</span></span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionModal, <span class="comment">// &lt;-- #3 declare app component</span></span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormControl, FormGroup &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h2&gt;Hero Detail&lt;/h2&gt;</span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">    &lt;input [formControl]="name"&gt;</span></span><br><span class="line"><span class="string">  &lt;/label&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;form [formGroup]="heroForm" novalidate&gt;</span></span><br><span class="line"><span class="string">    &lt;div&gt;</span></span><br><span class="line"><span class="string">      &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">        &lt;input formControlName="name"&gt;</span></span><br><span class="line"><span class="string">      &lt;/label&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;p&gt;Form value: &#123;&#123; heroForm.value | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Form status: &#123;&#123; heroForm.status | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionModal &#123;</span><br><span class="line">  name = <span class="keyword">new</span> FormControl();</span><br><span class="line"></span><br><span class="line">  heroForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    name: <span class="keyword">new</span> FormControl()</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>FormControl : 값이나 validity를 추적한다.</p>
+<p>FormGroup : 값이나 validity 추적을위한 AbstractControl 인스턴스 그룹.</p>
+<p>AbstractControl : FormControl, FormGroup, FormArray의 추상 클래스로, 프로퍼티나 common behaviors들을 제공한다.</p>
+</blockquote>
+<ul>
+<li>FormControl</li>
+</ul>
+<p><code>FormControl 초기화</code> : 초기값, validators, async validators 값이 인자로 들어간다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">form = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  lowerCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.required),</span><br><span class="line">  upperCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>,</span><br><span class="line">               Validators.compose([</span><br><span class="line">                 Validators.required,</span><br><span class="line">                 Validators.pattern(<span class="string">"[A-Z]&#123;3&#125;"</span>)]))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>템플릿에 <code>[formControl]=&quot;폼컨트롤이름&quot;</code>으로 적용한다.</p>
+<ul>
+<li>FormGroup</li>
+</ul>
+<p><code>FormGroup 초기화</code>  : 폼 그룹 안에 폼컨트롤러를 선언해준다.</p>
+<p>, form에 <code>[formGroup]=&quot;폼그룹이름&quot;</code>으로 적용, input이나 select 태그에 <code>formControlName=&quot;폼컨트롤이름&quot;</code> 과 같이 적용한다.</p>
+<ul>
+<li>novalidators</li>
+</ul>
+<p><code>&lt;form&gt;</code> 태그 안에 novalidators는 브라우저가 원시 HTML 검증을 하지 않도록 해준다.</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/"
+                    data-tooltip="CSS3 새로운 스타일 정리"
+                    aria-label="PREVIOUS: CSS3 새로운 스타일 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Frontend/npm-savedev란/"
+                    data-tooltip="npm install --save와 --save-dev 차이"
+                    aria-label="NEXT: npm install --save와 --save-dev 차이"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/"
+                    data-tooltip="CSS3 새로운 스타일 정리"
+                    aria-label="PREVIOUS: CSS3 새로운 스타일 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Frontend/npm-savedev란/"
+                    data-tooltip="npm install --save와 --save-dev 차이"
+                    aria-label="NEXT: npm install --save와 --save-dev 차이"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/15/Angular/8.2. Angular-Reactive-폼/';
+              
+            this.page.identifier = '2017/07/15/Angular/8.2. Angular-Reactive-폼/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

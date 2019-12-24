@@ -1,0 +1,623 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>12. 장식자 정리 - @ViewChild, @ViewChildren - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"@ViewChild자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다. \n지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 @ViewChild와 setTimeout()함수를 이용해 상태정보를 알아냄.\n\n@ViewChild(클래스명) 변수명: 클래스명;\n\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748import &#123;AfterViewInit, Component, Directive, Input, ViewChild&#125; from '@angular/core';// 지시자의 속성값은 DOM 생성 후 알 수 있음.@Directive(&#123; selector: 'item' &#125;)export class Item &#123;  @Input() status: boolean;&#125;@Component(&#123;  selector: 'item-component',  template: '&lt;button&gt;알림창&lt;/button&gt;'&#125;)export class ItemComponent &#123;  display()&#123;    alert('ItemComponent입니다');       &#125;&#125;@Component(&#123;  selector: 'app-view-child',  template: `    &lt;item status=\"false\" *ngIf=\"isShow==false\"&gt;&lt;/item&gt;    &lt;item status=\"true\" *ngIf=\"isShow==true\"&gt;&lt;/item&gt;        &lt;button (click)=\"toggle()\"&gt;선택&lt;/button&gt;&lt;br&gt;    isShow : &#123;&#123;isShow&#125;&#125;&lt;br&gt;    status : &#123;&#123;status&#125;&#125;&lt;br&gt;        &lt;item-component (click)=\"display()\"&gt;&lt;/item-component&gt;`&#125;)export class ViewchildComponent &#123;  //@ViewChild를 통해 첫번째 item 엘리먼트를 가져옴.  @ViewChild(Item)  set item(v: Item) &#123;        setTimeout(() =&gt; &#123; this.status = v.status; &#125;, 0);  &#125;  @ViewChild(ItemComponent) itemComponent: ItemComponent;  isShow: boolean = true;  status: boolean;   toggle() &#123;    this.isShow = !this.isShow;  &#125;  display()&#123;    this.itemComponent.display();  &#125; &#125;\n\n@ViewChildren\n@ViewChildren(‘설명 레이블’) children:QueryList&lt;참조 변수의 형&gt;;\n\n복수개의 캡슐화된 엘리먼트(쉐도우 Dom)를 참조한다.\n12345678...&lt;child-cmp #child1 [childname]=\"'자식1'\"&gt;&lt;/child-cmp&gt;&lt;child-cmp #child2 [childname]=\"'자식2'\"&gt;&lt;/child-cmp&gt;&lt;child-cmp #child3 [childname]=\"'자식3'\"&gt;&lt;/child-cmp&gt;...export class ViewchildrenComponnet &#123;  @ViewChildren('child1,child2,child3') children:QueryList&lt;ChildCmp&gt;;&#125;\n\n번외\n@ContentChild  : DOM의 단수 개의 엘리먼트 가져오기\n@ContentChild(클래스명) 사용할 변수명: 클래스명;\n\n@ContentChildren : DOM의 복수 개의 엘리먼트 가져오기\n@ContentChildren(클래스명) 사용할 변수명: 클래스명;\n\n\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱\n@ViewChild와 @ConentChild의 차이 http://stackoverflow.com/questions/34326745/whats-the-difference-between-viewchild-and-contentchild\n","dateCreated":"2017-07-26T10:00:50+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-26T10:00:50+09:00","description":"","headline":"12. 장식자 정리 - @ViewChild, @ViewChildren","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"}</script>
+    <meta name="description" content="@ViewChild자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다.  지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 @ViewChild와 setTimeout()함수를 이">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="12. 장식자 정리 - @ViewChild, @ViewChildren">
+<meta property="og:url" content="https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="@ViewChild자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다.  지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 @ViewChild와 setTimeout()함수를 이">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="12. 장식자 정리 - @ViewChild, @ViewChildren">
+<meta name="twitter:description" content="@ViewChild자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다.  지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 @ViewChild와 setTimeout()함수를 이">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            12. 장식자 정리 - @ViewChild, @ViewChildren
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-26T10:00:50+09:00">
+	
+		    2017.07.26
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="ViewChild"><a href="#ViewChild" class="headerlink" title="@ViewChild"></a>@ViewChild</h2><p>자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다. </p>
+<p>지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 <strong>@ViewChild와 setTimeout()</strong>함수를 이용해 상태정보를 알아냄.</p>
+<blockquote>
+<p>@ViewChild(클래스명) 변수명: 클래스명;</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;AfterViewInit, Component, Directive, Input, ViewChild&#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 지시자의 속성값은 DOM 생성 후 알 수 있음.</span></span><br><span class="line"><span class="meta">@Directive</span>(&#123; selector: <span class="string">'item'</span> &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Item &#123;</span><br><span class="line">  <span class="meta">@Input</span>() status: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'item-component'</span>,</span><br><span class="line">  template: <span class="string">'&lt;button&gt;알림창&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ItemComponent &#123;</span><br><span class="line">  display()&#123;</span><br><span class="line">    alert(<span class="string">'ItemComponent입니다'</span>);     </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-view-child'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;item status="false" *ngIf="isShow==false"&gt;&lt;/item&gt;</span></span><br><span class="line"><span class="string">    &lt;item status="true" *ngIf="isShow==true"&gt;&lt;/item&gt;    </span></span><br><span class="line"><span class="string">    &lt;button (click)="toggle()"&gt;선택&lt;/button&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    isShow : &#123;&#123;isShow&#125;&#125;&lt;br&gt;</span></span><br><span class="line"><span class="string">    status : &#123;&#123;status&#125;&#125;&lt;br&gt;    </span></span><br><span class="line"><span class="string">    &lt;item-component (click)="display()"&gt;&lt;/item-component&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ViewchildComponent &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//@ViewChild를 통해 첫번째 item 엘리먼트를 가져옴.</span></span><br><span class="line">  <span class="meta">@ViewChild</span>(Item)</span><br><span class="line">  <span class="keyword">set</span> item(v: Item) &#123;    </span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="keyword">this</span>.status = v.status; &#125;, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@ViewChild</span>(ItemComponent) itemComponent: ItemComponent;</span><br><span class="line">  isShow: <span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br><span class="line">  status: <span class="built_in">boolean</span>;</span><br><span class="line"> </span><br><span class="line">  toggle() &#123;</span><br><span class="line">    <span class="keyword">this</span>.isShow = !<span class="keyword">this</span>.isShow;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  display()&#123;</span><br><span class="line">    <span class="keyword">this</span>.itemComponent.display();</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ViewChildren"><a href="#ViewChildren" class="headerlink" title="@ViewChildren"></a>@ViewChildren</h2><blockquote>
+<p>@ViewChildren(‘설명 레이블’) children:QueryList&lt;참조 변수의 형&gt;;</p>
+</blockquote>
+<p>복수개의 캡슐화된 엘리먼트(쉐도우 Dom)를 참조한다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;child-cmp #child1 [childname]=<span class="string">"'자식1'"</span>&gt;&lt;<span class="regexp">/child-cmp&gt;</span></span><br><span class="line"><span class="regexp">&lt;child-cmp #child2 [childname]="'자식2'"&gt;&lt;/</span>child-cmp&gt;</span><br><span class="line">&lt;child-cmp #child3 [childname]=<span class="string">"'자식3'"</span>&gt;&lt;<span class="regexp">/child-cmp&gt;</span></span><br><span class="line"><span class="regexp">...</span></span><br><span class="line"><span class="regexp">export class ViewchildrenComponnet &#123;</span></span><br><span class="line"><span class="regexp">  @ViewChildren('child1,child2,child3') children:QueryList&lt;ChildCmp&gt;;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="번외"><a href="#번외" class="headerlink" title="번외"></a>번외</h4><ul>
+<li><p><strong>@ContentChild  : DOM의 단수 개의 엘리먼트 가져오기</strong></p>
+<p>@ContentChild(클래스명) 사용할 변수명: 클래스명;</p>
+</li>
+<li><p><strong>@ContentChildren : DOM의 복수 개의 엘리먼트 가져오기</strong></p>
+<p>@ContentChildren(클래스명) 사용할 변수명: 클래스명;</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<p>@ViewChild와 @ConentChild의 차이 <a href="http://stackoverflow.com/questions/34326745/whats-the-difference-between-viewchild-and-contentchild" target="_blank" rel="noopener">http://stackoverflow.com/questions/34326745/whats-the-difference-between-viewchild-and-contentchild</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/30/Angular/3.1. 자식-컴포넌트/"
+                    data-tooltip="03.1. 자식 컴포넌트"
+                    aria-label="PREVIOUS: 03.1. 자식 컴포넌트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/CSS/상대-크기/"
+                    data-tooltip="CSS 상대 크기"
+                    aria-label="NEXT: CSS 상대 크기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/30/Angular/3.1. 자식-컴포넌트/"
+                    data-tooltip="03.1. 자식 컴포넌트"
+                    aria-label="PREVIOUS: 03.1. 자식 컴포넌트"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/24/CSS/상대-크기/"
+                    data-tooltip="CSS 상대 크기"
+                    aria-label="NEXT: CSS 상대 크기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/';
+              
+            this.page.identifier = '2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

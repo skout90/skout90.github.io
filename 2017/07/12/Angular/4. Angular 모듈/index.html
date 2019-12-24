@@ -1,0 +1,741 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>04. Angular 모듈 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"모듈은 관련된 기능을 하나로 묶어 다른 코드와 결합도를 줄이고, 재사용성을 높이기 위해 사용된다. \nAngular 라이브러리 모듈Angular 라이브러리 모듈의 종류로는 크게 지시자, 파이프, 장식자, 클래스, 인터페이스, Enum, 타입 별칭, 상수가 있음.\n\n@angular/common :  파이프, 구조 지시자, 속성 지시자 관련 모듈\n@angular/core : 주요 요소 장식자 및 핵심 모듈\n@angular/forms : 폼 관련 모듈, 지시자\n@angular/http : HTTP 통신과 관련된 모듈\n@angular/platform-browser : 브라우저 모듈, DOM 새니타이저 등\n@angular/router : 라우터 관련 모듈이나 지시자\n@angular/testing : 테스팅 관련 모듈\n\nimport { Component} from &#39;@angular/core&#39;; 와 같이 추가.\n사용자 정의 모듈1234567891011121314151617export class Hi &#123;  sayHi() &#123;    return \"Hi!\";  &#125;&#125;class District &#123;  id: number; name: string;&#125;export var DISTRICT: District[] = [  &#123; id: 1, name: '서울'&#125;, &#123;id: 2, name: '부산'&#125;, &#123;id: 3, name: '대구'&#125;];export function echo(msg:string) &#123;  return msg;&#125;\n\nexport 키워드를 이용해 모듈을 정의하고, 모듈을 외부로 노출할 것임을 알림.\n\n사용\n\n1import &#123; Hi, echo, DISTRICT &#125; from './hi';\n\nAngular 모듈모듈성이란 성능을 향상 시킬 수 있도록 모듈 간 결합을 최소화하고, 모듈 내부의 응집도는 최대화하는 것을 의미함.\nAngular 모듈은 모듈성을 극대화시키기 위해서 모듈을 그룹단위로 관리.\n루트모듈/핵심모듈/특징모듈/공유모듈로 나누어 관리.\n루트모듈최상위 모듈로서, 컴포넌트, 지시자, 서비스, 파이프와 같은 모듈을 등록하고 관리\n루트모듈은 @NgModule 장식자를 이용해 정의\n1234567891011121314151617import &#123; MyComponent &#125; from './my.component';@NgModule(&#123;  imports: [  \tBrowserModule, CommonModule, FormsModule,    AppRoutingModule,    CoreModule.forRoot(&#123;nickName: 'Happy'&#125;), // 매개변수 전달    ...  ],  declarations : [    컴포넌트, 지시자, 파이프,  ],  providers: [서비스 모듈, ...]  ,  ...&#125;)\n\n\nimports 속성\n\n\n브라우저 모듈(Browser Module)\n브라우저 상에서 동작한다면 반드시 포함, 컴포넌트나 지시자, 파이프 같은 구성요소를 템플릿에 나타나게 하는 역할.\n\n공통 모듈(Common Module)\n템플릿에 사용하는 ngIf, ngFor와 관련된 기능 포함(브라우저 모듈에 포함)\n\n폼 모듈(FormsModule)\nNgModel 지시자나 내장 검증기 지시자 등을 포함.\n\n라우딩 모듈(RoutingModule) \n어플리케이션 수준에서 라우팅 수행\n\n\n라우팅 모듈 설정\n12345678910111213141516171819import &#123; NgModule &#125; from '@angular/core';import &#123; Routes, RouterModule &#125; from '@angular/router';import &#123; IntroComponent &#125; from './intro.component';import &#123; HelloComponent &#125; from './hello/hello.component';import &#123; CoreTestComponent &#125; from './core-test/core-test.component';const appRoutes: Routes = [  &#123; path: '', component: IntroComponent &#125;,  &#123; path: 'hello', component: HelloComponent &#125;,  &#123; path: 'lazy', loadChildren: 'app/player/player.module#PlayerModule' &#125;,  &#123; path: 'core-test', component: CoreTestComponent &#125;];@NgModule(&#123;  imports: [RouterModule.forRoot(appRoutes)],  exports: [RouterModule]&#125;)export class AppRoutingModule &#123;&#125;\n\nforRoot를 이용해 라우트를 등록, app.module.ts 파일 imports에 추가\n\nproviders 속성\n\n전역에서 사용할 서비스 등록\n\nex) 개발단계에서 전역적으로 사용되는 로거 서비스\n\n\ndeclarations 속성\n\n어플리케이션 레벨에서 사용하고자 하는 컴포넌트, 지시자 파이프. imports내에서 선언된 내용들을 재선언해서는 안된다.\n\nbootstrap 속성\n\n최상위 컴포넌트인 애플리케이션 컴포넌트 등록\n\nentryComponents\n\n페이지 컴포넌트를 등록\n핵심 모듈  항상 동작할 필요가 있거나, 어플리케이션 전체 동작에 핵심적인 역할을 하는 모듈.\n\nex) 타이틀 컴포넌트 : 동작 내내 호출되어야 하기 때문\n\n\n루트 모듈\n\nimports에 핵심모듈 등록, CoreModule.forRoot({nickName: &#39;Happy&#39;})\n\n핵심모듈\n\n123456789101112131415161718192021222324252627282930import &#123; ModuleWithProviders, NgModule, Optional, SkipSelf &#125; from '@angular/core';import &#123; CommonModule &#125; from '@angular/common';import &#123; TitleComponent &#125; from './title.component';import &#123; UserService &#125; from './user.service';import &#123; UserServiceConfig &#125; from './user.service';@NgModule(&#123;  imports: [CommonModule],  declarations: [TitleComponent],  exports: [TitleComponent],  providers: [UserService]&#125;)export class CoreModule &#123;  constructor( @Optional() @SkipSelf() parentModule: CoreModule) &#123;    if (parentModule) &#123;      throw new Error(        'CoreModule이 이미 로딩되었습니다.');    &#125;  &#125;  static forRoot(config: UserServiceConfig): ModuleWithProviders &#123;    return &#123;      ngModule: CoreModule,      providers: [        &#123; provide: UserServiceConfig, useValue: config &#125;      ]    &#125;;  &#125;&#125;\n\n핵심 모듈을 루트 모듈에 추가하기 위해, @NgModule 설정에서 TitleComponent를 선언하고, 다시 export로 노출\n@SkipSelf() : 핵심 모듈이 이미 생성됐는지 검사, 존재 한다면 @Optional 장식자를 이용해 주입\n@Optional : 파라미터가 없으면 null 리턴, 있으면 개체 리턴\nforRoot : 전달받은 {nickName: ‘Happy’} 값이, UserService에서 전달됌.\n\n서비스\n\n123456789101112131415161718import &#123; Injectable, Optional &#125; from '@angular/core';export class UserServiceConfig &#123;  nickName = '';&#125;@Injectable()export class UserService &#123;  private _nickName = '';  constructor( @Optional() config: UserServiceConfig) &#123;    if (config) &#123; this._nickName = config.nickName; &#125;  &#125;  get nickName() &#123;    return this._nickName;  &#125;&#125;\n\nforRoot의 파라미터 값으로 UserService 생성자가 실행.\n\n타이틀 컴포넌트\n\n1234567891011121314151617import &#123; Component, Input &#125; from '@angular/core';import &#123; UserService &#125; from '../core/user.service';@Component(&#123;  selector: 'app-title',  template: `  &lt;h1 highlight&gt;&#123;&#123;title&#125;&#125;&lt;/h1&gt;  by &lt;b&gt;&#123;&#123;user&#125;&#125;&lt;/b&gt;`&#125;)export class TitleComponent &#123;  @Input() title = '';  user = '';  constructor(userService: UserService) &#123;    this.user = userService.nickName;  &#125;&#125;\n\n\n사용\n\n12345678910import &#123; Component &#125; from '@angular/core';@Component(&#123;  selector: 'core-test',  template: `  &lt;app-title [title]=\"title\"&gt;&lt;/app-title&gt;`&#125;)export class CoreTestComponent &#123;  title = '반갑습니다! Core Module!';&#125;\n\n특징모듈  단위 어플리케이션(특정 기능 수행하는 여러 컴포넌트, 서비스 등의 집합)을 구성하는 모듈, 하위 분리하는 모듈.\n\nex) 게시판 = 단위 어플리케이션 = 리스트컴포넌트 + 글쓰기 컴포넌트 + …\n\n\n특징 모듈 선언\n\n123456789101112131415import &#123; NgModule &#125;           from '@angular/core';import &#123; CommonModule &#125;       from '@angular/common';import &#123; FormsModule &#125;        from '@angular/forms';import &#123; MemberListComponent &#125;   from './member-list.component';import &#123; HighlightDirective &#125; from './highlight.directive';import &#123; MemberRoutingModule &#125;   from './member-routing.module';import &#123; MemberService &#125;     from './member.service';@NgModule(&#123;  imports:      [ CommonModule, FormsModule, MemberRoutingModule ],  declarations: [ MemberListComponent, HighlightDirective ],  providers:    [ MemberService ]&#125;)export class MemberModule &#123; &#125;\n\n루트 모듈과 유사한 형태로 작성\n\n특징 모듈 라우팅 모듈\n\n123456789101112import &#123; NgModule &#125;            from '@angular/core';import &#123; RouterModule &#125;        from '@angular/router';import &#123; MemberListComponent &#125;    from './member-list.component';@NgModule(&#123;  imports: [RouterModule.forChild([    &#123; path: 'member-list', component: MemberListComponent&#125;  ])],  exports: [RouterModule]&#125;)export class MemberRoutingModule &#123;&#125;\n\n\n루트 모듈에 추가\n\nimports:[ MemberModule, ...]\n공유 모듈자주 사용되는 모듈이지만, 핵심 모듈처럼 항상 사용되는 모듈이 대상이 아닌 특징 모듈을 구성할 때 자주 반복적으로 선언되는 모듈로 반복적으로 나타나는 패턴을 묶어 공유모듈로 정의.\n루트 모듈은 특징 모듈을 임포트하고, 특징 모듈은 공유모듈을 임포트함.\n\n공유 모델에 사용할 구성요소 정의\n\n12345678import &#123; Pipe, PipeTransform &#125; from '@angular/core';@Pipe(&#123; name: 'myupper' &#125;)export class MyUpperPipe implements PipeTransform &#123;  transform(phrase: string) &#123;    return phrase.toUpperCase();  &#125;&#125;\n\n입력을 대문자로 변환하는 파이프.\n\n공유 모듈 설정 파일\n\n123456789101112import &#123; NgModule &#125; from '@angular/core';import &#123; CommonModule &#125; from '@angular/common';import &#123; FormsModule &#125; from '@angular/forms';import &#123; MyUpperPipe &#125; from './my-upper.pipe';@NgModule(&#123;  imports: [CommonModule],  declarations: [MyUpperPipe],  exports: [MyUpperPipe, CommonModule, FormsModule]&#125;)export class SharedModule &#123; &#125;\n\ndeclarations 선언을 통해 모듈로 등록, 다른 모듈에 포함되어 사용되도록 exports를 통해 다시 외부로 노출]\n\n공유모듈 임포트\n\n12345678910111213import &#123; NgModule &#125; from '@angular/core';import &#123; SharedModule &#125; from '../shared/shared.module';import &#123; PlayerRoutingModule &#125; from './player-routing.module';import &#123; PlayerComponent &#125; from './player.component';@NgModule(&#123;  imports: [ PlayerRoutingModule, SharedModule],  declarations: [PlayerComponent],  providers: []&#125;)export class PlayerModule &#123; &#125;\n\n이미 공유모듈에 있는 모듈들은 공유모듈안에 있기 때문에, 다시 선언할 필요가 없음. 따라서 모듈 구성에 따른 복잡도를 줄일 수 있음.\nReference쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱\n모듈을 이용하여 어플리케이션 구성하기 : http://webframeworks.kr/tutorials/angularjs/app_structure_with_module/\n","dateCreated":"2017-07-12T10:00:40+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:40+09:00","description":"","headline":"04. Angular 모듈","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"}</script>
+    <meta name="description" content="모듈은 관련된 기능을 하나로 묶어 다른 코드와 결합도를 줄이고, 재사용성을 높이기 위해 사용된다.  Angular 라이브러리 모듈Angular 라이브러리 모듈의 종류로는 크게 지시자, 파이프, 장식자, 클래스, 인터페이스, Enum, 타입 별칭, 상수가 있음.  @angular/common :  파이프, 구조 지시자, 속성 지시자 관련 모듈 @angular">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="04. Angular 모듈">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="모듈은 관련된 기능을 하나로 묶어 다른 코드와 결합도를 줄이고, 재사용성을 높이기 위해 사용된다.  Angular 라이브러리 모듈Angular 라이브러리 모듈의 종류로는 크게 지시자, 파이프, 장식자, 클래스, 인터페이스, Enum, 타입 별칭, 상수가 있음.  @angular/common :  파이프, 구조 지시자, 속성 지시자 관련 모듈 @angular">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="04. Angular 모듈">
+<meta name="twitter:description" content="모듈은 관련된 기능을 하나로 묶어 다른 코드와 결합도를 줄이고, 재사용성을 높이기 위해 사용된다.  Angular 라이브러리 모듈Angular 라이브러리 모듈의 종류로는 크게 지시자, 파이프, 장식자, 클래스, 인터페이스, Enum, 타입 별칭, 상수가 있음.  @angular/common :  파이프, 구조 지시자, 속성 지시자 관련 모듈 @angular">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            04. Angular 모듈
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:40+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>모듈은 관련된 기능을 하나로 묶어 다른 코드와 결합도를 줄이고, 재사용성을 높이기 위해 사용된다. </p>
+<h2 id="Angular-라이브러리-모듈"><a href="#Angular-라이브러리-모듈" class="headerlink" title="Angular 라이브러리 모듈"></a>Angular 라이브러리 모듈</h2><p>Angular 라이브러리 모듈의 종류로는 크게 지시자, 파이프, 장식자, 클래스, 인터페이스, Enum, 타입 별칭, 상수가 있음.</p>
+<ul>
+<li>@angular/common :  파이프, 구조 지시자, 속성 지시자 관련 모듈</li>
+<li>@angular/core : 주요 요소 장식자 및 핵심 모듈</li>
+<li>@angular/forms : 폼 관련 모듈, 지시자</li>
+<li>@angular/http : HTTP 통신과 관련된 모듈</li>
+<li>@angular/platform-browser : 브라우저 모듈, DOM 새니타이저 등</li>
+<li>@angular/router : 라우터 관련 모듈이나 지시자</li>
+<li>@angular/testing : 테스팅 관련 모듈</li>
+</ul>
+<p><code>import { Component} from &#39;@angular/core&#39;;</code> 와 같이 추가.</p>
+<h2 id="사용자-정의-모듈"><a href="#사용자-정의-모듈" class="headerlink" title="사용자 정의 모듈"></a>사용자 정의 모듈</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Hi &#123;</span><br><span class="line">  sayHi() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hi!"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> District &#123;</span><br><span class="line">  id: <span class="built_in">number</span>; name: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> DISTRICT: District[] = [</span><br><span class="line">  &#123; id: <span class="number">1</span>, name: <span class="string">'서울'</span>&#125;, &#123;id: <span class="number">2</span>, name: <span class="string">'부산'</span>&#125;, &#123;id: <span class="number">3</span>, name: <span class="string">'대구'</span>&#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">echo</span>(<span class="params">msg:<span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> msg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>export 키워드를 이용해 <strong>모듈을 정의</strong>하고, 모듈을 외부로 노출할 것임을 알림.</p>
+<ul>
+<li><strong>사용</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Hi, echo, DISTRICT &#125; <span class="keyword">from</span> <span class="string">'./hi'</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Angular-모듈"><a href="#Angular-모듈" class="headerlink" title="Angular 모듈"></a>Angular 모듈</h2><p>모듈성이란 성능을 향상 시킬 수 있도록 모듈 간 결합을 최소화하고, 모듈 내부의 응집도는 최대화하는 것을 의미함.</p>
+<p>Angular 모듈은 모듈성을 극대화시키기 위해서 <strong>모듈을 그룹단위로 관리</strong>.</p>
+<p><strong>루트모듈/핵심모듈/특징모듈/공유모듈</strong>로 나누어 관리.</p>
+<h3 id="루트모듈"><a href="#루트모듈" class="headerlink" title="루트모듈"></a>루트모듈</h3><p>최상위 모듈로서, 컴포넌트, 지시자, 서비스, 파이프와 같은 모듈을 등록하고 관리</p>
+<p>루트모듈은 @NgModule 장식자를 이용해 정의</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; MyComponent &#125; <span class="keyword">from</span> <span class="string">'./my.component'</span>;</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">  	BrowserModule, CommonModule, FormsModule,</span><br><span class="line">    AppRoutingModule,</span><br><span class="line">    CoreModule.forRoot(&#123;nickName: <span class="string">'Happy'</span>&#125;), <span class="comment">// 매개변수 전달</span></span><br><span class="line">    ...</span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  declarations : [</span><br><span class="line">    컴포넌트, 지시자, 파이프,</span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  providers: [서비스 모듈, ...]</span><br><span class="line">  ,</span><br><span class="line">  ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>imports 속성</li>
+</ol>
+<ul>
+<li><p><strong>브라우저 모듈(Browser Module)</strong></p>
+<p>브라우저 상에서 동작한다면 반드시 포함, 컴포넌트나 지시자, 파이프 같은 구성요소를 템플릿에 나타나게 하는 역할.</p>
+</li>
+<li><p><strong>공통 모듈(Common Module)</strong></p>
+<p>템플릿에 사용하는 ngIf, ngFor와 관련된 기능 포함(브라우저 모듈에 포함)</p>
+</li>
+<li><p><strong>폼 모듈(FormsModule)</strong></p>
+<p>NgModel 지시자나 내장 검증기 지시자 등을 포함.</p>
+</li>
+<li><p><strong>라우딩 모듈(RoutingModule)</strong> </p>
+<p>어플리케이션 수준에서 라우팅 수행</p>
+</li>
+</ul>
+<p><code>라우팅 모듈 설정</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Routes, RouterModule &#125; <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; IntroComponent &#125; <span class="keyword">from</span> <span class="string">'./intro.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HelloComponent &#125; <span class="keyword">from</span> <span class="string">'./hello/hello.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CoreTestComponent &#125; <span class="keyword">from</span> <span class="string">'./core-test/core-test.component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> appRoutes: Routes = [</span><br><span class="line">  &#123; path: <span class="string">''</span>, component: IntroComponent &#125;,</span><br><span class="line">  &#123; path: <span class="string">'hello'</span>, component: HelloComponent &#125;,</span><br><span class="line">  &#123; path: <span class="string">'lazy'</span>, loadChildren: <span class="string">'app/player/player.module#PlayerModule'</span> &#125;,</span><br><span class="line">  &#123; path: <span class="string">'core-test'</span>, component: CoreTestComponent &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [RouterModule.forRoot(appRoutes)],</span><br><span class="line">  exports: [RouterModule]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppRoutingModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>forRoot를 이용해 라우트를 등록, <code>app.module.ts</code> 파일 <code>imports</code>에 추가</p>
+<ol start="2">
+<li>providers 속성</li>
+</ol>
+<p>전역에서 사용할 서비스 등록</p>
+<blockquote>
+<p>ex) 개발단계에서 전역적으로 사용되는 로거 서비스</p>
+</blockquote>
+<ol start="3">
+<li>declarations 속성</li>
+</ol>
+<p>어플리케이션 레벨에서 사용하고자 하는 컴포넌트, 지시자 파이프. imports내에서 선언된 내용들을 재선언해서는 안된다.</p>
+<ol start="4">
+<li>bootstrap 속성</li>
+</ol>
+<p>최상위 컴포넌트인 애플리케이션 컴포넌트 등록</p>
+<ol start="5">
+<li>entryComponents</li>
+</ol>
+<p>페이지 컴포넌트를 등록</p>
+<h3 id="핵심-모듈"><a href="#핵심-모듈" class="headerlink" title="핵심 모듈"></a>핵심 모듈</h3><p>  항상 동작할 필요가 있거나, 어플리케이션 전체 동작에 핵심적인 역할을 하는 모듈.</p>
+<blockquote>
+<p>ex) 타이틀 컴포넌트 : 동작 내내 호출되어야 하기 때문</p>
+</blockquote>
+<ul>
+<li><strong>루트 모듈</strong></li>
+</ul>
+<p><code>imports</code>에 핵심모듈 등록, <code>CoreModule.forRoot({nickName: &#39;Happy&#39;})</code></p>
+<ul>
+<li><strong>핵심모듈</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ModuleWithProviders, NgModule, Optional, SkipSelf &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CommonModule &#125; <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; TitleComponent &#125; <span class="keyword">from</span> <span class="string">'./title.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UserService &#125; <span class="keyword">from</span> <span class="string">'./user.service'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UserServiceConfig &#125; <span class="keyword">from</span> <span class="string">'./user.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [CommonModule],</span><br><span class="line">  declarations: [TitleComponent],</span><br><span class="line">  exports: [TitleComponent],</span><br><span class="line">  providers: [UserService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CoreModule &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"> <span class="meta">@Optional</span>() <span class="meta">@SkipSelf</span>() parentModule: CoreModule</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (parentModule) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</span><br><span class="line">        <span class="string">'CoreModule이 이미 로딩되었습니다.'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> forRoot(config: UserServiceConfig): ModuleWithProviders &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      ngModule: CoreModule,</span><br><span class="line">      providers: [</span><br><span class="line">        &#123; provide: UserServiceConfig, useValue: config &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>핵심 모듈을 루트 모듈에 추가하기 위해, <code>@NgModule</code> 설정에서 <code>TitleComponent</code>를 선언하고, 다시 <code>export</code>로 노출</p>
+<p>@SkipSelf() : 핵심 모듈이 이미 생성됐는지 검사, 존재 한다면 @Optional 장식자를 이용해 주입</p>
+<p>@Optional : 파라미터가 없으면 null 리턴, 있으면 개체 리턴</p>
+<p>forRoot : 전달받은 {nickName: ‘Happy’} 값이, UserService에서 전달됌.</p>
+<ul>
+<li><strong>서비스</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable, Optional &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserServiceConfig &#123;</span><br><span class="line">  nickName = <span class="string">''</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> UserService &#123;</span><br><span class="line">  <span class="keyword">private</span> _nickName = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"> <span class="meta">@Optional</span>() config: UserServiceConfig</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (config) &#123; <span class="keyword">this</span>._nickName = config.nickName; &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> nickName() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._nickName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>forRoot의 파라미터 값으로 UserService 생성자가 실행.</p>
+<ul>
+<li><strong>타이틀 컴포넌트</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; UserService &#125; <span class="keyword">from</span> <span class="string">'../core/user.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-title'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h1 highlight&gt;&#123;&#123;title&#125;&#125;&lt;/h1&gt;</span></span><br><span class="line"><span class="string">  by &lt;b&gt;&#123;&#123;user&#125;&#125;&lt;/b&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TitleComponent &#123;</span><br><span class="line">  <span class="meta">@Input</span>() title = <span class="string">''</span>;</span><br><span class="line">  user = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">userService: UserService</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.user = userService.nickName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>사용</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'core-test'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;app-title [title]="title"&gt;&lt;/app-title&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CoreTestComponent &#123;</span><br><span class="line">  title = <span class="string">'반갑습니다! Core Module!'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="특징모듈"><a href="#특징모듈" class="headerlink" title="특징모듈"></a>특징모듈</h3><p>  단위 어플리케이션(특정 기능 수행하는 여러 컴포넌트, 서비스 등의 집합)을 구성하는 모듈, 하위 분리하는 모듈.</p>
+<blockquote>
+<p>ex) 게시판 = 단위 어플리케이션 = 리스트컴포넌트 + 글쓰기 컴포넌트 + …</p>
+</blockquote>
+<ul>
+<li>특징 모듈 선언</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;           <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CommonModule &#125;       <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormsModule &#125;        <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; MemberListComponent &#125;   <span class="keyword">from</span> <span class="string">'./member-list.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HighlightDirective &#125; <span class="keyword">from</span> <span class="string">'./highlight.directive'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; MemberRoutingModule &#125;   <span class="keyword">from</span> <span class="string">'./member-routing.module'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; MemberService &#125;     <span class="keyword">from</span> <span class="string">'./member.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports:      [ CommonModule, FormsModule, MemberRoutingModule ],</span><br><span class="line">  declarations: [ MemberListComponent, HighlightDirective ],</span><br><span class="line">  providers:    [ MemberService ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MemberModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>루트 모듈과 유사한 형태로 작성</p>
+<ul>
+<li>특징 모듈 라우팅 모듈</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;            <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; RouterModule &#125;        <span class="keyword">from</span> <span class="string">'@angular/router'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; MemberListComponent &#125;    <span class="keyword">from</span> <span class="string">'./member-list.component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [RouterModule.forChild([</span><br><span class="line">    &#123; path: <span class="string">'member-list'</span>, component: MemberListComponent&#125;</span><br><span class="line">  ])],</span><br><span class="line">  exports: [RouterModule]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MemberRoutingModule &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>루트 모듈에 추가</li>
+</ul>
+<p><code>imports:[ MemberModule, ...]</code></p>
+<h3 id="공유-모듈"><a href="#공유-모듈" class="headerlink" title="공유 모듈"></a>공유 모듈</h3><p>자주 사용되는 모듈이지만, 핵심 모듈처럼 항상 사용되는 모듈이 대상이 아닌 특징 모듈을 구성할 때 자주 반복적으로 선언되는 모듈로 반복적으로 나타나는 패턴을 묶어 공유모듈로 정의.</p>
+<p>루트 모듈은 특징 모듈을 임포트하고, 특징 모듈은 공유모듈을 임포트함.</p>
+<ul>
+<li>공유 모델에 사용할 구성요소 정의</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Pipe, PipeTransform &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Pipe</span>(&#123; name: <span class="string">'myupper'</span> &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyUpperPipe <span class="keyword">implements</span> PipeTransform &#123;</span><br><span class="line">  transform(phrase: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> phrase.toUpperCase();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>입력을 대문자로 변환하는 파이프.</p>
+<ul>
+<li>공유 모듈 설정 파일</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CommonModule &#125; <span class="keyword">from</span> <span class="string">'@angular/common'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; MyUpperPipe &#125; <span class="keyword">from</span> <span class="string">'./my-upper.pipe'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [CommonModule],</span><br><span class="line">  declarations: [MyUpperPipe],</span><br><span class="line">  exports: [MyUpperPipe, CommonModule, FormsModule]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>declarations 선언을 통해 모듈로 등록, 다른 모듈에 포함되어 사용되도록 exports를 통해 다시 외부로 노출]</p>
+<ul>
+<li>공유모듈 임포트</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; SharedModule &#125; <span class="keyword">from</span> <span class="string">'../shared/shared.module'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; PlayerRoutingModule &#125; <span class="keyword">from</span> <span class="string">'./player-routing.module'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PlayerComponent &#125; <span class="keyword">from</span> <span class="string">'./player.component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [ PlayerRoutingModule, SharedModule],</span><br><span class="line">  declarations: [PlayerComponent],</span><br><span class="line">  providers: []</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PlayerModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>이미 공유모듈에 있는 모듈들은 공유모듈안에 있기 때문에, 다시 선언할 필요가 없음. 따라서 모듈 구성에 따른 복잡도를 줄일 수 있음.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<p>모듈을 이용하여 어플리케이션 구성하기 : <a href="http://webframeworks.kr/tutorials/angularjs/app_structure_with_module/" target="_blank" rel="noopener">http://webframeworks.kr/tutorials/angularjs/app_structure_with_module/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/5.1. 의존성 주입/"
+                    data-tooltip="05.1. Angular 의존성 주입"
+                    aria-label="PREVIOUS: 05.1. Angular 의존성 주입"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    data-tooltip="03. Angular 컴포넌트"
+                    aria-label="NEXT: 03. Angular 컴포넌트"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/5.1. 의존성 주입/"
+                    data-tooltip="05.1. Angular 의존성 주입"
+                    aria-label="PREVIOUS: 05.1. Angular 의존성 주입"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/3. Angular 컴포넌트/"
+                    data-tooltip="03. Angular 컴포넌트"
+                    aria-label="NEXT: 03. Angular 컴포넌트"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/4. Angular 모듈/';
+              
+            this.page.identifier = '2017/07/12/Angular/4. Angular 모듈/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

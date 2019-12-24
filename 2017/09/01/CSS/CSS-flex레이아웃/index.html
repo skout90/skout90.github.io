@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>FLEX 레이아웃 정리 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"다음 레이아웃을 flex로 표현해보자\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&lt;style&gt;  .container &#123;    display: flex;    flex-direction: column;  &#125;  header&#123;    border-bottom:1px solid gray;    text-align: center;  &#125;  footer&#123;    border-top:1px solid gray;    padding:20px;    text-align: center;  &#125;  .content&#123;    display:flex;  &#125;  .content nav&#123;    border-right:1px solid gray;  &#125;  .content aside&#123;    border-left:1px solid gray;      padding:20px;  &#125;  nav, aside&#123;    flex-basis: 150px;    flex-shrink: 0;  &#125;  main&#123;    padding:10px 22px 5px 4px;  &#125;&lt;/style&gt;&lt;div class=\"container\"&gt;  &lt;header&gt;    &lt;h1&gt;헤더&lt;/h1&gt;  &lt;/header&gt;  &lt;section class=\"content\"&gt;    &lt;nav&gt;      &lt;ul&gt;        &lt;li&gt;html&lt;/li&gt;        &lt;li&gt;css&lt;/li&gt;        &lt;li&gt;javascript&lt;/li&gt;      &lt;/ul&gt;    &lt;/nav&gt;    &lt;main&gt;      Lorem ipsum dolor sit amet!    &lt;/main&gt;    &lt;aside&gt;      라젠카    &lt;/aside&gt;  &lt;/section&gt;  &lt;footer&gt;    푸터푸터  &lt;/footer&gt;&lt;/div&gt;\n\ndisplay: flex;컨테이너에 등록함으써 flex 레이아웃 적용을 시작!\nflex-direction : row;row, row-reverse, column, column-reverse 값이 있다. row가 기본값, row는 세로 방향으로 행 레이아웃, column은 가로 방향으로 열 레이아웃.\n   1\n   2\n   3                        1      2      3     4     5\n   4\n   5\n&lt;row&gt;                        &lt;column&gt;\nflex-basis : 200px;row와 column에 따라 해당방향으로 기본 크기를 설정한다.\nflex-grow : 1;모두 1이면 스크롤을 늘릴때, 공평하게 크기가 늘어남, 다른 것들은 1, 하나는 2이면 2가 2배의 비율로 늘어난다.\nflex-shrink: 0;크기 클 수록 빨리 줄어든다. 0이면, 안줄어듬.\nflex-wrap: nowrap;wrap : 창 크기에 따라 줄바꿈이 됌.\nnowrap : 줄바꿈이 안됌.\nalign-items: stretch;stretch : 컨테이너만큼 아이템들을 늘림\nflex-start/flex-end : 자기 크기를 유지함, 위/아래 부터 요소들 위치\nbaseline : 가운데 baseline에 맞추어 자기 크기를 유지함.\ncenter : 수직 정렬\njustify-content: center수평 정렬\norder순서 설정 order:0  order:1\n두 요소를 양 끝에 정렬하기1234567891011121314151617181920212223242526272829&lt;style&gt;#container &#123;    width: 500px;    border: solid 1px #000;    display: flex;&#125;#a &#123;    width: 20%;    border: solid 1px #000;    margin-right: auto;&#125;#b &#123;    width: 20%;    border: solid 1px #000;    height: 200px;    margin-left: auto;&#125;&lt;/style&gt;&lt;div id=\"container\"&gt;    &lt;div id=\"a\"&gt;        a    &lt;/div&gt;    &lt;div id=\"b\"&gt;        b    &lt;/div&gt;&lt;/div&gt;\n\nReferencehttps://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/\n","dateCreated":"2017-09-01T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-01T19:28:10+09:00","description":"","headline":"FLEX 레이아웃 정리","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"}</script>
+    <meta name="description" content="다음 레이아웃을 flex로 표현해보자 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&amp;lt;style&amp;gt;  .container &amp;#123;    display: flex;    flex-direction: column">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="FLEX 레이아웃 정리">
+<meta property="og:url" content="https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="다음 레이아웃을 flex로 표현해보자 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&amp;lt;style&amp;gt;  .container &amp;#123;    display: flex;    flex-direction: column">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://i.imgur.com/okipVgU.png">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.084Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FLEX 레이아웃 정리">
+<meta name="twitter:description" content="다음 레이아웃을 flex로 표현해보자 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&amp;lt;style&amp;gt;  .container &amp;#123;    display: flex;    flex-direction: column">
+<meta name="twitter:image" content="http://i.imgur.com/okipVgU.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            FLEX 레이아웃 정리
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-01T19:28:10+09:00">
+	
+		    2017.09.01
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/CSS/">CSS</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>다음 레이아웃을 flex로 표현해보자<br><img src="http://i.imgur.com/okipVgU.png" alt="img"></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">  <span class="selector-class">.container</span> &#123;</span></span><br><span class="line">    display: flex;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">  &#125;</span><br><span class="line">  header&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-bottom</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line">  footer&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-top</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">display</span><span class="selector-pseudo">:flex</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">nav</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-right</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">aside</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-left</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;  </span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line">  nav, aside&#123;</span><br><span class="line">    flex-basis: 150px;</span><br><span class="line">    flex-shrink: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  main&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:10px</span> 22<span class="selector-tag">px</span> 5<span class="selector-tag">px</span> 4<span class="selector-tag">px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>헤더<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>html<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>css<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>javascript<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      Lorem ipsum dolor sit amet!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aside</span>&gt;</span></span><br><span class="line">      라젠카</span><br><span class="line">    <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    푸터푸터</span><br><span class="line">  <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="display-flex"><a href="#display-flex" class="headerlink" title="display: flex;"></a>display: flex;</h4><p>컨테이너에 등록함으써 flex 레이아웃 적용을 시작!</p>
+<h4 id="flex-direction-row"><a href="#flex-direction-row" class="headerlink" title="flex-direction : row;"></a>flex-direction : row;</h4><p><code>row</code>, <code>row-reverse</code>, <code>column</code>, <code>column-reverse</code> 값이 있다. row가 기본값, row는 세로 방향으로 행 레이아웃, column은 가로 방향으로 열 레이아웃.</p>
+<p>   1</p>
+<p>   2</p>
+<p>   3                        1      2      3     4     5</p>
+<p>   4</p>
+<p>   5</p>
+<p><code>&lt;row&gt;</code>                        <code>&lt;column&gt;</code></p>
+<h4 id="flex-basis-200px"><a href="#flex-basis-200px" class="headerlink" title="flex-basis : 200px;"></a>flex-basis : 200px;</h4><p>row와 column에 따라 해당방향으로 기본 크기를 설정한다.</p>
+<h4 id="flex-grow-1"><a href="#flex-grow-1" class="headerlink" title="flex-grow : 1;"></a>flex-grow : 1;</h4><p>모두 1이면 스크롤을 늘릴때, 공평하게 크기가 늘어남, 다른 것들은 1, 하나는 2이면 2가 2배의 비율로 늘어난다.</p>
+<h4 id="flex-shrink-0"><a href="#flex-shrink-0" class="headerlink" title="flex-shrink: 0;"></a>flex-shrink: 0;</h4><p>크기 클 수록 빨리 줄어든다. 0이면, 안줄어듬.</p>
+<h4 id="flex-wrap-nowrap"><a href="#flex-wrap-nowrap" class="headerlink" title="flex-wrap: nowrap;"></a>flex-wrap: nowrap;</h4><p>wrap : 창 크기에 따라 줄바꿈이 됌.</p>
+<p>nowrap : 줄바꿈이 안됌.</p>
+<h4 id="align-items-stretch"><a href="#align-items-stretch" class="headerlink" title="align-items: stretch;"></a>align-items: stretch;</h4><p>stretch : 컨테이너만큼 아이템들을 늘림</p>
+<p>flex-start/flex-end : 자기 크기를 유지함, 위/아래 부터 요소들 위치</p>
+<p>baseline : 가운데 baseline에 맞추어 자기 크기를 유지함.</p>
+<p>center : 수직 정렬</p>
+<h4 id="justify-content-center"><a href="#justify-content-center" class="headerlink" title="justify-content: center"></a>justify-content: center</h4><p>수평 정렬</p>
+<h4 id="order"><a href="#order" class="headerlink" title="order"></a>order</h4><p>순서 설정 order:0  order:1</p>
+<h4 id="두-요소를-양-끝에-정렬하기"><a href="#두-요소를-양-끝에-정렬하기" class="headerlink" title="두 요소를 양 끝에 정렬하기"></a>두 요소를 양 끝에 정렬하기</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-id">#container</span> &#123;</span></span><br><span class="line">    width: 500px;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    display: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#a</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    margin-right: auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#b</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    height: 200px;</span><br><span class="line">    margin-left: auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"a"</span>&gt;</span></span><br><span class="line">        a</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"b"</span>&gt;</span></span><br><span class="line">        b</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/" target="_blank" rel="noopener">https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    data-tooltip="03.1. Object 내장객체"
+                    aria-label="PREVIOUS: 03.1. Object 내장객체"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/firebase/"
+                    data-tooltip="Firebase로 CRUD 기능 작성"
+                    aria-label="NEXT: Firebase로 CRUD 기능 작성"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                    data-tooltip="03.1. Object 내장객체"
+                    aria-label="PREVIOUS: 03.1. Object 내장객체"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Google/firebase/"
+                    data-tooltip="Firebase로 CRUD 기능 작성"
+                    aria-label="NEXT: Firebase로 CRUD 기능 작성"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/01/CSS/CSS-flex레이아웃/';
+              
+            this.page.identifier = '2017/09/01/CSS/CSS-flex레이아웃/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

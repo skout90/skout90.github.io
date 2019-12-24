@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>09. Angular 템플릿 문법 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"Interpolation이중 중괄호 {{ }} 사이에 수식을 표현하고, 계산한 다음 그 결과를 화면에 표시\nSafe Navigation Operator존재하지 않는 객체의 변수를 Interpolation할 때, 앱전체가 중지됌. 예를들어 {{ Animal.Cat }}이 없는데, 템플릿에서 사용한다면 앱 전체가 중지된다. 이를 방지하기위해 {{ Animal?.Cat }} 을 사용한다면, Animal이 존재할때만 Cat에 접근하게 돼어 오류가 발생하지 않는다.\n[]기호의 의미 : Property Bindingcustom property 로 클래스와 연결시킬 수 있음.\n1234567891011@Component(&#123;  selector: 'app-root',  template: `    &lt;div class=\"app\"&gt;      &lt;counter [init]=\"initialCount\"&gt;&lt;/counter&gt;    &lt;/div&gt;  `&#125;)export class AppComponent &#123;  initialCount: number = 10;&#125;\n\n클래스에서 속성을 변경할 경우, 템플릿에도 반영됌.\n()기호의 의미 : Template Statement이벤트를 바인딩하기 위해 사용.\n\n(click) 이벤트\n\n123456789101112import &#123; Component &#125; from '@angular/core';@Component(&#123;  templateUrl: '&lt;button ion-button (click)=\"onClick()&gt;버튼&lt;/button&gt;'&#125;)export class TabsPage &#123;  constructor() &#123;  &#125;  onClick() &#123;    alert('dd');  &#125;&#125;\n\n\n(mouseover) 이벤트\n@Output() outputProperty = new EventEmitter();`\n\n&lt;child (outputProperty)=&quot;outputEvent($event)&quot;&gt;&lt;/child&gt;\n@Output()장식자로 선언한 변수와 동일한 속성명.\n&lt;child-cmp #child1 [childname]=&quot;&#39;자식1&#39;&quot;&gt;&lt;/child-cmp&gt;\n# 기호의 의미참조변수의 의미이다. 참조변수가 #child1이라고 선언돼 있을때 childname을 참조하려면 {{ child1.childname }} 과 같이 접근한다.\nts파일에서 참조 변수에 접근하기 위해서는 ViewChild를 이용한다.\n123456789import &#123;ViewChild, ElementRef&#125; from '@angular/core';...export class SchedulePage implements OnInit &#123;    @ViewChild('scheduleContents') scheduleContents: ElementRef;  \tconstructor() &#123;      // 다음과 같이 element에 접근.      this.scheduleContents.nativeElement.innerHTML = '후후');  \t&#125; &#125;\n\n*ngFor, *ngIf1234567891011121314151617181920212223242526272829...@Component(&#123;  templateUrl: `    &lt;div *ngFor=\"let person of persons; let i = index\"&gt;\t\t&#123;&#123; i + 1 &#125;&#125; 번째 사람\t\t&#123;&#123; person.name &#125;&#125;\t\t&#123;&#123; person.old &#125;&#125;\t&lt;/div&gt;    &lt;div *ngFor=\"let command of myAliens; let i = index\"&gt;\t\t&#123;&#123; i + 1 &#125;&#125; 번째 에일리언 목표\t\t&#123;&#123; aliens[command]['name'] &#125;&#125;\t\t&#123;&#123; aliens[command]['old'] &#125;&#125;\t&lt;/div&gt;`&#125;)export class Persons &#123;  persons = [    &#123; name: '남준호', old: 28 &#125;,    &#123; name: '남정연', old: 22 &#125;  ];  aliens = &#123;    kill : &#123; name: '뛸릴릴리', old: 12942 &#125;,    him : &#123; name: '뀔릴뗋슭', old: 12942 &#125;  &#125;;  get myAliens() &#123;    return Object.keys(this.aliens);  &#125;&#125;\n\nngFor은 iterable한 변수에서만 사용가능, 배열에서 사용가능\n객체에서 사용하기 위해서는 get 함수 만들어 주기.\nReferencehttps://toddmotto.com/passing-data-angular-2-components-input\nhttps://www.youtube.com/watch?v=Llt_jms4liU&amp;index=16&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq\n","dateCreated":"2017-07-12T10:00:52+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-07-12T10:00:52+09:00","description":"","headline":"09. Angular 템플릿 문법","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"}</script>
+    <meta name="description" content="Interpolation이중 중괄호 {{ }} 사이에 수식을 표현하고, 계산한 다음 그 결과를 화면에 표시 Safe Navigation Operator존재하지 않는 객체의 변수를 Interpolation할 때, 앱전체가 중지됌. 예를들어 {{ Animal.Cat }}이 없는데, 템플릿에서 사용한다면 앱 전체가 중지된다. 이를 방지하기위해 {{ Animal?">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="09. Angular 템플릿 문법">
+<meta property="og:url" content="https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="Interpolation이중 중괄호 {{ }} 사이에 수식을 표현하고, 계산한 다음 그 결과를 화면에 표시 Safe Navigation Operator존재하지 않는 객체의 변수를 Interpolation할 때, 앱전체가 중지됌. 예를들어 {{ Animal.Cat }}이 없는데, 템플릿에서 사용한다면 앱 전체가 중지된다. 이를 방지하기위해 {{ Animal?">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="09. Angular 템플릿 문법">
+<meta name="twitter:description" content="Interpolation이중 중괄호 {{ }} 사이에 수식을 표현하고, 계산한 다음 그 결과를 화면에 표시 Safe Navigation Operator존재하지 않는 객체의 변수를 Interpolation할 때, 앱전체가 중지됌. 예를들어 {{ Animal.Cat }}이 없는데, 템플릿에서 사용한다면 앱 전체가 중지된다. 이를 방지하기위해 {{ Animal?">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            09. Angular 템플릿 문법
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-07-12T10:00:52+09:00">
+	
+		    2017.07.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Angular/">Angular</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="Interpolation"><a href="#Interpolation" class="headerlink" title="Interpolation"></a>Interpolation</h3><p>이중 중괄호 {{ }} 사이에 수식을 표현하고, 계산한 다음 그 결과를 화면에 표시</p>
+<h3 id="Safe-Navigation-Operator"><a href="#Safe-Navigation-Operator" class="headerlink" title="Safe Navigation Operator"></a>Safe Navigation Operator</h3><p>존재하지 않는 <code>객체의 변수</code>를 Interpolation할 때, 앱전체가 중지됌. 예를들어 {{ Animal.Cat }}이 없는데, 템플릿에서 사용한다면 앱 전체가 중지된다. 이를 방지하기위해 {{ Animal?.Cat }} 을 사용한다면, Animal이 존재할때만 Cat에 접근하게 돼어 오류가 발생하지 않는다.</p>
+<h4 id="기호의-의미-Property-Binding"><a href="#기호의-의미-Property-Binding" class="headerlink" title="[]기호의 의미 : Property Binding"></a>[]기호의 의미 : Property Binding</h4><p><strong>custom property</strong> 로 클래스와 연결시킬 수 있음.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-root'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;div class="app"&gt;</span></span><br><span class="line"><span class="string">      &lt;counter [init]="initialCount"&gt;&lt;/counter&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123;</span><br><span class="line">  initialCount: <span class="built_in">number</span> = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>클래스에서 속성을 변경할 경우, 템플릿에도 반영됌.</p>
+<h4 id="기호의-의미-Template-Statement"><a href="#기호의-의미-Template-Statement" class="headerlink" title="()기호의 의미 : Template Statement"></a>()기호의 의미 : Template Statement</h4><p>이벤트를 바인딩하기 위해 사용.</p>
+<ol>
+<li>(click) 이벤트</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">'&lt;button ion-button (click)="onClick()&gt;버튼&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TabsPage &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  onClick() &#123;</span><br><span class="line">    alert(<span class="string">'dd'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>(mouseover) 이벤트</li>
+<li>@Output() outputProperty = new EventEmitter<boolean>();`</boolean></li>
+</ol>
+<p><code>&lt;child (outputProperty)=&quot;outputEvent($event)&quot;&gt;&lt;/child&gt;</code></p>
+<p>@Output()장식자로 선언한 변수와 동일한 속성명.</p>
+<p><code>&lt;child-cmp #child1 [childname]=&quot;&#39;자식1&#39;&quot;&gt;&lt;/child-cmp&gt;</code></p>
+<h4 id="기호의-의미"><a href="#기호의-의미" class="headerlink" title="# 기호의 의미"></a># 기호의 의미</h4><p><strong>참조변수의 의미</strong>이다. 참조변수가 #child1이라고 선언돼 있을때 childname을 참조하려면 {{ child1.childname }} 과 같이 접근한다.</p>
+<p>ts파일에서 <code>참조 변수에 접근</code>하기 위해서는 ViewChild를 이용한다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;ViewChild, ElementRef&#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SchedulePage <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">    <span class="meta">@ViewChild</span>(<span class="string">'scheduleContents'</span>) scheduleContents: ElementRef;</span><br><span class="line">  	<span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">// 다음과 같이 element에 접근.</span></span><br><span class="line">      <span class="keyword">this</span>.scheduleContents.nativeElement.innerHTML = <span class="string">'후후'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ngFor-ngIf"><a href="#ngFor-ngIf" class="headerlink" title="*ngFor, *ngIf"></a>*ngFor, *ngIf</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;div *ngFor="let person of persons; let i = index"&gt;</span></span><br><span class="line"><span class="string">		&#123;&#123; i + 1 &#125;&#125; 번째 사람</span></span><br><span class="line"><span class="string">		&#123;&#123; person.name &#125;&#125;</span></span><br><span class="line"><span class="string">		&#123;&#123; person.old &#125;&#125;</span></span><br><span class="line"><span class="string">	&lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;div *ngFor="let command of myAliens; let i = index"&gt;</span></span><br><span class="line"><span class="string">		&#123;&#123; i + 1 &#125;&#125; 번째 에일리언 목표</span></span><br><span class="line"><span class="string">		&#123;&#123; aliens[command]['name'] &#125;&#125;</span></span><br><span class="line"><span class="string">		&#123;&#123; aliens[command]['old'] &#125;&#125;</span></span><br><span class="line"><span class="string">	&lt;/div&gt;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Persons &#123;</span><br><span class="line">  persons = [</span><br><span class="line">    &#123; name: <span class="string">'남준호'</span>, old: <span class="number">28</span> &#125;,</span><br><span class="line">    &#123; name: <span class="string">'남정연'</span>, old: <span class="number">22</span> &#125;</span><br><span class="line">  ];</span><br><span class="line">  aliens = &#123;</span><br><span class="line">    kill : &#123; name: <span class="string">'뛸릴릴리'</span>, old: <span class="number">12942</span> &#125;,</span><br><span class="line">    him : &#123; name: <span class="string">'뀔릴뗋슭'</span>, old: <span class="number">12942</span> &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> myAliens() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Object</span>.keys(<span class="keyword">this</span>.aliens);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>ngFor</code>은 <code>iterable</code>한 변수에서만 사용가능, 배열에서 사용가능</p>
+<p>객체에서 사용하기 위해서는 get 함수 만들어 주기.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://toddmotto.com/passing-data-angular-2-components-input" target="_blank" rel="noopener">https://toddmotto.com/passing-data-angular-2-components-input</a></p>
+<p><a href="https://www.youtube.com/watch?v=Llt_jms4liU&amp;index=16&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Llt_jms4liU&amp;index=16&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Angular/8. Angular 폼/"
+                    data-tooltip="08. Angular 폼"
+                    aria-label="PREVIOUS: 08. Angular 폼"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    data-tooltip="08.1. Angular 폼 검증"
+                    aria-label="NEXT: 08.1. Angular 폼 검증"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/14/Angular/8. Angular 폼/"
+                    data-tooltip="08. Angular 폼"
+                    aria-label="PREVIOUS: 08. Angular 폼"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/07/12/Angular/8.1. Angular 폼 검증/"
+                    data-tooltip="08.1. Angular 폼 검증"
+                    aria-label="NEXT: 08.1. Angular 폼 검증"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/';
+              
+            this.page.identifier = '2017/07/12/Angular/9. Angular-템플릿-문법-특수문자정리/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

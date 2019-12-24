@@ -1,0 +1,690 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>04. Vue 이벤트 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"\nv-on 또는 @를 사용.\n\n12345678910111213141516171819&lt;div id=&quot;example&quot; class=&quot;container layout1&quot;&gt;    &lt;p&gt;&lt;input type=&quot;text&quot; v-model=&quot;amount&quot; class=&quot;form-control&quot; /&gt;&lt;/p&gt;    &lt;p&gt;        &lt;button id=&quot;deposit&quot; @click=&quot;balance += parseInt(amount)&quot;          class=&quot;btn btn-primary&quot;&gt;예금&lt;/button&gt;        &lt;button id=&quot;withdraw&quot; v-on:click=&quot;balance -= parseInt(amount)&quot;           class=&quot;btn btn-primary&quot;&gt;인출&lt;/button&gt;    &lt;/p&gt;                &lt;h3&gt;계좌 잔고 : &#123;&#123;balance&#125;&#125;&lt;/h3&gt;&lt;/div&gt;&lt;script type=&quot;text/javascript&quot;&gt;var vm = new Vue(&#123;  el : &quot;#example&quot;,  data : &#123;    amount : 0,    balance : 0,  &#125;&#125;)\n\n이벤트 객체\ntarget : 이벤트가 발생한 HTML 요소를 리턴함.\ncurrentTarget : 이벤트 리스너가 발생시키는 HTML 요소를 리턴함.\npath: 배열 값, HTML 요소로부터 document, window 객체로까지 거슬러 올라가는 경로를 나타냄.\nbubbles : 버블링을 일으키는 이벤트인지 여부 리턴함.\ncancelable : 기본 이벤트를 방지할 수 있는지 여부를 리턴.\ndefaultPrevented : 기본 이벤트가 방지되었는지 여부를 나타냄.\neventPhase : 이벤트 흐름의 단계를 나타냄. 포착 -&gt; 이벤트발생 -&gt; 버블링.\n\n이벤트 메서드\npreventDefault() : 기본 이벤트의 자동 실행을 중지시킴\nstopPropagation() : 이벤트의 전파를 막음.\n\n기본 이벤트다음과 같은 기본 이벤트를 말함\n\na요소 클릭 href 경로로 페이지 이동, 브라우저 화면 마우스 오른쪽 클릭-&gt; 컨텍스트메뉴 나타남, form submit 버튼 클릭 action 경로로 함수 실행\n\n위 preventDefault를 실행해주면, 위 기본 이벤트가 막힘.\npreventDefulat 더 쉽게 하려면 vue에서 제공해주는 .prevent를 사용하시라.\n&lt;div id=&quot;example&quot; @contextmenu.prevent=&quot;ctxStop&quot;&gt;\n이벤트 전파와 버블링HTML 문서의 이벤트 처리는 3단계를 거친다. \n\n\n문서 내의 요소에서 이벤트가 발생!\n\n\n\n포착단계 :  밖에서 부터 이벤트를 발생시킨 HTML 요소까지 포착해 들어감.\n\n\n\n이벤트 발생\n\n\n\n상위 요소로, 동일한 이벤트 호출시킴.\n\n\n\n1234567891011121314151617181920212223&lt;div id=&quot;example&quot;&gt;    &lt;div id=&quot;outer&quot; @click=&quot;outerClick&quot;&gt;        &lt;div id=&quot;inner&quot; @click=&quot;innerClick&quot;&gt;&lt;/div&gt;    &lt;/div&gt;&lt;/div&gt;&lt;script type=&quot;text/javascript&quot;&gt;var vm = new Vue(&#123;  el : &quot;#example&quot;,  methods : &#123;    outerClick : function(e) &#123;        console.log(&quot;### OUTER CLICK&quot;)        console.log(&quot;Event Phase : &quot;, e.eventPhase);        console.log(&quot;Current Target : &quot;, e.currentTarget);        console.log(&quot;Target : &quot;, e.target);    &#125;,    innerClick : function(e) &#123;        console.log(&quot;### INNER CLICK&quot;)        console.log(&quot;Event Phase : &quot;, e.eventPhase);        console.log(&quot;Current Target : &quot;, e.currentTarget);        console.log(&quot;Target : &quot;, e.target);        &#125;  &#125;&#125;)\n\ninner만 클릭해도, outer 클릭 이벤트 역시 실행됌.\n\n\n\n\ninner\nouter\n\n\n\neventPhase\n2(AT_TARGET)\n3(BUBBLING)\n\n\ncurrent target\ninner\nouter\n\n\ntarget\ninner\ninner\n\n\ntarget은 오리지널을 계속 가리키고, currentTarget은 현재 이벤트가 실행되는 위치를 나타냄을 보라!\n이때 e.stopPropagation()을 실행하면, 이벤트 버블링을 막을 수 있다.\n역시 수식어를 사용가능\n\n@click.stop : 이벤트 전파 중단시킴\n\n@click.capture : CAPTURING_PHASE 단계에서만 이벤트 발생\n\n@click.self : RAISING_PHASE 일때만 이벤트 발생\n\n@click.once : 이벤트가 한번만.\n​\n\n@keyup.13: 와 같은 키이벤트도 있음 (13은 키코드의 수식어 이다)\n\n\nReferenceVue.js Quick Start 원형섭\n","dateCreated":"2018-01-20T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2018-01-20T19:28:10+09:00","description":"","headline":"04. Vue 이벤트","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2018/01/20/Vue/4.이벤트/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2018/01/20/Vue/4.이벤트/"}</script>
+    <meta name="description" content="v-on 또는 @를 사용.  12345678910111213141516171819&amp;lt;div id=&amp;quot;example&amp;quot; class=&amp;quot;container layout1&amp;quot;&amp;gt;    &amp;lt;p&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; v-model=&amp;quot;amount&amp;quot; class=&amp;quot;">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="04. Vue 이벤트">
+<meta property="og:url" content="https://skout90.github.io/2018/01/20/Vue/4.이벤트/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="v-on 또는 @를 사용.  12345678910111213141516171819&amp;lt;div id=&amp;quot;example&amp;quot; class=&amp;quot;container layout1&amp;quot;&amp;gt;    &amp;lt;p&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; v-model=&amp;quot;amount&amp;quot; class=&amp;quot;">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://res.cloudinary.com/hzxejch6p/image/upload/c_scale,w_300/v1502872464/capture-bubble_nbgmry.png">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="04. Vue 이벤트">
+<meta name="twitter:description" content="v-on 또는 @를 사용.  12345678910111213141516171819&amp;lt;div id=&amp;quot;example&amp;quot; class=&amp;quot;container layout1&amp;quot;&amp;gt;    &amp;lt;p&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; v-model=&amp;quot;amount&amp;quot; class=&amp;quot;">
+<meta name="twitter:image" content="https://res.cloudinary.com/hzxejch6p/image/upload/c_scale,w_300/v1502872464/capture-bubble_nbgmry.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            04. Vue 이벤트
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2018-01-20T19:28:10+09:00">
+	
+		    2018.01.20
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Vue/">Vue</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <blockquote>
+<p>v-on 또는 @를 사용.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;example&quot; class=&quot;container layout1&quot;&gt;</span><br><span class="line">    &lt;p&gt;&lt;input type=&quot;text&quot; v-model=&quot;amount&quot; class=&quot;form-control&quot; /&gt;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;</span><br><span class="line">        &lt;button id=&quot;deposit&quot; @click=&quot;balance += parseInt(amount)&quot;</span><br><span class="line">          class=&quot;btn btn-primary&quot;&gt;예금&lt;/button&gt;</span><br><span class="line">        &lt;button id=&quot;withdraw&quot; v-on:click=&quot;balance -= parseInt(amount)&quot; </span><br><span class="line">          class=&quot;btn btn-primary&quot;&gt;인출&lt;/button&gt;</span><br><span class="line">    &lt;/p&gt;            </span><br><span class="line">    &lt;h3&gt;계좌 잔고 : &#123;&#123;balance&#125;&#125;&lt;/h3&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">var vm = new Vue(&#123;</span><br><span class="line">  el : &quot;#example&quot;,</span><br><span class="line">  data : &#123;</span><br><span class="line">    amount : 0,</span><br><span class="line">    balance : 0,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="이벤트-객체"><a href="#이벤트-객체" class="headerlink" title="이벤트 객체"></a>이벤트 객체</h3><ul>
+<li>target : 이벤트가 발생한 HTML 요소를 리턴함.</li>
+<li>currentTarget : 이벤트 리스너가 발생시키는 HTML 요소를 리턴함.</li>
+<li>path: 배열 값, HTML 요소로부터 document, window 객체로까지 거슬러 올라가는 경로를 나타냄.</li>
+<li>bubbles : 버블링을 일으키는 이벤트인지 여부 리턴함.</li>
+<li>cancelable : 기본 이벤트를 방지할 수 있는지 여부를 리턴.</li>
+<li>defaultPrevented : 기본 이벤트가 방지되었는지 여부를 나타냄.</li>
+<li>eventPhase : 이벤트 흐름의 단계를 나타냄. 포착 -&gt; 이벤트발생 -&gt; 버블링.</li>
+</ul>
+<h3 id="이벤트-메서드"><a href="#이벤트-메서드" class="headerlink" title="이벤트 메서드"></a>이벤트 메서드</h3><ul>
+<li>preventDefault() : 기본 이벤트의 자동 실행을 중지시킴</li>
+<li>stopPropagation() : 이벤트의 전파를 막음.</li>
+</ul>
+<h3 id="기본-이벤트"><a href="#기본-이벤트" class="headerlink" title="기본 이벤트"></a>기본 이벤트</h3><p>다음과 같은 기본 이벤트를 말함</p>
+<blockquote>
+<p>a요소 클릭 href 경로로 페이지 이동, 브라우저 화면 마우스 오른쪽 클릭-&gt; 컨텍스트메뉴 나타남, form submit 버튼 클릭 action 경로로 함수 실행</p>
+</blockquote>
+<p>위 preventDefault를 실행해주면, 위 기본 이벤트가 막힘.</p>
+<p>preventDefulat 더 쉽게 하려면 vue에서 제공해주는 .prevent를 사용하시라.</p>
+<p><code>&lt;div id=&quot;example&quot; @contextmenu.prevent=&quot;ctxStop&quot;&gt;</code></p>
+<h3 id="이벤트-전파와-버블링"><a href="#이벤트-전파와-버블링" class="headerlink" title="이벤트 전파와 버블링"></a>이벤트 전파와 버블링</h3><p>HTML 문서의 이벤트 처리는 3단계를 거친다. </p>
+<p><img src="https://res.cloudinary.com/hzxejch6p/image/upload/c_scale,w_300/v1502872464/capture-bubble_nbgmry.png" alt="event propagation에 대한 이미지 검색결과"></p>
+<blockquote>
+<p>문서 내의 요소에서 이벤트가 발생!</p>
+</blockquote>
+<ul>
+<li><ol>
+<li>포착단계 :  밖에서 부터 이벤트를 발생시킨 HTML 요소까지 포착해 들어감.</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>이벤트 발생</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>상위 요소로, 동일한 이벤트 호출시킴.</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;example&quot;&gt;</span><br><span class="line">    &lt;div id=&quot;outer&quot; @click=&quot;outerClick&quot;&gt;</span><br><span class="line">        &lt;div id=&quot;inner&quot; @click=&quot;innerClick&quot;&gt;&lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot;&gt;</span><br><span class="line">var vm = new Vue(&#123;</span><br><span class="line">  el : &quot;#example&quot;,</span><br><span class="line">  methods : &#123;</span><br><span class="line">    outerClick : function(e) &#123;</span><br><span class="line">        console.log(&quot;### OUTER CLICK&quot;)</span><br><span class="line">        console.log(&quot;Event Phase : &quot;, e.eventPhase);</span><br><span class="line">        console.log(&quot;Current Target : &quot;, e.currentTarget);</span><br><span class="line">        console.log(&quot;Target : &quot;, e.target);</span><br><span class="line">    &#125;,</span><br><span class="line">    innerClick : function(e) &#123;</span><br><span class="line">        console.log(&quot;### INNER CLICK&quot;)</span><br><span class="line">        console.log(&quot;Event Phase : &quot;, e.eventPhase);</span><br><span class="line">        console.log(&quot;Current Target : &quot;, e.currentTarget);</span><br><span class="line">        console.log(&quot;Target : &quot;, e.target);    </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>inner만 클릭해도, outer 클릭 이벤트 역시 실행됌.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>inner</th>
+<th>outer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eventPhase</td>
+<td>2(AT_TARGET)</td>
+<td>3(BUBBLING)</td>
+</tr>
+<tr>
+<td>current target</td>
+<td>inner</td>
+<td>outer</td>
+</tr>
+<tr>
+<td>target</td>
+<td>inner</td>
+<td>inner</td>
+</tr>
+</tbody></table>
+<p><code>target</code>은 오리지널을 계속 가리키고, <code>currentTarget</code>은 현재 이벤트가 실행되는 위치를 나타냄을 보라!</p>
+<p>이때 <code>e.stopPropagation()</code>을 실행하면, 이벤트 버블링을 막을 수 있다.</p>
+<p>역시 수식어를 사용가능</p>
+<ul>
+<li><p>@click.stop : 이벤트 전파 중단시킴</p>
+</li>
+<li><p>@click.capture : CAPTURING_PHASE 단계에서만 이벤트 발생</p>
+</li>
+<li><p>@click.self : RAISING_PHASE 일때만 이벤트 발생</p>
+</li>
+<li><p>@click.once : 이벤트가 한번만.</p>
+<p>​</p>
+</li>
+<li><p>@keyup.13: 와 같은 키이벤트도 있음 (13은 키코드의 수식어 이다)</p>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Vue.js Quick Start 원형섭</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/01/21/Vue/v-model-커스텀-컴포넌트-제작/"
+                    data-tooltip="v-model 사용하는 커스텀 컴포넌트 만들기"
+                    aria-label="PREVIOUS: v-model 사용하는 커스텀 컴포넌트 만들기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/01/07/GIT/submodule/"
+                    data-tooltip="서브모듈 추가하기"
+                    aria-label="NEXT: 서브모듈 추가하기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/01/21/Vue/v-model-커스텀-컴포넌트-제작/"
+                    data-tooltip="v-model 사용하는 커스텀 컴포넌트 만들기"
+                    aria-label="PREVIOUS: v-model 사용하는 커스텀 컴포넌트 만들기"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2018/01/07/GIT/submodule/"
+                    data-tooltip="서브모듈 추가하기"
+                    aria-label="NEXT: 서브모듈 추가하기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2018/01/20/Vue/4.이벤트/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2018/01/20/Vue/4.이벤트/';
+              
+            this.page.identifier = '2018/01/20/Vue/4.이벤트/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

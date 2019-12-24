@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>Firebase로 CRUD 기능 작성 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.\n시작하기프로젝트를 만든다.\nAuthentication로그인방법 탬에서 원하는 인증방식을 활성화 한다. Authorized Domains탬에서 리다이렉션 도메인을 추가할 수 있다.\n템플릿 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.\nDatabase데이터 탭에서 저장된 데이터를 확인\n\n모든 데이터는 Json으로 저장\n데이터를 import/export 할 수 있음.\n캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.\n모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.\n\n규칙 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정\n\n시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.\n\n로컬 개발환경 셋팅\nhttp://nodejs.org 에서 nodejs 설치\nfirebase cli 설치\n\n\n&gt; npm install firebase-tools -g\n\n\nfirebase cli에 로그인\n\n컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.\n\n&gt; firebase login\n&gt; y\n\n이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭\n\nfirebase 프로젝트 설정\n\n\n&gt; cd [파이어베이스 프로젝트 경로]\n&gt; firebase init\n\n\n\n오오오옷!!!! 간지\n\n‘Y’를 눌러 진행해준다\n\nDatabase 셋팅\n\n\n설정 항목중에서 첫번째 Database를 선택\n위에서 생성한 프로젝트를 선택해준다.\n\nCLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.\n\ndatabase.rule.json : DB 데이터 읽기 쓰기 규칙. \n\n1234567// 디폴트 규칙&#123;  \"rules\": &#123;    \".read\": \"auth != null\",    \".write\": \"auth != null\"  &#125;&#125;\n\n\npublic/index.html : 폴더를 생성하고 index파일을 생성한다.\n\n123456789101112131415&lt;html&gt;&lt;head&gt;  &lt;script src=\"https://www.gstatic.com/firebasejs/4.1.2/firebase.js\"&gt;&lt;/script&gt;  &lt;script&gt;    // .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)    var config = &#123;      ...    &#125;;    firebase.initializeApp(config);  &lt;/script&gt;&lt;/head&gt;&lt;body&gt;\t성공!&lt;/body&gt;&lt;/html&gt;\n\n\nfirebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정\n\n123456789101112&#123;  \"database\": &#123;    \"rules\": \"database.rules.json\"  &#125;,  \"hosting\": &#123;    \"public\": \"public\", // 페이지가 들어 있는 폴더명    \"rewrites\": [&#123;      \"source\": \"**\",   // 페이지 주소      \"destination\": \"/index.html\" // 연결할 페이지     &#125;]  &#125;&#125;\n\n\n서버 구동\n\n\n&gt; firebase serve\n\n위 키워드를 입력하고 http://localhost:5000 을 접속하여 페이지가 나오는 것을 확인한다.\n권한 인증\nindex.html\n\n123456789101112131415var auth = firebase.auth();var userInfo;var authProvider = new firebase.auth.GoogleAuthProvider();// 팝업 형태로 열어줌// 성공 실패 구분auth.onAuthStateChanged(function (user) &#123;  if (user) &#123;    // 인증 성공시    userInfo = user;    getKanbanlist(); // 아래 함수 구현  &#125; else &#123;    // 인증 실패시, 인증 팝업창을 뛰워줌    auth.signInWithPopup(authProvider);  &#125;&#125;);\n\nDB\nindex.html\n\n123456789101112131415161718192021222324252627282930313233343536373839var database = firebase.database();function getKanbanlist() &#123;  // Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.  var kanbanRef = database.ref('kanbans/' + userInfo.uid);  // Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.  kanbanRef.on('child_added', onChildAdded);  kanbanRef.on('child_changed', function (data) &#123;    var key = data.key;    var txt = data.val().txt;    // 해당 데이터로 html에 데이터를 수정.  &#125;);&#125;// Insertfunction onChildAdded(data) &#123;  var key = data.key;  var kanbanData = data.val();  var txt = kanbanData.txt;  // 해당 데이터를 html 요소에 추가.&#125;// 데이터 단일 건 가져오기function getKanban(key) &#123;  var kanbanRef = database.ref(\"kanbans/\" + userInfo.uid + \"/\" + key)  .once('value').then(function (snapshot) &#123;    if (snapshot.val() != null) &#123;      // 가져온 데이터를 저장      $(\".textarea\").val(snapshot.val().txt);    &#125;  &#125;);&#125;// 삭제하기function deleteKanban(key) &#123;  kanbanRef = database.ref(\"kanbans/\" + userInfo.uid + \"/\" + key);  kanbanRef.remove();&#125;\n\nonon(&#39;child_added&#39;, 메서드); on(&#39;child_changed&#39;, 메서드); 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.\nFirebase 서버 배포\n&gt; firebase deploy\n\n서버에 바로 작업 내역이 반영된다.\nReferencehttps://www.inflearn.com/course-status-2/\n","dateCreated":"2017-09-01T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-09-01T19:28:10+09:00","description":"","headline":"Firebase로 CRUD 기능 작성","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/09/01/Google/firebase/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/09/01/Google/firebase/"}</script>
+    <meta name="description" content="웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다. 시작하기프로젝트를 만든다. Authentication로그인방법 탬에서 원하는 인증방식을 활성화 한다. Authorized Domains탬에서 리다이렉션 도메">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Firebase로 CRUD 기능 작성">
+<meta property="og:url" content="https://skout90.github.io/2017/09/01/Google/firebase/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다. 시작하기프로젝트를 만든다. Authentication로그인방법 탬에서 원하는 인증방식을 활성화 한다. Authorized Domains탬에서 리다이렉션 도메">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://i.imgur.com/fLauqJj.png">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.093Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Firebase로 CRUD 기능 작성">
+<meta name="twitter:description" content="웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다. 시작하기프로젝트를 만든다. Authentication로그인방법 탬에서 원하는 인증방식을 활성화 한다. Authorized Domains탬에서 리다이렉션 도메">
+<meta name="twitter:image" content="http://i.imgur.com/fLauqJj.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Firebase로 CRUD 기능 작성
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-09-01T19:28:10+09:00">
+	
+		    2017.09.01
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Google/">Google</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.</p>
+<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><p>프로젝트를 만든다.</p>
+<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p><code>로그인방법</code> 탬에서 원하는 인증방식을 활성화 한다. <code>Authorized Domains</code>탬에서 리다이렉션 도메인을 추가할 수 있다.</p>
+<p><code>템플릿</code> 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.</p>
+<h3 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h3><p><code>데이터</code> 탭에서 저장된 데이터를 확인</p>
+<ul>
+<li>모든 데이터는 Json으로 저장</li>
+<li>데이터를 import/export 할 수 있음.</li>
+<li>캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.</li>
+<li>모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.</li>
+</ul>
+<p><code>규칙</code> 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정</p>
+<ul>
+<li>시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.</li>
+</ul>
+<h2 id="로컬-개발환경-셋팅"><a href="#로컬-개발환경-셋팅" class="headerlink" title="로컬 개발환경 셋팅"></a>로컬 개발환경 셋팅</h2><ol>
+<li><a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 에서 nodejs 설치</li>
+<li>firebase cli 설치</li>
+</ol>
+<blockquote>
+<p>&gt; npm install firebase-tools -g</p>
+</blockquote>
+<ol start="3">
+<li>firebase cli에 로그인</li>
+</ol>
+<p>컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.</p>
+<blockquote>
+<p>&gt; firebase login</p>
+<p>&gt; y</p>
+</blockquote>
+<p>이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭</p>
+<ol start="4">
+<li>firebase 프로젝트 설정</li>
+</ol>
+<blockquote>
+<p>&gt; cd [파이어베이스 프로젝트 경로]</p>
+<p>&gt; firebase init</p>
+</blockquote>
+<p><img src="http://i.imgur.com/fLauqJj.png" alt="img" title="오오오오오옷!!"></p>
+<blockquote>
+<p>오오오옷!!!! 간지</p>
+</blockquote>
+<p>‘Y’를 눌러 진행해준다</p>
+<ol start="5">
+<li>Database 셋팅</li>
+</ol>
+<ul>
+<li>설정 항목중에서 첫번째 Database를 선택</li>
+<li>위에서 생성한 프로젝트를 선택해준다.</li>
+</ul>
+<p>CLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.</p>
+<ul>
+<li>database.rule.json : DB 데이터 읽기 쓰기 규칙. </li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 디폴트 규칙</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">".read"</span>: <span class="string">"auth != null"</span>,</span><br><span class="line">    <span class="attr">".write"</span>: <span class="string">"auth != null"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>public/index.html : 폴더를 생성하고 index파일을 생성한다.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.gstatic.com/firebasejs/4.1.2/firebase.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> config = &#123;</span></span><br><span class="line">      ...</span><br><span class="line">    &#125;;</span><br><span class="line">    firebase.initializeApp(config);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	성공!</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>firebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"database"</span>: &#123;</span><br><span class="line">    <span class="attr">"rules"</span>: <span class="string">"database.rules.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hosting"</span>: &#123;</span><br><span class="line">    "public": "public", // 페이지가 들어 있는 폴더명</span><br><span class="line">    "rewrites": [&#123;</span><br><span class="line">      "source": "**",   // 페이지 주소</span><br><span class="line">      "destination": "/index.html" // 연결할 페이지</span><br><span class="line">     &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>서버 구동</li>
+</ol>
+<blockquote>
+<p>&gt; firebase serve</p>
+</blockquote>
+<p>위 키워드를 입력하고 <a href="http://localhost:5000" target="_blank" rel="noopener">http://localhost:5000</a> 을 접속하여 페이지가 나오는 것을 확인한다.</p>
+<h2 id="권한-인증"><a href="#권한-인증" class="headerlink" title="권한 인증"></a>권한 인증</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auth = firebase.auth();</span><br><span class="line"><span class="keyword">var</span> userInfo;</span><br><span class="line"><span class="keyword">var</span> authProvider = <span class="keyword">new</span> firebase.auth.GoogleAuthProvider();</span><br><span class="line"><span class="comment">// 팝업 형태로 열어줌</span></span><br><span class="line"><span class="comment">// 성공 실패 구분</span></span><br><span class="line">auth.onAuthStateChanged(<span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (user) &#123;</span><br><span class="line">    <span class="comment">// 인증 성공시</span></span><br><span class="line">    userInfo = user;</span><br><span class="line">    getKanbanlist(); <span class="comment">// 아래 함수 구현</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 인증 실패시, 인증 팝업창을 뛰워줌</span></span><br><span class="line">    auth.signInWithPopup(authProvider);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> database = firebase.database();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanbanlist</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.</span></span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">'kanbans/'</span> + userInfo.uid);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.</span></span><br><span class="line">  kanbanRef.on(<span class="string">'child_added'</span>, onChildAdded);</span><br><span class="line">  kanbanRef.on(<span class="string">'child_changed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = data.key;</span><br><span class="line">    <span class="keyword">var</span> txt = data.val().txt;</span><br><span class="line">    <span class="comment">// 해당 데이터로 html에 데이터를 수정.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onChildAdded</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key = data.key;</span><br><span class="line">  <span class="keyword">var</span> kanbanData = data.val();</span><br><span class="line">  <span class="keyword">var</span> txt = kanbanData.txt;</span><br><span class="line">  <span class="comment">// 해당 데이터를 html 요소에 추가.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 데이터 단일 건 가져오기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key)</span><br><span class="line">  .once(<span class="string">'value'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">snapshot</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (snapshot.val() != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 가져온 데이터를 저장</span></span><br><span class="line">      $(<span class="string">".textarea"</span>).val(snapshot.val().txt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 삭제하기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key);</span><br><span class="line">  kanbanRef.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="on"><a href="#on" class="headerlink" title="on"></a>on</h4><p><code>on(&#39;child_added&#39;, 메서드);</code> <code>on(&#39;child_changed&#39;, 메서드);</code> 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.</p>
+<h2 id="Firebase-서버-배포"><a href="#Firebase-서버-배포" class="headerlink" title="Firebase 서버 배포"></a>Firebase 서버 배포</h2><blockquote>
+<p>&gt; firebase deploy</p>
+</blockquote>
+<p>서버에 바로 작업 내역이 반영된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/CSS/CSS-flex레이아웃/"
+                    data-tooltip="FLEX 레이아웃 정리"
+                    aria-label="PREVIOUS: FLEX 레이아웃 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3. javascript-Object/"
+                    data-tooltip="03. Object"
+                    aria-label="NEXT: 03. Object"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/CSS/CSS-flex레이아웃/"
+                    data-tooltip="FLEX 레이아웃 정리"
+                    aria-label="PREVIOUS: FLEX 레이아웃 정리"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/09/01/Javascript/3. javascript-Object/"
+                    data-tooltip="03. Object"
+                    aria-label="NEXT: 03. Object"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Google/firebase/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/09/01/Google/firebase/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/09/01/Google/firebase/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/09/01/Google/firebase/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/09/01/Google/firebase/';
+              
+            this.page.identifier = '2017/09/01/Google/firebase/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

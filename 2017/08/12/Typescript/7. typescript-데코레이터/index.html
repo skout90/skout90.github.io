@@ -1,0 +1,624 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>07. Typescript 데코레이터(Decorator) - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"tsonfig.json에서 &quot;experimentalDecorators&quot;: true 명시해줘야 사용가능\nClass Decorator12345678// 인자가 없을 시엔, 생성자 함수를 선언해줘야function hello(constructFn: Function) &#123;    console.log(constructFn);&#125;@helloclass Person &#123;&#125;\n\nMethod Decoratorread only 데코레이터 예제\n함수를 재작성할 수 없게 함.\n12345678910111213141516171819function editable(canBeEditable: boolean) &#123;    return function (target: any, propName: string, description: PropertyDescriptor) &#123;        description.writable = canBeEditable;    &#125;&#125;class Person &#123;    @editable(false)    hello() &#123;        console.log('hello');    &#125;&#125;const p = new Person();p.hello(); // hellop.hello = function () &#123;    console.log('world');&#125;p.hello(); // hello\n\ntarget/propName/PropertyDescriptor를 파라미터로 받는 함수를 리턴해주어야 함.\nProperty Decoratortarget/propName을 파라미터로 받는 함수를 리턴해주어야 함.\n12345678910111213141516function writable(canBeWritable: boolean) &#123;    return function (target: any, propName: string): any &#123;        return &#123;            writable: canBeWritable        &#125;;    &#125;&#125;class Person &#123;    @writable(false)    name: string = \"junho\";&#125;const p = new Person();console.log(p.name); // junhop.name = 'dd'; // error!\n\nParameter Decoratortarget/methodName/paramIndex를 파라미터로 가져야함\n12345678910111213141516171819function printInfo(target: any, methodName: string, paramIndex: number) &#123;    console.log(target);    console.log(methodName);    console.log(paramIndex);&#125;class Person &#123;    private _name: string;    private _age: number;    constructor(name: string, @printInfo age: number) &#123;        this._name = name;        this._age = age;    &#125;    hello( @printInfo message: string) &#123;        console.log(message);    &#125;&#125;\n\n\n 결과\nPerson {}\nhello\n0\n[Funcion: Person]\nundefined\n1\n\nReferencehttps://www.inflearn.com/course-status-2/\n","dateCreated":"2017-08-12T01:00:00+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2017-08-12T01:00:00+09:00","description":"","headline":"07. Typescript 데코레이터(Decorator)","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"}</script>
+    <meta name="description" content="tsonfig.json에서 &amp;quot;experimentalDecorators&amp;quot;: true 명시해줘야 사용가능 Class Decorator12345678// 인자가 없을 시엔, 생성자 함수를 선언해줘야function hello(constructFn: Function) &amp;#123;    console.log(constructFn);&amp;#125;@hel">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="07. Typescript 데코레이터(Decorator)">
+<meta property="og:url" content="https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="tsonfig.json에서 &amp;quot;experimentalDecorators&amp;quot;: true 명시해줘야 사용가능 Class Decorator12345678// 인자가 없을 시엔, 생성자 함수를 선언해줘야function hello(constructFn: Function) &amp;#123;    console.log(constructFn);&amp;#125;@hel">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-17T01:14:27.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="07. Typescript 데코레이터(Decorator)">
+<meta name="twitter:description" content="tsonfig.json에서 &amp;quot;experimentalDecorators&amp;quot;: true 명시해줘야 사용가능 Class Decorator12345678// 인자가 없을 시엔, 생성자 함수를 선언해줘야function hello(constructFn: Function) &amp;#123;    console.log(constructFn);&amp;#125;@hel">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            07. Typescript 데코레이터(Decorator)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-08-12T01:00:00+09:00">
+	
+		    2017.08.12
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Typescript/">Typescript</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p><code>tsonfig.json</code>에서 <code>&quot;experimentalDecorators&quot;: true</code> 명시해줘야 사용가능</p>
+<h2 id="Class-Decorator"><a href="#Class-Decorator" class="headerlink" title="Class Decorator"></a>Class Decorator</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 인자가 없을 시엔, 생성자 함수를 선언해줘야</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">constructFn: <span class="built_in">Function</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(constructFn);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@hello</span></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Method-Decorator"><a href="#Method-Decorator" class="headerlink" title="Method Decorator"></a>Method Decorator</h2><p><strong>read only 데코레이터 예제</strong></p>
+<p>함수를 재작성할 수 없게 함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">editable</span>(<span class="params">canBeEditable: <span class="built_in">boolean</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">target: <span class="built_in">any</span>, propName: <span class="built_in">string</span>, description: PropertyDescriptor</span>) </span>&#123;</span><br><span class="line">        description.writable = canBeEditable;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="meta">@editable</span>(<span class="literal">false</span>)</span><br><span class="line">    hello() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hello'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person();</span><br><span class="line">p.hello(); <span class="comment">// hello</span></span><br><span class="line">p.hello = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'world'</span>);</span><br><span class="line">&#125;</span><br><span class="line">p.hello(); <span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
+
+<p>target/propName/PropertyDescriptor를 파라미터로 받는 함수를 리턴해주어야 함.</p>
+<h2 id="Property-Decorator"><a href="#Property-Decorator" class="headerlink" title="Property Decorator"></a>Property Decorator</h2><p>target/propName을 파라미터로 받는 함수를 리턴해주어야 함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writable</span>(<span class="params">canBeWritable: <span class="built_in">boolean</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">target: <span class="built_in">any</span>, propName: <span class="built_in">string</span></span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            writable: canBeWritable</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="meta">@writable</span>(<span class="literal">false</span>)</span><br><span class="line">    name: <span class="built_in">string</span> = <span class="string">"junho"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(p.name); <span class="comment">// junho</span></span><br><span class="line">p.name = <span class="string">'dd'</span>; <span class="comment">// error!</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Parameter-Decorator"><a href="#Parameter-Decorator" class="headerlink" title="Parameter Decorator"></a>Parameter Decorator</h2><p>target/methodName/paramIndex를 파라미터로 가져야함</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printInfo</span>(<span class="params">target: <span class="built_in">any</span>, methodName: <span class="built_in">string</span>, paramIndex: <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(target);</span><br><span class="line">    <span class="built_in">console</span>.log(methodName);</span><br><span class="line">    <span class="built_in">console</span>.log(paramIndex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="keyword">private</span> _name: <span class="built_in">string</span>;</span><br><span class="line">    <span class="keyword">private</span> _age: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, <span class="meta">@printInfo</span> age: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>._name = name;</span><br><span class="line">        <span class="keyword">this</span>._age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hello( <span class="meta">@printInfo</span> message: <span class="built_in">string</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 결과</p>
+<p>Person {}</p>
+<p>hello</p>
+<p>0</p>
+<p>[Funcion: Person]</p>
+<p>undefined</p>
+<p>1</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/1. typescript란/"
+                    data-tooltip="01. Typescript란"
+                    aria-label="PREVIOUS: 01. Typescript란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/3. typescript-타입/"
+                    data-tooltip="03. Typescript 타입"
+                    aria-label="NEXT: 03. Typescript 타입"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/1. typescript란/"
+                    data-tooltip="01. Typescript란"
+                    aria-label="PREVIOUS: 01. Typescript란"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2017/08/12/Typescript/3. typescript-타입/"
+                    data-tooltip="03. Typescript 타입"
+                    aria-label="NEXT: 03. Typescript 타입"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2017/08/12/Typescript/7. typescript-데코레이터/';
+              
+            this.page.identifier = '2017/08/12/Typescript/7. typescript-데코레이터/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>
