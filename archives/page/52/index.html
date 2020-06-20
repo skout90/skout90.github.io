@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/10/03/Ionic/6. Ionic-event/"
-                            aria-label=": 06. Ionic2 Event"
+                            href="/2017/10/09/Javascript/window-내장객체/"
+                            aria-label=": Window 내장객체"
                         >
-                            06. Ionic2 Event
+                            Window 내장객체
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-10-03T01:00:00+09:00">
+    <time datetime="2017-10-09T19:28:10+09:00">
 	
-		    2017.10.03
+		    2017.10.09
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,12 +227,14 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>앵귤러2의 이벤트 바인딩에는 여러가지가 있지만. 안드로이드에서 실행하면 특히 keypress, ngModelChange, change 들이 잘 동작하지 않는다.</p>
-<p>이때 <code>ionChange</code>를 활용하면된다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ion-datetime displayFormat=<span class="string">"YYYY.MM.DD"</span> [(ngModel)]=<span class="string">"endDate"</span> (ionChange)=<span class="string">"dateChange()"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">ion-datetime</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+                    <h4 id="프로퍼티"><a href="#프로퍼티" class="headerlink" title="프로퍼티"></a>프로퍼티</h4><h4 id="length"><a href="#length" class="headerlink" title="length"></a>length</h4><p>창안의 프레임수</p>
+<h4 id="self-window"><a href="#self-window" class="headerlink" title="self/window"></a>self/window</h4><h4 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h4><h2 id="이벤트"><a href="#이벤트" class="headerlink" title="이벤트"></a>이벤트</h2><h4 id="onload"><a href="#onload" class="headerlink" title="onload"></a>onload</h4><p>문서를 읽을때, 실행된다.</p>
+<h4 id="onbeforeunload"><a href="#onbeforeunload" class="headerlink" title="onbeforeunload"></a>onbeforeunload</h4><p>브라우저 창을 닫거나, 다른 주소로 이동하면 실행되는 이벤트, <em>크롬에서는 보안상의 이유로 작동하지 않는다.</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onbeforeunload = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> dialogText = <span class="string">'Dialog text here'</span>;</span><br><span class="line">  e.returnValue = dialogText;</span><br><span class="line">  <span class="keyword">return</span> dialogText;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ionicframework.com/docs/native/local-notifications/" target="_blank" rel="noopener">https://ionicframework.com/docs/native/local-notifications/</a></p>
-
+<h4 id="onblur"><a href="#onblur" class="headerlink" title="onblur"></a>onblur</h4><p>브라우저가 포커스를 잃을 때 실행되는 이벤트, 탭 전환시, alt+tab 시에도 적용된다.</p>
+<h4 id="onfocus"><a href="#onfocus" class="headerlink" title="onfocus"></a>onfocus</h4><p>브라우저가 포커스를 얻을때 실행되는 이벤트, 탭 전환시, alt+tab 시에도 적용된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>
                     
                         
 
@@ -241,7 +243,7 @@
                     
                         <p>
                             <a
-                                href="/2017/10/03/Ionic/6. Ionic-event/#post-footer"
+                                href="/2017/10/09/Javascript/window-내장객체/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -281,7 +283,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 52 of 148</li>
+        <li class="pagination-number">page 52 of 150</li>
     </ul>
 </div>
 
@@ -291,7 +293,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

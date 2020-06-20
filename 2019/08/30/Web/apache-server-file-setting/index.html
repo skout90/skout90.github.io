@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
-    <title>Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기 - 지쳐가는 5분에 인생을 거는 나</title>
+    <title>Apache[webtier] 서버 파일[nas] 웹서버를 통해 Response 하기 - 지쳐가는 5분에 인생을 거는 나</title>
     <meta name="author" content="Junho Nam">
     
     
@@ -15,17 +15,17 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다\nhttpd.conf 파일을 수정하면 된다.\n\n웹티어 경로\n\n/www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf\n\n못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!\n\nalias 설정1234&lt;IfModule alias_module&gt;   # ...    Alias /vcomattach /vcomattach\n\n\nAlias /불러올 경로 /실제 파일 경로 \n\n해당 디렉터리의 권한 설정\nhttpd.conf\n\n1234&lt;Directory /path&gt;    AllowOverride none    Require all granted&lt;/Directory&gt;\n\nalias 설정과 권한 설정 모두 하위 디렉터리가 다 포함된다.\n웹서버에 다음과 같이 접근 가능\n웹서버주소/alias에등록한 경로\n","dateCreated":"2019-08-30T19:28:10+09:00","dateModified":"2019-12-17T10:14:27+09:00","datePublished":"2019-08-30T19:28:10+09:00","description":"","headline":"Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2019/08/30/Web/apache-server-file-setting/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2019/08/30/Web/apache-server-file-setting/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다\nhttpd.conf 파일을 수정하면 된다.\n\n웹티어 경로\n\n/www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf\n\n못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!\n\nalias 설정1234&lt;IfModule alias_module&gt;   # ...    Alias /vcomattach /vcomattach\n\n\nAlias /불러올 경로 /실제 파일 경로\n\n해당 디렉터리의 권한 설정\nhttpd.conf\n\n1234&lt;Directory /path&gt;    AllowOverride none    Require all granted&lt;/Directory&gt;\n\nalias 설정과 권한 설정 모두 하위 디렉터리가 다 포함된다.\n웹서버에 다음과 같이 접근 가능\n웹서버주소/alias에등록한 경로\n","dateCreated":"2019-08-30T19:28:10+09:00","dateModified":"2020-06-20T19:39:12+09:00","datePublished":"2019-08-30T19:28:10+09:00","description":"","headline":"Apache[webtier] 서버 파일[nas] 웹서버를 통해 Response 하기","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2019/08/30/Web/apache-server-file-setting/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2019/08/30/Web/apache-server-file-setting/"}</script>
     <meta name="description" content="웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다 httpd.conf 파일을 수정하면 된다.  웹티어 경로  /www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf  못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!  ali">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기">
+<meta property="og:title" content="Apache[webtier] 서버 파일[nas] 웹서버를 통해 Response 하기">
 <meta property="og:url" content="https://skout90.github.io/2019/08/30/Web/apache-server-file-setting/index.html">
 <meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
 <meta property="og:description" content="웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다 httpd.conf 파일을 수정하면 된다.  웹티어 경로  /www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf  못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!  ali">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-17T01:14:27.109Z">
+<meta property="og:updated_time" content="2020-06-20T10:39:12.497Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기">
+<meta name="twitter:title" content="Apache[webtier] 서버 파일[nas] 웹서버를 통해 Response 하기">
 <meta name="twitter:description" content="웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다 httpd.conf 파일을 수정하면 된다.  웹티어 경로  /www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf  못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!  ali">
     
     
@@ -200,7 +200,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기
+            Apache[webtier] 서버 파일[nas] 웹서버를 통해 Response 하기
         </h1>
     
     
@@ -237,7 +237,7 @@
 <h3 id="alias-설정"><a href="#alias-설정" class="headerlink" title="alias 설정"></a>alias 설정</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule alias_module&gt;</span><br><span class="line">   # ...</span><br><span class="line"></span><br><span class="line">    Alias /vcomattach /vcomattach</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>Alias /불러올 경로 /실제 파일 경로 </p>
+<p>Alias /불러올 경로 /실제 파일 경로</p>
 </blockquote>
 <h3 id="해당-디렉터리의-권한-설정"><a href="#해당-디렉터리의-권한-설정" class="headerlink" title="해당 디렉터리의 권한 설정"></a>해당 디렉터리의 권한 설정</h3><ul>
 <li>httpd.conf</li>
@@ -378,7 +378,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

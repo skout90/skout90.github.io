@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/23/Javascript/6. javascript-RegExp내장객체/"
-                            aria-label=": 06. Javascript 정규표현식:내장객체"
+                            href="/2017/09/22/etc/자신의-npmmodule-사용하기/"
+                            aria-label=": 수정한 npm_module 사용하기"
                         >
-                            06. Javascript 정규표현식:내장객체
+                            수정한 npm_module 사용하기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-23T19:28:10+09:00">
+    <time datetime="2017-09-22T19:28:10+09:00">
 	
-		    2017.09.23
+		    2017.09.22
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/etc/">etc</a>
 
 
     
@@ -227,77 +227,19 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="선언방법"><a href="#선언방법" class="headerlink" title="선언방법"></a>선언방법</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/pattern/gi</span>;</span><br><span class="line"><span class="keyword">var</span> pattern2 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"패턴"</span>, <span class="string">"플래그"</span>);</span><br></pre></td></tr></table></figure>
-
-<p><code>/</code>로 둘러 쓰고 정규표현식을 입력하면 리터럴로 입력 된다.</p>
-<p><code>() [] {} ^ $ |</code> 과 같은 특수기호(메타문자)를 ‘문자’로서 입력하려면 <code>\</code> 역슬러시를 사용하여 입력한다.</p>
-<h3 id="리터럴-VS-문자열"><a href="#리터럴-VS-문자열" class="headerlink" title="리터럴 VS 문자열"></a>리터럴 VS 문자열</h3><table>
-<thead>
-<tr>
-<th>리터럴</th>
-<th>문자열로 입력</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>/\[bc]\]at/</td>
-<td>“\\[bc\\]at”</td>
-</tr>
-<tr>
-<td>/\w\\hello\\123/</td>
-<td>“\\w\\hello\\\\123/“</td>
-</tr>
-</tbody></table>
-<p>문자열 내부에서 특수기호를 입력할때는,  <code>\</code> 를 한 번 더 입력해줘야 한다. 문자열 자체에서도 메타문자를 인식하기 때문에, 그것을 한 번 더 escape한다고 생각하면 될듯.</p>
-<h3 id="플래그"><a href="#플래그" class="headerlink" title="플래그"></a>플래그</h3><p>g : 전역모드</p>
-<p>i : 대소문자 구분</p>
-<p>m : 검사 대상의 첫문자를 뜻하는 <code>$</code>, 와 마지막 문자를 뜻하는  <code>^</code>를 각 행에 적용</p>
-<h3 id="특수기호-메타-문자"><a href="#특수기호-메타-문자" class="headerlink" title="특수기호(메타 문자)"></a>특수기호(메타 문자)</h3><p><img src="https://i.imgur.com/M6PjUz7.png" alt="img"></p>
-<ul>
-<li><code>.{n, m}</code> : 글자수 적어도 n개 이상~m개 이하</li>
-<li><code>()</code> : match를 수행해서 나온 결과를 기억한다. (아래에서 자세히 설명)</li>
-<li><code>(?=.*[0-9])</code> : 숫자가 적어도 하나는 있어야</li>
-<li><code>^()$</code> :</li>
-<li><code>?!.*</code> : 없어야 하는것.</li>
-<li><code>?=.*</code> :  있어야 하는것</li>
-<li><code>?:</code> :  그룹이 아님</li>
-</ul>
+                    <p>맘에 드는 npm_module을 수정하고 사용하고 싶을때..</p>
+<ol>
+<li>해당 git repository를 fork 한다</li>
+<li>수정한다.</li>
+<li>pacakge.json에 다음과 같이 등록</li>
+</ol>
 <blockquote>
-<p>JS에선 (?i) 지원하지 않음</p>
+<p>npm install <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a><username>/<repository>/tarball/master –save</repository></username></p>
 </blockquote>
-<h3 id="응용"><a href="#응용" class="headerlink" title="응용"></a>응용</h3><ul>
-<li>비밀번호 체크 : 숫자, 소문자, 대문자, 특수문자로 구성된 5~10 자리 비밀번호.</li>
-</ul>
-<p><code>/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&amp;+=])(?=\S+$).{5,10}/</code></p>
-<ul>
-<li>동영상 확장자 체크</li>
-</ul>
-<p><code>/^(mp4 |mov|wmv|3gp|flv|avi|mpg|mpeg|mpe|asf|asx|rm|mkv|webm|ogg|ogv|yuv|amv|m4p|m4v)$/</code></p>
-<ul>
-<li>양의 정수</li>
-</ul>
-<p><code>/^[1-9][0-9]*$/</code></p>
-<h2 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h2><ul>
-<li><strong>test()</strong></li>
-</ul>
-<p>검사 패턴의 결과로 true/false를 리턴한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern1 = <span class="regexp">/at/g</span>; <span class="comment">// 모든 at에 일치</span></span><br><span class="line">pattern1.test(<span class="string">"bat cat sommat"</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>exec()</strong></li>
-</ul>
-<p>검사 패턴에 일치하는 문자열 배열을 반환한다. <code>()?</code> 그룹을 사용하여 묶어서 사용한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> matches = <span class="regexp">/mom( and dad( and baby)?)?/gi</span>.exec(<span class="string">"mom and dad and baby xx"</span>);</span><br><span class="line">matches.index; <span class="comment">// 0</span></span><br><span class="line">matches.input; <span class="comment">// mom and dad and baby xx</span></span><br><span class="line">matches[<span class="number">0</span>]; <span class="comment">// 패턴에 일치하는 부분 전체 mom and dad and baby</span></span><br><span class="line">matches[<span class="number">1</span>]; <span class="comment">// 그룹1 and dad and baby</span></span><br><span class="line">matches[<span class="number">2</span>]; <span class="comment">// 그룹2 and baby</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="프로퍼티"><a href="#프로퍼티" class="headerlink" title="프로퍼티"></a>프로퍼티</h2><p>현재 컨텍스트의 최근 정규표현식 관련 정보를 가져올 수 있다.</p>
-<ul>
-<li>RegExp.input : 최근 입력</li>
-<li>RegExp.lastMatch : 패턴에 일치하는 정보</li>
-<li>RegExp.leftContext : 패턴의 왼쪽 정보</li>
-<li>RegExp.rightContext : 패턴의 오른쪽 정보</li>
-</ul>
-<h2 id="유용한-사이트"><a href="#유용한-사이트" class="headerlink" title="유용한 사이트"></a>유용한 사이트</h2><p><a href="https://regexr.com/" target="_blank" rel="noopener">https://regexr.com/</a> : 결과 확인할때</p>
-<p><a href="https://regexper.com" target="_blank" rel="noopener">https://regexper.com</a> : 표현식 시각화</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 - 니콜라스 자칼스</p>
+<p>/tarball 이라는것으로 해야 한다. 그래야 gz파일이라는 걸로 다운받아지면서 설치가 가능함.</p>
+<p>내가 수정한 knex-logger</p>
+<p><a href="https://github.com/skout90/knex-logger" target="_blank" rel="noopener">https://github.com/skout90/knex-logger</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm" target="_blank" rel="noopener">https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm</a></p>
 
                     
                         
@@ -307,7 +249,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/23/Javascript/6. javascript-RegExp내장객체/#post-footer"
+                                href="/2017/09/22/etc/자신의-npmmodule-사용하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -347,7 +289,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 18 of 112</li>
+        <li class="pagination-number">page 18 of 111</li>
     </ul>
 </div>
 
@@ -357,7 +299,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

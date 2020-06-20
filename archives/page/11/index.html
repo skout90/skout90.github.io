@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/09/02/DevOps/ci-cd-reference/"
-                            aria-label=": CI / CD 링크 정리"
+                            href="/2018/12/28/Javascript/this바인딩-분석/"
+                            aria-label=": this 바인딩 분석"
                         >
-                            CI / CD 링크 정리
+                            this 바인딩 분석
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-09-02T19:28:10+09:00">
+    <time datetime="2018-12-28T19:28:10+09:00">
 	
-		    2018.09.02
+		    2018.12.28
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/DevOps/">DevOps</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,25 +227,26 @@
             </div>
             
                 <div class="postShorten-content">
-                    <ul>
-<li><p>CI / CD 툴 비교</p>
+                    <h2 id="기본-바인딩"><a href="#기본-바인딩" class="headerlink" title="기본 바인딩"></a>기본 바인딩</h2><p>전역함수 내에서 this 호출시 <strong>this = window</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'apple'</span>;</span><br><span class="line"></span><br><span class="line">getFruitName(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="암시적-바인딩"><a href="#암시적-바인딩" class="headerlink" title="암시적 바인딩"></a>암시적 바인딩</h2><h3 id="객체-function-함수-할당시"><a href="#객체-function-함수-할당시" class="headerlink" title="객체 function 함수 할당시"></a>객체 function 함수 할당시</h3><p>객체 내에 function 함수를 호출시 <strong>this = 해당 객체</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.onPress(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="객체-arrow-function-함수-할당시"><a href="#객체-arrow-function-함수-할당시" class="headerlink" title="객체 arrow function 함수 할당시"></a>객체 arrow function 함수 할당시</h3><p>객체 내 arrow function 함수 호출시 <strong>this = 해당 컨텍스트의 부모 객체</strong></p>
 <blockquote>
-<p><a href="https://www.slant.co/topics/799/~best-continuous-integration-tools" target="_blank" rel="noopener">https://www.slant.co/topics/799/~best-continuous-integration-tools</a></p>
+<p>arrow function은 의도적으로 컨텍스트를 할당할 수 있기 때문에 명시적 할당에 더 가깝다고 볼 수도 있다.</p>
 </blockquote>
-</li>
-<li><p>jenkins (doker활용) : CI / CD 툴<br><a href="http://woowabros.github.io/experience/2018/06/26/bros-cicd.html" target="_blank" rel="noopener">http://woowabros.github.io/experience/2018/06/26/bros-cicd.html</a><br><a href="https://codeforgeek.com/2016/04/continuous-integration-deployment-jenkins-node-js/" target="_blank" rel="noopener">https://codeforgeek.com/2016/04/continuous-integration-deployment-jenkins-node-js/</a></p>
-</li>
-<li><p>jenkins로 node 배포하기<br><a href="https://setyourmindpark.github.io/2017/04/22/jenkins/jenkins-2/" target="_blank" rel="noopener">https://setyourmindpark.github.io/2017/04/22/jenkins/jenkins-2/</a></p>
-</li>
-<li><p>Circle CI + code climate + heroku<br><a href="https://medium.freecodecamp.org/how-to-set-up-continuous-integration-and-deployment-for-your-react-app-d09ae4525250" target="_blank" rel="noopener">https://medium.freecodecamp.org/how-to-set-up-continuous-integration-and-deployment-for-your-react-app-d09ae4525250</a></p>
-</li>
-<li><p>code deploy : CD 툴- 다양한 배포전략을 도와줌.<br><a href="http://blog.dramancompany.com/2017/04/aws-code-deploy%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B0%B0%ED%8F%AC-%EC%9E%90%EB%8F%99%ED%99%94/" target="_blank" rel="noopener">http://blog.dramancompany.com/2017/04/aws-code-deploy%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B0%B0%ED%8F%AC-%EC%9E%90%EB%8F%99%ED%99%94/</a><br>code deploy 셋팅<br><a href="https://jojoldu.tistory.com/281" target="_blank" rel="noopener">https://jojoldu.tistory.com/281</a></p>
-</li>
-<li><p>circle ci + aws code deploy<br><a href="https://jeongukjae.github.io/GitHub-+-CircleCI-+-AWS-CodeDeploy-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/" target="_blank" rel="noopener">https://jeongukjae.github.io/GitHub-+-CircleCI-+-AWS-CodeDeploy-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/</a></p>
-</li>
-<li><p>netlify : 정적 웹페이지를 사용할시에 웹서버 + CI + CD 통합적인 환경 제공<br><a href="https://heropy.blog/2018/01/10/netlify/" target="_blank" rel="noopener">https://heropy.blog/2018/01/10/netlify/</a></p>
-</li>
-</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"><span class="keyword">const</span> z = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">z.onPress(); <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="객체에-할당된-function-함수를-복사시"><a href="#객체에-할당된-function-함수를-복사시" class="headerlink" title="객체에 할당된 function 함수를 복사시"></a>객체에 할당된 function 함수를 복사시</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    getFruitName: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obj.getFruitName</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
+
+<p>getCopyFruitName은 일반 함수이므로 obj.getFruitName을 할당하는 순간, this는 전역 객체가 되어버린다.</p>
+<h2 id="명시적-바인딩"><a href="#명시적-바인딩" class="headerlink" title="명시적 바인딩"></a>명시적 바인딩</h2><p>우리가 의도한대로, this를 바인딩해보자!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obje = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obje.onPress</span><br><span class="line"><span class="keyword">const</span> getCorectCopyFruitName = obje.onPress.bind(obje)</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br><span class="line">getCorrectCopyFruitName() <span class="comment">// apple</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
+<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
 
                     
                         
@@ -255,7 +256,7 @@
                     
                         <p>
                             <a
-                                href="/2018/09/02/DevOps/ci-cd-reference/#post-footer"
+                                href="/2018/12/28/Javascript/this바인딩-분석/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -295,7 +296,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 11 of 148</li>
+        <li class="pagination-number">page 11 of 150</li>
     </ul>
 </div>
 
@@ -305,7 +306,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

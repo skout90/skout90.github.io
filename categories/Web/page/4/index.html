@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/REST란/"
-                            aria-label=": REST 란"
+                            href="/2017/10/29/Web/웹컴포넌트와쉐도우돔/"
+                            aria-label=": 쉐도우 돔(Shadow Dom)이란"
                         >
-                            REST 란
+                            쉐도우 돔(Shadow Dom)이란
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-15T19:28:10+09:00">
+    <time datetime="2017-10-29T19:28:10+09:00">
 	
-		    2017.08.15
+		    2017.10.29
     	
     </time>
     
@@ -227,21 +227,80 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>자원지향구조 기반, 자원에 고유한 URI를 부여하고 HTTP METHOD를 통한 CRUD 작업을 함으로써, 각 컴포넌트간의 상호작용을 촉진하고 서로 정보를 교환.</p>
-<h2 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h2><ul>
-<li><p>무상태성(Stateless)</p>
-<p>쿠키/세션 불필요, 직관적인 오브젝트로의 접근</p>
+                    <p><strong>naver D2의 내용을 요약한 포스팅임을 미리 밝힙니다..^^ 문제시 말씀주시면 바로 삭제하겠습니다.</strong></p>
+<h3 id="HTML의-한계"><a href="#HTML의-한계" class="headerlink" title="HTML의 한계"></a>HTML의 한계</h3><p>HTML 엘리먼트는 같은 요소라도 브라우저와 운영체제에 따라 다르게 보인다. 또한 HTML5 이외에도 다양한 엘리먼트가 필요하다.</p>
+<p>그래서 JS 컴포넌트를 사용하기도 하지만, 적용이 힘들고 느리다.</p>
+<h3 id="웹-컴포넌트"><a href="#웹-컴포넌트" class="headerlink" title="웹 컴포넌트"></a>웹 컴포넌트</h3><p>따라서 W3C에서는 이러한 이슈를 개선하고자 <strong>웹 컴포넌트 (Web Component)</strong>라는 명세를 만들었다. <strong>개발자가 자체적으로 HTML 엘리먼트를 만드는 기술</strong>이다.</p>
+<h4 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h4><ol>
+<li>컴포넌트를 캡슐화하여 쉽게 적용 가능</li>
+<li>네이티브 엘리먼트로 동작하기 때문에 성능이 좋다.</li>
+</ol>
+<h3 id="구성"><a href="#구성" class="headerlink" title="구성"></a>구성</h3><p>구성은 템플릿(Templates), 데코레이터(Decorators), 커스텀 엘리먼트(Custom Element), 섀도 DOM(Shadow DOM)으로 되어 있다.</p>
+<p>이 중에 쉐도우 DOM에 대해 정리해본다.</p>
+<p><strong>템플릿</strong></p>
+<p>구조 정의, 템플릿 안에 원하는 엘리먼트 구조를 만들면 된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"slide"</span>&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">      &lt;content select=<span class="string">"li"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">content</span>&gt;</span></span></span><br><span class="line">    &lt;<span class="regexp">/ul&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;template&gt;</code> 태그 내 엘리먼트는 DOM 구조를 가지고 있지만 렌더링되지 않으며 리소스 파일(이미지)을 내려 받지 않는다.</p>
+<p><strong>데코레이터</strong></p>
+<p><code>&lt;decorator&gt;</code> 태그를 이용하여 엘리먼트를 오버라이드해 엘리먼트를 꾸밈. 템플릿 엘리먼트에 추가적인 구조를 만들고 <strong>스타일 지정</strong>할때 쓰인다.</p>
+<blockquote>
+<p>??????? 좀 이상한거 같다 스타일 지정이 어디에 있는거지</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;decorator id=<span class="string">"decorator-event-demo"</span>&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">h</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">            alert(event.target);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.listen(&#123;<span class="attr">selector</span>: <span class="string">"#b"</span>, <span class="attr">type</span>: <span class="string">"click"</span>, <span class="attr">handler</span>: h&#125;);</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">    &lt;template&gt;</span></span><br><span class="line"><span class="regexp">        &lt;content&gt;&lt;/</span>content&gt;</span><br><span class="line">        &lt;button id=<span class="string">"b"</span>&gt;Bar&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>template&gt;</span><br><span class="line">&lt;<span class="regexp">/decorator&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>커스텀 엘리먼트</strong></p>
+<p>데코레이터와 유사해보이지만, 데코레이터는 스타일을 적용하는 것이라면 커스텀 엘리먼트는 개발자가 새로운 엘리먼트를 만드는 것과 같다.</p>
+<blockquote>
+<p>위에서는 데코레이터가 스타일 지정을 하지 않았는데?? 어쨌든 용도의 차이인건가</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;element name=<span class="string">"x-slide"</span> extends=<span class="string">"ul"</span> <span class="keyword">constructor</span>="SlideControl"&gt;</span><br><span class="line">    &lt;template&gt;</span><br><span class="line">        &lt;div class="slide"&gt;</span><br><span class="line">            &lt;ul&gt;</span><br><span class="line">                &lt;content select="li"&gt;&lt;/content&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        SlideControl.prototype = &#123;</span><br><span class="line">            currentNum : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,</span><br><span class="line">            lastNum : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.lifecycle(&#123;</span><br><span class="line">            created: <span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;&#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>element&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;element&gt; 태그의 속성</code></p>
+<ol>
+<li>name : 커스텀 엘리먼트 이름 지정</li>
+<li>extends : 어떤 엘리먼트 확장했는지 지정</li>
+<li>constructor : 스크립트로 커스텀 엘리먼트 생성시 사용</li>
+</ol>
+<p><strong>적용</strong></p>
+<ol>
+<li>파일로 위 커스텀 엘리먼트 저장후</li>
+<li>링크에 적용</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="string">"components"</span> href=<span class="string">"./slide-component.html"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>is 속성에 커스텀 엘리먼트의 name을 적으면 적용</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;x-slide is=<span class="string">"x-slide"</span>&gt;</span><br><span class="line">    &lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/1.jpeg"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">    &lt;li&gt;<span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"2.jpeg"</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span></span><br><span class="line">&lt;<span class="regexp">/x-slide&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="섀도-DOM"><a href="#섀도-DOM" class="headerlink" title="섀도 DOM"></a>섀도 DOM</h2><p>섀도우 DOM은 DOM의 구조를 가지고 있으나, 외부에 노출되지 않은 DOM을 말하며 DOM의 구조를 캡슐화할 때 사용한다.</p>
+<blockquote>
+<p>DOM 이란</p>
+</blockquote>
+<p>웹컴포넌트의 템플릿, 데코레이터, 커스텀 엘리먼트들은 모두 Shadow DOM으로 만들어진다</p>
+<h3 id="특징-1"><a href="#특징-1" class="headerlink" title="특징"></a>특징</h3><ol>
+<li>외부의 style은 적용되지 않는다.</li>
+<li>섀도 DOM을 추가하거나 접근하기 위해서는 별도의 방법이 필요하다.</li>
+<li><strong>데코레이터</strong>에서 만들어진 섀도우 돔은 스크립트로 접근, 수정 불가.</li>
+<li><strong>커스텀 엘리먼트</strong>로 만들어진 섀도 돔은 스크립트로 수정 가능.</li>
+<li>일반적인 DOM은 트리가 렌더링 된후 DOM트리가 수정되서 비용이 크지만, Shadow DOM은 <strong>Shadow Host</strong>를 만나는 순간 렌더링 되기 때문에 비용을 줄일 수 있다.</li>
+</ol>
+<p><img src="http://d2.naver.com/content/images/2015/06/helloworld-188655-3.png" alt="webcomponent3"></p>
+<p>​ &lt;왼쪽이 일반적인 DOM 트리, 오른쪽이 섀도 DOM&gt;</p>
+<p><img src="http://d2.naver.com/content/images/2015/06/helloworld-188655-5.png" alt="webcomponent5"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DOM 트리 코드</span></span><br><span class="line">&lt;x-slide is=<span class="string">"x-slide"</span>&gt;  <span class="xml"><span class="comment">&lt;!-- 쉐도우 호스트 --&gt;</span></span></span><br><span class="line">    &lt;li&gt;&lt;img src="/1.jpeg"&gt;&lt;/li&gt; &lt;!-- 쉐도우 호스트 차일드 --&gt;</span><br><span class="line">    &lt;li&gt;&lt;img src="2.jpeg"&gt;&lt;/li&gt;</span><br><span class="line">&lt;/x-slide&gt;</span><br><span class="line"></span><br><span class="line">// Shadow DOM 트리 코드</span><br><span class="line">&lt;element name="x-slide" extends="ul" constructor="SlideControl"&gt;</span><br><span class="line">    &lt;template&gt;</span><br><span class="line">        &lt;div class="slide"&gt;</span><br><span class="line">            &lt;ul&gt;</span><br><span class="line">                &lt;content select="li"&gt;&lt;/content&gt;</span><br><span class="line">            &lt;/ul&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    &lt;/template&gt;</span><br><span class="line">&lt;/element&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://d2.naver.com/content/images/2015/06/helloworld-188655-4.png" alt="webcomponent4"></p>
+<h3 id="동작-방식"><a href="#동작-방식" class="headerlink" title="동작 방식"></a>동작 방식</h3><ol>
+<li><p><code>Shadow host</code>, 코드로는 <code>x-slide</code> 엘리먼트를 <strong>만나는 순간</strong> Shadow Dom이 렌더링.</p>
 </li>
-<li><p>자원지향구조(ROA : Resource Oriented Architecture)로 웹 서비스 컨텐츠, DB 내용 등을 하나의 자원으로 파악.</p>
+<li><p><code>&lt;content&gt;</code> 엘리먼트를 이용하여 쉐도우 호스트 Child를 재배치.</p>
+<p>select 속성의 CSS선택자를 통해서, content에 엘리먼트를 삽입한다.</p>
 </li>
-<li><p>자원에 고유한 URI 부여.</p>
-<p>ex) <a href="http://www.myhome.com/posts/123" target="_blank" rel="noopener">www.myhome.com/posts/123</a></p>
-</li>
-<li><p>HTTP METHOD 활용(POST, GET, PUT, DELETE)</p>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><strong>김민균 IT 블로그</strong> <a href="http://blog.naver.com/mkzzang0928/220947811979" target="_blank" rel="noopener">RESTFUL API</a></p>
-<p><a href="http://egloos.zum.com/killins/v/3092502" target="_blank" rel="noopener">http://egloos.zum.com/killins/v/3092502</a></p>
+</ol>
+<p><img src="http://d2.naver.com/content/images/2015/06/helloworld-188655-7.png" alt="webcomponent7"></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://d2.naver.com/helloworld/188655" target="_blank" rel="noopener">http://d2.naver.com/helloworld/188655</a></p>
 
                     
                         
@@ -251,7 +310,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/REST란/#post-footer"
+                                href="/2017/10/29/Web/웹컴포넌트와쉐도우돔/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -291,7 +350,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 4 of 6</li>
+        <li class="pagination-number">page 4 of 7</li>
     </ul>
 </div>
 
@@ -301,7 +360,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/3. 새-페이지-만들기/"
-                            aria-label=": 03. 새 페이지 만들기"
+                            href="/2017/07/24/Ionic/2. Ionic-시작하기/"
+                            aria-label=": 02. Ionic 시작하기"
                         >
-                            03. 새 페이지 만들기
+                            02. Ionic 시작하기
                         </a>
                     
                 </h1>
@@ -227,46 +227,67 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h1 id="페이지-만들기"><a href="#페이지-만들기" class="headerlink" title="페이지 만들기"></a>페이지 만들기</h1><p>Ionic 2, Anuglar 2 기준에서 새 페이지를 만드는 법</p>
-<p>기본 blank 템플릿을 기준으로 추가된 내용을 작성하였다.</p>
-<h2 id="페이지-만들기-1"><a href="#페이지-만들기-1" class="headerlink" title="페이지 만들기"></a>페이지 만들기</h2><p>cmd 창에 아이오닉 폴더 안으로 이동후 아래 커맨드를 입력한다.</p>
+                    <p>아이오닉을 시작하기 위해서</p>
+<p>기본 셋팅과, 명령어를 알아본다.</p>
+<h2 id="Node-설치"><a href="#Node-설치" class="headerlink" title="Node 설치"></a>Node 설치</h2><p><a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a></p>
+<p>설치 후 커맨드 창을 열어</p>
 <blockquote>
-<p>$ ionic g page [만들페이지 이름]</p>
+<p>$ node</p>
+<p>&gt; console.log(‘hello node’);</p>
+<p>hello node</p>
+<p>undefined</p>
 </blockquote>
-<p>그럼 pages 폴더 안에</p>
-<p><strong>페이지명.html, 페이지명.scss, 페이지명, schedule.ts</strong></p>
-<p>세가지 파일이 추가된다.</p>
-<h2 id="모듈-추가"><a href="#모듈-추가" class="headerlink" title="모듈 추가"></a>모듈 추가</h2><ul>
-<li>app.module.ts</li>
-</ul>
-<p>다음과 같이 새로 만든 페이지 내용을 추가한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule, ErrorHandler &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; IonicApp, IonicModule, IonicErrorHandler &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; MyApp &#125; <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HomePage &#125; <span class="keyword">from</span> <span class="string">'../pages/home/home'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SchedulePage &#125; <span class="keyword">from</span> <span class="string">'../pages/schedule/schedule'</span>; <span class="xml"><span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">import &#123; StatusBar &#125; from '@ionic-native/status-bar';</span></span><br><span class="line"><span class="xml">import &#123; SplashScreen &#125; from '@ionic-native/splash-screen';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">@NgModule(&#123;</span></span><br><span class="line"><span class="xml">  declarations: [</span></span><br><span class="line"><span class="xml">    MyApp,</span></span><br><span class="line"><span class="xml">    HomePage,</span></span><br><span class="line"><span class="xml">    SchedulePage <span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  imports: [</span></span><br><span class="line"><span class="xml">    IonicModule.forRoot(MyApp)</span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  bootstrap: [IonicApp],</span></span><br><span class="line"><span class="xml">  entryComponents: [</span></span><br><span class="line"><span class="xml">    MyApp,</span></span><br><span class="line"><span class="xml">    HomePage,</span></span><br><span class="line"><span class="xml">    SchedulePage <span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  providers: [</span></span><br><span class="line"><span class="xml">    StatusBar,</span></span><br><span class="line"><span class="xml">    SplashScreen,</span></span><br><span class="line"><span class="xml">    &#123;provide: ErrorHandler, useClass: IonicErrorHandler&#125;</span></span><br><span class="line"><span class="xml">  ]</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br><span class="line"><span class="xml">export class AppModule &#123;&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="컴포넌트-추가"><a href="#컴포넌트-추가" class="headerlink" title="컴포넌트 추가"></a>컴포넌트 추가</h2><ul>
-<li>app.component.ts </li>
-</ul>
-<p>다음과 같은 내용을 추가한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, ViewChild &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>; <span class="xml"><span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml">import &#123; Nav, Platform &#125; from 'ionic-angular';</span></span><br><span class="line"><span class="xml">import &#123; StatusBar &#125; from '@ionic-native/status-bar';</span></span><br><span class="line"><span class="xml">import &#123; SplashScreen &#125; from '@ionic-native/splash-screen';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">import &#123; HomePage &#125; from '../pages/home/home';</span></span><br><span class="line"><span class="xml">import &#123; SchedulePage &#125; from '../pages/schedule/schedule';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">@Component(&#123;</span></span><br><span class="line"><span class="xml">  templateUrl: 'app.html'</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br><span class="line"><span class="xml">export class MyApp &#123;</span></span><br><span class="line"><span class="xml">  rootPage:any = HomePage;</span></span><br><span class="line"><span class="xml">  private pages = &#123;&#125;; <span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml">  @ViewChild(Nav) nav: Nav; <span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) &#123;</span></span><br><span class="line"><span class="xml">    platform.ready().then(() =&gt; &#123;</span></span><br><span class="line"><span class="xml">      statusBar.styleDefault();</span></span><br><span class="line"><span class="xml">      splashScreen.hide();</span></span><br><span class="line"><span class="xml">    &#125;);</span></span><br><span class="line"><span class="xml">    this.pages = &#123; <span class="comment">&lt;!-- 추가된 소스 --&gt;</span></span></span><br><span class="line"><span class="xml">        'HomePage': HomePage,</span></span><br><span class="line"><span class="xml">        'SchedulePage': SchedulePage</span></span><br><span class="line"><span class="xml">    &#125;;</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">  </span></span><br><span class="line"><span class="xml">  // 새 페이지 이동 함수를 추가한다.</span></span><br><span class="line"><span class="xml">  openPage(pageName) &#123;</span></span><br><span class="line"><span class="xml">    const component = this.pages[pageName];</span></span><br><span class="line"><span class="xml">    if (!component) &#123;</span></span><br><span class="line"><span class="xml">      return;</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml">    this.nav.setRoot(component);</span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
-
+<p>와 같이 나온다면 성공.</p>
+<h2 id="Cordova-설치"><a href="#Cordova-설치" class="headerlink" title="Cordova 설치"></a>Cordova 설치</h2><p>코도바는 하이브리드 앱에서 네이티브 앱의 기능을 사용할 수 있게 하는 라이브러리다.</p>
 <blockquote>
-<p> 방법2 NavControll 이용</p>
+<p>npm install -g cordova</p>
 </blockquote>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">  openPage(page) &#123;</span><br><span class="line">    <span class="keyword">this</span>.navCtrl.push(page);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>NavController.push(PageName) : 페이지 이동</p>
-<p>NavController.pop() : 이전 페이지로 돌아감</p>
-<h2 id="메뉴-버튼-만들기"><a href="#메뉴-버튼-만들기" class="headerlink" title="메뉴 버튼 만들기"></a>메뉴 버튼 만들기</h2><ul>
-<li>app.html</li>
+<h2 id="CLI-설치하기"><a href="#CLI-설치하기" class="headerlink" title="CLI 설치하기"></a>CLI 설치하기</h2><p>CLI는 아이오닉 프레임워크 개발에 가장 기초가 되는 툴이다.</p>
+<p>start/build/serve/run/emulate/info 같은 명령어를 사용하기 위해서는</p>
+<p>CLI 툴을 설치해야 한다.</p>
+<p>node와 npm이 설치 되어 있어야 한다.</p>
+<blockquote>
+<p>$ npm install -g ionic</p>
+</blockquote>
+<h2 id="명령어"><a href="#명령어" class="headerlink" title="명령어"></a>명령어</h2><ul>
+<li>새 프로젝트 만들기</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-menu</span> [<span class="attr">content</span>]=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span>Menu<span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-content</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">ion-item</span> (<span class="attr">click</span>)=<span class="string">"openPage('HomePage')"</span>&gt;</span></span><br><span class="line">                메인</span><br><span class="line">            <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">button</span> <span class="attr">ion-item</span> (<span class="attr">click</span>)=<span class="string">"openPage('새페이지이름')"</span>&gt;</span></span><br><span class="line">                새페이지이름</span><br><span class="line">            <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ion-list</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-menu</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-nav</span> #<span class="attr">content</span> [<span class="attr">root</span>]=<span class="string">"rootPage"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-nav</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<blockquote>
+<p>$ ionic start –v2 myApp blank</p>
+</blockquote>
+<p>blank 대신 다른 템플릿을 입력할 수도 있다. (blank/sidemenu/tabs/tutorial,github-url)</p>
 <ul>
-<li>home.html / 새페이지.html</li>
+<li>정보 보기</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">menuToggle</span> <span class="attr">ion-button</span> <span class="attr">icon-only</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"menu"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span>제목<span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">	내용</span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://ionicframework.com/docs/components/#loading" target="_blank" rel="noopener">Ionic Doc</a></p>
-<p><a href="[https://github.com/angularjs-de/ionic2-pizza-service853](https://github.com/angularjs-de/ionic2-pizza-service)">bengtler’s Git SampleSource</a></p>
+<blockquote>
+<p>$ ionic info</p>
+</blockquote>
+<ul>
+<li>디버깅</li>
+</ul>
+<blockquote>
+<p>$ ionic serve</p>
+</blockquote>
+<ul>
+<li>플랫폼별 브라우저 확인</li>
+</ul>
+<blockquote>
+<p>$ ionic serve –lab</p>
+</blockquote>
+<ul>
+<li>업로드</li>
+</ul>
+<blockquote>
+<p>$ ionic upload</p>
+</blockquote>
+<ul>
+<li>사용가능 명령어 확인</li>
+</ul>
+<blockquote>
+<p>$ ionic .</p>
+</blockquote>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="http://ionicframework.com/docs/cli/" target="_blank" rel="noopener">Ionic docs</a></p>
+<p><a href="https://medium.com/witinweb/ionic-2-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-ed011c7fe69b" target="_blank" rel="noopener">스키머님 블로그</a></p>
 
                     
                         
@@ -276,7 +297,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/3. 새-페이지-만들기/#post-footer"
+                                href="/2017/07/24/Ionic/2. Ionic-시작하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -326,7 +347,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

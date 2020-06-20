@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/08/30/Web/apache-server-file-setting/"
-                            aria-label=": Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                            href="/2020/03/09/Web/콘솔로그글자서식주기/"
+                            aria-label=": 콘솔로그 console.log 글자 서식 주기"
                         >
-                            Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기
+                            콘솔로그 console.log 글자 서식 주기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-08-30T19:28:10+09:00">
+    <time datetime="2020-03-09T19:28:10+09:00">
 	
-		    2019.08.30
+		    2020.03.09
     	
     </time>
     
@@ -227,28 +227,8 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다</p>
-<p><code>httpd.conf</code> 파일을 수정하면 된다.</p>
-<ul>
-<li>웹티어 경로</li>
-</ul>
-<p>/www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf</p>
-<blockquote>
-<p>못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!</p>
-</blockquote>
-<h3 id="alias-설정"><a href="#alias-설정" class="headerlink" title="alias 설정"></a>alias 설정</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule alias_module&gt;</span><br><span class="line">   # ...</span><br><span class="line"></span><br><span class="line">    Alias /vcomattach /vcomattach</span><br></pre></td></tr></table></figure>
+                    <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">`%c<span class="subst">$&#123;variable&#125;</span>`</span>, <span class="string">"color: blue; font-size: large"</span>);</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>Alias /불러올 경로 /실제 파일 경로 </p>
-</blockquote>
-<h3 id="해당-디렉터리의-권한-설정"><a href="#해당-디렉터리의-권한-설정" class="headerlink" title="해당 디렉터리의 권한 설정"></a>해당 디렉터리의 권한 설정</h3><ul>
-<li>httpd.conf</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /path&gt;</span><br><span class="line">    AllowOverride none</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
-
-<p>alias 설정과 권한 설정 모두 하위 디렉터리가 다 포함된다.</p>
-<p>웹서버에 다음과 같이 접근 가능</p>
-<p><code>웹서버주소/alias에등록한 경로</code></p>
 
                     
                         
@@ -258,7 +238,7 @@
                     
                         <p>
                             <a
-                                href="/2019/08/30/Web/apache-server-file-setting/#post-footer"
+                                href="/2020/03/09/Web/콘솔로그글자서식주기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -287,7 +267,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 1 of 6</li>
+        <li class="pagination-number">page 1 of 7</li>
     </ul>
 </div>
 
@@ -297,7 +277,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

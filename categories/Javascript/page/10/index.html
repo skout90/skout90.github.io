@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
-                            aria-label=": 03.1. Object 내장객체"
+                            href="/2017/09/01/Javascript/2.1. javascript-변수/"
+                            aria-label=": 02.1. Javascript 변수"
                         >
-                            03.1. Object 내장객체
+                            02.1. Javascript 변수
                         </a>
                     
                 </h1>
@@ -227,126 +227,45 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
-<li><strong>Object.prototype</strong></li>
-</ul>
-<p>모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, <strong>모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.</strong></p>
-<p>다음 코드를 보자</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name   : <span class="string">"child of earth"</span>,</span><br><span class="line">  	age    : <span class="number">0</span>,</span><br><span class="line">	nature : <span class="string">"cool"</span>,</span><br><span class="line">  	eat    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name + <span class="string">"is eating"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narendra = <span class="built_in">Object</span>.create(person);</span><br><span class="line">narendra.name = <span class="string">"Narendra Sisdoiya"</span>;</span><br><span class="line">narendra.age = <span class="number">29</span>;</span><br><span class="line">narendra.eat();</span><br><span class="line"></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"eat"</span>); <span class="comment">// false</span></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"name"</span>); <span class="comment">// true</span></span><br><span class="line">narendra.hasOwnPropery(<span class="string">"nature"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030" alt="object prototype에 대한 이미지 검색결과"></p>
-<p>내장 객체인 Object와, Object.prototype이 있다.</p>
+                    <h2 id="원시타입"><a href="#원시타입" class="headerlink" title="원시타입"></a>원시타입</h2><p><code>숫자</code> : number</p>
+<p><code>문자열</code> : string</p>
+<p><code>불리언(true/false)</code> : bool</p>
+<p><code>null</code> : null 이라는 빈값을 할당, 비어있는 객체를 뜻함(null은 객체형 데이터-ex: array, object-의 빈 값을 의미)</p>
+<p><code>undefined</code> : 변수를 선언만 하고 값을 할당하지 않음/즉, 자료형이 결정되지 않은 상태이다.</p>
+<p><code>NaN</code> : Not a Number 숫자가 아닌 값을 뜻함, 숫자가 아닌 값을 형변환시나, 연산 불가시.</p>
 <blockquote>
-<p>자세한 내용은 상속과 prototype 포스팅 참조</p>
+<p>값 복사시, <strong>실제 값이 복사</strong>된다</p>
 </blockquote>
-<ul>
-<li><strong>Object.prototype.constructor</strong></li>
-</ul>
-<p>객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, <code>instance of</code> 연산자가 더 안전하다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">o.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [];</span><br><span class="line">a.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">3</span>);</span><br><span class="line">n.constructor === <span class="built_in">Number</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<h2 id="래퍼객체"><a href="#래퍼객체" class="headerlink" title="래퍼객체"></a>래퍼객체</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'coding'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.length); <span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line">str.prop = <span class="string">'lala'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.prop); <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>Object.prototype.__proto__</strong></li>
-</ul>
-<p>객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
-<li><strong>Object.hasOwnPropery()</strong></li>
-</ul>
-<p>상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">o.prop = <span class="string">'exists'</span>;</span><br><span class="line">o.hasOwnProperty(<span class="string">'prop'</span>);             <span class="comment">// returns true</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'toString'</span>);         <span class="comment">// returns false</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'hasOwnProperty'</span>);   <span class="comment">// returns false</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.create()</strong></li>
-</ul>
-<p>constructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  	F.prototype = o;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p>str은 원시 데이터타입으로 보이는데, 신기하게 객체처럼 메서드가 작동한다! 어떻게 된걸까?</p>
 <blockquote>
-<p>Object.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)</p>
+<p>자바스크립트에서는 문자열과 관련된 어떤 작업을 하려고 할때 임시로 문자열 객체를 만들고 사용이 끝나면 제거한다.</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"hi"</span>, <span class="attr">friends</span> : [<span class="string">"hi"</span>, <span class="string">"ho"</span>] &#125;</span><br><span class="line"><span class="comment">// p1, p2는 person 객체를 공유하게 된다.</span></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p3 = <span class="built_in">Object</span>.create(person, &#123; <span class="attr">name</span> : &#123; <span class="attr">value</span> : <span class="string">"Gre"</span>&#125; &#125;)</span><br><span class="line"><span class="comment">// 두번째 파라미터는 Object.defineProperties와 유사하다.</span></span><br></pre></td></tr></table></figure>
-
+<p>str.prop을 하는 순간 내부적으로 String 객체가 만들어 지고 저장되지만, 다시 해당 객체는 제거되기 때문에 str.prop을 호출하면 undefined가 나오는 것이다.</p>
+<p>래퍼 객체는 Number, String, Boolean이 존재한다.</p>
+<h2 id="참조"><a href="#참조" class="headerlink" title="참조"></a>참조</h2><p><code>var a = {};</code> 일때 a는 객체를 가리키는 참조이다. 객체의 메모리 공간을 직접 접근이 불가능하므로, 참조를 통해 접근한다.</p>
 <blockquote>
-<p>생성자 함수를 만들어 create를 사용할 경우</p>
+<p>값 복사시, <strong>객체 자체가 아닌 참조(포인터)를 복사</strong>한다. 따라서 한쪽을 조작시 다른 쪽도 반영된다.</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Shape - 상위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shape</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 상위클래스 메서드</span></span><br><span class="line">Shape.prototype.move = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x += x;</span><br><span class="line">  <span class="keyword">this</span>.y += y;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Shape moved.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rectangle - 하위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Rectangle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  Shape.call(<span class="keyword">this</span>); <span class="comment">// super 생성자 호출.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하위클래스는 상위클래스를 확장</span></span><br><span class="line">Rectangle.prototype = <span class="built_in">Object</span>.create(Shape.prototype);</span><br><span class="line">Rectangle.prototype.constructor = Rectangle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rect = <span class="keyword">new</span> Rectangle();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Rectangle?'</span>, rect <span class="keyword">instanceof</span> Rectangle); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Shape?'</span>, rect <span class="keyword">instanceof</span> Shape); <span class="comment">// true</span></span><br><span class="line">rect.move(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// Outputs, 'Shape moved.'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.x = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
 
-<ol>
-<li><code>Object.create(Shape.prototype)</code> : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.</li>
-<li><code>Shape.call(this)</code> : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.</li>
-</ol>
-<ul>
-<li><strong>Object.defineProperties()</strong></li>
-</ul>
-<p>데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'_x'</span>: &#123;</span><br><span class="line">    value: <span class="number">0</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'x'</span>: &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._x;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">this</span>._x = newValue+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'_y'</span>: &#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>configurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.</p>
+<h2 id="매개변수-전달"><a href="#매개변수-전달" class="headerlink" title="매개변수 전달"></a>매개변수 전달</h2><p>위 변수들을 매개변수로 저장할 때에도, 값 복사와 동일한 결과가 나온다. 원시타입의 경우에는 값이 복사되고, 참조값의 경우에는 참조값이 복사된다.</p>
 <blockquote>
-<p>언제 사용할까?</p>
+<p>참조값을 함수로 넘겨 변경하면 밖에서도 변경된다</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defineProperties 사용하지 않을때</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.imFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 결과 : imFunc</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addX</span>(<span class="params">ref</span>) </span>&#123;</span><br><span class="line">    ref.x = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line">addX(a);</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
 
-<p>for in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">'imFunc'</span>, &#123;</span><br><span class="line">	enumerable: <span class="literal">false</span>,</span><br><span class="line">  	configurable: <span class="literal">false</span>,</span><br><span class="line">  	writable: <span class="literal">false</span>,</span><br><span class="line">  	value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// imFunc가 순회되지 않는다!</span></span><br></pre></td></tr></table></figure>
+<h3 id="타입-판별"><a href="#타입-판별" class="headerlink" title="타입 판별"></a>타입 판별</h3><p>원시타입 : typeof </p>
+<p>참조타입 : instanceof </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// Object</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line">person <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>Object.getOwnPropertyDescriptor()</strong></li>
-</ul>
-<p>접근자/데이터 프로퍼티 객체를 읽어온다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 이어짐</span></span><br><span class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, <span class="string">"_x"</span>);</span><br><span class="line">alert(descriptor.value); <span class="comment">// 0</span></span><br><span class="line">alert(descriptor.configurable); <span class="comment">// false</span></span><br><span class="line">alert(descriptor.get);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.preventExtensions(), Object.isExtensible()</strong></li>
-</ul>
-<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.</p>
-<ul>
-<li><strong>Object.seal(), Object.isSealed()</strong></li>
-</ul>
-<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.</p>
-<ul>
-<li><strong>Object.getOwnPropertyNames()</strong></li>
-</ul>
+<h3 id="가비지-컬렉션"><a href="#가비지-컬렉션" class="headerlink" title="가비지 컬렉션"></a>가비지 컬렉션</h3><p>함수 스코프를 벗어난 변수들은 자동으로 가비지 컬렉션의 대상이 된다.</p>
 <blockquote>
-<p>파라미터 : object</p>
-<p>리턴 :  문자열 배열</p>
+<p>그러나 전역변수는 해당 웹사이트가 종료되기 전까지 계속 존재하므로 사용하지 않게 되면 null로 초기화해주는 습관이 필요하다.</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(arr).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2", "length"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Array-like object</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="number">0</span>: <span class="string">'a'</span>, <span class="number">1</span>: <span class="string">'b'</span>, <span class="number">2</span>: <span class="string">'c'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2"]</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.getPrototypeOf()</strong></li>
-</ul>
-<p>prototype을 리턴한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// TypeError: "foo" is not an object (ES5 code)</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// String.prototype                  (ES2015 code)</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><ul>
-<li><strong>Object.assign()</strong></li>
-</ul>
-<p>Object 병합하기</p>
-<blockquote>
-<p>파라미터 : 타겟, 소스</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.freeze()</strong></li>
-</ul>
-<p>객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.</p>
-<h3 id="ES8"><a href="#ES8" class="headerlink" title="ES8"></a>ES8</h3><ul>
-<li><strong>Object.entries()</strong></li>
-</ul>
-<p>열거 가능한 객체를 [key, value] 배열로 만들어 리턴함</p>
-<blockquote>
-<p>파라미터 : key, value 쌍의 객체</p>
-<p>리턴 : key, value 쌍의 배열</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="string">'bar'</span>, <span class="attr">baz</span>: <span class="number">42</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"><span class="comment">// [ ['foo', 'bar'], ['baz', 42] ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>: <span class="number">5</span>, <span class="attr">b</span>: <span class="number">7</span>, <span class="attr">c</span>: <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(obj)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj).forEach(<span class="function">(<span class="params">[key, value]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"     </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
-<p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
+<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
 
                     
                         
@@ -356,7 +275,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/#post-footer"
+                                href="/2017/09/01/Javascript/2.1. javascript-변수/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -406,7 +325,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

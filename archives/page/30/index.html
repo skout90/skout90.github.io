@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/02/02/etc/cordova-css-check/"
-                            aria-label=": Cordova에서 플랫폼 체크 css 방법"
+                            href="/2018/03/13/Frontend/20.웹팩-플러그인/"
+                            aria-label=": 20. 웹팩(Webpack) 플러그인"
                         >
-                            Cordova에서 플랫폼 체크 css 방법
+                            20. 웹팩(Webpack) 플러그인
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-02-02T19:28:10+09:00">
+    <time datetime="2018-03-13T19:28:10+09:00">
 	
-		    2018.02.02
+		    2018.03.13
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/etc/">etc</a>
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>
 
 
     
@@ -227,16 +227,18 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>cordova에서 빌드시 자동으로 body 태그의 클래스가 추가 된다.</p>
-<blockquote>
-<p>.cordova</p>
-<p>.platform-ios</p>
-<p>.platform-android</p>
-</blockquote>
-<p>즉 코르도바에서, ios 플랫폼인지 체크하고 싶다면</p>
-<blockquote>
-<p>.platform-ios.cordova </p>
-</blockquote>
+                    <h2 id="NamedModulesPlugin"><a href="#NamedModulesPlugin" class="headerlink" title="NamedModulesPlugin"></a>NamedModulesPlugin</h2><p>번들링된 웹팩 파일 로그에, 상세 경로를 알려준다</p>
+<p>사용전</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[14] (webpack)-hot-middleware/client-overlay.js 2.21 kB &#123;0&#125; [built]</span><br><span class="line">[19] (webpack)-hot-middleware/process-update.js 4.33 kB &#123;0&#125; [built]</span><br><span class="line">[20] ./src/main.css 1.07 kB &#123;0&#125; [built]</span><br><span class="line">[22] ./node_modules/style-loader/lib/addStyles.js 9.92 kB &#123;0&#125; [built]</span><br><span class="line">[24] ./src/index.html 269 bytes &#123;0&#125; [built]</span><br><span class="line">[25] ./src/images/bglam.png 62 bytes &#123;0&#125; [built]</span><br></pre></td></tr></table></figure>
+
+<p>사용후</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[./node_modules/webpack-hot-middleware/client-overlay.js] (webpack)-hot-middleware/client-overlay.js 2.21 kB &#123;0&#125; [built]</span><br><span class="line">[./node_modules/webpack-hot-middleware/client.js?reload=true] (webpack)-hot-middleware/client.js?reload=true 7.35 kB &#123;0&#125; [built]</span><br><span class="line">[./node_modules/webpack-hot-middleware/process-update.js] (webpack)-hot-middleware/process-update.js 4.33 kB &#123;0&#125; [built]</span><br><span class="line">[./node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 517 bytes &#123;0&#125; [built]</span><br><span class="line">[./src/images/bglam.png] ./src/images/bglam.png 62 bytes &#123;0&#125; [built]</span><br><span class="line">   [0] multi ./src/main.js 28 bytes &#123;0&#125; [built]</span><br><span class="line">[./src/index.html] ./src/index.html 269 bytes &#123;0&#125; [built]</span><br><span class="line">[./src/main.css] ./src/main.css 1.07 kB &#123;0&#125; [built]</span><br></pre></td></tr></table></figure>
+
+<h4 id="사용법"><a href="#사용법" class="headerlink" title="사용법"></a>사용법</h4><ul>
+<li>웹팩설정파일 - webpack.dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">plugins: [</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">new</span> webpack.NamedModulesPlugin(),</span><br><span class="line">  ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
 
                     
                         
@@ -246,7 +248,7 @@
                     
                         <p>
                             <a
-                                href="/2018/02/02/etc/cordova-css-check/#post-footer"
+                                href="/2018/03/13/Frontend/20.웹팩-플러그인/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -286,7 +288,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 30 of 148</li>
+        <li class="pagination-number">page 30 of 150</li>
     </ul>
 </div>
 
@@ -296,7 +298,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

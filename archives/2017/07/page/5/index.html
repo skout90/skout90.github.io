@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/상대-크기/"
-                            aria-label=": CSS 상대 크기"
+                            href="/2017/07/24/CSS/적용-우선순위/"
+                            aria-label=": CSS 적용 우선순위"
                         >
-                            CSS 상대 크기
+                            CSS 적용 우선순위
                         </a>
                     
                 </h1>
@@ -227,26 +227,12 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>CSS 상대적인 크기에 대해 알아본다.</p>
-<h1 id="em"><a href="#em" class="headerlink" title="em"></a>em</h1><ul>
-<li>최근에 정의한(부모 요소) font-size를 1em 으로 함, 계속해서 누적됌.</li>
-<li>없으면 브라우저 기본값을 따름</li>
-<li>9pt = 16px = 1em</li>
-</ul>
-<h1 id="REM"><a href="#REM" class="headerlink" title="REM"></a>REM</h1><ul>
-<li>최상위 브라우저 기본 폰트 크기를 1rem으로 함, 누적되지 않음.</li>
-</ul>
-<h2 id="vh-ve"><a href="#vh-ve" class="headerlink" title="vh, ve"></a>vh, ve</h2><p>브라우저 윈도우 크기의 1/100 크기를 “1”로 함</p>
-<ul>
-<li>2000 x 1000 px 크기의 윈도우라면</li>
-</ul>
-<blockquote>
-<p>1vh = 10px</p>
-</blockquote>
-<blockquote>
-<p>1vw = 20px</p>
-</blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4" target="_blank" rel="noopener">http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4</a></p>
+                    <ol>
+<li>!important를 붙인 속성</li>
+<li>인라인 스타일(inline style) &gt; 내부 스타일(internal style) &gt; 외부 스타일(external sytle) &gt; 브라우저 기본값 순</li>
+<li>특정도(specify) 우선순위 id priority &gt; class priority &gt; type priority</li>
+<li>두 가지가 똑같은 등급일 때, 가장 마지막으로 적용한 것이 가장 우선한다.</li>
+</ol>
 
                     
                         
@@ -256,7 +242,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/상대-크기/#post-footer"
+                                href="/2017/07/24/CSS/적용-우선순위/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -306,7 +292,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

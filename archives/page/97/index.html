@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/07/Ionic/5.1 Ionic-local-push/"
-                            aria-label=": 05.1. Ionic Local Push"
+                            href="/2017/08/12/Typescript/2. typescript-컴파일러-옵션/"
+                            aria-label=": 02. Typescript 컴파일 옵션"
                         >
-                            05.1. Ionic Local Push
+                            02. Typescript 컴파일 옵션
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-07T01:00:00+09:00">
+    <time datetime="2017-08-12T01:00:00+09:00">
 	
-		    2017.08.07
+		    2017.08.12
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+    <a class="category-link" href="/categories/Typescript/">Typescript</a>
 
 
     
@@ -227,29 +227,88 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>굳이, 외부로부터 푸시를 이용하고 싶지 않을때, local push를 사용한다.</p>
+                    <blockquote>
+<p>$ tsc –init</p>
+</blockquote>
+<p>다음 커맨드를 입력하면, tsconfig.json이 생성된다. 해당 파일이 있으면 <code>tsc 파일</code>커맨드 입력시 해당 설정을 통해서 컴파일 한다.</p>
 <ul>
-<li>plugin 인스톨</li>
+<li>tsconfig.json</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ionic cordova plugin add de.appplant.cordova.plugin.local-notification</span><br><span class="line">$ npm install --save @ionic-native/local-notifications</span><br></pre></td></tr></table></figure>
+<p>root 폴더에 <code>tsconfig.json</code>을 생성한다</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="attr">"outDir"</span>: <span class="string">"./public/"</span>,</span><br><span class="line">        <span class="attr">"sourceMap"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"noImplicitAny"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"module"</span>: <span class="string">"commonjs"</span>,</span><br><span class="line">        <span class="attr">"target"</span>: <span class="string">"es5"</span>,</span><br><span class="line">      	<span class="attr">"typeRoots"</span>: [<span class="string">"./node_modules/@types"</span>,</span><br><span class="line">                      <span class="string">"./[경로지정]"</span>],</span><br><span class="line">      	<span class="attr">"paths"</span>: &#123;</span><br><span class="line">          "@modules/.*" [</span><br><span class="line">            <span class="string">"./modules/app/*"</span></span><br><span class="line">          ]</span><br><span class="line">      	&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    "include": [</span><br><span class="line">        <span class="string">"./src/**/*"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>compileOnSave</strong></p>
 <ul>
-<li>앱 모듈에 추가</li>
+<li>파일을 저장하면 자동으로 컴파일, 최상단에 설정해야 함, 특정 IDE를 사용해야만 함.(Visual Studio 2015 이상, atom-typescript 플러그인)</li>
 </ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; LocalNotifications &#125; <span class="keyword">from</span> <span class="string">'@ionic-native/local-notifications'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    ...</span><br><span class="line">    LocalNotifications,</span><br><span class="line">    ...</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
-
+<p><strong>extends</strong></p>
 <ul>
-<li>home.ts</li>
+<li>tsconfig.json을 상속받아 사용할 수 있음.</li>
 </ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NavController, AlertController, Platform &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; LocalNotifications &#125; <span class="keyword">from</span> <span class="string">'@ionic-native/local-notifications'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'page-home'</span>,</span><br><span class="line">  templateUrl: <span class="string">'home.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomePage &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController, <span class="keyword">private</span> plt: Platform, <span class="keyword">private</span> local: LocalNotifications, <span class="keyword">private</span> alertCtrl: AlertController</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.plt.ready().then(<span class="function"><span class="params">rdy</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.local.on(<span class="string">'click'</span>, <span class="function">(<span class="params">notification, state</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> alert = <span class="keyword">this</span>.alertCtrl.create(&#123;</span><br><span class="line">          title: notification.title,</span><br><span class="line">          subTitle: json.myData</span><br><span class="line">        &#125;);</span><br><span class="line">        alert.present();</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ionViewDidLoad() &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.platform.is(<span class="string">'cordova'</span>)) &#123;</span><br><span class="line">      <span class="keyword">this</span>.platform.ready().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.localNotifications.hasPermission().then(<span class="function"><span class="keyword">function</span> (<span class="params">granted</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (!granted) &#123;</span><br><span class="line">            <span class="comment">// IOS10의 권한 설정</span></span><br><span class="line">            <span class="keyword">this</span>.localNotifications.registerPermission();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  scheduleNotification() &#123;</span><br><span class="line">    <span class="keyword">this</span>.local.schedule(&#123;</span><br><span class="line">      id: <span class="number">1</span>,</span><br><span class="line">      title: <span class="string">'Attention Users!'</span>,</span><br><span class="line">      text: <span class="string">'Emirhan notification'</span>,</span><br><span class="line">      at: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() + <span class="number">5</span> * <span class="number">1000</span>),</span><br><span class="line">      data: &#123; myData: <span class="string">'My hidden message this is.'</span> &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    alert(<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.local.getAll()));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p><strong>compilerOptions</strong></p>
 <ul>
-<li>home.html</li>
+<li><p>target : 어떤 JS형태로 컴파일 할 것인가(default : es3)</p>
+</li>
+<li><p>lib : 기본 type definition 라이브러리를 어떤 것을 사용할 것이냐.</p>
+<p>default는 target에 맞는 해당 lib를 사용.</p>
+</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span></span><br><span class="line">      Ionic Blank</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">ion-button</span> <span class="attr">full</span> (<span class="attr">click</span>)=<span class="string">"scheduleNotification()"</span>&gt;</span>Schedule!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>푸시가 오는 것이 확인된다. 블루스택으로 테스트 할경우, 푸시가 오지 않는 경우가 있으니 주의할 것.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ionicframework.com/docs/native/local-notifications/" target="_blank" rel="noopener">https://ionicframework.com/docs/native/local-notifications/</a></p>
+<blockquote>
+<p>ex) target이  ‘es5’면, 디폴트로 dom, es5, scriptshot를 사용</p>
+</blockquote>
+<ul>
+<li><p>typeRoots/types : type definition의 위치를 설정.(typescript 2.0 이상)</p>
+<p>default 는 ./node_modules/@types/ 안의 모듈이름에서 찾아옴.</p>
+</li>
+</ul>
+<blockquote>
+<p>type definition 코드 : typesciprt의 타입정보가 들어 있음, JS에서 자동완성, 빨간줄 제거를 도와줌, 과거에는 tsd나 typing을 통해 d.ts 파일을 불러왔으나, @types 가 생긴 뒤로 모듈에 d.ts파일을 함께 배포하는 추세. ex) index.d.ts</p>
+</blockquote>
+<ul>
+<li>outDir : 컴파일 된 파일이 위치하는 장소</li>
+<li>sourceMap : 소스맵 사용 여부</li>
+</ul>
+<blockquote>
+<p>소스맵이란 : 자바스크립트를 한 파일로 합치거나 사이즈를 줄이기 위해서 압축하거나 난독화해서 배포하는 방식을 많이 취하는데 이 방법은 성능에는 좋지만 사실 디버깅이 어려워지는 문제가 있다. 소스맵은 이 원본 소스와 최종소스를 매핑해서 추적할 수 있는 방법</p>
+</blockquote>
+<ul>
+<li><p>noImplicityAny : <code>any</code> 로 선언된 식과 정의에 대해 에러를 발생시킴.</p>
+</li>
+<li><p>module : 결과물로 어떤 모듈 표준을 사용할 것인가.</p>
+<p>디폴트 : target : es6이면 es6가 디폴트, es6아니면 commonjs 디폴트, AMD나 System을 사용하려면, outFile이 지정돼야함.</p>
+</li>
+<li><p>moduleResolution : 모듈 가져올때 ts소스에서 모듈을 사용하는 방식. node/classic이 있고 node = commonjs일때.</p>
+</li>
+<li><p>paths/baseUrl/rootDirs : 상대경로 방식이 아닐때 사용.</p>
+<p><code>import {Sample} from &#39;@modules/sample.service&#39;</code> 와 같이 paths에 지정한 key를 입력하여 사용.</p>
+</li>
+<li><p>importHelpers : ts파일을 js 파일로 바꾸면, helper 함수들이 js 에 생기는데 파일이 길어지니 따로 모듈로 빼서 사용.</p>
+</li>
+<li><p>removeComments : 컴파일시 주석을 빼줌</p>
+<p>​</p>
+</li>
+</ul>
+<p><strong>files, include, exclude</strong></p>
+<p>컴파일 대상인 파일 설정, 셋다 설정이 없으면 전부다 컴파일</p>
+<ul>
+<li><p><code>files</code> 키워드로 파일을 정함.   <code>&quot;files&quot;: [  &quot;src/index.ts&quot;]</code></p>
+</li>
+<li><p><code>incude/exclude</code>로 경로를 지정할 수 있다.</p>
+</li>
+<li><p><code>exclude</code> </p>
+<p>설정 안하면 4가지 node_modules, bower_components, jspm_package, <outdir> 을 default로 제외</outdir></p>
+<p><outdir>은 항상 제외(include에 있어도)</outdir></p>
+</li>
+</ul>
+<p>우선순위 : files &gt; exclude &gt; include</p>
+<blockquote>
+<p>더 자세한 옵션 값을 보려면</p>
+<p><a href="http://json.schemastore.org/tsconfig" target="_blank" rel="noopener">http://json.schemastore.org/tsconfig</a></p>
+<p><a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html" target="_blank" rel="noopener">https://www.typescriptlang.org/docs/handbook/compiler-options.html</a></p>
+</blockquote>
+<h2 id="Refrence"><a href="#Refrence" class="headerlink" title="Refrence"></a>Refrence</h2><p><a href="https://www.typescriptlang.org/docs/handbook/react-&amp;-webpack.html" target="_blank" rel="noopener">https://www.typescriptlang.org/docs/handbook/react-&amp;-webpack.html</a></p>
+<p><a href="https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/" target="_blank" rel="noopener">https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/</a></p>
+<p>baseUrl, types : <a href="http://blog.naver.com/PostView.nhn?blogId=yjw1250&amp;logNo=220903209853&amp;parentCategoryNo=&amp;categoryNo=&amp;viewDate=&amp;isShowPopularPosts=false&amp;from=postView" target="_blank" rel="noopener">http://blog.naver.com/PostView.nhn?blogId=yjw1250&amp;logNo=220903209853&amp;parentCategoryNo=&amp;categoryNo=&amp;viewDate=&amp;isShowPopularPosts=false&amp;from=postView</a></p>
 
                     
                         
@@ -259,7 +318,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/07/Ionic/5.1 Ionic-local-push/#post-footer"
+                                href="/2017/08/12/Typescript/2. typescript-컴파일러-옵션/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -299,7 +358,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 97 of 148</li>
+        <li class="pagination-number">page 97 of 150</li>
     </ul>
 </div>
 
@@ -309,7 +368,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

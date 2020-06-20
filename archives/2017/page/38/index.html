@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/20/GIT/Git-부분-체크아웃/"
-                            aria-label=": Git 부분 체크아웃(sparse checkout)"
+                            href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/"
+                            aria-label=": 02. NodeJs Express 시작하기"
                         >
-                            Git 부분 체크아웃(sparse checkout)
+                            02. NodeJs Express 시작하기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-20T19:28:10+09:00">
+    <time datetime="2017-08-15T19:28:10+09:00">
 	
-		    2017.08.20
+		    2017.08.15
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/GIT/">GIT</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,18 +227,51 @@
             </div>
             
                 <div class="postShorten-content">
-                    <blockquote>
-<p>$ mkdir [폴더이름]</p>
-<p>$ cd [폴더이름]</p>
-<p>$ git init</p>
-<p>$ git remote add -f origin [git url]</p>
-<p>$ git config core.sparseCheckout true</p>
-</blockquote>
-<p>해당 폴더 .git/info에 sparse-checkout 파일 생성후, 체크아웃할 폴더이름을 적어준다.</p>
+                    <h1 id="Node-JS-웹서버-만들기"><a href="#Node-JS-웹서버-만들기" class="headerlink" title="Node JS 웹서버 만들기"></a>Node JS 웹서버 만들기</h1><h2 id="NodeJS-다운로드"><a href="#NodeJS-다운로드" class="headerlink" title="NodeJS 다운로드"></a>NodeJS 다운로드</h2><p><a href="https://nodejs.org/ko/" target="_blank" rel="noopener">https://nodejs.org/ko/</a></p>
+<h2 id="사용하기"><a href="#사용하기" class="headerlink" title="사용하기"></a>사용하기</h2><ul>
+<li><strong>app.js 파일 생성</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello World'</span>);</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>$ git pull origin master</p>
+<p>$ node app.js</p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository/13738951" target="_blank" rel="noopener">https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository/13738951</a></p>
+<p>터미널에서 위 명령어 입력하여 app.js 실행.</p>
+<h2 id="웹-서버-만들기"><a href="#웹-서버-만들기" class="headerlink" title="웹 서버 만들기"></a>웹 서버 만들기</h2><ul>
+<li><strong>app.js</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.writeHead(<span class="number">200</span>, &#123; <span class="string">'Content-Type'</span> : <span class="string">'text/plain'</span> &#125;);</span><br><span class="line">  res.end(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p>명령어 입력 하면, <code>server.listen()</code>함수로 인해 8000포트로 접속을 대기함. 클라이언트가  <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a> 으로 접속하면 Hello World가 나옴.</p>
+<h2 id="express로-웹-서버-만들기"><a href="#express로-웹-서버-만들기" class="headerlink" title="express로 웹 서버 만들기"></a>express로 웹 서버 만들기</h2><p><code>express</code>는 Node.js에서 가장 유명한 웹 프레임워크 모듈. 더 간단하고 다양한 템플릿 엔진 기능을 활용해서 웹서버를 만들 수 있음.</p>
+<ul>
+<li><strong>app.js 작성</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>) <span class="comment">// 모듈 로딩</span></span><br><span class="line">  , http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line">  , app = express()</span><br><span class="line">  , server = http.createServer(app); <span class="comment">// app객체와 http 서버 연결</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123; <span class="comment">// HTTP GET 메서드 처리</span></span><br><span class="line">  res.send(<span class="string">'Hello /'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/world.html'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 8000 번 포트로 서버 실행</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Express server listening on port '</span> + server.address().port);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>express를 설치</strong></li>
+</ul>
+<blockquote>
+<p>$ npm install express</p>
+</blockquote>
+<p>app.js가 있는 디렉터리에서 명령어 실행할것, 명령을 실행하면 디렉터리에 node_modules 디렉터리가 생성됌. 그 안에 express 모듈들이 존재.</p>
+<p>전역 설치를 위해서는</p>
+<blockquote>
+<p>$ npm install -g express</p>
+</blockquote>
+<p>그러면 app.js 디렉터리와 상관없이 모듈 사용 가능.</p>
+<ul>
+<li><strong>실행</strong></li>
+</ul>
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p>웹 브라우저에서 <strong><a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a></strong> 으로 접속하면 빈화면에 <strong>Hello /</strong>가 표시되고 <strong><a href="http://127.0.0.1:8000/world.html" target="_blank" rel="noopener">http://127.0.0.1:8000/world.html</a></strong>로 접속하면 <strong>Hello World</strong>가 표시</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
 
                     
                         
@@ -248,7 +281,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/20/GIT/Git-부분-체크아웃/#post-footer"
+                                href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -288,7 +321,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 38 of 112</li>
+        <li class="pagination-number">page 38 of 111</li>
     </ul>
 </div>
 
@@ -298,7 +331,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

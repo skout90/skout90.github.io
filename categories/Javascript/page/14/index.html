@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/4. javascript-Array/"
-                            aria-label=": 04. Array"
+                            href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                            aria-label=": 03.1. Object 내장객체"
                         >
-                            04. Array
+                            03.1. Object 내장객체
                         </a>
                     
                 </h1>
@@ -227,252 +227,126 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="선언방법"><a href="#선언방법" class="headerlink" title="선언방법"></a>선언방법</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>();</span><br><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">10</span>); <span class="comment">// length가 10인 배열</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> colors = <span class="built_in">Array</span>();</span><br><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>];</span><br></pre></td></tr></table></figure>
-
-<h2 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h2><ul>
-<li>Array.prototype.length</li>
+                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
+<li><strong>Object.prototype</strong></li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="built_in">console</span>.log(numbers.length); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<p>모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, <strong>모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.</strong></p>
+<p>다음 코드를 보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name   : <span class="string">"child of earth"</span>,</span><br><span class="line">  	age    : <span class="number">0</span>,</span><br><span class="line">	nature : <span class="string">"cool"</span>,</span><br><span class="line">  	eat    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name + <span class="string">"is eating"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narendra = <span class="built_in">Object</span>.create(person);</span><br><span class="line">narendra.name = <span class="string">"Narendra Sisdoiya"</span>;</span><br><span class="line">narendra.age = <span class="number">29</span>;</span><br><span class="line">narendra.eat();</span><br><span class="line"></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"eat"</span>); <span class="comment">// false</span></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"name"</span>); <span class="comment">// true</span></span><br><span class="line">narendra.hasOwnPropery(<span class="string">"nature"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
 
-<p>배열 길이보다 큰 인덱스를 지정하면, 길이가 자동으로 늘어남.</p>
-<p>length 프로퍼티 변경시, 데이터 제거/빈슬롯 추가</p>
-<p><code>colors[colors.length] = &quot;black&quot;;</code> 과 같이 마지막 데이터 추가 가능</p>
-<ul>
-<li>Array.prototype</li>
-</ul>
-<p>배열 생성자를 위한 프로토타입, 모든 배열 객체에 새로운 속성과 메서드를 추가할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!<span class="built_in">Array</span>.prototype.first) &#123;</span><br><span class="line">  <span class="built_in">Array</span>.prototype.first = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[<span class="number">0</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h2><ul>
-<li>Array.isArray()</li>
-</ul>
-<p>주어진 값이 배열인지 아닌지 확인 <code>if(Array.isArray(value))</code></p>
-<h3 id="문자열"><a href="#문자열" class="headerlink" title="문자열"></a>문자열</h3><ul>
-<li>Array.prototype.toString()</li>
-</ul>
-<p>배열 값을 string으로 출력</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>];</span><br><span class="line">colors.toString(); <span class="comment">// red,blue,green</span></span><br><span class="line">alert(colors); <span class="comment">// red,blue,green</span></span><br></pre></td></tr></table></figure>
-
+<p><img src="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030" alt="object prototype에 대한 이미지 검색결과"></p>
+<p>내장 객체인 Object와, Object.prototype이 있다.</p>
 <blockquote>
-<p> alert의 경우 자동으로, toString을 실행하여 출력해준다.</p>
+<p>자세한 내용은 상속과 prototype 포스팅 참조</p>
 </blockquote>
 <ul>
-<li>Array.prototype.join()</li>
+<li><strong>Object.prototype.constructor</strong></li>
 </ul>
-<blockquote>
-<p>array.join(‘구분자’)</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="string">'바람'</span>, <span class="string">'비'</span>, <span class="string">'불'</span>];</span><br><span class="line"><span class="keyword">var</span> myVar1 = a.join();      <span class="comment">// myVar1에 '바람,비,불'을 대입</span></span><br><span class="line"><span class="keyword">var</span> myVar2 = a.join(<span class="string">', '</span>);  <span class="comment">// myVar2에 '바람, 비, 불'을 대입</span></span><br><span class="line"><span class="keyword">var</span> myVar3 = a.join(<span class="string">' + '</span>); <span class="comment">// myVar3에 '바람 + 비 + 불'을 대입</span></span><br><span class="line"><span class="keyword">var</span> myVar4 = a.join(<span class="string">''</span>);    <span class="comment">// myVar4에 '바람비불'을 대입</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="스택-amp-큐"><a href="#스택-amp-큐" class="headerlink" title="스택 &amp; 큐"></a>스택 &amp; 큐</h3><ul>
-<li>Array.prototype.push()</li>
-</ul>
-<blockquote>
-<p>리턴 : 배열의 길이</p>
-</blockquote>
-<p>배열의 마지막 인덱스에 데이터를 추가함</p>
-<ul>
-<li>Array.prototype.pop()</li>
-</ul>
-<blockquote>
-<p>리턴 : 마지막 인덱스 데이터</p>
-</blockquote>
-<p>배열의 마지막 데이터를 꺼냄.</p>
-<ul>
-<li>Array.prototype.unshift()</li>
-</ul>
-<blockquote>
-<p>리턴 : 배열의 길이</p>
-</blockquote>
-<p>배열의 맨 앞 인덱스에 데이터를 추가함.</p>
-<ul>
-<li>Array.prototype.shift()</li>
-</ul>
-<blockquote>
-<p>리턴 : 첫번째 인덱스 데이터</p>
-</blockquote>
-<p>배열의 첫번째 인덱스 데이터를 꺼냄</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">a.push(<span class="number">3</span>); <span class="comment">// 3</span></span><br><span class="line">a.push(<span class="number">5</span>); <span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 1,2,3,5</span></span><br><span class="line">a.pop(); <span class="comment">// 5</span></span><br><span class="line">a.unshift(<span class="number">0</span>); <span class="comment">// 4</span></span><br><span class="line"><span class="comment">// 0,1,2,3</span></span><br><span class="line">a.shift(); <span class="comment">// 0</span></span><br><span class="line"><span class="comment">// 1,2,3</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="조작"><a href="#조작" class="headerlink" title="조작"></a>조작</h3><ul>
-<li>Array.prototype.sort()</li>
-</ul>
-<blockquote>
-<p>파라미터 : 정렬순서 정의 함수</p>
-<p>리턴 : 정렬된 배열(새로운 배열 만들지 않음)</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> scores = [<span class="number">1</span>, <span class="number">10</span>, <span class="number">21</span>, <span class="number">2</span>]; </span><br><span class="line">scores.sort(); <span class="comment">// [1, 10, 2, 21]</span></span><br><span class="line"><span class="comment">// 10이 2,</span></span><br><span class="line"><span class="comment">// Unicode 코드 포인트 순서에서 '10'이 '2'앞에 오기 때문에.</span></span><br><span class="line"></span><br><span class="line">scores.sort(<span class="function"><span class="keyword">function</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1-v2; &#125;);</span><br><span class="line"><span class="comment">// [1, 2, 10, 21]</span></span><br></pre></td></tr></table></figure>
-
-<p><code>compare 함수</code>는 결과가 양수일경우 두 숫자를 교환, 음수일 경우는 이동시키지 않는다.</p>
-<ul>
-<li>Array.prototype.reverse()</li>
-</ul>
-<p>배열의 인덱스를 반전시킨다.</p>
-<ul>
-<li>Array.prototype.concat()</li>
-</ul>
-<blockquote>
-<p>파라미터 : 값 또는 배열</p>
-<p>리턴 : 값들이 합쳐진 ‘새배열’</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>];</span><br><span class="line"><span class="keyword">var</span> colors2 = colors.concat(<span class="string">"yellow"</span>); <span class="comment">// red,green,blue,yellow</span></span><br><span class="line"><span class="keyword">var</span> colors3 = colors2.concat(<span class="string">"powerblue"</span>, [<span class="string">"tomato"</span>, <span class="string">"brown"</span>]);</span><br><span class="line"><span class="comment">// red,green,blue,yellow,powerblue,tomato,brown</span></span><br></pre></td></tr></table></figure>
+<p>객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, <code>instance of</code> 연산자가 더 안전하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">o.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [];</span><br><span class="line">a.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">3</span>);</span><br><span class="line">n.constructor === <span class="built_in">Number</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>Array.prototype.slice()</strong></li>
+<li><strong>Object.prototype.__proto__</strong></li>
 </ul>
-<blockquote>
-<p>파라미터 : 시작인덱스[, 마지막 인덱스]</p>
-<p>리턴 : 조작된 ‘새배열’</p>
-</blockquote>
-<p>인자로 넘긴 시작인덱스부터 , 마지막인덱스(옵션)  까지 가져와 새 배열을 만든다. </p>
-<blockquote>
-<p> ex) 길이가 5인 배열에서, slice(-2, -1) = slice(3, 4) 와 같다</p>
-</blockquote>
-<ul>
-<li><strong>Array.prototype.splice()</strong></li>
-</ul>
-<blockquote>
-<p>파라미터 : 인덱스, 인덱스부터 지울 갯수, 인덱스에 추가할 data</p>
-<p>리턴 : 삭제한 데이터의 배열을 반환/ 본래 배열 또한 조작되어 있음.</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">'red'</span>, <span class="string">'green'</span>, <span class="string">'blue'</span>];</span><br><span class="line"><span class="keyword">var</span> removed = colors.splice(<span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// colors : ["green", "blue"]</span></span><br><span class="line"><span class="comment">// removed : ["red"]</span></span><br><span class="line">colors.splice(<span class="number">1</span>, <span class="number">0</span>, <span class="string">'yellow'</span>, <span class="string">'orange'</span>)</span><br><span class="line"><span class="comment">// colors : ["green", "yellow", "orange", "blue"]</span></span><br><span class="line">colors.splice(<span class="number">1</span>, <span class="number">1</span>, <span class="string">'red'</span>, <span class="string">'blue'</span>);</span><br><span class="line"><span class="comment">// ["green", "red", "blue", "orange", "blue"]</span></span><br></pre></td></tr></table></figure>
+<p>객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="위치-탐색"><a href="#위치-탐색" class="headerlink" title="위치/탐색"></a>위치/탐색</h3><ul>
-<li>Array.prototype.indexOf()</li>
+<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
+<li><strong>Object.hasOwnPropery()</strong></li>
 </ul>
-<blockquote>
-<p>파라미터 : 비교할 값</p>
-<p>리턴 : Index 해당값이 있다면, 없으면 -1 </p>
-</blockquote>
-<p>배열에서 해당 값을 찾아 인덱스를 반환한다. 주의할 점은 <code>===</code> 로 비교된다는 것이다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">a.indexOf(<span class="string">"1"</span>); <span class="comment">// -1</span></span><br><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line">a.indexOf(<span class="number">2</span>); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = &#123;<span class="attr">name</span>: <span class="string">'니콜'</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> people = [&#123;<span class="attr">name</span>: <span class="string">'니콜'</span>&#125;];</span><br><span class="line"><span class="keyword">var</span> morePeople = [person];</span><br><span class="line">people.indexOf(person); <span class="comment">// -1</span></span><br><span class="line">morePeople.indexOf(person); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">o.prop = <span class="string">'exists'</span>;</span><br><span class="line">o.hasOwnProperty(<span class="string">'prop'</span>);             <span class="comment">// returns true</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'toString'</span>);         <span class="comment">// returns false</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'hasOwnProperty'</span>);   <span class="comment">// returns false</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Array.prototype.lastIndexOf()</li>
+<li><strong>Object.create()</strong></li>
 </ul>
+<p>constructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  	F.prototype = o;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
-<p>파라미터 : 비교할 값</p>
-<p> 리턴 : Index 해당값이 있다면, 없으면 -1 </p>
+<p>Object.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)</p>
 </blockquote>
-<p>배열에서 해당 값을 찾아 인덱스를 반환한다. 주의할 점은 <code>===</code> 로 비교된다는 것이다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"hi"</span>, <span class="attr">friends</span> : [<span class="string">"hi"</span>, <span class="string">"ho"</span>] &#125;</span><br><span class="line"><span class="comment">// p1, p2는 person 객체를 공유하게 된다.</span></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p3 = <span class="built_in">Object</span>.create(person, &#123; <span class="attr">name</span> : &#123; <span class="attr">value</span> : <span class="string">"Gre"</span>&#125; &#125;)</span><br><span class="line"><span class="comment">// 두번째 파라미터는 Object.defineProperties와 유사하다.</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>생성자 함수를 만들어 create를 사용할 경우</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Shape - 상위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shape</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 상위클래스 메서드</span></span><br><span class="line">Shape.prototype.move = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x += x;</span><br><span class="line">  <span class="keyword">this</span>.y += y;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Shape moved.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rectangle - 하위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Rectangle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  Shape.call(<span class="keyword">this</span>); <span class="comment">// super 생성자 호출.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하위클래스는 상위클래스를 확장</span></span><br><span class="line">Rectangle.prototype = <span class="built_in">Object</span>.create(Shape.prototype);</span><br><span class="line">Rectangle.prototype.constructor = Rectangle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rect = <span class="keyword">new</span> Rectangle();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Rectangle?'</span>, rect <span class="keyword">instanceof</span> Rectangle); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Shape?'</span>, rect <span class="keyword">instanceof</span> Shape); <span class="comment">// true</span></span><br><span class="line">rect.move(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// Outputs, 'Shape moved.'</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>Object.create(Shape.prototype)</code> : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.</li>
+<li><code>Shape.call(this)</code> : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.</li>
+</ol>
 <ul>
-<li>Array.prototype.findIndex()</li>
+<li><strong>Object.defineProperties()</strong></li>
 </ul>
-<p>인자로 받은 함수의 조건에 일치하는 첫번째 인덱스 값을 리턴한다.</p>
+<p>데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'_x'</span>: &#123;</span><br><span class="line">    value: <span class="number">0</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'x'</span>: &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._x;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">this</span>._x = newValue+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'_y'</span>: &#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>configurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.</p>
 <blockquote>
-<p>파라미터 : 조건 함수(element, index, array)</p>
-<p>리턴 : 찾은 첫번째 인덱스, (없다면) -1</p>
+<p>언제 사용할까?</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isBigEnough</span>(<span class="params">element</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> element &gt;= <span class="number">15</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="number">12</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">130</span>, <span class="number">44</span>].findIndex(isBigEnough); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defineProperties 사용하지 않을때</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.imFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 결과 : imFunc</span></span><br></pre></td></tr></table></figure>
+
+<p>for in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">'imFunc'</span>, &#123;</span><br><span class="line">	enumerable: <span class="literal">false</span>,</span><br><span class="line">  	configurable: <span class="literal">false</span>,</span><br><span class="line">  	writable: <span class="literal">false</span>,</span><br><span class="line">  	value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// imFunc가 순회되지 않는다!</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Array.prototype.find()</li>
+<li><strong>Object.getOwnPropertyDescriptor()</strong></li>
 </ul>
-<p>인자로 받은 함수의 조건에 일치하는 첫번째 값을 리턴한다.</p>
-<blockquote>
-<p>파라미터 : 조건 함수(element, index, array)</p>
-<p>리턴 : 찾은 첫번째 값</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> inventory = [</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">'apples'</span>, <span class="attr">quantity</span>: <span class="number">2</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">'bananas'</span>, <span class="attr">quantity</span>: <span class="number">0</span>&#125;,</span><br><span class="line">    &#123;<span class="attr">name</span>: <span class="string">'cherries'</span>, <span class="attr">quantity</span>: <span class="number">5</span>&#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findCherries</span>(<span class="params">fruit</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> fruit.name === <span class="string">'cherries'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(inventory.find(findCherries));</span><br><span class="line"><span class="comment">// &#123; name: 'cherries', quantity: 5 &#125;</span></span><br></pre></td></tr></table></figure>
+<p>접근자/데이터 프로퍼티 객체를 읽어온다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 이어짐</span></span><br><span class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, <span class="string">"_x"</span>);</span><br><span class="line">alert(descriptor.value); <span class="comment">// 0</span></span><br><span class="line">alert(descriptor.configurable); <span class="comment">// false</span></span><br><span class="line">alert(descriptor.get);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Array.prototype.includes()</li>
+<li><strong>Object.preventExtensions(), Object.isExtensible()</strong></li>
 </ul>
-<p>배열에 특정 요소가 포함되어 있는지 여부 확인</p>
-<blockquote>
-<p>파라미터 : 찾을 값, 시작할 인덱스</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">a.includes(<span class="number">2</span>); <span class="comment">// true </span></span><br><span class="line">a.includes(<span class="number">4</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="반복"><a href="#반복" class="headerlink" title="반복"></a>반복</h3><ul>
-<li>Array.prototype.every()</li>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.</p>
+<ul>
+<li><strong>Object.seal(), Object.isSealed()</strong></li>
 </ul>
-<p>배열의 모든 값이 조건에 일치하는지 확인한다.</p>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.</p>
+<ul>
+<li><strong>Object.getOwnPropertyNames()</strong></li>
+</ul>
 <blockquote>
-<p>파라미터 : 함수(item, index, array), (옵션) this로서 사용할 값 </p>
-<p>리턴 : true/false</p>
+<p>파라미터 : object</p>
+<p>리턴 :  문자열 배열</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];</span><br><span class="line"><span class="keyword">var</span> everyResult = numbers.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">2</span>;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(arr).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2", "length"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Array-like object</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="number">0</span>: <span class="string">'a'</span>, <span class="number">1</span>: <span class="string">'b'</span>, <span class="number">2</span>: <span class="string">'c'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2"]</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>Array.prototype.some()</li>
+<li><strong>Object.getPrototypeOf()</strong></li>
 </ul>
-<p>배열에서 하나라도 조건에 일치하는 값이 있다면, true를 반환한다.</p>
+<p>prototype을 리턴한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// TypeError: "foo" is not an object (ES5 code)</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// String.prototype                  (ES2015 code)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><ul>
+<li><strong>Object.assign()</strong></li>
+</ul>
+<p>Object 병합하기</p>
 <blockquote>
-<p>파라미터 : 함수(item, index, array), (옵션) this로서 사용할 값 </p>
-<p>리턴 : true/false</p>
+<p>파라미터 : 타겟, 소스</p>
 </blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.</span></span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>Array.prototype.filter()</li>
+<li><strong>Object.freeze()</strong></li>
 </ul>
-<p>반환 배열에 포함시킬지 결정한다.</p>
+<p>객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.</p>
+<h3 id="ES8"><a href="#ES8" class="headerlink" title="ES8"></a>ES8</h3><ul>
+<li><strong>Object.entries()</strong></li>
+</ul>
+<p>열거 가능한 객체를 [key, value] 배열로 만들어 리턴함</p>
 <blockquote>
-<p>파라미터 : 함수(item, index, array), (옵션) this로서 사용할 값 </p>
-<p>리턴 : 필터된 새로운 배열</p>
+<p>파라미터 : key, value 쌍의 객체</p>
+<p>리턴 : key, value 쌍의 배열</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];</span><br><span class="line"><span class="keyword">var</span> filterResult = numbers.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item &gt; <span class="number">3</span>;</span><br><span class="line">&#125;); <span class="comment">// [4, 5, 6]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="string">'bar'</span>, <span class="attr">baz</span>: <span class="number">42</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"><span class="comment">// [ ['foo', 'bar'], ['baz', 42] ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>: <span class="number">5</span>, <span class="attr">b</span>: <span class="number">7</span>, <span class="attr">c</span>: <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(obj)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj).forEach(<span class="function">(<span class="params">[key, value]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"     </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>Array.prototype.map()</li>
-</ul>
-<p>원래 배열에 연산한 새 배열을 리턴해준다. (배열의 length는 바뀌지 않음)</p>
-<blockquote>
-<p>파라미터 : 함수(item, index, array), (옵션) this로서 사용할 값 </p>
-<p>리턴 : 연산된 새로운 배열</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];</span><br><span class="line"><span class="keyword">var</span> mapResult = numbers.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> item + <span class="number">2</span>;</span><br><span class="line">&#125;); <span class="comment">// [3,4,5,6,7,8]</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Array.prototype.forEach()</li>
-</ul>
-<p>배열을 순회한다.</p>
-<blockquote>
-<p>파라미터 : 함수(item, index, array), (옵션) this로서 사용할 값 </p>
-<p>리턴 : 없음</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> numbers = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>];</span><br><span class="line">numbers.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">'index : '</span> + index + <span class="string">' item : '</span> + item);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Array.prototype.reduce()</li>
-</ul>
-<p>배열 값들에 대해, 함수를 실행하여 값을 계산</p>
-<blockquote>
-<p>파라미터 : 함수(이전에 반환된값, 현재값, index, array), (옵션) 초기값</p>
-<p>리턴 : 결과값</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>].reduce(<span class="function"><span class="keyword">function</span>(<span class="params">previousValue, currentValue, currentIndex, array</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> previousValue + currentValue;</span><br><span class="line">&#125;); <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="ES6-문법"><a href="#ES6-문법" class="headerlink" title="ES6 문법"></a>ES6 문법</h3><ul>
-<li>Array.from()</li>
-</ul>
-<p>(유사배열 객체)를 배열로 만든다. </p>
-<p>유사 배열 객체 (<code>length</code> 속성과 인덱싱된 요소를 가진 객체)</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/iterable" target="_blank" rel="noopener">반복 가능한 객체</a> (<a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Map" target="_blank" rel="noopener"><code>Map</code></a>과 <a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Set" target="_blank" rel="noopener"><code>Set</code></a>와 같이 객체의 요소를 얻을 수 있는 객체)</p>
-<blockquote>
-<p>파라미터 : 유사배열 객체, (옵션) 배열모든 요소에 호출할 map함수, (옵션) this로 사용할 값</p>
-<p>리턴 : 배열 객체</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Set</span></span><br><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="string">"foo"</span>, <span class="built_in">window</span>]);</span><br><span class="line"><span class="built_in">Array</span>.from(s); <span class="comment">// ["foo", window]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Map</span></span><br><span class="line"><span class="keyword">var</span> m = <span class="keyword">new</span> <span class="built_in">Map</span>([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">4</span>, <span class="number">8</span>]]);</span><br><span class="line"><span class="built_in">Array</span>.from(m); <span class="comment">// [[1, 2], [2, 4], [4, 8]]  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// String</span></span><br><span class="line"><span class="built_in">Array</span>.from(<span class="string">"foo"</span>);                      </span><br><span class="line"><span class="comment">// ["f", "o", "o"]</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">Array</span>.from([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], x =&gt; x + x); <span class="comment">// [2, 4, 6]</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Array.prototype.entries()</li>
-</ul>
-<p>배열의 각 인덱스에 대한 key/value 쌍을 가지는 새로운 <code>Array Iterator</code>객체를 반환. </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="keyword">var</span> eArr = arr.entries();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// [0, 'a']</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// [1, 'b']</span></span><br><span class="line"><span class="built_in">console</span>.log(eArr.next().value); <span class="comment">// [2, 'c']</span></span><br></pre></td></tr></table></figure>
-
-<p>eArr.next().value 의 결과는 key와 value 쌍을 가지는 배열이다.</p>
-<ul>
-<li>Array.prototype.keys()</li>
-</ul>
-<p>배열의 각 인덱스에 key 들을 가지는 새로운 <code>Array Interator</code>  객체를 반환</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>];</span><br><span class="line"><span class="keyword">var</span> iterator = arr.keys();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 0, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 1, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: 2, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(iterator.next()); <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>Array.prototype.values()</li>
-</ul>
-<p>배열의 각 인덱스에 대한 value를 가지는 새로운 <code>Array Iterator</code> 객체를 반환</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
-<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
+<p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
 
                     
                         
@@ -482,7 +356,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/4. javascript-Array/#post-footer"
+                                href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -532,7 +406,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

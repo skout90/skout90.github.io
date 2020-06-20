@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/03/03/Frontend/2.웹팩-바벨(babel)-연동/"
-                            aria-label=": 02. 웹팩(Webpack) 바벨(babel) 연동"
+                            href="/2018/03/03/Frontend/1.웹팩시작하기/"
+                            aria-label=": 01. 웹팩3(Webpack3) 환경셋팅"
                         >
-                            02. 웹팩(Webpack) 바벨(babel) 연동
+                            01. 웹팩3(Webpack3) 환경셋팅
                         </a>
                     
                 </h1>
@@ -227,104 +227,87 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>구버젼 IE/안드로이드에서 최신 JS를 사용할 수 있도록 도와주는 바벨을 셋팅해보자</p>
-<h2 id="기본셋팅-및-arrow-function"><a href="#기본셋팅-및-arrow-function" class="headerlink" title="기본셋팅 및 arrow function"></a>기본셋팅 및 arrow function</h2><p>arrow function을 일반 function으로 바꿔보겠다!</p>
-<blockquote>
-<p>npm i babel-core babel-loader babel-plugin-transform-es2015-arrow-functions</p>
-<p>npm i babel-cli -g</p>
-</blockquote>
-<ul>
-<li>.babelrc 생성</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-es2015-arrow-functions"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <p>번들러의 종결자 웹팩을 셋팅해보자!</p>
+<p>여러 파일을 하나로 합쳐서, request를 최소화 시켜주고,</p>
+<p>소스 파일의 변경 watch</p>
+<p>babel, lint 와 같은 여러 플러그인과의 통합도 도와준다!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir webpack-practice</span><br><span class="line">cd webpack-practice</span><br><span class="line">mkdir config dist src</span><br><span class="line">npm init -y</span><br><span class="line">npm i -g webpack@^3.8.1</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>src/main.js</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>babel src/main.js 명령어 입력하면 converting 되는걸 볼 수 있음</p>
-</blockquote>
+<p>웹팩을 적용할 main.js를 생성하자.</p>
 <ul>
-<li>config/webpack.dev.js</li>
+<li>config 폴더에 webpack.dev.js를 생성</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="string">"babel-loader"</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">      &#125;,</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">"[name]-bundle.js"</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">"../dist"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p> webpack –config=config/webpack.dev.js</p>
+<p>webpack –config=config/webpack.dev.js</p>
 </blockquote>
-<p>dist에서 변환된 내용을 확인할 수 있다!</p>
-<h2 id="Async-Await-Promise-적용"><a href="#Async-Await-Promise-적용" class="headerlink" title="Async Await(Promise) 적용"></a>Async Await(Promise) 적용</h2><blockquote>
-<p>npm i babel-plugin-async-to-promises</p>
-</blockquote>
+<p>그럼 dist에 main-bundle.js가 생성된다.</p>
 <ul>
-<li>.babelrc</li>
+<li>dist/index.html</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        <span class="string">"transform-es2015-arrow-functions"</span>,</span><br><span class="line">        <span class="string">"async-to-promises"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>해당 번들 js를 실행하는 html을 생성해준다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"main-bundle.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+<h2 id="hot-reload-적용"><a href="#hot-reload-적용" class="headerlink" title="hot reload 적용"></a>hot reload 적용</h2><p>webpack-dev-server를 깔아서 리로딩을 적용시켜보자</p>
+<p><code>npm i -g webpack-dev-server@^2.7.1</code></p>
 <ul>
-<li>main.js</li>
+<li>webpack.dev.js</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'후후'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">"[name]-bundle.js"</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">"../dist"</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: <span class="string">"./dist"</span>,</span><br><span class="line">    overlay: <span class="literal">true</span> <span class="comment">// 오류내용을 화면에 보여주게 함.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>babel src/main.js</p>
+<p>webpack –config=config/webpack.dev.js</p>
 </blockquote>
-<p>Promise 함수로 변환시키는 것을 볼 수 있다. 여기까지 해도, Promise를 지원하는 최신 브라우저에서는 동작하는데, IE11에서는 Promise를 이해하지 못한다. 그래서 polyfill을 적용해, Promise함수를 자동으로 삽입해주도록 해야한다.</p>
-<blockquote>
-<p>npm i babel-polyfill</p>
-</blockquote>
-<ul>
-<li>config/webpack.dev.js</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">entry: &#123;</span><br><span class="line">    main: [<span class="string">"babel-polyfill"</span>, <span class="string">"./src/main.js"</span>]</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>npm run dev</p>
-<p>yarn dev 또는 webpack-dev-server –config=config/webpack.dev.js</p>
-</blockquote>
-<p>main.js가 생성이 되었지만 용량이 꾀나 크다! [big]라고 나옴. polyfill은 모든 함수를 넣어주기 때문이다. 필요한 함수가 선별적으로 넣어주는 것이 가장 좋다!</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"core-js/fn/promise"</span>, <span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<h3 id="babel-사용을-조금더-간편하게"><a href="#babel-사용을-조금더-간편하게" class="headerlink" title="babel 사용을 조금더 간편하게"></a>babel 사용을 조금더 간편하게</h3><p>babel을 매번 찾아 선언해주는 것은 번거로운일이다. 그래서 바벨을 preset을 제공해준다. </p>
-<p>바로 <code>babel-preset-env</code> es2015, es2016, es2017 및 latest를 포함하고 있다.</p>
-<p><a href="http://babeljs.io/docs/plugins/" target="_blank" rel="noopener">http://babeljs.io/docs/plugins/</a></p>
-<blockquote>
-<p> <code>babel-stage</code> 를 사용하면 JS 표준으로 채택되지 않은 문법도 사용할 수가 있다!</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"env"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"targets"</span>: &#123;</span><br><span class="line">                    <span class="comment">// 브라우저 타겟을 설정</span></span><br><span class="line">                    <span class="string">"browsers"</span>: [<span class="string">"last 2 versions"</span>]</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">"debug"</span>: <span class="literal">true</span> <span class="comment">// 어떤 바벨 플러그인이 적용됐는지 확인</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="babel-runtime"><a href="#babel-runtime" class="headerlink" title="babel-runtime"></a>babel-runtime</h2><p>babel-polyfill 대신에 babel-runtime을 활용할 수도 있다. polyfill이 전역에 최신 JS 함수를 추가하는 거라면, babel-rutime은 전역 스코프를 오염시키지 않으며, 모듈 단위로 최신JS 파일을 포함시킨다.</p>
-<ul>
-<li>사용 시기</li>
-</ul>
-<blockquote>
-<p>전역 스코프를 오염해서 안되는 경우</p>
-<p>public 모듈 또는 가볍게 작동해야하는 라이브러리를 만들경우</p>
-</blockquote>
-<ul>
-<li>.babelrc</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"env"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"targets"</span>: &#123;</span><br><span class="line">                    <span class="string">"browsers"</span>: [<span class="string">"last 2 versions"</span>]</span><br><span class="line">                &#125;,</span><br><span class="line">            </span><br><span class="line">                <span class="string">"debug"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-runtime"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>main.js</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"babel-runtime/regenerator"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">async</span> (args) =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'후후'</span>)</span><br><span class="line">    <span class="keyword">const</span> &#123;a, b&#125; = args</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a(&#123;<span class="attr">a</span>:<span class="number">1</span>, <span class="attr">b</span>:<span class="number">2</span>&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="CSS와-HTML-번들링"><a href="#CSS와-HTML-번들링" class="headerlink" title="CSS와 HTML 번들링"></a>CSS와 HTML 번들링</h2><ul>
+<li>src/main.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>)</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>webpack.dev.js 에서 설정했던 폴리필을 제거</li>
+<li>src/main.css</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">	entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#444</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100vh</span>;</span><br><span class="line">    <span class="attribute">display</span>: flex;</span><br><span class="line">    <span class="attribute">color</span>: white;</span><br><span class="line">    <span class="attribute">align-items</span>: center;</span><br><span class="line">    <span class="attribute">justify-content</span>: center;</span><br><span class="line">    <span class="attribute">font-family</span>: sans-serif;</span><br><span class="line">    <span class="attribute">text-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src/index.html</li>
+</ul>
+<p>dist에 있던 html 도 src로 이동시킨다.</p>
+<ul>
+<li>webpack-dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">"[name]-bundle.js"</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">"../dist"</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  devServer: &#123;</span><br><span class="line">    contentBase: <span class="string">"./dist"</span>,</span><br><span class="line">    overlay: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"style-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"css-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.html$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; </span><br><span class="line">            loader: <span class="string">"file-loader"</span>,</span><br><span class="line">            options: &#123;</span><br><span class="line">              name: <span class="string">"[name].html"</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"extract-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"html-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.(png|jpg|gif)$/</span>, <span class="comment">// 내친김에 이미지 까지 불러오자</span></span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="string">"file-loader"</span>,</span><br><span class="line">            options: &#123;</span><br><span class="line">              name: <span class="string">"images/[name].[ext]"</span></span><br><span class="line">                <span class="comment">// "images/[name]-[hash:8].[ext] 를 하면 이미지 이름에 해쉬를 적용할 수 있음!</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src/images/이미지 하나를 복사하자</li>
+</ul>
+<blockquote>
+<p>wget <a href="https://skout90.github.io/assets/images/favicon.png">https://skout90.github.io/assets/images/favicon.png</a></p>
+</blockquote>
+<ul>
+<li>src/index.html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"profile"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./images/favicon.png"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h1</span>&gt;</span>hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"main-bundle.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>webpack -config=config/webpack.dev.js</p>
+<p>webpack-dev-server –config=config/webpack.dev.js</p>
+<p>cf) 매번 위 명령어를 입력하지 말고 package.json에 아래 명령어를 추가하고</p>
+<p>npm run dev 또는 yarn dev로 짧게 명령어를 단축할 수 있다!</p>
+<p>  “scripts”: {</p>
+<p>​    “dev”: “webpack-dev-server –config=config/webpack.dev.js”,</p>
+<p>  },</p>
 </blockquote>
-<p>babel-runtime에 대한 상세 설정은 아래 URL을 참조</p>
-<p> <a href="https://babeljs.io/docs/plugins/transform-runtime/" target="_blank" rel="noopener">https://babeljs.io/docs/plugins/transform-runtime/</a></p>
+<p>결과!</p>
+<blockquote>
+<p>굳이 html에 css를 삽입할 필요 없이, 웹팩이 CSS를 읽어 html 파일에 삽입해준다!</p>
+</blockquote>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics</a></p>
-<p>polyfill vs runtime : <a href="https://codersmind.com/babel-polyfill-babel-runtime-explained/" target="_blank" rel="noopener">https://codersmind.com/babel-polyfill-babel-runtime-explained/</a></p>
 
                     
                         
@@ -334,7 +317,7 @@
                     
                         <p>
                             <a
-                                href="/2018/03/03/Frontend/2.웹팩-바벨(babel)-연동/#post-footer"
+                                href="/2018/03/03/Frontend/1.웹팩시작하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -374,7 +357,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 7 of 12</li>
+        <li class="pagination-number">page 7 of 11</li>
     </ul>
 </div>
 
@@ -384,7 +367,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

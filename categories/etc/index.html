@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/"
-                            aria-label=": EC2 우분투 Node 개발환경 셋팅"
+                            href="/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                            aria-label=": Dynamo DB 설계 모범 케이스 분석"
                         >
-                            EC2 우분투 Node 개발환경 셋팅
+                            Dynamo DB 설계 모범 케이스 분석
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-08-25T19:28:10+09:00">
+    <time datetime="2020-03-25T19:28:10+09:00">
 	
-		    2018.08.25
+		    2020.03.25
     	
     </time>
     
@@ -227,109 +227,251 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="ec2-셋팅"><a href="#ec2-셋팅" class="headerlink" title="ec2 셋팅"></a>ec2 셋팅</h3><ul>
-<li><p>보안그룹 </p>
+                    <h3 id="스터디-배경"><a href="#스터디-배경" class="headerlink" title="스터디 배경"></a>스터디 배경</h3><p>테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문.</p>
+<h3 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h3><p><a href="https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html" target="_blank" rel="noopener">https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html</a></p>
+<p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SecondaryIndexes.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SecondaryIndexes.html</a></p>
 <ul>
-<li>SSH / Postgresql / HTTP / HTTPS  허용</li>
-</ul>
-</li>
-<li><p>탄력적 IP 생성 후 인스턴스 셋팅</p>
-</li>
-<li><p>ssh 접속</p>
-</li>
-</ul>
-<p>우분투의 경우 ubuntu@를 붙임</p>
-<p>ssh -i <em>/path/my-key-pair</em>.pem ubuntu@<em>public-dns-hostname</em></p>
-<p><a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html#TroubleshootingInstancesConnectingMindTerm" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html#TroubleshootingInstancesConnectingMindTerm</a></p>
-<h3 id="root-password-변경"><a href="#root-password-변경" class="headerlink" title="root password 변경"></a>root password 변경</h3><blockquote>
-<p>sudo passwd root</p>
-</blockquote>
-<h3 id="locale-설정"><a href="#locale-설정" class="headerlink" title="locale 설정"></a>locale 설정</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">locale</span><br><span class="line">sudo apt install language-pack-ko</span><br><span class="line">sudo locale-gen ko_KR.UTF-<span class="number">8</span></span><br><span class="line">sudo dpkg-reconfigure locales</span><br><span class="line">sudo update-locale LANG=ko_KR.UTF-<span class="number">8</span> LC_MESSAGES=POSIX</span><br></pre></td></tr></table></figure>
-
-<h3 id="timezone-설정"><a href="#timezone-설정" class="headerlink" title="timezone 설정"></a>timezone 설정</h3><blockquote>
-<p>sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime</p>
-</blockquote>
-<p>KST 확인</p>
-<blockquote>
-<p>date</p>
-</blockquote>
-<h3 id="vim-8-0"><a href="#vim-8-0" class="headerlink" title="vim 8.0"></a>vim 8.0</h3><blockquote>
-<p>sudo add-apt-repository ppa:jonathonf/vim</p>
-<p>sudo apt-get update</p>
-<p>sudo apt-get install vim vim-gtk</p>
-</blockquote>
-<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><blockquote>
-<p> sudo apt install zsh</p>
-<p>sudo vi /etc/pam.d/chsh</p>
-</blockquote>
-<p>auth       required   pam_shells.so  : required =&gt; sufficient로 변경</p>
-<blockquote>
-<p>chsh -s /usr/bin/zsh </p>
-<p>curl -L <a href="https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh" target="_blank" rel="noopener">https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh</a> | sh</p>
-</blockquote>
-<blockquote>
-<p> sudo reboot</p>
-<p>echo $SHELL</p>
-</blockquote>
-<p>위 커맨드로 /usr/bin/zsh가 나오면 okay.</p>
-<h2 id="node"><a href="#node" class="headerlink" title="node"></a>node</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
-
-<h3 id="nvm"><a href="#nvm" class="headerlink" title="nvm"></a>nvm</h3><ul>
-<li><p>curl -o- <a href="https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh" target="_blank" rel="noopener">https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh</a> | bash</p>
-</li>
-<li><blockquote>
-<p> sudo vi ~/.zshrc 에서 아래 내용 추가</p>
-<p>export NVM_DIR=”$HOME/.nvm”</p>
-<p>[ -s “$NVM_DIR/nvm.sh” ] &amp;&amp; . “$NVM_DIR/nvm.sh”</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="이미지-편집"><a href="#이미지-편집" class="headerlink" title="이미지 편집"></a>이미지 편집</h3><p>이미지 편집 기능이 필요하지 않으면 스킵.</p>
-<p>c compiler, libpng, zlib</p>
-<blockquote>
-<p>sudo apt install graphicsmagick build-essential</p>
-</blockquote>
-<p>libjpeg</p>
+<li><p>기본키</p>
 <ul>
-<li>wget <a href="https://www.ijg.org/files/jpegsrc.v9c.tar.gz" target="_blank" rel="noopener">https://www.ijg.org/files/jpegsrc.v9c.tar.gz</a></li>
-<li>tar xzf jpegsrc.v9c.tar.gz</li>
-<li>cd jpeg-9b</li>
-<li>./configure –prefix=/usr/local/libjpeg</li>
-<li>make</li>
-<li>sudo make install</li>
+<li>파티션 키<ul>
+<li>내부 해시 함수에 대한 입력으로 사용되는 키</li>
+<li>파티션 키로만 구성되어 있는 테이블에서는 동일한 파티션 키 값을 가질 수 없음.</li>
 </ul>
-<p>graphicmagick 의 gm 커맨드와 oh-my-zsh gm 커맨드가 겹치므로</p>
-<p>OH-MY-ZSH의 gm을 제거해줘야 한다 : </p>
+</li>
+<li>파티션 키 및 정렬 키 (복합 기본키)<ul>
+<li>동일한 파티션 키 값을 가질 수 있으며, 두 아이템의 정렬키 값을 달라야함.</li>
+<li>파티션 키가 동일한 모든 항목은 정렬키 값을 기준으로 정렬</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>보조 인덱스</p>
+<ul>
+<li>글로벌 보조 인덱스<ul>
+<li>파티션 키 및 정렬키가 기본테이블의 파티션/정렬키와 다를 수 있는 인덱스</li>
+<li>모든 글로벌 보조 인덱스는 파티션 키가 있어야 하며, 선택사항으로 정렬키를 가질 수 있음.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>모든 파티션에서 전체 테이블을 쿼리</p>
+<ul>
+<li>로컬 보조 인덱스<ul>
+<li>기본 테이블과 파티션 키는 동일하지만, 정렬 키는 다른 인덱스</li>
+<li>모든 로컬 보조 인덱스에는 기본 테이블의 파티션 및 정렬키가 자동적으로 포함 된다.</li>
+<li>파티션 키 값으로 지정한 대로 단일 파티션을 쿼리할 수 있음.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="프로비저닝-vs-온디멘드"><a href="#프로비저닝-vs-온디멘드" class="headerlink" title="프로비저닝 vs 온디멘드"></a>프로비저닝 vs 온디멘드</h3><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html</a></p>
+<p>DynamoDB의 과금 방식중 <code>온디멘드</code> 방식과 <code>프로비저닝</code> 방식이 있다. 우리 서비스의 경우</p>
+<ul>
+<li>트래픽이 점점 증가해나가고 있음, 또한 마케팅 여부에 따라 증가하거나 감소할 가능성이 있음.</li>
+<li>스크래핑 작업 특성상, 한번 스크래핑이 시작하면 많은양의 읽기 쓰기가 동작되며, 최적화된 쓰기/읽기 유닛 책정이 어려움.</li>
+</ul>
+<p>두가지 이유로 인해 읽기/쓰기 유닛을 책정하는 것보다는 온디멘드 방식을 사용하는 것이 좋다고 판단됌.</p>
 <blockquote>
-<p>vi  ~/.oh-my-zsh/plugins/git/git.plugin.zsh 에서 alias gm 주석 처리</p>
+<p>온디멘드 방식을 사용하게 되면, 읽기/쓰기 유닛을 효율적으로 사용하기 위한 테이블 설계에 대한 부담이 줄어 드는 장점도 있다.</p>
 </blockquote>
-<h3 id="global-yarn"><a href="#global-yarn" class="headerlink" title="global yarn"></a>global yarn</h3><ul>
-<li>curl -sS <a href="https://dl.yarnpkg.com/debian/pubkey.gpg" target="_blank" rel="noopener">https://dl.yarnpkg.com/debian/pubkey.gpg</a> | sudo apt-key add    </li>
-<li>echo “deb <a href="https://dl.yarnpkg.com/debian/" target="_blank" rel="noopener">https://dl.yarnpkg.com/debian/</a> stable main” | sudo tee /etc/apt/sources.list.d/yarn.list</li>
-<li>sudo apt update</li>
-<li>sudo apt install yarn</li>
-<li>yarn config set prefix ~/.yarn-global</li>
-<li>yarn config get prefix</li>
-<li>cat ~/.yarnrc</li>
-<li>path<ul>
-<li>vi ~./.zshrc 추가 =&gt; export PATH=”$PATH:<code>yarn global bin</code>“</li>
+<h3 id="테이블-설계"><a href="#테이블-설계" class="headerlink" title="테이블 설계"></a>테이블 설계</h3><ul>
+<li>DynamoDB 애플리케이션에서는 <strong>가능한 적은 수의 테이블을 유지해</strong>야 합니다. 대부분의 잘 설계된 애플리케이션은 단 <em>하나의</em> 테이블만 요구합니다.</li>
+<li>쿼리를 처리할 때 데이터를 변화시키는 대신(RDBMS 시스템의 방식), NoSQL 데이터베이스는 <strong>데이터베이스의 모양이 쿼리 대상과 일치하도록</strong> 데이터를 구성합니다. 이는 속도와 확장성 향상에 중요한 요소입니다.</li>
+<li><strong>정렬 순서를 사용합니다.</strong>  핵심 설계가 함께 정렬할 것을 요구하는 경우, 관련 항목을 그룹으로 묶어 효율적으로 쿼리할 수 있습니다. 이는 중요한 NoSQL 설계 전략입니다.</li>
+</ul>
+<h3 id="파티션-키-설계"><a href="#파티션-키-설계" class="headerlink" title="파티션 키 설계"></a>파티션 키 설계</h3><ul>
+<li><p>워크로드 배분</p>
+<ul>
+<li><p>파티션 키 설계 : 트래픽이 하나의 항목으로 너무 집중되는 경우, 자주 액세스 하는 항목이 동일한 파티션에 상주하지 않도록 파티션 균형 재조정</p>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html</a></p>
+<table>
+<thead>
+<tr>
+<th align="left">파티션 키 값</th>
+<th align="left">균일성</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">사용자 ID, 애플리케이션의 사용자가 많은 경우.</td>
+<td align="left">좋음</td>
+</tr>
+<tr>
+<td align="left">상태 코드, 가능한 상태 코드가 몇 개 없는 경우.</td>
+<td align="left">나쁨</td>
+</tr>
+<tr>
+<td align="left">항목 생성 날짜, 가장 가까운 시간(예: 날, 시, 분)으로 반올림.</td>
+<td align="left">나쁨</td>
+</tr>
+<tr>
+<td align="left">디바이스 ID, 각 디바이스가 비교적 비슷한 간격으로 데이터에 액세스하는 경우.</td>
+<td align="left">좋음</td>
+</tr>
+<tr>
+<td align="left">디바이스 ID, 추적되는 디바이스는 많지만 다른 디바이스보다 한 디바이스가 훨씬 더 인기 있는 경우.</td>
+<td align="left">나쁨</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>쓰기 샤딩</p>
+<ul>
+<li><p>여러 파티션 키 공간에 워크로드를 더 골고루 배분할 수 있도록, 파티션 키 값 끝에 난수나 접미사를 추가하여 병렬처리함</p>
+</li>
+<li><p>데이터 입력시, 가능하다면, 여러 파티션을 골고루 순회하며 입력할 수 있도록 쿼리</p>
+<ul>
+<li>아래 표에서 첫번째 표보다, 두번째 표가 서로 다른 파티션 키 값을 사용, 병렬처리 성능 향상</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">UserID</th>
+<th align="left">MessageID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">U1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">… 최대 100</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">… 최대 200</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">UserID</th>
+<th align="left">MessageID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">U1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U3</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U3</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<blockquote>
+<p>여러 UserID를 순회하면서 값을 입력한다면, 병렬 처리 성능이 향상한다.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="정렬키-설계"><a href="#정렬키-설계" class="headerlink" title="정렬키 설계"></a>정렬키 설계</h3><ul>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html</a></p>
+</li>
+<li><p>복합정렬키를 사용하면, 데이터의 계층적 관계를 정의할 수 있도록 도와준다</p>
+<p><code>[country]#[region]#[state]#[county]#[city]#[neighborhood]</code></p>
+<p>위와같이, 정렬키를 구성한다면, <code>begins_with</code>, <code>between</code>, <code>&gt;</code>, <code>&lt;</code> 등 연산자를 사용하는 범위 쿼리를 사용하여 위치 목록을 효율적으로 범위 쿼리 할 수 있다.</p>
+</li>
+</ul>
+<h3 id="보조키-설계"><a href="#보조키-설계" class="headerlink" title="보조키 설계"></a>보조키 설계</h3><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-indexes-general.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-indexes-general.html</a></p>
+<ul>
+<li><p>일반적으로 로컬 보조 인덱스보다, 글로벌 보조 인덱스 사용</p>
+</li>
+<li><p>스토리지 및 IO 비용 감소를 위해 : 인덱스 수와 크기를 최대한 작게 유지</p>
+</li>
+</ul>
+<h3 id="예시"><a href="#예시" class="headerlink" title="예시"></a>예시</h3><h4 id="Case1"><a href="#Case1" class="headerlink" title="Case1"></a>Case1</h4><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html</a></p>
+<p><img src="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/images/VersionControl.png" alt="         기본 키와 데이터 항목 속성을 가진 테이블을 표시하는 버전 관리의 예       "></p>
+<p>버전 관리에 정렬키를 사용하는 경우로 v0_ v00_ v000_ 같은 계층구조로 버전을 효율적으로 쿼링함.</p>
+<h4 id="Case2"><a href="#Case2" class="headerlink" title="Case2"></a>Case2</h4><p><a href="https://dev.overnodes.com/entry/AWS-DynamoDBNoSQL" target="_blank" rel="noopener">https://dev.overnodes.com/entry/AWS-DynamoDBNoSQL</a></p>
+<p><img src="https://i.postimg.cc/gcxtDBmx/dynamodb-example-1.png" alt="image-20200324180519822"></p>
+<p><img src="https://i.postimg.cc/MpSsz6RB/dynamodb-example-2.png" alt="image-20200324180741274"></p>
+<blockquote>
+<p>Collector-1 / Collector-2, Details/Remittance-1 키의 네임이 아니라, Value이다</p>
+</blockquote>
+<h3 id="스터디-적용"><a href="#스터디-적용" class="headerlink" title="스터디 적용"></a>스터디 적용</h3><blockquote>
+<p>거래 태깅 변경 로그의 테이블 설계</p>
+</blockquote>
+<h4 id="파티션키-정렬키-설계"><a href="#파티션키-정렬키-설계" class="headerlink" title="파티션키, 정렬키 설계"></a>파티션키, 정렬키 설계</h4><ul>
+<li><p>키후보</p>
+<ol>
+<li><p>파티션키 : 회사 ID   /  정렬키 : 거래ID + 입력시간(DTS_UPDATE)</p>
+</li>
+<li><p>파티션키 : 거래 ID  /   정렬키 : 입력시간(DTS_UPDATE)</p>
+</li>
+<li><p>파티션키 : 거래ID + 입력시간(DTS_UPDATE)</p>
+</li>
+</ol>
+</li>
+<li><p>사용 쿼리</p>
+<ul>
+<li>조회 쿼리<ul>
+<li>한 회사의 종합적인 태그 변경 로그를 분석할 경우 1번의 케이스가 적절</li>
+<li>한 거래 내역의 태그 변경 로그를 쿼리할 경우 2번의 케이스가 적절</li>
+</ul>
+</li>
+<li>다중 입력시 병렬처리 성능 최적화 관점<ul>
+<li>1번 케이스의 경우, 스크래핑시나 스마트 태그시 한 파티션에 워크로드가 집중되는 문제가 있음</li>
+<li>3번 케이스의 경우, 워크로드 분산에는 최적화되지만, 데이터의 구조가 실제 사용 케이스와 다름</li>
+<li>2번 케이스가 적절함.</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <blockquote>
-<p>#test 해보장</p>
-<p>yarn global add knex gm pg imagemagick</p>
+<p>조회쿼리/다중입력을 고려하여 2번 케이스가 가장 적절하다고 판단됌.</p>
 </blockquote>
-<h3 id="postgresql"><a href="#postgresql" class="headerlink" title="postgresql"></a>postgresql</h3><ul>
-<li>wget -q <a href="https://www.postgresql.org/media/keys/ACCC4CF8.asc" target="_blank" rel="noopener">https://www.postgresql.org/media/keys/ACCC4CF8.asc</a> -O- | sudo apt-key add -</li>
-<li>echo “deb <a href="http://apt.postgresql.org/pub/repos/apt/" target="_blank" rel="noopener">http://apt.postgresql.org/pub/repos/apt/</a> xenial-pgdg main” | sudo tee /etc/apt/sources.list.d/postgresql.list</li>
-<li>sudo apt-get update &amp;&amp; sudo apt-get install postgresql</li>
-<li>sudo service postgresql start</li>
-<li>sudo su - postgres</li>
-<li>psql</li>
-<li>CREATE USER bglamour WITH PASSWORD ‘bglamour’;</li>
-<li>create database bglam_local;</li>
-<li>psql postgres -U username : postgres DB에 username 롤로 접속</li>
+<h4 id="보조키-사용"><a href="#보조키-사용" class="headerlink" title="보조키 사용"></a>보조키 사용</h4><ul>
+<li>한 회사의 종합적인 태그 변경 로그를 분석할 케이스가 있을 수 있기 때문에 <code>회사ID</code> 보조키를 사용한다.</li>
+<li>2번 케이스로 구성할경우, 회사 ID는 기본키와 별개이므로, 글로벌 보조키를 사용한다.</li>
 </ul>
 
                     
@@ -340,7 +482,7 @@
                     
                         <p>
                             <a
-                                href="/2018/08/25/etc/ec2-ubuntu-node-개발환경셋팅/#post-footer"
+                                href="/2020/03/25/etc/dynamo-db-architecture-best-practice/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -369,7 +511,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 1 of 5</li>
+        <li class="pagination-number">page 1 of 7</li>
     </ul>
 </div>
 
@@ -379,7 +521,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

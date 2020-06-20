@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/07/OS/memory/"
-                            aria-label=": 메모리"
+                            href="/2017/06/12/Angular/11. Angular 이벤트/"
+                            aria-label=": 11. Angular 이벤트"
                         >
-                            메모리
+                            11. Angular 이벤트
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-07T19:28:10+09:00">
+    <time datetime="2017-06-12T10:00:50+09:00">
 	
-		    2017.07.07
+		    2017.06.12
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/OS/">OS</a>
+    <a class="category-link" href="/categories/Angular/">Angular</a>
 
 
     
@@ -227,82 +227,22 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>컴퓨터의 저장공간은 역시 성능이 좋을 수록 비싸다. 때문에 메모리를 계층화시키고 이를 효율적으로 이용하기 위한 연구가 계속 되고 있다.</p>
-<h2 id="메모리의-계층-구조"><a href="#메모리의-계층-구조" class="headerlink" title="메모리의 계층 구조"></a>메모리의 계층 구조</h2><blockquote>
-<p> 캐시 메모리 - 메인메모리 - 디스크 스토리지</p>
-</blockquote>
-<p>따라서 위와 같이 메모리를 계층화하여 용도에 맞게 사용한다.</p>
-<h2 id="메모리의-추상화"><a href="#메모리의-추상화" class="headerlink" title="메모리의 추상화"></a>메모리의 추상화</h2><p>각 프로세스는 자신만의 <code>주소공간</code>(프로그램에 적재될 수 있는 추상화된 주소집합)을 갖는다.</p>
+                    <h2 id="Mouse-click-이벤트"><a href="#Mouse-click-이벤트" class="headerlink" title="Mouse click 이벤트"></a>Mouse click 이벤트</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">'&lt;button ion-button (click)="onClick()&gt;버튼&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TabsPage &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  onClick() &#123;</span><br><span class="line">    alert(<span class="string">'dd'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Mousemove-mouseleave-mouse-over-이벤트-동작"><a href="#Mousemove-mouseleave-mouse-over-이벤트-동작" class="headerlink" title="Mousemove, mouseleave, mouse over 이벤트 동작"></a>Mousemove, mouseleave, mouse over 이벤트 동작</h2><h3 id="지시자-선언"><a href="#지시자-선언" class="headerlink" title="지시자 선언"></a>지시자 선언</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Directive, ElementRef, HostListener, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Directive</span>(&#123;</span><br><span class="line">  selector: <span class="string">'[highlight]'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HighlightDirective &#123;</span><br><span class="line">  <span class="keyword">private</span> el: HTMLElement;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">el: ElementRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.el = el.nativeElement;</span><br><span class="line">    <span class="keyword">this</span>.el.style.fontSize = <span class="string">"30px"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mousemove'</span>) onMouseMove() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="string">"blue"</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"white"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mouseleave'</span>) onMouseLeave() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"black"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="템플릿"><a href="#템플릿" class="headerlink" title="템플릿"></a>템플릿</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'member-list'</span>,</span><br><span class="line">  template: <span class="string">` </span></span><br><span class="line"><span class="string">  &lt;div highlight (mouseover)="setLike('like this')"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123;like&#125;&#125;  </span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MemberListComponent &#123;</span><br><span class="line">  like: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  setLike(likethis: <span class="built_in">string</span>)&#123;</span><br><span class="line">    <span class="keyword">this</span>.like = likethis;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Key-이벤트"><a href="#Key-이벤트" class="headerlink" title="Key 이벤트"></a>Key 이벤트</h2><p>특정 키의 이벤트시 동작하는 이벤트</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'key-up4'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;input #box</span></span><br><span class="line"><span class="string">      (keyup.enter)="update(box.value)"</span></span><br><span class="line"><span class="string">      (blur)="update(box.value)"&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &lt;p&gt;&#123;&#123;value&#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> KeyUpComponent_v4 &#123;</span><br><span class="line">  value = <span class="string">''</span>;</span><br><span class="line">  update(value: <span class="built_in">string</span>) &#123; <span class="keyword">this</span>.value = value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 <blockquote>
-<p>A 프로세스의 28번 주소</p>
-<p>B 프로세스의 28번 주소 </p>
+<p>그외 이벤트 정보 : <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/Events</a></p>
 </blockquote>
-<p>위 두 28번 주소는 달라야 한다.  </p>
-<p><strong><em>따라서 논리주소만 고려할 수 있도록 조치</em></strong>가 필요하다.</p>
-<h4 id="재배치"><a href="#재배치" class="headerlink" title="재배치"></a>재배치</h4><ul>
-<li>동적 재배치 : 프로그램 실행시, MMU 통해 동적으로 배치</li>
-</ul>
-<blockquote>
-<p>but 덧셈을 매번 해야 하는 단점이 있다..</p>
-</blockquote>
-<ul>
-<li>정적 재배치 : 적재한 초기 위치부터 주소 재배치(적재기 Loader 통해)</li>
-</ul>
-<blockquote>
-<p>그러나…</p>
-<p>1) 실수나 의도적으로 OS 파괴가 가능하다.</p>
-<p>2) 여러 프로그램 동시에 실행이 어렵다.</p>
-</blockquote>
-<h2 id="가용메모리-공간-관리"><a href="#가용메모리-공간-관리" class="headerlink" title="가용메모리 공간 관리"></a>가용메모리 공간 관리</h2><p>실제 메모리보다 사용 메모리가 더 클 경우에 이것을 어떻게 대처할 것인가?</p>
-<h4 id="스와핑"><a href="#스와핑" class="headerlink" title="스와핑"></a>스와핑</h4><p>실행되지 않는 것, 디스크로 내림. 스왑 될때 재배치가 필요.</p>
-<p><strong>어떤 메모리를 스와핑 할 것인가?</strong> 리스트를 활용하여 가용메모리 공간을 관리한다.</p>
-<p>1) 최초적합 : 빈공간 발견시 할당</p>
-<p>2) 다음적합 : 지난번 위치의 다음부터 검색</p>
-<p>3) 최적적합 : 모두 검색-&gt; 가장 근접 공간에 할당 &lt;-&gt; 최악적합</p>
-<p>4) 빠른적합 : 공통크기 메모리 공간 -&gt; 서로 다른 리스트로 관리</p>
-<blockquote>
-<p>그러나 스와핑은 너무 느리다.</p>
-</blockquote>
-<h4 id="오버레이"><a href="#오버레이" class="headerlink" title="오버레이"></a>오버레이</h4><p>프로세스를 작은 조각으로 나누어 실행한다.</p>
-<blockquote>
-<p>그러나 그것은 프로그래머의 몫으로, 너무 복잡하다.</p>
-</blockquote>
-<h3 id="가상메모리"><a href="#가상메모리" class="headerlink" title="가상메모리"></a>가상메모리</h3><p>가용 메모리 공간을 종결할, 가상 메모리.</p>
-<p>프로세스는 자신의 <code>고유한 주소공간</code>(프로그램에 적재될 수 있는 추상화된 주소집합)을 가지며, 주소공간은 <code>페이지</code>라는 조각으로 구성된다.</p>
-<p> <code>페이징 기법</code>을 활용하면, 여러 프로그램의 부분들이 <code>물리 메모리에 동시 존재</code>할 수 있다.</p>
-<h3 id="페이징-기법"><a href="#페이징-기법" class="headerlink" title="페이징 기법"></a>페이징 기법</h3><p>어떻게 가상 메모리가 페이징 기법을 사용해서 매핑되는지 보자.</p>
-<p><img src="http://i.imgur.com/tBTUlGH.png" alt="img"></p>
-<p><img src="http://i.imgur.com/eEKHY9D.png" alt="img"></p>
-<ol>
-<li>프로그램이 메모리의 주소(가상메모리)를 참조한다.</li>
-<li>가상메모리는 <code>16bit 메모리</code> 는 <code>4bit/8bit</code>로 나누어 지는데, <code>4bit</code>로 <code>페이지테이블</code>을 검색한다.</li>
-<li>4bit <code>0 0 1 0</code> 은 10진수로 <code>2</code> 이므로 <code>페이지테이블</code> 2번과 매핑되고, 해당 페이지 테이블을 살펴보니 <code>1 1 0 1</code> 로 4번째 <code>1</code> 은 present/absent bit 이므로, 현재 메모리에 적재되어 있다는 것을 알 수 있다.</li>
-<li>페이지 테이블에서 찾은 <code>1 1 0</code>과 8bit 메모리 주소 <code>0 0 0 0 0 1 0 0</code>을 합친 주소가 실제 물리 메모리 주소이다. MMU를 이용하여, 실제 물리 메모리 주소로 매핑된다.</li>
-</ol>
-<blockquote>
-<p>만약 present bit가 0으로 매핑되어 있지 않으면, 페이지 폴트가 일어나고 페이지 프레임 내용이 교체 된다.</p>
-</blockquote>
-<h4 id="페이지-테이블-구조"><a href="#페이지-테이블-구조" class="headerlink" title="페이지 테이블 구조"></a>페이지 테이블 구조</h4><p>|캐싱가능여부|참조|수정|보호|present/absent|페이지 프레임 Num</p>
-<h4 id="페이징-속도-향상"><a href="#페이징-속도-향상" class="headerlink" title="페이징 속도 향상"></a>페이징 속도 향상</h4><p>페이지 테이블 전체를 적재하여, 구현 비용이 커진다. TLB(Translation Lookaside Buffer)를 이용하여 페이지 테이블 참조없이 가상주소를 물리주소에 매핑한다. MMU 내부에 존재하며 순서 없이 한 번에 찾는다.</p>
-<h4 id="페이지-교체-알고리즘"><a href="#페이지-교체-알고리즘" class="headerlink" title="페이지 교체 알고리즘"></a>페이지 교체 알고리즘</h4><p>페이지 프레임 교체 대상은 누구인가?</p>
-<ol>
-<li>최적 페이지 교체 알고리즘(OPT) : 가장 먼 미래에 참조될 캐시 퇴출(그러나 미래를 알 수 없음;;)</li>
-<li>LRU(Least Recently Used) : 시간상 최근 참조 -&gt; 최근에 다시 참조</li>
-<li>LFU(Least Frequently Used) : 빈도상 많이 참조 -&gt; 미래에도 많이 참조(maxheap으로 구현)</li>
-<li>FIFO(First-In First-Out) : 먼저 들어온게 먼저 나감.</li>
-<li>Second-Chance 페이지 교체 알고리즘, 클록 페이지 교체 알고리즘</li>
-</ol>
-<p><img src="http://i.imgur.com/8BXWsCu.png" alt="img"></p>
-<p>대상인지 아닌지 확인할 때 R=1 이면, 0으로 바꾸고 넘어감. R이 0이라면 대상.</p>
-<ol start="6">
-<li>작업집합 페이지 교체 알고리즘 : 프로세스가 현재 자주 참조하는 페이지들의 집합인지 확인. 문맥교환시 - 선페이징 통해 프로세스 시작전 작업집합들 페이지 적재.</li>
-</ol>
-<h4 id="페이지-교체시-쟁점"><a href="#페이지-교체시-쟁점" class="headerlink" title="페이지 교체시 쟁점"></a>페이지 교체시 쟁점</h4><p>지역 페이지 교체 : 자기 프로세스에 속해있는 페이지중 고려.</p>
-<p>전역 페이지 교체 : 전체 프로세스 중에 고려, 실행에 따라 작업집합의 크기 변할 때 유리.</p>
-<p>혼합 : 전역 알고리즘 사용, 크기에 비례하여 페이지 할당. 페이지 폴트 빈도수(PFF)에 맞추어 추가 할당/반납 -&gt; 상한/하한</p>
-<p>페이지 크게 : 페이지 폴트 적게 일어남, 관리 쉽다, 페이지 테이블 작아짐, but 내부 단편화 심함.</p>
-<p>페이지 작게 : 내부 단편화 줄어듬, But 많은 페이지 필요</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>운영체제론 - 노삼혁</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<p><a href="https://angular.io/guide/user-input" target="_blank" rel="noopener">https://angular.io/guide/user-input</a></p>
 
                     
                         
@@ -312,7 +252,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/07/OS/memory/#post-footer"
+                                href="/2017/06/12/Angular/11. Angular 이벤트/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -352,7 +292,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 107 of 112</li>
+        <li class="pagination-number">page 107 of 111</li>
     </ul>
 </div>
 
@@ -362,7 +302,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/"
-                            aria-label=": 01. Ionic2의 프로젝트 구조"
+                            href="/2017/07/24/Ionic/2. Ionic-시작하기/"
+                            aria-label=": 02. Ionic 시작하기"
                         >
-                            01. Ionic2의 프로젝트 구조
+                            02. Ionic 시작하기
                         </a>
                     
                 </h1>
@@ -227,18 +227,67 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>src 폴더에 작업 코드가 있고, 컴파일 후 www 폴더로 전환되는 구조.</p>
-<p>ionic serve로 앱을 실행하면 src 폴더 내용이 컴파일되고 합쳐져서 www 폴더로 저장(<code>rollup js</code> 활용)</p>
-<p><code>www/build</code></p>
-<p>main.css</p>
+                    <p>아이오닉을 시작하기 위해서</p>
+<p>기본 셋팅과, 명령어를 알아본다.</p>
+<h2 id="Node-설치"><a href="#Node-설치" class="headerlink" title="Node 설치"></a>Node 설치</h2><p><a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a></p>
+<p>설치 후 커맨드 창을 열어</p>
 <blockquote>
-<p>src 폴더의 모든 css 파일들이 main.css 파일들이 저장 됌</p>
+<p>$ node</p>
+<p>&gt; console.log(‘hello node’);</p>
+<p>hello node</p>
+<p>undefined</p>
 </blockquote>
-<p>main.js</p>
+<p>와 같이 나온다면 성공.</p>
+<h2 id="Cordova-설치"><a href="#Cordova-설치" class="headerlink" title="Cordova 설치"></a>Cordova 설치</h2><p>코도바는 하이브리드 앱에서 네이티브 앱의 기능을 사용할 수 있게 하는 라이브러리다.</p>
 <blockquote>
-<p>src 폴더의 모든 TS 파일들이 js로 컴파일되고 합쳐져 main.js로 저장.</p>
+<p>npm install -g cordova</p>
 </blockquote>
-<p>index.html을 보면 build/main.js와 build/main.css를 참조하는 것을 확인할 수 있다.</p>
+<h2 id="CLI-설치하기"><a href="#CLI-설치하기" class="headerlink" title="CLI 설치하기"></a>CLI 설치하기</h2><p>CLI는 아이오닉 프레임워크 개발에 가장 기초가 되는 툴이다.</p>
+<p>start/build/serve/run/emulate/info 같은 명령어를 사용하기 위해서는</p>
+<p>CLI 툴을 설치해야 한다.</p>
+<p>node와 npm이 설치 되어 있어야 한다.</p>
+<blockquote>
+<p>$ npm install -g ionic</p>
+</blockquote>
+<h2 id="명령어"><a href="#명령어" class="headerlink" title="명령어"></a>명령어</h2><ul>
+<li>새 프로젝트 만들기</li>
+</ul>
+<blockquote>
+<p>$ ionic start –v2 myApp blank</p>
+</blockquote>
+<p>blank 대신 다른 템플릿을 입력할 수도 있다. (blank/sidemenu/tabs/tutorial,github-url)</p>
+<ul>
+<li>정보 보기</li>
+</ul>
+<blockquote>
+<p>$ ionic info</p>
+</blockquote>
+<ul>
+<li>디버깅</li>
+</ul>
+<blockquote>
+<p>$ ionic serve</p>
+</blockquote>
+<ul>
+<li>플랫폼별 브라우저 확인</li>
+</ul>
+<blockquote>
+<p>$ ionic serve –lab</p>
+</blockquote>
+<ul>
+<li>업로드</li>
+</ul>
+<blockquote>
+<p>$ ionic upload</p>
+</blockquote>
+<ul>
+<li>사용가능 명령어 확인</li>
+</ul>
+<blockquote>
+<p>$ ionic .</p>
+</blockquote>
+<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="http://ionicframework.com/docs/cli/" target="_blank" rel="noopener">Ionic docs</a></p>
+<p><a href="https://medium.com/witinweb/ionic-2-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-ed011c7fe69b" target="_blank" rel="noopener">스키머님 블로그</a></p>
 
                     
                         
@@ -248,7 +297,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/#post-footer"
+                                href="/2017/07/24/Ionic/2. Ionic-시작하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -288,7 +337,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 118 of 148</li>
+        <li class="pagination-number">page 118 of 150</li>
     </ul>
 </div>
 
@@ -298,7 +347,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/01/24/Vue/1.2.Watch-중첩데이터감시-즉시실행/"
-                            aria-label=": 01.2. Watch 중첩데이터 감시(deep) 및 즉시실행(immediate)"
+                            href="/2018/02/02/etc/cordova-css-check/"
+                            aria-label=": Cordova에서 플랫폼 체크 css 방법"
                         >
-                            01.2. Watch 중첩데이터 감시(deep) 및 즉시실행(immediate)
+                            Cordova에서 플랫폼 체크 css 방법
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-24T19:28:10+09:00">
+    <time datetime="2018-02-02T19:28:10+09:00">
 	
-		    2018.01.24
+		    2018.02.02
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Vue/">Vue</a>
+    <a class="category-link" href="/categories/etc/">etc</a>
 
 
     
@@ -227,22 +227,16 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>0.1. 포스팅에서 watch를 사용해야하는 경우에 대해 정리하였다.</p>
-<ul>
-<li>watch를 사용해야할 경우</li>
-</ul>
-<ol>
-<li>mustache(템플릿 표현식) 없이 값의 변화를 관찰하고 싶을때는 watch를 사용한다.</li>
-<li>비동기적 처리시 사용한다!</li>
-<li>값이 바뀔 때마다 매번 호출되어야 할 경우</li>
-<li>연산을 얼마나 자주 수행하는지 제한가능(lodash의 debounce 이용)</li>
-</ol>
-<hr>
-<p>그런데! 데이터가 배열이나, 객체일 경우에 값이 변해도 변수는 여전히 같은 객체를 가리키고 있기 때문에 <code>watch</code> 가 실행되지 않는다. 아래와 같이 해결한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">    processingItems: [<span class="string">'a'</span>, <span class="string">'b '</span>]</span><br><span class="line">  &#125;),</span><br><span class="line">  </span><br><span class="line">  watch: &#123;</span><br><span class="line">    processingItems() &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'123'</span>) <span class="comment">// 실행되지 않는다.</span></span><br><span class="line">    &#125;,</span><br><span class="line">    </span><br><span class="line">    processingItems: &#123;</span><br><span class="line">      immediate: <span class="literal">true</span>, <span class="comment">// 최초 초기화시 1회 실행되게 한다.</span></span><br><span class="line">      deep: <span class="literal">true</span>, <span class="comment">// 변화를 deep하게 감시한다.</span></span><br><span class="line">      handler(newVal, oldVal) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'change'</span>) <span class="comment">// 실행된다.</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/52343140/how-to-implement-dirty-state-in-vuejs" target="_blank" rel="noopener">https://stackoverflow.com/questions/52343140/how-to-implement-dirty-state-in-vuejs</a></p>
-<p><a href="https://ui.toast.com/weekly-pick/ko_20190307/" target="_blank" rel="noopener">https://ui.toast.com/weekly-pick/ko_20190307/</a></p>
+                    <p>cordova에서 빌드시 자동으로 body 태그의 클래스가 추가 된다.</p>
+<blockquote>
+<p>.cordova</p>
+<p>.platform-ios</p>
+<p>.platform-android</p>
+</blockquote>
+<p>즉 코르도바에서, ios 플랫폼인지 체크하고 싶다면</p>
+<blockquote>
+<p>.platform-ios.cordova </p>
+</blockquote>
 
                     
                         
@@ -252,7 +246,7 @@
                     
                         <p>
                             <a
-                                href="/2018/01/24/Vue/1.2.Watch-중첩데이터감시-즉시실행/#post-footer"
+                                href="/2018/02/02/etc/cordova-css-check/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -292,7 +286,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 33 of 148</li>
+        <li class="pagination-number">page 33 of 150</li>
     </ul>
 </div>
 
@@ -302,7 +296,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

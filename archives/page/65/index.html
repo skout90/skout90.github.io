@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Google/firebase/"
-                            aria-label=": Firebase로 CRUD 기능 작성"
+                            href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
+                            aria-label=": 03.1. Object 내장객체"
                         >
-                            Firebase로 CRUD 기능 작성
+                            03.1. Object 내장객체
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Google/">Google</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,95 +227,126 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.</p>
-<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><p>프로젝트를 만든다.</p>
-<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p><code>로그인방법</code> 탬에서 원하는 인증방식을 활성화 한다. <code>Authorized Domains</code>탬에서 리다이렉션 도메인을 추가할 수 있다.</p>
-<p><code>템플릿</code> 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.</p>
-<h3 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h3><p><code>데이터</code> 탭에서 저장된 데이터를 확인</p>
-<ul>
-<li>모든 데이터는 Json으로 저장</li>
-<li>데이터를 import/export 할 수 있음.</li>
-<li>캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.</li>
-<li>모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.</li>
+                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
+<li><strong>Object.prototype</strong></li>
 </ul>
-<p><code>규칙</code> 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정</p>
+<p>모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, <strong>모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.</strong></p>
+<p>다음 코드를 보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name   : <span class="string">"child of earth"</span>,</span><br><span class="line">  	age    : <span class="number">0</span>,</span><br><span class="line">	nature : <span class="string">"cool"</span>,</span><br><span class="line">  	eat    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name + <span class="string">"is eating"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narendra = <span class="built_in">Object</span>.create(person);</span><br><span class="line">narendra.name = <span class="string">"Narendra Sisdoiya"</span>;</span><br><span class="line">narendra.age = <span class="number">29</span>;</span><br><span class="line">narendra.eat();</span><br><span class="line"></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"eat"</span>); <span class="comment">// false</span></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"name"</span>); <span class="comment">// true</span></span><br><span class="line">narendra.hasOwnPropery(<span class="string">"nature"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030" alt="object prototype에 대한 이미지 검색결과"></p>
+<p>내장 객체인 Object와, Object.prototype이 있다.</p>
+<blockquote>
+<p>자세한 내용은 상속과 prototype 포스팅 참조</p>
+</blockquote>
 <ul>
-<li>시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.</li>
+<li><strong>Object.prototype.constructor</strong></li>
 </ul>
-<h2 id="로컬-개발환경-셋팅"><a href="#로컬-개발환경-셋팅" class="headerlink" title="로컬 개발환경 셋팅"></a>로컬 개발환경 셋팅</h2><ol>
-<li><a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 에서 nodejs 설치</li>
-<li>firebase cli 설치</li>
-</ol>
-<blockquote>
-<p>&gt; npm install firebase-tools -g</p>
-</blockquote>
-<ol start="3">
-<li>firebase cli에 로그인</li>
-</ol>
-<p>컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.</p>
-<blockquote>
-<p>&gt; firebase login</p>
-<p>&gt; y</p>
-</blockquote>
-<p>이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭</p>
-<ol start="4">
-<li>firebase 프로젝트 설정</li>
-</ol>
-<blockquote>
-<p>&gt; cd [파이어베이스 프로젝트 경로]</p>
-<p>&gt; firebase init</p>
-</blockquote>
-<p><img src="http://i.imgur.com/fLauqJj.png" alt="img" title="오오오오오옷!!"></p>
-<blockquote>
-<p>오오오옷!!!! 간지</p>
-</blockquote>
-<p>‘Y’를 눌러 진행해준다</p>
-<ol start="5">
-<li>Database 셋팅</li>
-</ol>
-<ul>
-<li>설정 항목중에서 첫번째 Database를 선택</li>
-<li>위에서 생성한 프로젝트를 선택해준다.</li>
-</ul>
-<p>CLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.</p>
-<ul>
-<li>database.rule.json : DB 데이터 읽기 쓰기 규칙. </li>
-</ul>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 디폴트 규칙</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">".read"</span>: <span class="string">"auth != null"</span>,</span><br><span class="line">    <span class="attr">".write"</span>: <span class="string">"auth != null"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, <code>instance of</code> 연산자가 더 안전하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">o.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [];</span><br><span class="line">a.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">3</span>);</span><br><span class="line">n.constructor === <span class="built_in">Number</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>public/index.html : 폴더를 생성하고 index파일을 생성한다.</li>
+<li><strong>Object.prototype.__proto__</strong></li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.gstatic.com/firebasejs/4.1.2/firebase.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> config = &#123;</span></span><br><span class="line">      ...</span><br><span class="line">    &#125;;</span><br><span class="line">    firebase.initializeApp(config);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	성공!</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
+<li><strong>Object.hasOwnPropery()</strong></li>
+</ul>
+<p>상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">o.prop = <span class="string">'exists'</span>;</span><br><span class="line">o.hasOwnProperty(<span class="string">'prop'</span>);             <span class="comment">// returns true</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'toString'</span>);         <span class="comment">// returns false</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'hasOwnProperty'</span>);   <span class="comment">// returns false</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>firebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정</li>
+<li><strong>Object.create()</strong></li>
 </ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"database"</span>: &#123;</span><br><span class="line">    <span class="attr">"rules"</span>: <span class="string">"database.rules.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hosting"</span>: &#123;</span><br><span class="line">    "public": "public", // 페이지가 들어 있는 폴더명</span><br><span class="line">    "rewrites": [&#123;</span><br><span class="line">      "source": "**",   // 페이지 주소</span><br><span class="line">      "destination": "/index.html" // 연결할 페이지</span><br><span class="line">     &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>constructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  	F.prototype = o;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ol start="6">
-<li>서버 구동</li>
-</ol>
 <blockquote>
-<p>&gt; firebase serve</p>
+<p>Object.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)</p>
 </blockquote>
-<p>위 키워드를 입력하고 <a href="http://localhost:5000" target="_blank" rel="noopener">http://localhost:5000</a> 을 접속하여 페이지가 나오는 것을 확인한다.</p>
-<h2 id="권한-인증"><a href="#권한-인증" class="headerlink" title="권한 인증"></a>권한 인증</h2><ul>
-<li>index.html</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auth = firebase.auth();</span><br><span class="line"><span class="keyword">var</span> userInfo;</span><br><span class="line"><span class="keyword">var</span> authProvider = <span class="keyword">new</span> firebase.auth.GoogleAuthProvider();</span><br><span class="line"><span class="comment">// 팝업 형태로 열어줌</span></span><br><span class="line"><span class="comment">// 성공 실패 구분</span></span><br><span class="line">auth.onAuthStateChanged(<span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (user) &#123;</span><br><span class="line">    <span class="comment">// 인증 성공시</span></span><br><span class="line">    userInfo = user;</span><br><span class="line">    getKanbanlist(); <span class="comment">// 아래 함수 구현</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 인증 실패시, 인증 팝업창을 뛰워줌</span></span><br><span class="line">    auth.signInWithPopup(authProvider);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"hi"</span>, <span class="attr">friends</span> : [<span class="string">"hi"</span>, <span class="string">"ho"</span>] &#125;</span><br><span class="line"><span class="comment">// p1, p2는 person 객체를 공유하게 된다.</span></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p3 = <span class="built_in">Object</span>.create(person, &#123; <span class="attr">name</span> : &#123; <span class="attr">value</span> : <span class="string">"Gre"</span>&#125; &#125;)</span><br><span class="line"><span class="comment">// 두번째 파라미터는 Object.defineProperties와 유사하다.</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h2><ul>
-<li>index.html</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> database = firebase.database();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanbanlist</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.</span></span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">'kanbans/'</span> + userInfo.uid);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.</span></span><br><span class="line">  kanbanRef.on(<span class="string">'child_added'</span>, onChildAdded);</span><br><span class="line">  kanbanRef.on(<span class="string">'child_changed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = data.key;</span><br><span class="line">    <span class="keyword">var</span> txt = data.val().txt;</span><br><span class="line">    <span class="comment">// 해당 데이터로 html에 데이터를 수정.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onChildAdded</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key = data.key;</span><br><span class="line">  <span class="keyword">var</span> kanbanData = data.val();</span><br><span class="line">  <span class="keyword">var</span> txt = kanbanData.txt;</span><br><span class="line">  <span class="comment">// 해당 데이터를 html 요소에 추가.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 데이터 단일 건 가져오기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key)</span><br><span class="line">  .once(<span class="string">'value'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">snapshot</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (snapshot.val() != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 가져온 데이터를 저장</span></span><br><span class="line">      $(<span class="string">".textarea"</span>).val(snapshot.val().txt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 삭제하기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key);</span><br><span class="line">  kanbanRef.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="on"><a href="#on" class="headerlink" title="on"></a>on</h4><p><code>on(&#39;child_added&#39;, 메서드);</code> <code>on(&#39;child_changed&#39;, 메서드);</code> 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.</p>
-<h2 id="Firebase-서버-배포"><a href="#Firebase-서버-배포" class="headerlink" title="Firebase 서버 배포"></a>Firebase 서버 배포</h2><blockquote>
-<p>&gt; firebase deploy</p>
+<blockquote>
+<p>생성자 함수를 만들어 create를 사용할 경우</p>
 </blockquote>
-<p>서버에 바로 작업 내역이 반영된다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Shape - 상위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shape</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 상위클래스 메서드</span></span><br><span class="line">Shape.prototype.move = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x += x;</span><br><span class="line">  <span class="keyword">this</span>.y += y;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Shape moved.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rectangle - 하위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Rectangle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  Shape.call(<span class="keyword">this</span>); <span class="comment">// super 생성자 호출.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하위클래스는 상위클래스를 확장</span></span><br><span class="line">Rectangle.prototype = <span class="built_in">Object</span>.create(Shape.prototype);</span><br><span class="line">Rectangle.prototype.constructor = Rectangle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rect = <span class="keyword">new</span> Rectangle();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Rectangle?'</span>, rect <span class="keyword">instanceof</span> Rectangle); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Shape?'</span>, rect <span class="keyword">instanceof</span> Shape); <span class="comment">// true</span></span><br><span class="line">rect.move(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// Outputs, 'Shape moved.'</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>Object.create(Shape.prototype)</code> : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.</li>
+<li><code>Shape.call(this)</code> : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.</li>
+</ol>
+<ul>
+<li><strong>Object.defineProperties()</strong></li>
+</ul>
+<p>데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'_x'</span>: &#123;</span><br><span class="line">    value: <span class="number">0</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'x'</span>: &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._x;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">this</span>._x = newValue+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'_y'</span>: &#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>configurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.</p>
+<blockquote>
+<p>언제 사용할까?</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defineProperties 사용하지 않을때</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.imFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 결과 : imFunc</span></span><br></pre></td></tr></table></figure>
+
+<p>for in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">'imFunc'</span>, &#123;</span><br><span class="line">	enumerable: <span class="literal">false</span>,</span><br><span class="line">  	configurable: <span class="literal">false</span>,</span><br><span class="line">  	writable: <span class="literal">false</span>,</span><br><span class="line">  	value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// imFunc가 순회되지 않는다!</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.getOwnPropertyDescriptor()</strong></li>
+</ul>
+<p>접근자/데이터 프로퍼티 객체를 읽어온다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 이어짐</span></span><br><span class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, <span class="string">"_x"</span>);</span><br><span class="line">alert(descriptor.value); <span class="comment">// 0</span></span><br><span class="line">alert(descriptor.configurable); <span class="comment">// false</span></span><br><span class="line">alert(descriptor.get);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.preventExtensions(), Object.isExtensible()</strong></li>
+</ul>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.</p>
+<ul>
+<li><strong>Object.seal(), Object.isSealed()</strong></li>
+</ul>
+<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.</p>
+<ul>
+<li><strong>Object.getOwnPropertyNames()</strong></li>
+</ul>
+<blockquote>
+<p>파라미터 : object</p>
+<p>리턴 :  문자열 배열</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(arr).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2", "length"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Array-like object</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="number">0</span>: <span class="string">'a'</span>, <span class="number">1</span>: <span class="string">'b'</span>, <span class="number">2</span>: <span class="string">'c'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2"]</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.getPrototypeOf()</strong></li>
+</ul>
+<p>prototype을 리턴한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// TypeError: "foo" is not an object (ES5 code)</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// String.prototype                  (ES2015 code)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><ul>
+<li><strong>Object.assign()</strong></li>
+</ul>
+<p>Object 병합하기</p>
+<blockquote>
+<p>파라미터 : 타겟, 소스</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Object.freeze()</strong></li>
+</ul>
+<p>객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.</p>
+<h3 id="ES8"><a href="#ES8" class="headerlink" title="ES8"></a>ES8</h3><ul>
+<li><strong>Object.entries()</strong></li>
+</ul>
+<p>열거 가능한 객체를 [key, value] 배열로 만들어 리턴함</p>
+<blockquote>
+<p>파라미터 : key, value 쌍의 객체</p>
+<p>리턴 : key, value 쌍의 배열</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="string">'bar'</span>, <span class="attr">baz</span>: <span class="number">42</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"><span class="comment">// [ ['foo', 'bar'], ['baz', 42] ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>: <span class="number">5</span>, <span class="attr">b</span>: <span class="number">7</span>, <span class="attr">c</span>: <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(obj)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj).forEach(<span class="function">(<span class="params">[key, value]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"     </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
+<p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
 
                     
                         
@@ -325,7 +356,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Google/firebase/#post-footer"
+                                href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -365,7 +396,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 65 of 148</li>
+        <li class="pagination-number">page 65 of 150</li>
     </ul>
 </div>
 
@@ -375,7 +406,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

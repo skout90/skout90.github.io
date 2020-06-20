@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/04/Ionic/Ionic-Visual-Studio-Code-디버깅-방법/"
-                            aria-label=": Ionic Visual Studio Code 디버깅 방법"
+                            href="/2017/08/07/Ionic/5.1 Ionic-local-push/"
+                            aria-label=": 05.1. Ionic Local Push"
                         >
-                            Ionic Visual Studio Code 디버깅 방법
+                            05.1. Ionic Local Push
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-04T10:00:00+09:00">
+    <time datetime="2017-08-07T01:00:00+09:00">
 	
-		    2017.08.04
+		    2017.08.07
     	
     </time>
     
@@ -227,24 +227,29 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Ionic에서 Vs Code의 디버깅 방법을 알아본다.</p>
-<h4 id="VS-code에서-Chrome-확장-프로그램을-다운-받는다"><a href="#VS-code에서-Chrome-확장-프로그램을-다운-받는다" class="headerlink" title="VS code에서 Chrome 확장 프로그램을 다운 받는다."></a>VS code에서 Chrome 확장 프로그램을 다운 받는다.</h4><p><code>Debugger for Chrome</code> 을 검색 및 설치 후, VS code를 재실행 시킨다.</p>
-<h4 id="package-json에-source-map-설정-추가"><a href="#package-json에-source-map-설정-추가" class="headerlink" title="package.json에 source map 설정 추가"></a>package.json에 source map 설정 추가</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> ...</span><br><span class="line">  "description": "설명",</span><br><span class="line">  // description 아래에 config 항목을 추가한다.</span><br><span class="line">  "config": &#123;</span><br><span class="line">    "ionic_bundler": "webpack",</span><br><span class="line">    "ionic_source_map": "source-map"</span><br><span class="line">  &#125;</span><br><span class="line">... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <p>굳이, 외부로부터 푸시를 이용하고 싶지 않을때, local push를 사용한다.</p>
+<ul>
+<li>plugin 인스톨</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ionic cordova plugin add de.appplant.cordova.plugin.local-notification</span><br><span class="line">$ npm install --save @ionic-native/local-notifications</span><br></pre></td></tr></table></figure>
 
-<h4 id="launch-json-설정"><a href="#launch-json-설정" class="headerlink" title="launch.json 설정"></a>launch.json 설정</h4><p><img src="http://i.imgur.com/n32HheM.png" alt="img"></p>
-<p>디버그 탭에서 다음과 같이 설정 한다.</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        ...</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"chrome"</span>,</span><br><span class="line">            <span class="attr">"trace"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"attach"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Attach to Chrome"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">9222</span>,</span><br><span class="line">            <span class="attr">"sourceMaps"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"webRoot"</span>: <span class="string">"$&#123;workspaceRoot&#125;/www"</span>,</span><br><span class="line">            <span class="attr">"url"</span>: <span class="string">"http://localhost:8100/"</span></span><br><span class="line">        &#125;</span><br><span class="line">      ...</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>앱 모듈에 추가</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; LocalNotifications &#125; <span class="keyword">from</span> <span class="string">'@ionic-native/local-notifications'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    ...</span><br><span class="line">    LocalNotifications,</span><br><span class="line">    ...</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="chrome에-remote-debugging-port-속성을-추가한다"><a href="#chrome에-remote-debugging-port-속성을-추가한다" class="headerlink" title="chrome에 remote debugging port 속성을 추가한다."></a>chrome에 remote debugging port 속성을 추가한다.</h4><p><img src="http://i.imgur.com/A3lix9j.jpg" alt="img"></p>
-<p>크롬이 이미 실행중이라면, 닫고 다시 실행할 것!</p>
-<p>셋팅은 끝.</p>
-<p>위에서 설정한 바로가기를 통해 크롬을 실행하고,</p>
-<p><code>ionic serve</code>를 이용해서, 아이오닉 서버를 구동시킨다.</p>
-<p>크롬 화면에 아이오닉 페이지가 뜨면, 아래 그림 처럼</p>
-<p><code>Attach to Chrome</code>을 확인하고, 초록색 디버깅 버튼을 누른다.</p>
-<p><img src="http://i.imgur.com/T81erQX.png" alt="img"></p>
-<p>이제 break point를 걸고 쾌적한 디버깅을 즐기시면 됩니당ㅎㅎ</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://forum.ionicframework.com/t/how-to-debug-typescript-in-ionic-2-apps-using-vs-code-and-app-scripts-0-0-46/70023" target="_blank" rel="noopener">https://forum.ionicframework.com/t/how-to-debug-typescript-in-ionic-2-apps-using-vs-code-and-app-scripts-0-0-46/70023</a></p>
+<ul>
+<li>home.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NavController, AlertController, Platform &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; LocalNotifications &#125; <span class="keyword">from</span> <span class="string">'@ionic-native/local-notifications'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'page-home'</span>,</span><br><span class="line">  templateUrl: <span class="string">'home.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomePage &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController, <span class="keyword">private</span> plt: Platform, <span class="keyword">private</span> local: LocalNotifications, <span class="keyword">private</span> alertCtrl: AlertController</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.plt.ready().then(<span class="function"><span class="params">rdy</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.local.on(<span class="string">'click'</span>, <span class="function">(<span class="params">notification, state</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> alert = <span class="keyword">this</span>.alertCtrl.create(&#123;</span><br><span class="line">          title: notification.title,</span><br><span class="line">          subTitle: json.myData</span><br><span class="line">        &#125;);</span><br><span class="line">        alert.present();</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ionViewDidLoad() &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.platform.is(<span class="string">'cordova'</span>)) &#123;</span><br><span class="line">      <span class="keyword">this</span>.platform.ready().then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.localNotifications.hasPermission().then(<span class="function"><span class="keyword">function</span> (<span class="params">granted</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (!granted) &#123;</span><br><span class="line">            <span class="comment">// IOS10의 권한 설정</span></span><br><span class="line">            <span class="keyword">this</span>.localNotifications.registerPermission();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  scheduleNotification() &#123;</span><br><span class="line">    <span class="keyword">this</span>.local.schedule(&#123;</span><br><span class="line">      id: <span class="number">1</span>,</span><br><span class="line">      title: <span class="string">'Attention Users!'</span>,</span><br><span class="line">      text: <span class="string">'Emirhan notification'</span>,</span><br><span class="line">      at: <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() + <span class="number">5</span> * <span class="number">1000</span>),</span><br><span class="line">      data: &#123; myData: <span class="string">'My hidden message this is.'</span> &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    alert(<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.local.getAll()));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>home.html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span></span><br><span class="line">      Ionic Blank</span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">ion-button</span> <span class="attr">full</span> (<span class="attr">click</span>)=<span class="string">"scheduleNotification()"</span>&gt;</span>Schedule!<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>푸시가 오는 것이 확인된다. 블루스택으로 테스트 할경우, 푸시가 오지 않는 경우가 있으니 주의할 것.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ionicframework.com/docs/native/local-notifications/" target="_blank" rel="noopener">https://ionicframework.com/docs/native/local-notifications/</a></p>
 
                     
                         
@@ -254,7 +259,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/04/Ionic/Ionic-Visual-Studio-Code-디버깅-방법/#post-footer"
+                                href="/2017/08/07/Ionic/5.1 Ionic-local-push/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -294,7 +299,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 99 of 148</li>
+        <li class="pagination-number">page 99 of 150</li>
     </ul>
 </div>
 
@@ -304,7 +309,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

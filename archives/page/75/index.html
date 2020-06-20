@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/소켓이란/"
-                            aria-label=": 소켓이란"
+                            href="/2017/08/20/Node.js/Webstorm-에서-NodeJs-Express-디버깅하기/"
+                            aria-label=": Webstorm 에서 NodeJs Express 디버깅하기"
                         >
-                            소켓이란
+                            Webstorm 에서 NodeJs Express 디버깅하기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-15T19:28:10+09:00">
+    <time datetime="2017-08-20T19:28:10+09:00">
 	
-		    2017.08.15
+		    2017.08.20
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,35 +227,28 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API"><a href="#http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API" class="headerlink" title="http 프로토콜 기반으로 웹브라우저와 웹 서버간 양방향 통신을 지원하기 위한 표준 API"></a>http 프로토콜 기반으로 웹브라우저와 웹 서버간 <code>양방향 통신</code>을 지원하기 위한 표준 API</h4><ul>
-<li>서버와 클라이언트에는 각각 소켓이라는 부분이 있고 이 부분을 통해 서로 정보를 공유한다.</li>
-</ul>
-<h2 id="기존의-양방향-통신"><a href="#기존의-양방향-통신" class="headerlink" title="기존의 양방향 통신"></a>기존의 양방향 통신</h2><p>http 규격 자체가 서버로의 단방향 통신을 위해 만들어짐. webSocket 이전에는 일반 http request에 트릭을 이용해 실시간인 것 처럼 보이게 하였다.</p>
-<ol>
-<li><p>polling : 클라이언트가 평범한 http request를 계속 날림, but.. 비효율적</p>
-<p><img src="http://2.bp.blogspot.com/-cvWY81etsao/ViZSUVxywxI/AAAAAAAAMHo/wxrd6dIntM8/s320/HttpPolling.gif" alt="img"></p>
-</li>
-<li><p>long polling : 클라이언트가 http request를 날리고 기다림, 서버의 이벤트 response를 받고 연결 종료. but 이벤트의 시간간격이 좁거나 다수 클라이언트 동시 접속시 부하 문제 있음.</p>
-<p><img src="http://2.bp.blogspot.com/-eL9rxi8th2A/ViZSW0ggEwI/AAAAAAAAMH4/k4S4-dRz3t4/s320/HttpLongPolling.gif" alt="img"></p>
-</li>
-<li><p>streaming : 서버로 http request를 날리고, 요청 끊지 않고 필요한 메세지만 보내기를 반복.</p>
-<p><img src="http://4.bp.blogspot.com/-sRVlAdeU-Kw/ViZSWw-wB2I/AAAAAAAAMH0/3CmKGISDV-A/s320/HttpStreaming.gif" alt="img"></p>
-</li>
-</ol>
-<h2 id="Web-Socket"><a href="#Web-Socket" class="headerlink" title="Web Socket"></a>Web Socket</h2><p>HTML5 표준의 일부로 webSocket이 만들어지게 된다.</p>
+                    <p>삽질 끝에 디버깅하는데 성공했다.. 방법을 공유한다.</p>
 <blockquote>
-<p>webSocket이 기존의 일반 TCP Socket과 다른 점은 최초 접속이 일반 http request를 통해 handshaking 과정을 통해 이루어 진다는 점. http request를 그대로 사용하기 때문에 기존 80, 443 포트로 접속하여도 방화벽 열지 않고도 양방형 통신이 가능, CORS 적용 과정도 동일.</p>
+<p>환경 : window 7, node express, nodemon</p>
 </blockquote>
-<h6 id="그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원"><a href="#그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원" class="headerlink" title="그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원"></a>그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원</h6><h4 id="지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자"><a href="#지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자" class="headerlink" title="지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!"></a>지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!</h4><ul>
-<li><p><strong>socket.io(<a href="http://socket.io" target="_blank" rel="noopener">http://socket.io</a>)</strong></p>
-<p>node.js 기반으로 만들어진 기술, 브라우저에 구애 받지 않고 실시간 통신이 가능. 모든 코드가 javascript로 작성되어 있어서 자바 개발자들은 socket.io를 쓸 수 없다. <a href="https://github.com/keesun/mod-socket-io" target="_blank" rel="noopener">자바로 개발이 가능하게 해주는 방법</a>이 몇가지 있긴한 것 같지만 역시 javascript 기반 솔루션은 javascript로 개발해야 문제발생을 줄일 수 있음.</p>
-</li>
-<li><p><strong>sockJS(<a href="http://sockjs.org" target="_blank" rel="noopener">http://sockjs.org</a>)</strong></p>
-<p>springframework에서 websocket 지원. 서버 개발시 스프링 설정에서 일반 webSocket으로 통신할지 SockJS 호환으로 통신할지 결정할 수 있음.</p>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://blog.naver.com/PostView.nhn?blogId=myca11&logNo=80146459609" target="_blank" rel="noopener">오바나딩요-Socket이란</a></p>
-<p><a href="http://adrenal.tistory.com/20" target="_blank" rel="noopener">시나몬브레드webSocket 으로 개발하기 전에 알고 있어야 할 것들</a></p>
+<p>nodemon을 통해 자동으로 서버를 재 실행되게 하는데, nodemon을 사용하지 않으면 더 간편하게 디버깅이 가능하다.</p>
+<h4 id="nodemon을-사용할-경우"><a href="#nodemon을-사용할-경우" class="headerlink" title="nodemon을 사용할 경우"></a>nodemon을 사용할 경우</h4><p>nodemon을 사용할 경우에만 아래작업을 한다. 그렇지 않을 경우는 생략한다.</p>
+<ol>
+<li>메뉴 -&gt; Run -&gt; Edit Configurations</li>
+<li>+ 버튼을 눌러 Node.js Remote Debug 을 생성한다.</li>
+<li>port를 번호를 기억한다.</li>
+</ol>
+<p><img src="http://i.imgur.com/DNgzV16.png" alt="img"></p>
+<h4 id="디버깅-설정"><a href="#디버깅-설정" class="headerlink" title="디버깅 설정"></a>디버깅 설정</h4><ol>
+<li>+ 버튼을 눌러 Node.js를 생성한다.</li>
+<li>Node interpreter에 node.exe의 경로를 셋팅한다</li>
+<li>Node parameters에 nodemon의 경로를 넣는다. </li>
+<li>(nodemon 사용할 시에만) Node parameters 뒤에 <code>--debug=위에서 기억한 포트</code> 를 입력한다.</li>
+<li>Javascript file : 에 express 서버 실행 파일 <code>www</code> 파일을 입력한다.</li>
+</ol>
+<p><img src="http://i.imgur.com/uxW5JLW.png" alt="img"></p>
+<h4 id="디버깅-시작"><a href="#디버깅-시작" class="headerlink" title="디버깅 시작"></a>디버깅 시작</h4><p>우선 위에서 등록한 node.js 와 remote 중에 node.js 를 <code>Run</code> 으로 실행한다. 그 후, remote를 <code>Debug</code>로 실행한다. 브레이킹 포인트를 찍으면 되는 모습을 확인할 수 있다!</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://vcfvct.wordpress.com/2015/02/13/debug-nodejs-with-nodemon-and-intellij/" target="_blank" rel="noopener">https://vcfvct.wordpress.com/2015/02/13/debug-nodejs-with-nodemon-and-intellij/</a></p>
 
                     
                         
@@ -265,7 +258,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/소켓이란/#post-footer"
+                                href="/2017/08/20/Node.js/Webstorm-에서-NodeJs-Express-디버깅하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -305,7 +298,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 75 of 148</li>
+        <li class="pagination-number">page 75 of 150</li>
     </ul>
 </div>
 
@@ -315,7 +308,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

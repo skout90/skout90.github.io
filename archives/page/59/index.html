@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/05/Javascript/2. javascript-구문/"
-                            aria-label=": 02. Javascript 구문"
+                            href="/2017/09/10/Javascript/5. javascript-Function/"
+                            aria-label=": 05. Function"
                         >
-                            02. Javascript 구문
+                            05. Function
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-05T19:28:10+09:00">
+    <time datetime="2017-09-10T19:28:10+09:00">
 	
-		    2017.09.05
+		    2017.09.10
     	
     </time>
     
@@ -227,27 +227,40 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>알아두면 좋은 구문들을 기록한다.</p>
-<h3 id="async-defer"><a href="#async-defer" class="headerlink" title="async, defer"></a>async, defer</h3><p>script를 비동기적으로 다운한다. 외부파일만 적용된다.</p>
-<p><img src="http://www.growingwiththeweb.com/images/2014/02/26/async-vs-defer-twitter.png" alt="async defer에 대한 이미지 검색결과"></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="keyword">async</span> src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script defer src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+                    <h3 id="함수의-선언"><a href="#함수의-선언" class="headerlink" title="함수의 선언"></a><strong>함수의 선언</strong></h3><p>우리가 흔히 사용하는 <code>함수 = Function 객체의 인스턴스</code>이다.  <code>함수이름 = 함수 객체를 가리키는 포인터</code> 이다. 따라서 오버로딩이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수선언</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br><span class="line"><span class="comment">// 함수 표현식</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;; <span class="comment">// 마지막 ';'</span></span><br><span class="line"><span class="comment">// Funtion 객체 사용(권장X)</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"v1"</span>, <span class="string">"v2"</span>, <span class="string">"return v1 + v2"</span>);</span><br></pre></td></tr></table></figure>
 
-<p><code>async</code>는 다운 받는 즉시 실행</p>
-<p><code>defer</code>는 html파싱이 끝난 후 실행시킨다.</p>
-<h3 id><a href="#" class="headerlink" title></a><!DOCTYPE html></h3><p>문서형정의(DTD:Document Type Definition)은 html 버젼을 선언하여, 렌더링에 도움을 준다. 생략시에는 쿼크모드로 돌입한다.</p>
+<p>함수 선언식은 코드 실행전에도, 모든 실행 컨텍스트에서 접근이 가능하다.</p>
 <blockquote>
-<p>쿼크모드 : 여러 비표준기능이 실행 되는 모드로, 브라우저 별로 실행결과가 다를 수 있다.</p>
+<p>why? 함수 선언 호이스팅(끌어 올린다) 과정을 통해 실행 컨텍스트에 추가 되기 때문</p>
 </blockquote>
-<p><code>&lt;!DOCTYPE html&gt;</code>을 선언하면 html5로 파싱한다.</p>
-<p><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</code> : Strict DTD  - center, font, iframe, strike, u, 새창띄우기 등이 제외되는 html 4.01 모드</p>
-<h3 id="스트릭트-모드"><a href="#스트릭트-모드" class="headerlink" title="스트릭트 모드"></a>스트릭트 모드</h3><p>“user strict” 를 선언하면 적용된다. : ECMA Script3의 안전하지 않은 구문들을 사용할시 에러를 발생시킨다. IE10+이상 브라우저에서 지원한다. </p>
-<h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">with</span>(user) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">  	<span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>그렇지만 함수 표현식은 코드실행전 까지 사용이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(sum(<span class="number">10</span>, <span class="number">10</span>)); <span class="comment">// 에러</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">n1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br></pre></td></tr></table></figure>
 
-<p>with를 사용하면 객체 이름 없이 변수를 사용할 수 있다. <em>그러나 성능 및 디버깅 어려움의 이유로 사용이 지양된다.</em></p>
-<h3 id="Switch-문"><a href="#Switch-문" class="headerlink" title="Switch 문"></a>Switch 문</h3><p>switch문 ===로 비교.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(<span class="string">"hello world"</span>) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello"</span> + <span class="string">"world"</span>) &#123;</span><br><span class="line">  	<span class="comment">/* 계속 진행 */</span>    </span><br><span class="line">  &#125; </span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello world"</span> :</span><br><span class="line">    alert(<span class="string">"45"</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span> :</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>함수는 값이다.</strong></li>
+</ul>
+<p>Javascript에서는 함수도 값이다. <code>var a = function() {}</code> = <code>function a() {}</code> 따라서 객체 안에 저장될 수 있다.(객체 안에 저장되면 메서드라고 불림)</p>
+<ul>
+<li><strong>함수는 인자로 전달될 수 있다.</strong></li>
+</ul>
+<p>함수는 값이기 때문에 인자로 전달 될 수도 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increase</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrease</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(increase, <span class="number">1</span>));</span><br><span class="line">alert(calculator(decrease, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스</p>
+<ul>
+<li><strong>함수는 함수의 리턴값으로 사용될 수 있다.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">mode</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> functions = &#123;</span><br><span class="line">    <span class="string">'increase'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num+<span class="number">1</span> &#125;,</span><br><span class="line">    <span class="string">'decrease'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num<span class="number">-1</span> &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> functions.mode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(<span class="string">'increase'</span>)(<span class="number">1</span>)); <span class="comment">// 2</span></span><br><span class="line">alert(calculator(<span class="string">'decrease'</span>)(<span class="number">1</span>)); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>calculator(‘increase’) = function increase(num) { return num+1 }</p>
+<p>calculator(‘increase’)(1) = increase(1)</p>
+<ul>
+<li><strong>함수는 배열의 값으로 사용될 수 있다</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> calculator = [</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num + <span class="number">10</span>; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num * num; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num / <span class="number">10</span>; &#125;</span><br><span class="line">];</span><br><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; calculator.length; i++) &#123;</span><br><span class="line">  num = calculator[i](num);</span><br><span class="line">  <span class="built_in">console</span>.log(num); <span class="comment">// 11, 121, 12.1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
+<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
 
                     
                         
@@ -257,7 +270,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/05/Javascript/2. javascript-구문/#post-footer"
+                                href="/2017/09/10/Javascript/5. javascript-Function/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -297,7 +310,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 59 of 148</li>
+        <li class="pagination-number">page 59 of 150</li>
     </ul>
 </div>
 
@@ -307,7 +320,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

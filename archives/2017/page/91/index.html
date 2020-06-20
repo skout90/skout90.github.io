@@ -202,15 +202,15 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/14/Frontend/HTML5-태그-정리/"
-                            aria-label=": HTML5 태그 정리"
+                            href="/2017/07/14/Angular/8. Angular 폼/"
+                            aria-label=": 08. Angular 폼"
                         >
-                            HTML5 태그 정리
+                            08. Angular 폼
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-14T19:44:25+09:00">
+    <time datetime="2017-07-14T10:00:50+09:00">
 	
 		    2017.07.14
     	
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+    <a class="category-link" href="/categories/Angular/">Angular</a>
 
 
     
@@ -227,170 +227,62 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="문서형-정의"><a href="#문서형-정의" class="headerlink" title="문서형 정의"></a>문서형 정의</h4><table>
-<thead>
-<tr>
-<th>HTML 5</th>
-<th>HTML4.01</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;!DOCTYPE html&gt;</code></td>
-<td><!DOCTYPE HTML PUBLIC "-//W3C//DTD//HTML4.01//EN"></td>
-</tr>
-<tr>
-<td><code>&lt;style&gt;&lt;/style&gt;</code></td>
-<td><code>&lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;script&gt;&lt;/script&gt;</code></td>
-<td><code>&lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;meta charset=&quot;UTF-8&quot;&gt;</code></td>
-<td><code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html&quot;; EUC-KR&quot;&gt;</code></td>
-</tr>
-</tbody></table>
-<h4 id="문서-구성"><a href="#문서-구성" class="headerlink" title="문서 구성"></a>문서 구성</h4><p>텍스트를 의미적으로 구분, 시작적 변화 없음. HTML 문서 안에서 텍스트가 어떤 위치에 있는지 나타내기 위한 태그.</p>
-<p><img src="http://www.cellbiol.com/bioinformatics_web_development/wp-content/uploads/2017/01/html5_tags.png" alt="section article에 대한 이미지 검색결과"></p>
-<table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;section&gt;</code></td>
-<td>소단락, 제목을 붙여도 좋을 만한 문장의 모음</td>
-</tr>
-<tr>
-<td><code>&lt;article&gt;</code></td>
-<td>컨텐츠, 뉴스기사/블로그/게시판 컨텐츠</td>
-</tr>
-<tr>
-<td><code>&lt;header&gt;</code></td>
-<td>헤더가 되는 컨텐츠, 섹션이나 아티클의 제목을 표현</td>
-</tr>
-<tr>
-<td><code>&lt;footer&gt;</code></td>
-<td>푸터, 저작관 관련 정보, 페이지 링크</td>
-</tr>
-<tr>
-<td><code>&lt;nav&gt;</code></td>
-<td>웹페이지 내비게이션 콘텐츠, 페이지 목차, 항목 리스트</td>
-</tr>
-<tr>
-<td><code>&lt;aside&gt;</code></td>
-<td>보충 컨텐츠, 메인 컨텐츠와는 관계가 약한 컨텐츠</td>
-</tr>
-<tr>
-<td><code>&lt;time&gt;</code></td>
-<td>텍스트가 날짜나 그와 관련된 것이라는 것을 나타냄</td>
-</tr>
-<tr>
-<td><code>&lt;figure&gt;</code></td>
-<td>도표를 나타내는데 사용</td>
-</tr>
-<tr>
-<td><code>&lt;figcaption&gt;</code></td>
-<td>도표의 제목, figure 요소 안에서 사용</td>
-</tr>
-</tbody></table>
-<h4 id="기능-태그"><a href="#기능-태그" class="headerlink" title="기능 태그"></a>기능 태그</h4><table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;mark&gt;</code></td>
-<td>하이라이트 표시</td>
-</tr>
-<tr>
-<td><meter></meter><code>&lt;meter&gt;</code></td>
-<td>지정 값을 막대그래프로 나타냄, min/max, low/high/optimum 속성 사용</td>
-</tr>
-<tr>
-<td><progress></progress><code>&lt;progress&gt;</code></td>
-<td>프로그레스 바, max 속성으로 최대값 지정</td>
-</tr>
-<tr>
-<td><code>&lt;output&gt;</code></td>
-<td>폼안에서 계산 결과를 나타냄</td>
-</tr>
-<tr>
-<td><code>&lt;details&gt;</code></td>
-<td>접혀있지만, 조작에 따라 상세 정보를 나타냄. open 속성을 지정하면 열린 상태로 작성</td>
-</tr>
-<tr>
-<td><code>&lt;summary&gt;</code></td>
-<td>details 요소에서 지정한 내용의 모음을 나타냄. 접혀있을 때는 이 부분만 표시</td>
-</tr>
-</tbody></table>
-<ul>
-<li>output, details 예제</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">oninput</span>=<span class="string">"r.value = v1.valueAsNumber + v2.valueAsNumber"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">name</span>=<span class="string">"v1"</span> <span class="attr">value</span>=<span class="string">0</span>&gt;</span></span><br><span class="line">  +<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">name</span>=<span class="string">"v1"</span> <span class="attr">value</span>=<span class="string">0</span>&gt;</span></span><br><span class="line">  = <span class="tag">&lt;<span class="name">output</span> <span class="attr">name</span>=<span class="string">"r"</span>&gt;</span><span class="tag">&lt;/<span class="name">output</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">summary</span>&gt;</span></span><br><span class="line">  	옵션</span><br><span class="line">  <span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">  확인 메일을 보낸다.</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
+                    <p>Angular 폼을 만들기 위해서는 다음과 같은 스텝이 필요하다.</p>
+<ol>
+<li><p><code>모델</code> 생성</p>
+</li>
+<li><p><code>폼 컨트롤러</code> 컴포넌트를 생성</p>
+</li>
+<li><p><code>앱 모듈</code>에 작성한 폼컴포넌트추가.</p>
+</li>
+<li><p><code>템플릿</code> 생성,  <code>ngModel</code>로 양방향 데이터 바인딩을 함</p>
+</li>
+<li><p><code>폼 검증</code>을 수행</p>
+</li>
+<li><p><code>ngSubmit</code>을 통해 submit을 컨트롤</p>
+</li>
+</ol>
+<h4 id="Step-1-모델-생성"><a href="#Step-1-모델-생성" class="headerlink" title="Step 1. 모델 생성"></a>Step 1. 모델 생성</h4><p>생성자의 인자로 public 을 사용하면, 자동으로 해당 모델에 변수 값을 선언함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Prescription &#123;</span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> psNo: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> userNo: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> mainDiseaseCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> subDiseaseCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> drugCd: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> timeDivision: <span class="built_in">string</span></span></span><br><span class="line"><span class="params">    </span>) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="input-type-속성"><a href="#input-type-속성" class="headerlink" title="input type 속성"></a>input type 속성</h4><table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>search</td>
-<td>검색 키워드</td>
-</tr>
-<tr>
-<td>tel</td>
-<td>전화번호 입력</td>
-</tr>
-<tr>
-<td>url</td>
-<td>URL 입력</td>
-</tr>
-<tr>
-<td>email</td>
-<td>메일 주소 입력</td>
-</tr>
-<tr>
-<td>month</td>
-<td>연월 입력</td>
-</tr>
-<tr>
-<td>week</td>
-<td>주 입력</td>
-</tr>
-<tr>
-<td>date</td>
-<td>날짜 입력</td>
-</tr>
-<tr>
-<td>time</td>
-<td>시각 입력</td>
-</tr>
-<tr>
-<td>datetime</td>
-<td>UTD(협정 세계시) 입력</td>
-</tr>
-<tr>
-<td>number</td>
-<td>수치 입력</td>
-</tr>
-<tr>
-<td>range</td>
-<td>지정 범위의 수치 입력, min 속성 최소값, max 속성 최대값</td>
-</tr>
-<tr>
-<td>color</td>
-<td>색 입력</td>
-</tr>
-</tbody></table>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>HTML5가 보이는 그림책 - ANK Co., Ltd 저, 이영란 역</p>
+<h4 id="Step2-폼-컨트롤러"><a href="#Step2-폼-컨트롤러" class="headerlink" title="Step2. 폼 컨트롤러"></a>Step2. 폼 컨트롤러</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Prescription &#125; <span class="keyword">from</span> <span class="string">'./prescription.model'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'page-prescription'</span>,</span><br><span class="line">  templateUrl: <span class="string">'prescription.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionComponent &#123;</span><br><span class="line">  <span class="comment">// user = &#123; userId: '', userName: '' &#125;;</span></span><br><span class="line">  timeDivison = [<span class="string">'MOR'</span>, <span class="string">'EVE'</span>, <span class="string">'NOON'</span>, <span class="string">'NIGHT'</span>];</span><br><span class="line">  model = <span class="keyword">new</span> Prescription(<span class="number">1</span>, <span class="number">1</span>, <span class="string">"abc"</span>, <span class="string">"def"</span>, <span class="string">"aa"</span>, <span class="keyword">this</span>.timeDivison[<span class="number">0</span>]);</span><br><span class="line">  submitted = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  onSubmit() &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 테스트를 위함</span></span><br><span class="line">  <span class="keyword">get</span> diagnostic() &#123; <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.model) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Step3-앱-모듈"><a href="#Step3-앱-모듈" class="headerlink" title="Step3. 앱 모듈"></a>Step3. 앱 모듈</h4><p>작성한 폼 컴포넌트를 추가한다. </p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;      <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormsModule &#125;   <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;  <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionComponent &#125; <span class="keyword">from</span> <span class="string">'./prescription.component'</span>;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    FormsModule</span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionComponent</span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>BrowserModule : 브라우저에서 실행하기 위한 모듈, 컴포넌트나 지시자, 파이프 같은 구성요소를 템플릿에 나타나게 하는 역할.</li>
+</ul>
+<ul>
+<li>FormsModule : NgModel 지시자나 내장 검증기 지시자 등을 포함.</li>
+</ul>
+<ul>
+<li>delarations : imports에 입력한 모듈 내에서 선언된 내용들을 재선언 해서는 안된다.</li>
+</ul>
+<h4 id="Step-4-템플릿-작성"><a href="#Step-4-템플릿-작성" class="headerlink" title="Step 4. 템플릿 작성"></a>Step 4. 템플릿 작성</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;diagnostic&#125;&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> #<span class="attr">prescriptionForm</span>=<span class="string">"ngForm"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span>Main Disease CD<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"mainDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.mainDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"subDiseaseCd"</span>&gt;</span>Sub Disease Cd<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"subDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.subDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"subDiseaseCd"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"timeDivision"</span>&gt;</span>Time Division<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"timeDivision"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.timeDivision"</span> <span class="attr">name</span>=<span class="string">"timeDivision"</span> #<span class="attr">timeDivision</span>=<span class="string">"ngModel"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">option</span> *<span class="attr">ngFor</span>=<span class="string">"let timeDivision of timeDivisions"</span> [<span class="attr">value</span>]=<span class="string">"timeDivision"</span>&gt;</span>&#123;&#123;timeDivision&#125;&#125;<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-success"</span>&gt;</span>Submit<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>#prescriptionForm=&quot;ngForm&quot;</code> : 해당 폼을 ngForm이 관리하도록 함. ngModel과 name 속성을 사용하여, 속성을 모니터링 함.</li>
+<li><code>required</code>: 내장 검증기로, 필수값을 의미. 그외에도 <code>minlength, maxlength, pattern</code> 가 있다.</li>
+<li><code>[(ngModel)]=&quot;model.mainDiseaseCd&quot; name=&quot;mainDiseaseCd&quot;</code> : ngModel과 name은 함께 선언해 주어야함. name 프로퍼티는 폼과 함께 컨트롤러에 등록되기 위해 필요하다.</li>
+<li><code>&lt;label for=&quot;timeDivision&quot;&gt;</code> : <code>input id</code>태그와 <code>label for</code> 속성이 연결된다.</li>
+<li><code>#timeDivision=&quot;ngModel&quot;</code>: 검증 결과를 확인하기 위해 timeDivision 참조변수에 ngModel을 할당한다. timeDivision.valid로 검증 결과를 확인할 수 있다.</li>
+</ul>
+<h4 id="Step-5-폼-검증-수행"><a href="#Step-5-폼-검증-수행" class="headerlink" title="Step 5. 폼 검증 수행"></a>Step 5. 폼 검증 수행</h4><ul>
+<li>템플릿 파일 폼 검증 결과 문구 추가</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"mainDiseaseCd"</span>&gt;</span>Main Disease CD<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"mainDiseaseCd"</span> <span class="attr">required</span> [(<span class="attr">ngModel</span>)]=<span class="string">"model.mainDiseaseCd"</span> <span class="attr">name</span>=<span class="string">"mainDiseaseCd"</span> #<span class="attr">mainDiseaseCd</span>=<span class="string">"ngModel"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> [<span class="attr">hidden</span>]=<span class="string">"mainDiseaseCd.valid || mainDiseaseCd.pristine"</span>&gt;</span></span><br><span class="line">      mainDiseaseCd is required</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p><code>#mainDiseaseCd=&quot;ngModel&quot;</code>: 검증 결과를 확인하기 위해 mainDiseaseCd참조변수에 ngModel을 할당한다. mainDiseaseCd.valid로 검증 결과를 확인할 수 있다.</p>
+<ul>
+<li>css</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.ng-valid</span><span class="selector-attr">[required]</span>, <span class="selector-class">.ng-valid</span><span class="selector-class">.required</span>  &#123;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">5px</span> solid <span class="number">#42A948</span>; <span class="comment">/* green */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.ng-invalid</span><span class="selector-pseudo">:not(form)</span>  &#123;</span><br><span class="line">  <span class="attribute">border-left</span>: <span class="number">5px</span> solid <span class="number">#a94442</span>; <span class="comment">/* red */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Step-6-submit-컨트롤"><a href="#Step-6-submit-컨트롤" class="headerlink" title="Step 6. submit 컨트롤"></a>Step 6. submit 컨트롤</h4><p>다음과 같이 수정한다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> (<span class="attr">ngSubmit</span>)=<span class="string">"onSubmit()"</span> #<span class="attr">prescriptionForm</span>=<span class="string">"ngForm"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://angular.io/guide/forms#create-an-initial-html-form-template" target="_blank" rel="noopener">https://angular.io/guide/forms#create-an-initial-html-form-template</a></p>
 
                     
                         
@@ -400,7 +292,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/14/Frontend/HTML5-태그-정리/#post-footer"
+                                href="/2017/07/14/Angular/8. Angular 폼/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -440,7 +332,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 91 of 112</li>
+        <li class="pagination-number">page 91 of 111</li>
     </ul>
 </div>
 
@@ -450,7 +342,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

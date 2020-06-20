@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/"
-                            aria-label=": 05. 웹팩(Webpack) SCSS, POSTCSS 연동"
+                            href="/2018/04/18/Node.js/에러-핸들링/"
+                            aria-label=": 에러 핸들링"
                         >
-                            05. 웹팩(Webpack) SCSS, POSTCSS 연동
+                            에러 핸들링
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-03-25T19:28:10+09:00">
+    <time datetime="2018-04-18T19:28:10+09:00">
 	
-		    2018.03.25
+		    2018.04.18
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,45 +227,34 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>scss파일도 sass-loader를 사용하더라.</p>
-<p>node-sass : scss 파일에 변화가 있을 떄 마다 자동으로 리컴파일</p>
-<blockquote>
-<p>npm i sass-loader node-sass</p>
-</blockquote>
+                    <h1 id="에러-핸들링"><a href="#에러-핸들링" class="headerlink" title="에러 핸들링"></a>에러 핸들링</h1><p><a href="http://blog.jeonghwan.net/node/2017/08/17/express-error-handling.html" target="_blank" rel="noopener">http://blog.jeonghwan.net/node/2017/08/17/express-error-handling.html</a></p>
+<p><a href="https://github.com/FEDevelopers/tech.description/wiki/%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B5%EC%8A%A4%ED%94%84%EB%A0%88%EC%8A%A4-%EA%B0%80%EC%9D%B4%EB%93%9C" target="_blank" rel="noopener">https://github.com/FEDevelopers/tech.description/wiki/%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B5%EC%8A%A4%ED%94%84%EB%A0%88%EC%8A%A4-%EA%B0%80%EC%9D%B4%EB%93%9C</a></p>
 <ul>
-<li>webpack-dev.js</li>
+<li>에러 래퍼 패턴</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"style-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"css-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"sass-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">     ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wrapAsync</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 모든 오류를 .catch() 처리하고 체인의 next() 미들웨어에 전달하세요 </span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// (이 경우에는 오류 처리기)</span></span><br><span class="line"></span><br><span class="line">    fn(req, res, next).catch(next);</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>src/main.js</li>
+<li>에러 정의 및 핸들러<ul>
+<li><a href="https://github.com/hapijs/boom" target="_blank" rel="noopener">https://github.com/hapijs/boom</a></li>
+<li>400<ul>
+<li>400 : 파라미터 불충분 : badRequest</li>
+<li>401 : 로그인 필요 : unauthorized</li>
+<li>404 : 페이지 없음</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"babel-runtime/regenerator"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"react-hot-loader/patch"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"babel-register"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"webpack-hot-middleware/client?reload=true"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./main.scss"</span>);  <span class="comment">// scss파일을 추가</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./app.js"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>500<ul>
+<li>500 : 서버 에러 </li>
+<li>504 : gatewayTimeout : 서버 시간 초과</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>에러 핸들러</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// inheritance</span></span><br><span class="line">errors.create(&#123;</span><br><span class="line">    name: <span class="string">'FatalError'</span>,</span><br><span class="line">    defaultMessage: <span class="string">'A fatal error occurred'</span>,</span><br><span class="line">&#125;);</span><br><span class="line">errors.create(&#123;</span><br><span class="line">    name: <span class="string">'FatalSecurityError'</span>,</span><br><span class="line">    defaultMessage: <span class="string">'A security error occurred, the app must exit'</span>,</span><br><span class="line">    parent: errors.FatalError</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> errors.FatalSecurityError();</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e <span class="keyword">instanceof</span> errors.FatalError) &#123;</span><br><span class="line">        <span class="comment">// exit</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Application is shutting down..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span> <span class="title">handleAssertionError</span>(<span class="params">error, req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> AssertionError) &#123;</span><br><span class="line">    res.status(<span class="number">400</span>).json(&#123;</span><br><span class="line">      type: <span class="string">'AssertionError'</span>,</span><br><span class="line">      message: error.message</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  next(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span> <span class="title">handleDatabaseError</span>(<span class="params">error, req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> MongoError) &#123;</span><br><span class="line">    res.status(<span class="number">503</span>).json(&#123;</span><br><span class="line">      type: <span class="string">'MongoError'</span>,</span><br><span class="line">      message: error.message</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  next(error);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>main.scss</li>
-</ul>
-<p>SCSS 문법 작성</p>
-<p>끝.</p>
-<h2 id="POSTCSS"><a href="#POSTCSS" class="headerlink" title="POSTCSS"></a>POSTCSS</h2><p>여기에 원하는 CSS  코딩 방법을 골라 사용하는 POSTCSS도 연동할 수 있다.</p>
-<blockquote>
-<p>npm i postcss-loader</p>
-</blockquote>
-<ul>
-<li>webpack.dev.js</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.scss$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"style-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"css-loader"</span> &#125;,</span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"postcss-loader"</span>&#125;, <span class="comment">// 추가</span></span><br><span class="line">          &#123; <span class="attr">loader</span>: <span class="string">"sass-loader"</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// scss 없이 postcss 개별 연동도 가능!</span></span><br><span class="line">      <span class="comment">//&#123;</span></span><br><span class="line">        <span class="comment">//test: /\.css$/,</span></span><br><span class="line">        <span class="comment">//exclude: /node_modules/,</span></span><br><span class="line">        <span class="comment">//use: [</span></span><br><span class="line">          <span class="comment">//&#123; loader: "style-loader" &#125;,</span></span><br><span class="line">          <span class="comment">//&#123; loader: "css-loader" &#125;,</span></span><br><span class="line">          <span class="comment">//&#123; loader: "postcss-loader" &#125;</span></span><br><span class="line">        <span class="comment">//]</span></span><br><span class="line">      <span class="comment">//&#125;,</span></span><br><span class="line">     ...</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>postcss.config.js</li>
-</ul>
-<p>원하는 CSS 모듈을 추가해준다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="built_in">require</span>(<span class="string">'autoprefixer'</span>) <span class="comment">// 자동으로 브라우저에 맞는 Css 프리픽스를 추가해준다.</span></span><br><span class="line">        <span class="comment">// require('postcss-nested') scss 방식의 nested css 지원</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>postcss만 사용할 경우는 파일 확장자도 css로 쓰면 된다.</p>
-</blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics</a></p>
+<h3 id="남은-해결-과제"><a href="#남은-해결-과제" class="headerlink" title="남은 해결 과제"></a>남은 해결 과제</h3><p>bookshelf 에러 핸들링</p>
 
                     
                         
@@ -275,7 +264,7 @@
                     
                         <p>
                             <a
-                                href="/2018/03/25/Frontend/5.웹팩-SCSS-POSTCSS연동.md/#post-footer"
+                                href="/2018/04/18/Node.js/에러-핸들링/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -315,7 +304,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 24 of 148</li>
+        <li class="pagination-number">page 24 of 150</li>
     </ul>
 </div>
 
@@ -325,7 +314,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

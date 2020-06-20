@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/GIT/merge_vs_rebase/"
-                            aria-label=": Merge VS Rebase"
+                            href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/"
+                            aria-label=": CSS3 새로운 스타일 정리"
                         >
-                            Merge VS Rebase
+                            CSS3 새로운 스타일 정리
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-24T13:54:01+09:00">
+    <time datetime="2017-07-16T00:29:35+09:00">
 	
-		    2017.07.24
+		    2017.07.16
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/GIT/">GIT</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,50 +227,42 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>merge를 하면 branch를 생성한 시점의 베이스를 기준으로 합병이 된다</p>
-<p>rebase는 <code>git rebase 브랜치</code> 에서 지정한 브랜치를 베이스로 기준 삼아 합병이 된다</p>
-<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><p><code>master</code> 와 <code>slave</code>가 있고 <code>master</code> 에서 <code>git merge slave</code> 를 하면</p>
-<ol>
-<li><code>master</code>의 커밋 내역 이후 <code>slave</code>의 커밋내역이 단순 합쳐짐.</li>
-<li>커밋을 묶음으로 관리 : 마지막 <code>merge</code> 커밋을 <code>reset</code> 하면 통째로 모든 <code>merge</code>커밋들이 사라짐.</li>
-</ol>
-<h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><ul>
-<li><p><code>master</code> 에서 <code>git rebase slave</code>를 하면</p>
-<p>슬레이브 뒤에 마스터의 커밋 이력이 쌓임.</p>
-</li>
-</ul>
+                    <div class="myResize">Junho's Hexo Blog</div>
+
+<style>
+
+.myResize { width: 200px; height: 50px; border: solid black 2px; overflow: auto; resize: both; box-shadow: #ff8080 3px 3px 2px; text-shadow: #ff8080 3px 3px 2px;}
+
+</style>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"myResize"</span>&gt;</span>Junho's Hexo Blog<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.myResize</span> &#123;</span></span><br><span class="line">  width: 300px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  border: solid black 2px;</span><br><span class="line">  overflow: auto;</span><br><span class="line">  resize: both;</span><br><span class="line"><span class="css">  <span class="selector-tag">box-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">px</span>;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">text-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">p</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-resize-크기를-변경할-수-있는-박스-만들기"><a href="#1-resize-크기를-변경할-수-있는-박스-만들기" class="headerlink" title="1. resize : 크기를 변경할 수 있는 박스 만들기"></a>1. resize : 크기를 변경할 수 있는 박스 만들기</h4><p><code>resize: both;</code></p>
 <ul>
-<li><p><code>slave</code> 에서 <code>git rebase master</code>를 하면</p>
-<p>마스터 커밋 뒤로 슬레이브 이력이 쌓임.</p>
-</li>
+<li>none : 크기 변경 불가</li>
+<li>horizontal, vertical, both : 수평, 높이, 수평과 폭 높이 둘다 변경 가능, </li>
 </ul>
-<ol>
-<li>트리 그래프도 브랜치 없이 일렬로 나타남.</li>
-<li>중복된 수정 내용은 로그가 남지 않음.</li>
-<li>reset시 통째로 merge 커밋들이 사라지지 않음.</li>
-</ol>
-<h2 id="rebase-과정"><a href="#rebase-과정" class="headerlink" title="rebase 과정"></a>rebase 과정</h2><ol>
-<li>커밋로그 보기</li>
-</ol>
-<p><code>git log --decorate --all --oneline --graph</code></p>
-<ol start="2">
-<li>데브의 마지막 커밋을 베이스로 머지함</li>
-</ol>
-<p><code>git rebase dev</code></p>
-<ol start="3">
-<li>conflict 수정 후</li>
-</ol>
-<p><code>git add 파일 전체경로</code></p>
-<ol start="4">
-<li>상태 확인</li>
-</ol>
-<p><code>git status</code></p>
-<ol start="5">
-<li>리베이스 계속</li>
-</ol>
-<p><code>git rebase --continue</code></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/git-merge-rebase.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/git-merge-rebase.html</a></p>
-<p><a href="https://blog.outsider.ne.kr/666" target="_blank" rel="noopener">https://blog.outsider.ne.kr/666</a></p>
+<h4 id="2-box-shadow-박스에-그림자-효과-주기"><a href="#2-box-shadow-박스에-그림자-효과-주기" class="headerlink" title="2. box-shadow : 박스에 그림자 효과 주기"></a>2. box-shadow : 박스에 그림자 효과 주기</h4><p><code>box-shadow: #ff8080 3px 3px 2px;</code></p>
+<ul>
+<li>가로위치, 세로 위치, 불투명, 확대 반지름</li>
+<li>그림자의 색</li>
+<li>inset 지정시 그림자를 박스 안쪽에 표시</li>
+</ul>
+<h4 id="3-text-shadow-문자열에-그림자-효과-주기"><a href="#3-text-shadow-문자열에-그림자-효과-주기" class="headerlink" title="3. text-shadow : 문자열에 그림자 효과 주기"></a>3. text-shadow : 문자열에 그림자 효과 주기</h4><p><code>text-shadow: #ff8080 3px 3px 2p;</code></p>
+<ul>
+<li>위치와 크기 : 가로, 세로, 불투명, 확대 반지름</li>
+<li>색 : 그림자색</li>
+</ul>
+<hr>
+
+<h4 id="word-wrap-문자-줄바꿈-처리"><a href="#word-wrap-문자-줄바꿈-처리" class="headerlink" title="word-wrap : 문자 줄바꿈 처리"></a>word-wrap : 문자 줄바꿈 처리</h4><ul>
+<li>normal : 줄을 바꿀 수 없는 경우, 줄 바꿈하지 않고 표시, 공백과 같이 줄 바꿀 수 있는 경 줄 바꿈</li>
+<li>break-word : 단어 중간에서 줄바꿈.</li>
+</ul>
+<h4 id="writing-mode-vertical-rl-세로-쓰기-표시"><a href="#writing-mode-vertical-rl-세로-쓰기-표시" class="headerlink" title="writing-mode: vertical-rl: 세로 쓰기 표시"></a>writing-mode: vertical-rl: 세로 쓰기 표시</h4><ul>
+<li>horizontal-tb</li>
+<li>vertical-lr : 세로 왼쪽 쓰기</li>
+<li>vertical-rl : 세로 오른쪽 쓰기</li>
+</ul>
 
                     
                         
@@ -280,7 +272,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/GIT/merge_vs_rebase/#post-footer"
+                                href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -320,7 +312,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 87 of 112</li>
+        <li class="pagination-number">page 87 of 111</li>
     </ul>
 </div>
 
@@ -330,7 +322,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

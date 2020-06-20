@@ -202,15 +202,15 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/2.1. build-and-test/"
-                            aria-label=": 02.1. 빌드 및 테스트"
+                            href="/2017/07/24/GIT/pull_request/"
+                            aria-label=": Git Pull Request 방법 정리"
                         >
-                            02.1. 빌드 및 테스트
+                            Git Pull Request 방법 정리
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-24T14:43:13+09:00">
+    <time datetime="2017-07-24T13:54:01+09:00">
 	
 		    2017.07.24
     	
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+    <a class="category-link" href="/categories/GIT/">GIT</a>
 
 
     
@@ -227,54 +227,109 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="웹에서-테스트"><a href="#웹에서-테스트" class="headerlink" title="웹에서 테스트"></a>웹에서 테스트</h2><blockquote>
-<p>$ ionic serve</p>
-<p>또는,</p>
-<p>$ ionic serve -lab</p>
-</blockquote>
-<p>으로 테스트 해볼 수 있다.</p>
-<h2 id="빌드"><a href="#빌드" class="headerlink" title="빌드"></a>빌드</h2><p>안드로이드 빌드시 : 안드로이드 SDK 필요</p>
-<p><a href="https://developer.android.com/studio/index.html?hl=ko" target="_blank" rel="noopener">안드로이드 스튜디오</a></p>
-<p>IOS 빌드시 : Apple Developer 계정 등록 필요.(년 $99 필요)</p>
-<p><a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple Developer</a> </p>
-<p>플랫폼 추가가 필요</p>
-<blockquote>
-<p>$ cordova platform add [android/ios]</p>
-</blockquote>
-<p>빌드</p>
-<blockquote>
-<p>$ ionic build [android/ios]</p>
-</blockquote>
-<p>혹시 빌드 중에 아래 오류가 나오는 경우</p>
-<p><em>could not find gradle wrapper within android sdk</em></p>
-<p><a href="https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" target="_blank" rel="noopener">SDK tools package</a> </p>
-<p>C:\Users\CURRENT_USER\AppData\Local\Android\sdk</p>
-<p>에 압축을 풀어주고, 다시 시도해보자.</p>
-<p>빌드 하면 apk 파일이 생성된다.</p>
-<h2 id="에뮬레이터"><a href="#에뮬레이터" class="headerlink" title="에뮬레이터"></a>에뮬레이터</h2><p>빌드후 안드로이드 스튜디오에 들어가</p>
-<p>AVD를 생성 후, 실행시킨다.   <a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">생성법</a></p>
-<p>다음</p>
-<blockquote>
-<p>$ ionic emulate [android/ios]</p>
-</blockquote>
-<p>키고 위 명령어를 입력하면, 자동으로 apk가 설치되고 실행된다.</p>
-<h2 id="실제-디바이스-실행"><a href="#실제-디바이스-실행" class="headerlink" title="실제 디바이스 실행"></a>실제 디바이스 실행</h2><p>실제 디바이스에서는 빌드후</p>
-<blockquote>
-<p>$ ionic run [android/ios]</p>
-</blockquote>
-<p>를 입력하면된다. USB에 꼽은 상태로 하면 되는 것 같은데.</p>
-<p>기기가 없어서 실제 실행은 못시켜보았다.</p>
-<h2 id="아이콘-변경"><a href="#아이콘-변경" class="headerlink" title="아이콘 변경"></a>아이콘 변경</h2><ol>
-<li>이미지를 복사 <project folder>/resources</project></li>
-<li><blockquote>
-<p>$ ionic resources</p>
-</blockquote>
-</li>
-<li>생성된 파일들을 <project folder>/resources/res 에서 <project folder>/platforms/android/res 로 이동시킨다.</project></project></li>
+                    <ol>
+<li>저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다.</li>
+<li>로컬 저장소와 원격 저장소 추가</li>
 </ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">어제보다 오늘 더 블로그</a></p>
-<p><a href="https://forum.ionicframework.com/t/ionic-run-android-does-not-install-app-in-device/21795/6" target="_blank" rel="noopener">Ionic Forum</a></p>
-<p><a href="http://ionicframework.com/docs/v1/cli/run.html" target="_blank" rel="noopener">Ionic Doc</a></p>
+<ul>
+<li>로컬 저장소를 클론</li>
+</ul>
+<blockquote>
+<p>$ git clone fork깃주소 폴더명</p>
+</blockquote>
+<ul>
+<li>로컬 저장소에 원격저장소[원본 프로젝트] 추가</li>
+</ul>
+<blockquote>
+<p>$ git remote add upstream 원본깃주소</p>
+</blockquote>
+<p><em>원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해도 무관</em></p>
+<ol start="3">
+<li>작업은 매번 Branch를 만들어서 Branch 단위로 한다.</li>
+</ol>
+<ul>
+<li>브랜치 생성</li>
+</ul>
+<blockquote>
+<p>$ git branch [브랜치명]</p>
+</blockquote>
+<ul>
+<li>브랜치 이동</li>
+</ul>
+<blockquote>
+<p>$ git checkout [브랜치명]</p>
+</blockquote>
+<ol start="4">
+<li>작업 내역 커밋</li>
+</ol>
+<ul>
+<li>인덱스 확인, 등록, 커밋</li>
+</ul>
+<blockquote>
+<p>$ git status</p>
+<p>$ git add .</p>
+<p>$ git commit -m ‘[메세지]’</p>
+</blockquote>
+<ol start="5">
+<li>원본 저장소 내역 업데이트</li>
+</ol>
+<ul>
+<li>원본 저장소의 소스를 로컬 저장소로 가져옴.</li>
+</ul>
+<blockquote>
+<p>$ git fetch upstream</p>
+</blockquote>
+<ul>
+<li>커밋 내역을 합침</li>
+</ul>
+<blockquote>
+<p>$ git rebase upstream/master</p>
+</blockquote>
+<ol start="6">
+<li>Pull Request 보내기</li>
+</ol>
+<ul>
+<li>push 하기</li>
+</ul>
+<blockquote>
+<p>$ git push origin [브랜치명]</p>
+</blockquote>
+<ul>
+<li>fork 한 저장소에서 pull request 작성</li>
+</ul>
+<p>github 포크한 저장소로 이동후, <code>Crete Pull Request</code>를 눌러 변경 사항 확인 및 pull request 메세지를 작성한다.</p>
+<ol start="7">
+<li>원본 저장소에서 변경사항 Merge 하기</li>
+</ol>
+<ul>
+<li>원본 저장소의 pull request 메뉴에서 <code>Merge</code> 버튼을 눌러 변경사항 Merge</li>
+</ul>
+<p>Or</p>
+<ul>
+<li>직접 명령어 입력</li>
+</ul>
+<blockquote>
+<p>$ git checkout master</p>
+<p>$ git remote add [기여자별칭] 기여자깃주소</p>
+<p>$ git fetch [기여자별칭]</p>
+<p>$ git rebase [기여자별칭/브랜치명]</p>
+<p>$ git push origin master</p>
+</blockquote>
+<p><em>그외 명령어</em></p>
+<ul>
+<li>리모트 저장소 목록 확인</li>
+</ul>
+<blockquote>
+<p>$ git remote -v</p>
+</blockquote>
+<ul>
+<li>리모트 저장소 삭제</li>
+</ul>
+<blockquote>
+<p> $ git remote rm [별칭 이름]</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/how-to-github.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/how-to-github.html</a></p>
+<p><a href="https://www.slideshare.net/mobile/jungseobshin/github-pull-request" target="_blank" rel="noopener">https://www.slideshare.net/mobile/jungseobshin/github-pull-request</a></p>
 
                     
                         
@@ -284,7 +339,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/2.1. build-and-test/#post-footer"
+                                href="/2017/07/24/GIT/pull_request/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -324,7 +379,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 85 of 112</li>
+        <li class="pagination-number">page 85 of 111</li>
     </ul>
 </div>
 
@@ -334,7 +389,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

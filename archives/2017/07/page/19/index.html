@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/"
-                            aria-label=": 01. Ionic2의 프로젝트 구조"
+                            href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/"
+                            aria-label=": 03.1. NavController를 통한 페이지 이동시 발생 이벤트"
                         >
-                            01. Ionic2의 프로젝트 구조
+                            03.1. NavController를 통한 페이지 이동시 발생 이벤트
                         </a>
                     
                 </h1>
@@ -227,18 +227,50 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>src 폴더에 작업 코드가 있고, 컴파일 후 www 폴더로 전환되는 구조.</p>
-<p>ionic serve로 앱을 실행하면 src 폴더 내용이 컴파일되고 합쳐져서 www 폴더로 저장(<code>rollup js</code> 활용)</p>
-<p><code>www/build</code></p>
-<p>main.css</p>
-<blockquote>
-<p>src 폴더의 모든 css 파일들이 main.css 파일들이 저장 됌</p>
-</blockquote>
-<p>main.js</p>
-<blockquote>
-<p>src 폴더의 모든 TS 파일들이 js로 컴파일되고 합쳐져 main.js로 저장.</p>
-</blockquote>
-<p>index.html을 보면 build/main.js와 build/main.css를 참조하는 것을 확인할 수 있다.</p>
+                    <h3 id="NavController의-lifecycle-이벤트"><a href="#NavController의-lifecycle-이벤트" class="headerlink" title="NavController의 lifecycle 이벤트"></a>NavController의 lifecycle 이벤트</h3><p>NavController를 사용하여 페이지를 이동할때, 발생하는 이벤트들에 대해 정리해본다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">  openPage(page) &#123;</span><br><span class="line">    <span class="keyword">this</span>.navCtrl.push(page);</span><br><span class="line">  &#125;</span><br><span class="line">   ionViewDidLoad() &#123;</span><br><span class="line">     alert(<span class="string">'최초 로딩됌'</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="이벤트"><a href="#이벤트" class="headerlink" title="이벤트"></a>이벤트</h3><table>
+<thead>
+<tr>
+<th>이벤트 메서드 명</th>
+<th>Returns</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ionViewDidLoad</code></td>
+<td>void</td>
+<td>처음 페이지가 로딩되었을때, 캐시된 페이지에서는 동작을 하지 않음.</td>
+</tr>
+<tr>
+<td><code>ionViewWillEnter</code></td>
+<td>void</td>
+<td>페이지에 들어가서, 페이지가 활성활 되었을때</td>
+</tr>
+<tr>
+<td><code>ionViewDidEnter</code></td>
+<td>void</td>
+<td>페이지에 완전히 접근하여 활성화가 되었을때, 캐시 여부와 관계없이 실행 됌.</td>
+</tr>
+<tr>
+<td><code>ionViewWillLeave</code></td>
+<td>void</td>
+<td>페이지를 막 떠나기 시작할때</td>
+</tr>
+<tr>
+<td><code>ionViewDidLeave</code></td>
+<td>void</td>
+<td>페이지 떠나기를 완료하였을 때</td>
+</tr>
+<tr>
+<td><code>ionViewWillUnload</code></td>
+<td>void</td>
+<td>페이지가 제거 돼고, 페이지의 엘리먼트가 제거 됐을때</td>
+</tr>
+</tbody></table>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://ionicframework.com/docs/api/navigation/NavController/" target="_blank" rel="noopener">http://ionicframework.com/docs/api/navigation/NavController/</a></p>
+<p><a href="https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
 
                     
                         
@@ -248,7 +280,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/#post-footer"
+                                href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -298,7 +330,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

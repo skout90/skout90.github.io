@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/22/etc/자신의-npmmodule-사용하기/"
-                            aria-label=": 수정한 npm_module 사용하기"
+                            href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/"
+                            aria-label=": 05.1. Function 내장객체"
                         >
-                            수정한 npm_module 사용하기
+                            05.1. Function 내장객체
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-22T19:28:10+09:00">
+    <time datetime="2017-09-10T19:28:10+09:00">
 	
-		    2017.09.22
+		    2017.09.10
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/etc/">etc</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,19 +227,69 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>맘에 드는 npm_module을 수정하고 사용하고 싶을때..</p>
-<ol>
-<li>해당 git repository를 fork 한다</li>
-<li>수정한다.</li>
-<li>pacakge.json에 다음과 같이 등록</li>
-</ol>
+                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
+<li>arguments <em>(표준에서 제거 됌)</em></li>
+</ul>
+<p>함수 내부에서, 매개변수에 접근하게 하는 속성</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(g.arguments[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line">g(<span class="number">1</span>); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>arguments.callee()</li>
+</ul>
+<p>자신을 호출한다. 재귀함수를 사용할때 함수 이름 의존성 문제를 해결 할 수 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * <span class="built_in">arguments</span>.callee(num<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> trueFactorial = factorial;</span><br><span class="line">factorial = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;;</span><br><span class="line"></span><br><span class="line">trueFactorial(<span class="number">5</span>); <span class="comment">// 120</span></span><br></pre></td></tr></table></figure>
+
+<p>만약 calle를 안썼다면, 값은 0이 될것이다.</p>
+<ul>
+<li>caller</li>
+</ul>
+<p>현재 실행중인 함수를 호출한 함수.</p>
+<ul>
+<li>length</li>
+</ul>
+<p>함수 매개변수의 수</p>
+<ul>
+<li>Function.prototype.constructor</li>
+</ul>
+<p>함수를 생성하면, 함수 + 그 함수의 prototype 생성하게 되는데, prototype.constructor는 생성된 함수를 가리키고 있다.(실제로 무한루프다.)</p>
+<p><img src="https://cdn-images-1.medium.com/max/1000/1*PZe_YnLftVZwT1dNs1Iu0A.png" alt="img"></p>
+<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
+<li>Function.prototype.apply()</li>
+</ul>
 <blockquote>
-<p>npm install <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a><username>/<repository>/tarball/master –save</repository></username></p>
+<p> 함수.apply(this로 사용될 객체/값, 함수에 전달할 인자집합(배열))</p>
 </blockquote>
-<p>/tarball 이라는것으로 해야 한다. 그래야 gz파일이라는 걸로 다운받아지면서 설치가 가능함.</p>
-<p>내가 수정한 knex-logger</p>
-<p><a href="https://github.com/skout90/knex-logger" target="_blank" rel="noopener">https://github.com/skout90/knex-logger</a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm" target="_blank" rel="noopener">https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">v1</span>:<span class="number">1</span>, <span class="attr">v2</span>:<span class="number">2</span>, <span class="attr">v3</span>:<span class="number">3</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> <span class="keyword">this</span>) &#123;</span><br><span class="line">    _sum += <span class="keyword">this</span>[name];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> _sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum.apply(obj)); <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p>넘겨준 객체의 메서드로 추가하고, 해당 메서드를 실행시킨다. apply의 중요점은 이를통해 <code>this</code>가 해당 객체를 가리키게 된다는 것이다. <em>객체 값이 바뀌지는 않는다.</em></p>
+<ul>
+<li>Function.prototype.call()</li>
+</ul>
+<blockquote>
+<p>함수.call(this로 사용될 객체/값, 인자1, 인자2, …)</p>
+</blockquote>
+<p>apply와 동일하나, 매개변수 넘기는 방식이 다름</p>
+<ul>
+<li>Function.prototype.bind()</li>
+</ul>
+<blockquote>
+<p>함수.bind(this로 사용될 객체/값, 인자1, 인자3, …)</p>
+</blockquote>
+<p>this 를 교체후, 함수를 리턴해준다.</p>
+<p>call(this, 1, 2, 3) 은 bind(this)(1, 2, 3) 과 같다.</p>
+<ul>
+<li>Function.prototype.toString()</li>
+</ul>
+<p>함수의 소스 코드를 string으로 변환하여 출력.</p>
+<ul>
+<li>Function.prototype.isPrototypeOf()</li>
+</ul>
+<blockquote>
+<p>함수.prototype.isPrototypeOf(인스턴스 객체)</p>
+</blockquote>
+<p>인스턴스 객체의 프로토타입이 해당 “함수”인지 확인</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
+<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
 
                     
                         
@@ -249,7 +299,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/22/etc/자신의-npmmodule-사용하기/#post-footer"
+                                href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -289,7 +339,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 19 of 112</li>
+        <li class="pagination-number">page 19 of 111</li>
     </ul>
 </div>
 
@@ -299,7 +349,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

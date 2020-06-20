@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/20/Node.js/Webstorm-에서-NodeJs-Express-디버깅하기/"
-                            aria-label=": Webstorm 에서 NodeJs Express 디버깅하기"
+                            href="/2017/08/20/GIT/Git-부분-체크아웃/"
+                            aria-label=": Git 부분 체크아웃(sparse checkout)"
                         >
-                            Webstorm 에서 NodeJs Express 디버깅하기
+                            Git 부분 체크아웃(sparse checkout)
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+    <a class="category-link" href="/categories/GIT/">GIT</a>
 
 
     
@@ -227,28 +227,18 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>삽질 끝에 디버깅하는데 성공했다.. 방법을 공유한다.</p>
-<blockquote>
-<p>환경 : window 7, node express, nodemon</p>
+                    <blockquote>
+<p>$ mkdir [폴더이름]</p>
+<p>$ cd [폴더이름]</p>
+<p>$ git init</p>
+<p>$ git remote add -f origin [git url]</p>
+<p>$ git config core.sparseCheckout true</p>
 </blockquote>
-<p>nodemon을 통해 자동으로 서버를 재 실행되게 하는데, nodemon을 사용하지 않으면 더 간편하게 디버깅이 가능하다.</p>
-<h4 id="nodemon을-사용할-경우"><a href="#nodemon을-사용할-경우" class="headerlink" title="nodemon을 사용할 경우"></a>nodemon을 사용할 경우</h4><p>nodemon을 사용할 경우에만 아래작업을 한다. 그렇지 않을 경우는 생략한다.</p>
-<ol>
-<li>메뉴 -&gt; Run -&gt; Edit Configurations</li>
-<li>+ 버튼을 눌러 Node.js Remote Debug 을 생성한다.</li>
-<li>port를 번호를 기억한다.</li>
-</ol>
-<p><img src="http://i.imgur.com/DNgzV16.png" alt="img"></p>
-<h4 id="디버깅-설정"><a href="#디버깅-설정" class="headerlink" title="디버깅 설정"></a>디버깅 설정</h4><ol>
-<li>+ 버튼을 눌러 Node.js를 생성한다.</li>
-<li>Node interpreter에 node.exe의 경로를 셋팅한다</li>
-<li>Node parameters에 nodemon의 경로를 넣는다. </li>
-<li>(nodemon 사용할 시에만) Node parameters 뒤에 <code>--debug=위에서 기억한 포트</code> 를 입력한다.</li>
-<li>Javascript file : 에 express 서버 실행 파일 <code>www</code> 파일을 입력한다.</li>
-</ol>
-<p><img src="http://i.imgur.com/uxW5JLW.png" alt="img"></p>
-<h4 id="디버깅-시작"><a href="#디버깅-시작" class="headerlink" title="디버깅 시작"></a>디버깅 시작</h4><p>우선 위에서 등록한 node.js 와 remote 중에 node.js 를 <code>Run</code> 으로 실행한다. 그 후, remote를 <code>Debug</code>로 실행한다. 브레이킹 포인트를 찍으면 되는 모습을 확인할 수 있다!</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://vcfvct.wordpress.com/2015/02/13/debug-nodejs-with-nodemon-and-intellij/" target="_blank" rel="noopener">https://vcfvct.wordpress.com/2015/02/13/debug-nodejs-with-nodemon-and-intellij/</a></p>
+<p>해당 폴더 .git/info에 sparse-checkout 파일 생성후, 체크아웃할 폴더이름을 적어준다.</p>
+<blockquote>
+<p>$ git pull origin master</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository/13738951" target="_blank" rel="noopener">https://stackoverflow.com/questions/600079/how-do-i-clone-a-subdirectory-only-of-a-git-repository/13738951</a></p>
 
                     
                         
@@ -258,7 +248,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/20/Node.js/Webstorm-에서-NodeJs-Express-디버깅하기/#post-footer"
+                                href="/2017/08/20/GIT/Git-부분-체크아웃/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -298,7 +288,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 37 of 112</li>
+        <li class="pagination-number">page 37 of 111</li>
     </ul>
 </div>
 
@@ -308,7 +298,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Node.js/1. NodeJS란/"
-                            aria-label=": 01. NodeJS 란?"
+                            href="/2017/08/15/Web/소켓이란/"
+                            aria-label=": 소켓이란"
                         >
-                            01. NodeJS 란?
+                            소켓이란
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+    <a class="category-link" href="/categories/Web/">Web</a>
 
 
     
@@ -227,41 +227,35 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Node.js를 이해하기 위해서는 먼저 javascript에 대해 이해할 필요가 있음.</p>
-<p>##자바스크립트</p>
-<p>자바스크립트는 넷스케이프 웹 브라우저에서 HTML의 DOM(Document Object Model) 객체를 제어하기 위해 개발되었음.</p>
-<p>초창기에는 매우 느렸으나, 구글이 크롬과 함께 V8 자바스크립트 엔진을 개발하면서, 기존 웹브라우저에 포함된 엔진보다 월등히 빨라진 성능을 보였음.</p>
-<p>기존 JS엔진들은 자바스크립트를 바이트코드로 변환하거나 인터프리트하여 처리했지만 V8은 JIT(Just In Time) 컴파일 방식을 사용하여 성능을 획기적으로 개선.</p>
+                    <h4 id="http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API"><a href="#http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API" class="headerlink" title="http 프로토콜 기반으로 웹브라우저와 웹 서버간 양방향 통신을 지원하기 위한 표준 API"></a>http 프로토콜 기반으로 웹브라우저와 웹 서버간 <code>양방향 통신</code>을 지원하기 위한 표준 API</h4><ul>
+<li>서버와 클라이언트에는 각각 소켓이라는 부분이 있고 이 부분을 통해 서로 정보를 공유한다.</li>
+</ul>
+<h2 id="기존의-양방향-통신"><a href="#기존의-양방향-통신" class="headerlink" title="기존의 양방향 통신"></a>기존의 양방향 통신</h2><p>http 규격 자체가 서버로의 단방향 통신을 위해 만들어짐. webSocket 이전에는 일반 http request에 트릭을 이용해 실시간인 것 처럼 보이게 하였다.</p>
+<ol>
+<li><p>polling : 클라이언트가 평범한 http request를 계속 날림, but.. 비효율적</p>
+<p><img src="http://2.bp.blogspot.com/-cvWY81etsao/ViZSUVxywxI/AAAAAAAAMHo/wxrd6dIntM8/s320/HttpPolling.gif" alt="img"></p>
+</li>
+<li><p>long polling : 클라이언트가 http request를 날리고 기다림, 서버의 이벤트 response를 받고 연결 종료. but 이벤트의 시간간격이 좁거나 다수 클라이언트 동시 접속시 부하 문제 있음.</p>
+<p><img src="http://2.bp.blogspot.com/-eL9rxi8th2A/ViZSW0ggEwI/AAAAAAAAMH4/k4S4-dRz3t4/s320/HttpLongPolling.gif" alt="img"></p>
+</li>
+<li><p>streaming : 서버로 http request를 날리고, 요청 끊지 않고 필요한 메세지만 보내기를 반복.</p>
+<p><img src="http://4.bp.blogspot.com/-sRVlAdeU-Kw/ViZSWw-wB2I/AAAAAAAAMH0/3CmKGISDV-A/s320/HttpStreaming.gif" alt="img"></p>
+</li>
+</ol>
+<h2 id="Web-Socket"><a href="#Web-Socket" class="headerlink" title="Web Socket"></a>Web Socket</h2><p>HTML5 표준의 일부로 webSocket이 만들어지게 된다.</p>
 <blockquote>
-<p>JIT 컴파일 방식은 자바스크립트를 인터프리트하지 않고 실행 즉시 기계어(x86, ARM등)로 컴파일</p>
+<p>webSocket이 기존의 일반 TCP Socket과 다른 점은 최초 접속이 일반 http request를 통해 handshaking 과정을 통해 이루어 진다는 점. http request를 그대로 사용하기 때문에 기존 80, 443 포트로 접속하여도 방화벽 열지 않고도 양방형 통신이 가능, CORS 적용 과정도 동일.</p>
 </blockquote>
-<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>2009년 라이언 달이라는 프로그래머가 구글의<code>V8 자바스크립트 엔진</code>을 웹 브라우저가 아닌 서버로 사용할 수 있도록 만든 것이 Node.js</p>
-<ul>
-<li>JS의 간결함</li>
-<li>V8 JS 엔진의 월등한 속도</li>
-<li>단일 스레드(Non-bloking I/O)</li>
-<li>소켓 통신</li>
-<li>HTTP 웹서버로 실행 가능</li>
-<li>npm(Node Packaged Modules)은 Node.js로 만들어진 모듈을 인터넷에서 받아서 설치해주는 패키지 매니저.</li>
+<h6 id="그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원"><a href="#그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원" class="headerlink" title="그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원"></a>그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원</h6><h4 id="지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자"><a href="#지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자" class="headerlink" title="지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!"></a>지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!</h4><ul>
+<li><p><strong>socket.io(<a href="http://socket.io" target="_blank" rel="noopener">http://socket.io</a>)</strong></p>
+<p>node.js 기반으로 만들어진 기술, 브라우저에 구애 받지 않고 실시간 통신이 가능. 모든 코드가 javascript로 작성되어 있어서 자바 개발자들은 socket.io를 쓸 수 없다. <a href="https://github.com/keesun/mod-socket-io" target="_blank" rel="noopener">자바로 개발이 가능하게 해주는 방법</a>이 몇가지 있긴한 것 같지만 역시 javascript 기반 솔루션은 javascript로 개발해야 문제발생을 줄일 수 있음.</p>
+</li>
+<li><p><strong>sockJS(<a href="http://sockjs.org" target="_blank" rel="noopener">http://sockjs.org</a>)</strong></p>
+<p>springframework에서 websocket 지원. 서버 개발시 스프링 설정에서 일반 webSocket으로 통신할지 SockJS 호환으로 통신할지 결정할 수 있음.</p>
+</li>
 </ul>
-<h2 id="단일-스레드-모델-Non-blocking-I-O"><a href="#단일-스레드-모델-Non-blocking-I-O" class="headerlink" title="단일 스레드 모델, Non-blocking I/O"></a>단일 스레드 모델, Non-blocking I/O</h2><p>멀티 스레드 방식은 복잡한 동기화 문제가 골칫거리 였음. 동기화 모델이나 락에 대해 학습해야 하고 쓰기가 상당히 어려워 생산성 저하로 이어짐.</p>
-<p>Node.js는 멀티스레드 모델 대신 단일 스레드 모델과 Non-blocking I/O를 채택.</p>
-<ul>
-<li><strong>Blocking 방식</strong></li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> result;</span><br><span class="line">   result = sum(<span class="number">1</span>, <span class="number">2</span>);          <span class="comment">// 1</span></span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">"sum: %d"</span>, result);   <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;                    <span class="comment">// 3      </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>위 C언어 코드의 실행은 그냥 줄 순서, printf 함수로 결과를 찍으려면 sum 함수가 끝날 때까지 기다려야 함. 이를 <code>Blocking</code> 방식이라고 함.</p>
-<ul>
-<li><strong>Non-Blocking 방식</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'./컴배콤.txt'</span> <span class="comment">/* 1 */</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// 3</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello JavaScript'</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
-
-<p><code>fs.readFile()</code>의 결과값이 나올때까지 기다리지 않고, 그다음 줄 <code>console.log(&#39;Hello JavaScript&#39;);</code>를 실행해버림. 시간 경과 후 파일을 다 읽었으면 <code>console.log(data)</code>가 실행됌.</p>
-<blockquote>
-<p>총 2개의 스레드로 작동 : 시간이 오래 걸리는 작업은 워커 스레드로 보내고, 메인 스레드는 코드를 계속 실행. 워커 스레드에서 작업이 끝나면 결과를 다시 메인 스레드로 보냄.</p>
-</blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://blog.naver.com/PostView.nhn?blogId=myca11&logNo=80146459609" target="_blank" rel="noopener">오바나딩요-Socket이란</a></p>
+<p><a href="http://adrenal.tistory.com/20" target="_blank" rel="noopener">시나몬브레드webSocket 으로 개발하기 전에 알고 있어야 할 것들</a></p>
 
                     
                         
@@ -271,7 +265,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Node.js/1. NodeJS란/#post-footer"
+                                href="/2017/08/15/Web/소켓이란/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -311,7 +305,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 80 of 148</li>
+        <li class="pagination-number">page 80 of 150</li>
     </ul>
 </div>
 
@@ -321,7 +315,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

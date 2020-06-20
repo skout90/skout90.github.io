@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/06/12/Angular/10. Angular HTTP - Observable Promise 비교/"
-                            aria-label=": 10. Angular HTTP - Observable Promise 비교"
+                            href="/2017/07/07/Spring/spring default config/"
+                            aria-label=": component-scan / annotation-config / annotation-driven 차이점"
                         >
-                            10. Angular HTTP - Observable Promise 비교
+                            component-scan / annotation-config / annotation-driven 차이점
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-06-12T10:00:50+09:00">
+    <time datetime="2017-07-07T19:28:10+09:00">
 	
-		    2017.06.12
+		    2017.07.07
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Angular/">Angular</a>
+    <a class="category-link" href="/categories/Spring/">Spring</a>
 
 
     
@@ -227,43 +227,39 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Obserable과 Promise는 비동기 프로그래밍을 위해 사용된다.</p>
-<p>어떤 차이점이 있는지 알아보자.</p>
-<h2 id="차이점"><a href="#차이점" class="headerlink" title="차이점"></a>차이점</h2><p>둘다 비동기 프로그래밍을 위해 사용되지만,</p>
-<p>차이점이 존재한다.</p>
+                    <ol>
+<li><h2 id="context-component-scan"><a href="#context-component-scan" class="headerlink" title="context:component-scan/"></a><a href="context:component-scan/" target="_blank" rel="noopener">context:component-scan/</a></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"org.controller"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>위의 선언은 특정 패키지(위에서는 org.controller) 안의 클래스들을 스캔하고 ,</p>
+<p>빈 인스턴스를 생성한다. </p>
+<p>아래와 같은 정확한 어노테이션이 존재해야지 빈을 생성할수있다. </p>
 <ul>
-<li>Promise</li>
+<li><strong>@Component</strong></li>
+<li><strong>@Repository</strong></li>
+<li><strong>@Service</strong></li>
+<li><strong>@Controller</strong></li>
+<li><strong>@Autowired</strong></li>
 </ul>
-<p>하나의 이벤트만 핸들링이 가능.</p>
-<p>Subscribe(콜백 모니터링) 취소가 불가능.</p>
+<p>​</p>
+</li>
+<li><h2 id="mvc-annotation-driven"><a href="#mvc-annotation-driven" class="headerlink" title="mvc:annotation-driven/"></a><a href="mvc:annotation-driven/" target="_blank" rel="noopener">mvc:annotation-driven/</a></h2><p>스프링 MVC 컴포넌트들의 디폴트 설정을 적용.</p>
 <ul>
-<li>Observable</li>
+<li><strong>HandlerMapping 및 HandlerAdapter 등록.</strong></li>
+<li><strong>@NumberFormat, @DateTimeFormat, @Valid</strong></li>
+<li><strong>Xml 및 JSON 읽고 쓰기</strong></li>
 </ul>
-<p>0 ~ N개 의 이벤트 핸들랭이 가능</p>
-<p>Unscribe를 통해, Subscribe 취소가 가능.</p>
-<p><code>Stream</code> 방식으로 코딩작성이 가능.</p>
-<p><code>map</code>, <code>forEach</code>, <code>reduce</code> 의 명령어를 제공</p>
-<p>Promise보다 더 강력한 기능이 제공되므로</p>
-<p>Observable이 더 많이 사용되는 추세라고 한다.</p>
-<h2 id="Promise-사용법"><a href="#Promise-사용법" class="headerlink" title="Promise 사용법"></a>Promise 사용법</h2><p>request 성공시 .then()이 실행된다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; URLSearchParams, Jsonp &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">WikipediaService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(private jsonp: Jsonp) &#123;&#125;</span><br><span class="line">  search (term: string) &#123;</span><br><span class="line">    <span class="keyword">var</span> search = <span class="keyword">new</span> URLSearchParams()</span><br><span class="line">    search.set(<span class="string">'search'</span>, term);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.jsonp</span><br><span class="line">                .get(<span class="string">'http://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK'</span>, &#123; search &#125;)</span><br><span class="line">                .toPromise()</span><br><span class="line">                .then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123;</span><br><span class="line">  items: <span class="built_in">Array</span>&lt;string&gt;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(private wikipediaService: WikipediaService) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  search(term) &#123;</span><br><span class="line">    <span class="keyword">this</span>.wikipediaService.search(term)</span><br><span class="line">                         .then(<span class="function"><span class="params">items</span> =&gt;</span> <span class="keyword">this</span>.items = items);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>예제 <a href="http://plnkr.co/edit/8ap1Lm?p=preview" target="_blank" rel="noopener">Plunker</a></p>
-<h2 id="Observable-사용법"><a href="#Observable-사용법" class="headerlink" title="Observable 사용법"></a>Observable 사용법</h2><ul>
-<li>서비스</li>
+<p>​</p>
+</li>
+<li><h2 id="context-annotation-config"><a href="#context-annotation-config" class="headerlink" title="context:annotation-config/"></a><a href="context:annotation-config/" target="_blank" rel="noopener">context:annotation-config/</a></h2><ul>
+<li><strong>@Required</strong></li>
+<li><strong>@Autowired</strong></li>
+<li><strong>@Resource, @PostConstruct, @PreDestory</strong></li>
+<li><strong>@Configuration</strong></li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Http, Response &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs/Observable'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'rxjs/add/operator/map'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Schedule &#125; <span class="keyword">from</span> <span class="string">'../models'</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduleService</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(public http: Http) &#123; &#125;</span><br><span class="line">	private baseUrl = CommonTS.BASE_URL;</span><br><span class="line"></span><br><span class="line">	getScheduleList(): Observable&lt;Schedule[]&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">          .get(<span class="keyword">this</span>.baseUrl + <span class="string">'/schedule/list.do'</span>)</span><br><span class="line">          .map(<span class="function">(<span class="params">res: Response</span>) =&gt;</span> res.json());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>서비스 실행</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subscription = <span class="keyword">this</span>.scheduleService.getScheduleList().subscribe(</span><br><span class="line">    schedules =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.schedules = schedules;</span><br><span class="line">        subscription.unsubscribe();</span><br><span class="line">    &#125;, (err) =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">          <span class="keyword">return</span> err;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li>stackoverflow의 <a href="http://stackoverflow.com/users/3375906/trungk18" target="_blank" rel="noopener">trungk18</a> 님 답변</li>
-</ul>
+<p>위 어노테이션 사용하기 위해서 필요.</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://hamait.tistory.com/322" target="_blank" rel="noopener">HAMA 블로그</a></p>
 
                     
                         
@@ -273,7 +269,7 @@
                     
                         <p>
                             <a
-                                href="/2017/06/12/Angular/10. Angular HTTP - Observable Promise 비교/#post-footer"
+                                href="/2017/07/07/Spring/spring default config/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -313,7 +309,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 145 of 148</li>
+        <li class="pagination-number">page 145 of 150</li>
     </ul>
 </div>
 
@@ -323,7 +319,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

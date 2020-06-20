@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/08/22/Vue/자식-컴포넌트의-메서드-호출/"
-                            aria-label=": 자식 컴포넌트의 함수 호출"
+                            href="/2018/08/29/CSS/element-bottom-위치-3가지-방법/"
+                            aria-label=": element를 bottom에 위치시키는 3가지 방법"
                         >
-                            자식 컴포넌트의 함수 호출
+                            element를 bottom에 위치시키는 3가지 방법
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-08-22T19:28:10+09:00">
+    <time datetime="2018-08-29T19:28:10+09:00">
 	
-		    2018.08.22
+		    2018.08.29
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Vue/">Vue</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,17 +227,22 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>ref 또는 eventbus 를 사용한다.  여기서는 ref를 사용.</p>
-<ul>
-<li><p>부모 컴포넌트</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;custom-full-calendar ref=&quot;calendar&quot; /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  import &#123;CustomFullCalendar&#125; from &apos;@&apos;</span><br><span class="line"> </span><br><span class="line">  export default &#123;</span><br><span class="line">    components: &#123;</span><br><span class="line">        CustomFullCalendar</span><br><span class="line">    &#125;,</span><br><span class="line">	methods: &#123;</span><br><span class="line">      nextWeekDate() &#123;</span><br><span class="line">  		this.$refs.calendar.nextDate() // 자식 컴포넌트의 함수를 호출</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>자식 컴포넌트</p>
-</li>
+                    <ul>
+<li>flex</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;div class=&quot;custom-full-calendar&quot; /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  import &#123;CustomFullCalendar&#125; from &apos;@&apos;</span><br><span class="line"> </span><br><span class="line">  export default &#123;</span><br><span class="line">	methods: &#123;</span><br><span class="line">      nextDate() &#123;</span><br><span class="line">  		console.log(&apos;다음 날짜 입니다&apos;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: column;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">margin-top</span>: auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 또는 */</span></span><br><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: flex-end;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/40957008/how-to-access-to-a-child-method-from-the-parent-in-vue-js/47565763#47565763" target="_blank" rel="noopener">https://stackoverflow.com/questions/40957008/how-to-access-to-a-child-method-from-the-parent-in-vue-js/47565763#47565763</a></p>
+<ul>
+<li>absolute</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">    <span class="attribute">position</span>: absolute;</span><br><span class="line">    <span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>table row</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">100%</span>;</span><br><span class="line">    <span class="attribute">border-collapse</span>:collapse;</span><br><span class="line">    <span class="attribute">display </span>: table;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">    <span class="attribute">display </span>: table-row;</span><br><span class="line">    <span class="attribute">vertical-align </span>: bottom;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">1px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/526035/how-can-i-position-my-div-at-the-bottom-of-its-container" target="_blank" rel="noopener">https://stackoverflow.com/questions/526035/how-can-i-position-my-div-at-the-bottom-of-its-container</a></p>
 
                     
                         
@@ -247,7 +252,7 @@
                     
                         <p>
                             <a
-                                href="/2018/08/22/Vue/자식-컴포넌트의-메서드-호출/#post-footer"
+                                href="/2018/08/29/CSS/element-bottom-위치-3가지-방법/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -287,7 +292,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 17 of 148</li>
+        <li class="pagination-number">page 17 of 150</li>
     </ul>
 </div>
 
@@ -297,7 +302,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

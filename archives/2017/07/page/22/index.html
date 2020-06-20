@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/2.1. build-and-test/"
-                            aria-label=": 02.1. 빌드 및 테스트"
+                            href="/2017/07/24/Ionic/css_ionic_component/"
+                            aria-label=": Ionic Component 한줄에 복수개 출력"
                         >
-                            02.1. 빌드 및 테스트
+                            Ionic Component 한줄에 복수개 출력
                         </a>
                     
                 </h1>
@@ -227,54 +227,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="웹에서-테스트"><a href="#웹에서-테스트" class="headerlink" title="웹에서 테스트"></a>웹에서 테스트</h2><blockquote>
-<p>$ ionic serve</p>
-<p>또는,</p>
-<p>$ ionic serve -lab</p>
-</blockquote>
-<p>으로 테스트 해볼 수 있다.</p>
-<h2 id="빌드"><a href="#빌드" class="headerlink" title="빌드"></a>빌드</h2><p>안드로이드 빌드시 : 안드로이드 SDK 필요</p>
-<p><a href="https://developer.android.com/studio/index.html?hl=ko" target="_blank" rel="noopener">안드로이드 스튜디오</a></p>
-<p>IOS 빌드시 : Apple Developer 계정 등록 필요.(년 $99 필요)</p>
-<p><a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple Developer</a> </p>
-<p>플랫폼 추가가 필요</p>
-<blockquote>
-<p>$ cordova platform add [android/ios]</p>
-</blockquote>
-<p>빌드</p>
-<blockquote>
-<p>$ ionic build [android/ios]</p>
-</blockquote>
-<p>혹시 빌드 중에 아래 오류가 나오는 경우</p>
-<p><em>could not find gradle wrapper within android sdk</em></p>
-<p><a href="https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" target="_blank" rel="noopener">SDK tools package</a> </p>
-<p>C:\Users\CURRENT_USER\AppData\Local\Android\sdk</p>
-<p>에 압축을 풀어주고, 다시 시도해보자.</p>
-<p>빌드 하면 apk 파일이 생성된다.</p>
-<h2 id="에뮬레이터"><a href="#에뮬레이터" class="headerlink" title="에뮬레이터"></a>에뮬레이터</h2><p>빌드후 안드로이드 스튜디오에 들어가</p>
-<p>AVD를 생성 후, 실행시킨다.   <a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">생성법</a></p>
-<p>다음</p>
-<blockquote>
-<p>$ ionic emulate [android/ios]</p>
-</blockquote>
-<p>키고 위 명령어를 입력하면, 자동으로 apk가 설치되고 실행된다.</p>
-<h2 id="실제-디바이스-실행"><a href="#실제-디바이스-실행" class="headerlink" title="실제 디바이스 실행"></a>실제 디바이스 실행</h2><p>실제 디바이스에서는 빌드후</p>
-<blockquote>
-<p>$ ionic run [android/ios]</p>
-</blockquote>
-<p>를 입력하면된다. USB에 꼽은 상태로 하면 되는 것 같은데.</p>
-<p>기기가 없어서 실제 실행은 못시켜보았다.</p>
-<h2 id="아이콘-변경"><a href="#아이콘-변경" class="headerlink" title="아이콘 변경"></a>아이콘 변경</h2><ol>
-<li>이미지를 복사 <project folder>/resources</project></li>
-<li><blockquote>
-<p>$ ionic resources</p>
-</blockquote>
-</li>
-<li>생성된 파일들을 <project folder>/resources/res 에서 <project folder>/platforms/android/res 로 이동시킨다.</project></project></li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">어제보다 오늘 더 블로그</a></p>
-<p><a href="https://forum.ionicframework.com/t/ionic-run-android-does-not-install-app-in-device/21795/6" target="_blank" rel="noopener">Ionic Forum</a></p>
-<p><a href="http://ionicframework.com/docs/v1/cli/run.html" target="_blank" rel="noopener">Ionic Doc</a></p>
+                    <p>아이오닉 컴포넌트 체크 박스 4개를 한줄에 출력해보자.</p>
+<ul>
+<li><strong>html</strong></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>아침<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"morning"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>점심<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"noon"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>저녁<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"evening"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>심야<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"night"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>scss</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.timeDivision</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">23%</span>;</span><br><span class="line">    <span class="attribute">display</span>: inline-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
                     
                         
@@ -284,7 +247,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/2.1. build-and-test/#post-footer"
+                                href="/2017/07/24/Ionic/css_ionic_component/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -334,7 +297,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

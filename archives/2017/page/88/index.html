@@ -202,67 +202,56 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/"
-                            aria-label=": CSS3 새로운 스타일 정리"
+                            href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                            aria-label=": 08.2. Angular Reactive 폼"
                         >
-                            CSS3 새로운 스타일 정리
+                            08.2. Angular Reactive 폼
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-16T00:29:35+09:00">
+    <time datetime="2017-07-15T09:09:21+09:00">
 	
-		    2017.07.16
+		    2017.07.15
     	
     </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/CSS/">CSS</a>
-
-
     
 </div>
 
             </div>
             
                 <div class="postShorten-content">
-                    <div class="myResize">Junho's Hexo Blog</div>
-
-<style>
-
-.myResize { width: 200px; height: 50px; border: solid black 2px; overflow: auto; resize: both; box-shadow: #ff8080 3px 3px 2px; text-shadow: #ff8080 3px 3px 2px;}
-
-</style>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"myResize"</span>&gt;</span>Junho's Hexo Blog<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.myResize</span> &#123;</span></span><br><span class="line">  width: 300px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  border: solid black 2px;</span><br><span class="line">  overflow: auto;</span><br><span class="line">  resize: both;</span><br><span class="line"><span class="css">  <span class="selector-tag">box-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">px</span>;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">text-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">p</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="1-resize-크기를-변경할-수-있는-박스-만들기"><a href="#1-resize-크기를-변경할-수-있는-박스-만들기" class="headerlink" title="1. resize : 크기를 변경할 수 있는 박스 만들기"></a>1. resize : 크기를 변경할 수 있는 박스 만들기</h4><p><code>resize: both;</code></p>
+                    <ol>
+<li>ReactiveFormModule Import 하기</li>
+</ol>
 <ul>
-<li>none : 크기 변경 불가</li>
-<li>horizontal, vertical, both : 수평, 높이, 수평과 폭 높이 둘다 변경 가능, </li>
+<li>app.module.ts</li>
 </ul>
-<h4 id="2-box-shadow-박스에-그림자-효과-주기"><a href="#2-box-shadow-박스에-그림자-효과-주기" class="headerlink" title="2. box-shadow : 박스에 그림자 효과 주기"></a>2. box-shadow : 박스에 그림자 효과 주기</h4><p><code>box-shadow: #ff8080 3px 3px 2px;</code></p>
-<ul>
-<li>가로위치, 세로 위치, 불투명, 확대 반지름</li>
-<li>그림자의 색</li>
-<li>inset 지정시 그림자를 박스 안쪽에 표시</li>
-</ul>
-<h4 id="3-text-shadow-문자열에-그림자-효과-주기"><a href="#3-text-shadow-문자열에-그림자-효과-주기" class="headerlink" title="3. text-shadow : 문자열에 그림자 효과 주기"></a>3. text-shadow : 문자열에 그림자 효과 주기</h4><p><code>text-shadow: #ff8080 3px 3px 2p;</code></p>
-<ul>
-<li>위치와 크기 : 가로, 세로, 불투명, 확대 반지름</li>
-<li>색 : 그림자색</li>
-</ul>
-<hr>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;            <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125;       <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ReactiveFormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;  <span class="comment">// &lt;-- #1 import module</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;        <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionModal &#125;   <span class="keyword">from</span> <span class="string">'[path]'</span>; <span class="comment">// &lt;-- #1 import component</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    ReactiveFormsModule <span class="comment">// &lt;-- #2 add to @NgModule imports</span></span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionModal, <span class="comment">// &lt;-- #3 declare app component</span></span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="word-wrap-문자-줄바꿈-처리"><a href="#word-wrap-문자-줄바꿈-처리" class="headerlink" title="word-wrap : 문자 줄바꿈 처리"></a>word-wrap : 문자 줄바꿈 처리</h4><ul>
-<li>normal : 줄을 바꿀 수 없는 경우, 줄 바꿈하지 않고 표시, 공백과 같이 줄 바꿀 수 있는 경 줄 바꿈</li>
-<li>break-word : 단어 중간에서 줄바꿈.</li>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormControl, FormGroup &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h2&gt;Hero Detail&lt;/h2&gt;</span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">    &lt;input [formControl]="name"&gt;</span></span><br><span class="line"><span class="string">  &lt;/label&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;form [formGroup]="heroForm" novalidate&gt;</span></span><br><span class="line"><span class="string">    &lt;div&gt;</span></span><br><span class="line"><span class="string">      &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">        &lt;input formControlName="name"&gt;</span></span><br><span class="line"><span class="string">      &lt;/label&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;p&gt;Form value: &#123;&#123; heroForm.value | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Form status: &#123;&#123; heroForm.status | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionModal &#123;</span><br><span class="line">  name = <span class="keyword">new</span> FormControl();</span><br><span class="line"></span><br><span class="line">  heroForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    name: <span class="keyword">new</span> FormControl()</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>FormControl : 값이나 validity를 추적한다.</p>
+<p>FormGroup : 값이나 validity 추적을위한 AbstractControl 인스턴스 그룹.</p>
+<p>AbstractControl : FormControl, FormGroup, FormArray의 추상 클래스로, 프로퍼티나 common behaviors들을 제공한다.</p>
+</blockquote>
+<ul>
+<li>FormControl</li>
 </ul>
-<h4 id="writing-mode-vertical-rl-세로-쓰기-표시"><a href="#writing-mode-vertical-rl-세로-쓰기-표시" class="headerlink" title="writing-mode: vertical-rl: 세로 쓰기 표시"></a>writing-mode: vertical-rl: 세로 쓰기 표시</h4><ul>
-<li>horizontal-tb</li>
-<li>vertical-lr : 세로 왼쪽 쓰기</li>
-<li>vertical-rl : 세로 오른쪽 쓰기</li>
+<p><code>FormControl 초기화</code> : 초기값, validators, async validators 값이 인자로 들어간다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">form = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  lowerCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.required),</span><br><span class="line">  upperCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>,</span><br><span class="line">               Validators.compose([</span><br><span class="line">                 Validators.required,</span><br><span class="line">                 Validators.pattern(<span class="string">"[A-Z]&#123;3&#125;"</span>)]))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>템플릿에 <code>[formControl]=&quot;폼컨트롤이름&quot;</code>으로 적용한다.</p>
+<ul>
+<li>FormGroup</li>
 </ul>
+<p><code>FormGroup 초기화</code>  : 폼 그룹 안에 폼컨트롤러를 선언해준다.</p>
+<p>, form에 <code>[formGroup]=&quot;폼그룹이름&quot;</code>으로 적용, input이나 select 태그에 <code>formControlName=&quot;폼컨트롤이름&quot;</code> 과 같이 적용한다.</p>
+<ul>
+<li>novalidators</li>
+</ul>
+<p><code>&lt;form&gt;</code> 태그 안에 novalidators는 브라우저가 원시 HTML 검증을 하지 않도록 해준다.</p>
 
                     
                         
@@ -272,7 +261,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/#post-footer"
+                                href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -312,7 +301,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 88 of 112</li>
+        <li class="pagination-number">page 88 of 111</li>
     </ul>
 </div>
 
@@ -322,7 +311,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/scss-문법정리/"
-                            aria-label=": SCSS 문법 정리"
+                            href="/2017/07/24/CSS/적용-우선순위/"
+                            aria-label=": CSS 적용 우선순위"
                         >
-                            SCSS 문법 정리
+                            CSS 적용 우선순위
                         </a>
                     
                 </h1>
@@ -227,45 +227,12 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="변수"><a href="#변수" class="headerlink" title="변수"></a>변수</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$변수명: <span class="number">#ff0000</span>;</span><br><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: $변수명;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="스타일-변수-처리"><a href="#스타일-변수-처리" class="headerlink" title="스타일 변수 처리"></a>스타일 변수 처리</h2><blockquote>
-<p>선언 : @mixin mixin명 {}</p>
-<p>호출 : @include mixin명 {}</p>
-</blockquote>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> boxStyle &#123;</span><br><span class="line">  <span class="attribute">border</span> : <span class="number">1px</span> <span class="variable">$red</span> <span class="number">#000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  @<span class="keyword">include</span> boxStyle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>선언 : @mixin mixin명(파라미터){}</p>
-<p>호출 : @include mixin명(파라미터)</p>
-</blockquote>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> style(<span class="variable">$color</span>, <span class="variable">$size</span>) &#123;</span><br><span class="line">  <span class="attribute">border</span> : <span class="variable">$size</span> <span class="variable">$color</span> <span class="number">#000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  @<span class="keyword">include</span> style(<span class="number">#fff064</span>, 10px)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="상속"><a href="#상속" class="headerlink" title="상속"></a>상속</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.menu</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.menu1</span> &#123;</span><br><span class="line">  @<span class="keyword">extend</span> .menu;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="부모참조선택자"><a href="#부모참조선택자" class="headerlink" title="부모참조선택자"></a>부모참조선택자</h2><ul>
-<li>scss</li>
-</ul>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$red</span>: <span class="number">#ff0000</span>;</span><br><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="variable">$red</span>;</span><br><span class="line">  &amp; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$red</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>css</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div &#123; color: #ff0000; &#125;</span><br><span class="line">div span &#123; color: #ff0000; &#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="컴파일"><a href="#컴파일" class="headerlink" title="컴파일"></a>컴파일</h2><p>scss가 존재하는 경로로 이동해서</p>
-<blockquote>
-<p>&gt; sass –style <strong>nested</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 기본</p>
-<p>&gt; sass –style <strong>expanded</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 확장</p>
-<p>&gt; sass –style <strong>compact</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 축약</p>
-</blockquote>
-<h4 id="자동-컴파일"><a href="#자동-컴파일" class="headerlink" title="자동 컴파일"></a>자동 컴파일</h4><blockquote>
-<p>&gt; sass –watch 작성된.scss</p>
-<p>&gt; sass –watch –style 스타일종류 작성된.scss</p>
-<p>&gt; sass –watch .:. </p>
-<p>&gt; sass –watch –style 스타일종류 .:. </p>
-</blockquote>
-<h2 id="Refenrece"><a href="#Refenrece" class="headerlink" title="Refenrece"></a>Refenrece</h2><p> [회복맨 블로그] : <a href="http://recoveryman.tistory.com/277" target="_blank" rel="noopener">http://recoveryman.tistory.com/277</a></p>
+                    <ol>
+<li>!important를 붙인 속성</li>
+<li>인라인 스타일(inline style) &gt; 내부 스타일(internal style) &gt; 외부 스타일(external sytle) &gt; 브라우저 기본값 순</li>
+<li>특정도(specify) 우선순위 id priority &gt; class priority &gt; type priority</li>
+<li>두 가지가 똑같은 등급일 때, 가장 마지막으로 적용한 것이 가장 우선한다.</li>
+</ol>
 
                     
                         
@@ -275,7 +242,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/scss-문법정리/#post-footer"
+                                href="/2017/07/24/CSS/적용-우선순위/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -325,7 +292,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

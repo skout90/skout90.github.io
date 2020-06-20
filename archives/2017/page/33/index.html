@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/2.1. javascript-변수/"
-                            aria-label=": 02.1. Javascript 변수"
+                            href="/2017/09/01/Google/cloud_function/"
+                            aria-label=": Cloud Function"
                         >
-                            02.1. Javascript 변수
+                            Cloud Function
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/Google/">Google</a>
 
 
     
@@ -227,45 +227,27 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="원시타입"><a href="#원시타입" class="headerlink" title="원시타입"></a>원시타입</h2><p><code>숫자</code> : number</p>
-<p><code>문자열</code> : string</p>
-<p><code>불리언(true/false)</code> : bool</p>
-<p><code>null</code> : null 이라는 빈값을 할당, 비어있는 객체를 뜻함(null은 객체형 데이터-ex: array, object-의 빈 값을 의미)</p>
-<p><code>undefined</code> : 변수를 선언만 하고 값을 할당하지 않음/즉, 자료형이 결정되지 않은 상태이다.</p>
-<p><code>NaN</code> : Not a Number 숫자가 아닌 값을 뜻함, 숫자가 아닌 값을 형변환시나, 연산 불가시.</p>
-<blockquote>
-<p>값 복사시, <strong>실제 값이 복사</strong>된다</p>
-</blockquote>
-<h2 id="래퍼객체"><a href="#래퍼객체" class="headerlink" title="래퍼객체"></a>래퍼객체</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'coding'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.length); <span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line">str.prop = <span class="string">'lala'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.prop); <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+                    <p>AWS lambda나, 구글 클라우드 펑션은 서버코드를 클라우드화해버려서 Serverless를 지향하는 아키텍쳐이다. 서버 없이 함수 호출 횟수만큼 과금한다. 구글 클라우더 펑션 기준으로 정리를 해본다.</p>
+<h2 id="동작-조건"><a href="#동작-조건" class="headerlink" title="동작 조건"></a>동작 조건</h2><h5 id="개발-언어"><a href="#개발-언어" class="headerlink" title="개발 언어"></a>개발 언어</h5><p>node.js 6.9.1 버전 기반으로 작동.</p>
+<h5 id="트리거"><a href="#트리거" class="headerlink" title="트리거"></a>트리거</h5><p>이벤트에 따라서, 코드를 수행해준다.</p>
+<ul>
+<li>Pub/Sub 메세지 큐에서 들어오는 메세지</li>
+<li>Firebase 모바일 SDK에 의해서 발생되는 이벤트</li>
+<li>Google Cloud Storage 서비스에 의해서 파일이 생성,수정,삭데 되었을때</li>
+<li>HTTP로 들어오는 요청 (REST API)</li>
+</ul>
+<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><h4 id="펑션-종류"><a href="#펑션-종류" class="headerlink" title="펑션 종류"></a>펑션 종류</h4><ul>
+<li>HTTP 펑션 : request, response </li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">exports.httpFunction = <span class="function"><span class="keyword">function</span> <span class="title">httpFunction</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(req.method)&#123;</span><br><span class="line">          <span class="keyword">case</span> <span class="string">'POST'</span>:</span><br><span class="line">           res.send(<span class="string">'SUCCESS!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<p>str은 원시 데이터타입으로 보이는데, 신기하게 객체처럼 메서드가 작동한다! 어떻게 된걸까?</p>
-<blockquote>
-<p>자바스크립트에서는 문자열과 관련된 어떤 작업을 하려고 할때 임시로 문자열 객체를 만들고 사용이 끝나면 제거한다.</p>
-</blockquote>
-<p>str.prop을 하는 순간 내부적으로 String 객체가 만들어 지고 저장되지만, 다시 해당 객체는 제거되기 때문에 str.prop을 호출하면 undefined가 나오는 것이다.</p>
-<p>래퍼 객체는 Number, String, Boolean이 존재한다.</p>
-<h2 id="참조"><a href="#참조" class="headerlink" title="참조"></a>참조</h2><p><code>var a = {};</code> 일때 a는 객체를 가리키는 참조이다. 객체의 메모리 공간을 직접 접근이 불가능하므로, 참조를 통해 접근한다.</p>
-<blockquote>
-<p>값 복사시, <strong>객체 자체가 아닌 참조(포인터)를 복사</strong>한다. 따라서 한쪽을 조작시 다른 쪽도 반영된다.</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.x = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="매개변수-전달"><a href="#매개변수-전달" class="headerlink" title="매개변수 전달"></a>매개변수 전달</h2><p>위 변수들을 매개변수로 저장할 때에도, 값 복사와 동일한 결과가 나온다. 원시타입의 경우에는 값이 복사되고, 참조값의 경우에는 참조값이 복사된다.</p>
-<blockquote>
-<p>참조값을 함수로 넘겨 변경하면 밖에서도 변경된다</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addX</span>(<span class="params">ref</span>) </span>&#123;</span><br><span class="line">    ref.x = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line">addX(a);</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="타입-판별"><a href="#타입-판별" class="headerlink" title="타입 판별"></a>타입 판별</h3><p>원시타입 : typeof </p>
-<p>참조타입 : instanceof </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// Object</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line">person <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="가비지-컬렉션"><a href="#가비지-컬렉션" class="headerlink" title="가비지 컬렉션"></a>가비지 컬렉션</h3><p>함수 스코프를 벗어난 변수들은 자동으로 가비지 컬렉션의 대상이 된다.</p>
-<blockquote>
-<p>그러나 전역변수는 해당 웹사이트가 종료되기 전까지 계속 존재하므로 사용하지 않게 되면 null로 초기화해주는 습관이 필요하다.</p>
-</blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<ul>
+<li>백그라운드 펑션 : GCS, Pub/Sub 등의 이벤트로 트리거된다고 함.</li>
+</ul>
+<h4 id="배포하기"><a href="#배포하기" class="headerlink" title="배포하기"></a>배포하기</h4><ul>
+<li>Web UI나 CLI를 통해 배포한다. <a href="http://bcho.tistory.com/1168" target="_blank" rel="noopener">조대협님 블로그 참조</a></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p> [조대협의 블로그] : <a href="http://bcho.tistory.com/1168" target="_blank" rel="noopener">http://bcho.tistory.com/1168</a></p>
 
                     
                         
@@ -275,7 +257,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/2.1. javascript-변수/#post-footer"
+                                href="/2017/09/01/Google/cloud_function/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -315,7 +297,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 33 of 112</li>
+        <li class="pagination-number">page 33 of 111</li>
     </ul>
 </div>
 
@@ -325,7 +307,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

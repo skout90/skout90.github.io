@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="지쳐가는 5분에 인생을 거는 나">
+    <title>Dynamo DB 설계 모범 케이스 분석 - 지쳐가는 5분에 인생을 거는 나</title>
+    <meta name="author" content="Junho Nam">
+    
+    
+        <link rel="icon" href="https://skout90.github.io/assets/images/favicon.jpg">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/feed.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg"},"articleBody":"스터디 배경테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문.\n개념https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html\nhttps://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SecondaryIndexes.html\n\n기본키\n\n파티션 키\n내부 해시 함수에 대한 입력으로 사용되는 키\n파티션 키로만 구성되어 있는 테이블에서는 동일한 파티션 키 값을 가질 수 없음.\n\n\n파티션 키 및 정렬 키 (복합 기본키)\n동일한 파티션 키 값을 가질 수 있으며, 두 아이템의 정렬키 값을 달라야함.\n파티션 키가 동일한 모든 항목은 정렬키 값을 기준으로 정렬\n\n\n\n\n보조 인덱스\n\n글로벌 보조 인덱스\n파티션 키 및 정렬키가 기본테이블의 파티션/정렬키와 다를 수 있는 인덱스\n모든 글로벌 보조 인덱스는 파티션 키가 있어야 하며, 선택사항으로 정렬키를 가질 수 있음.\n\n\n\n\n모든 파티션에서 전체 테이블을 쿼리\n\n로컬 보조 인덱스\n기본 테이블과 파티션 키는 동일하지만, 정렬 키는 다른 인덱스\n모든 로컬 보조 인덱스에는 기본 테이블의 파티션 및 정렬키가 자동적으로 포함 된다.\n파티션 키 값으로 지정한 대로 단일 파티션을 쿼리할 수 있음.\n\n\n\n\n\n프로비저닝 vs 온디멘드https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html\nDynamoDB의 과금 방식중 온디멘드 방식과 프로비저닝 방식이 있다. 우리 서비스의 경우\n\n트래픽이 점점 증가해나가고 있음, 또한 마케팅 여부에 따라 증가하거나 감소할 가능성이 있음.\n스크래핑 작업 특성상, 한번 스크래핑이 시작하면 많은양의 읽기 쓰기가 동작되며, 최적화된 쓰기/읽기 유닛 책정이 어려움.\n\n두가지 이유로 인해 읽기/쓰기 유닛을 책정하는 것보다는 온디멘드 방식을 사용하는 것이 좋다고 판단됌.\n\n온디멘드 방식을 사용하게 되면, 읽기/쓰기 유닛을 효율적으로 사용하기 위한 테이블 설계에 대한 부담이 줄어 드는 장점도 있다.\n\n테이블 설계\nDynamoDB 애플리케이션에서는 가능한 적은 수의 테이블을 유지해야 합니다. 대부분의 잘 설계된 애플리케이션은 단 하나의 테이블만 요구합니다.\n쿼리를 처리할 때 데이터를 변화시키는 대신(RDBMS 시스템의 방식), NoSQL 데이터베이스는 데이터베이스의 모양이 쿼리 대상과 일치하도록 데이터를 구성합니다. 이는 속도와 확장성 향상에 중요한 요소입니다.\n정렬 순서를 사용합니다.  핵심 설계가 함께 정렬할 것을 요구하는 경우, 관련 항목을 그룹으로 묶어 효율적으로 쿼리할 수 있습니다. 이는 중요한 NoSQL 설계 전략입니다.\n\n파티션 키 설계\n워크로드 배분\n\n파티션 키 설계 : 트래픽이 하나의 항목으로 너무 집중되는 경우, 자주 액세스 하는 항목이 동일한 파티션에 상주하지 않도록 파티션 균형 재조정\n\nhttps://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html\n\n\n\n파티션 키 값\n균일성\n\n\n\n사용자 ID, 애플리케이션의 사용자가 많은 경우.\n좋음\n\n\n상태 코드, 가능한 상태 코드가 몇 개 없는 경우.\n나쁨\n\n\n항목 생성 날짜, 가장 가까운 시간(예: 날, 시, 분)으로 반올림.\n나쁨\n\n\n디바이스 ID, 각 디바이스가 비교적 비슷한 간격으로 데이터에 액세스하는 경우.\n좋음\n\n\n디바이스 ID, 추적되는 디바이스는 많지만 다른 디바이스보다 한 디바이스가 훨씬 더 인기 있는 경우.\n나쁨\n\n\n\n\n\n쓰기 샤딩\n\n여러 파티션 키 공간에 워크로드를 더 골고루 배분할 수 있도록, 파티션 키 값 끝에 난수나 접미사를 추가하여 병렬처리함\n\n데이터 입력시, 가능하다면, 여러 파티션을 골고루 순회하며 입력할 수 있도록 쿼리\n\n아래 표에서 첫번째 표보다, 두번째 표가 서로 다른 파티션 키 값을 사용, 병렬처리 성능 향상\n\n\n\n\nUserID\nMessageID\n\n\n\nU1\n1\n\n\nU1\n2\n\n\nU1\n…\n\n\nU1\n… 최대 100\n\n\nU2\n1\n\n\nU2\n2\n\n\nU2\n…\n\n\nU2\n… 최대 200\n\n\n\n\n\nUserID\nMessageID\n\n\n\nU1\n1\n\n\nU2\n1\n\n\nU3\n1\n\n\n…\n…\n\n\nU1\n2\n\n\nU2\n2\n\n\nU3\n2\n\n\n…\n…\n\n\n\n\n\n여러 UserID를 순회하면서 값을 입력한다면, 병렬 처리 성능이 향상한다.\n\n\n\n정렬키 설계\nhttps://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html\n\n복합정렬키를 사용하면, 데이터의 계층적 관계를 정의할 수 있도록 도와준다\n[country]#[region]#[state]#[county]#[city]#[neighborhood]\n위와같이, 정렬키를 구성한다면, begins_with, between, &gt;, &lt; 등 연산자를 사용하는 범위 쿼리를 사용하여 위치 목록을 효율적으로 범위 쿼리 할 수 있다.\n\n\n보조키 설계https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-indexes-general.html\n\n일반적으로 로컬 보조 인덱스보다, 글로벌 보조 인덱스 사용\n\n스토리지 및 IO 비용 감소를 위해 : 인덱스 수와 크기를 최대한 작게 유지\n\n\n예시Case1https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html\n\n버전 관리에 정렬키를 사용하는 경우로 v0_ v00_ v000_ 같은 계층구조로 버전을 효율적으로 쿼링함.\nCase2https://dev.overnodes.com/entry/AWS-DynamoDBNoSQL\n\n\n\nCollector-1 / Collector-2, Details/Remittance-1 키의 네임이 아니라, Value이다\n\n스터디 적용\n거래 태깅 변경 로그의 테이블 설계\n\n파티션키, 정렬키 설계\n키후보\n\n파티션키 : 회사 ID   /  정렬키 : 거래ID + 입력시간(DTS_UPDATE)\n\n파티션키 : 거래 ID  /   정렬키 : 입력시간(DTS_UPDATE)\n\n파티션키 : 거래ID + 입력시간(DTS_UPDATE)\n\n\n\n사용 쿼리\n\n조회 쿼리\n한 회사의 종합적인 태그 변경 로그를 분석할 경우 1번의 케이스가 적절\n한 거래 내역의 태그 변경 로그를 쿼리할 경우 2번의 케이스가 적절\n\n\n다중 입력시 병렬처리 성능 최적화 관점\n1번 케이스의 경우, 스크래핑시나 스마트 태그시 한 파티션에 워크로드가 집중되는 문제가 있음\n3번 케이스의 경우, 워크로드 분산에는 최적화되지만, 데이터의 구조가 실제 사용 케이스와 다름\n2번 케이스가 적절함.\n\n\n\n\n\n\n조회쿼리/다중입력을 고려하여 2번 케이스가 가장 적절하다고 판단됌.\n\n보조키 사용\n한 회사의 종합적인 태그 변경 로그를 분석할 케이스가 있을 수 있기 때문에 회사ID 보조키를 사용한다.\n2번 케이스로 구성할경우, 회사 ID는 기본키와 별개이므로, 글로벌 보조키를 사용한다.\n\n","dateCreated":"2020-03-25T19:28:10+09:00","dateModified":"2020-06-20T19:39:12+09:00","datePublished":"2020-03-25T19:28:10+09:00","description":"","headline":"Dynamo DB 설계 모범 케이스 분석","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"},"publisher":{"@type":"Organization","name":"Junho Nam","sameAs":["https://github.com/skout90","https://stackoverflow.com/users/5809394"],"image":"favicon.jpg","logo":{"@type":"ImageObject","url":"favicon.jpg"}},"url":"https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"}</script>
+    <meta name="description" content="스터디 배경테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문. 개념https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html https://docs.aws.a">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Dynamo DB 설계 모범 케이스 분석">
+<meta property="og:url" content="https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/index.html">
+<meta property="og:site_name" content="지쳐가는 5분에 인생을 거는 나">
+<meta property="og:description" content="스터디 배경테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문. 개념https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html https://docs.aws.a">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/images/VersionControl.png">
+<meta property="og:image" content="https://i.postimg.cc/gcxtDBmx/dynamodb-example-1.png">
+<meta property="og:image" content="https://i.postimg.cc/MpSsz6RB/dynamodb-example-2.png">
+<meta property="og:updated_time" content="2020-06-20T10:39:12.498Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dynamo DB 설계 모범 케이스 분석">
+<meta name="twitter:description" content="스터디 배경테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문. 개념https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html https://docs.aws.a">
+<meta name="twitter:image" content="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/images/VersionControl.png">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://skout90.github.io/assets/images/favicon.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-sbr8a29vhg2buwqdfiagp9i2fk4rxgm5ip8dz0ru5ozzkfexnn3svxyxd4eg.min.css">
+    <!--STYLES END-->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-102438751-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-102438751-1');
+    </script>
+
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/ "
+            aria-label=""
+        >
+            지쳐가는 5분에 인생을 거는 나
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Junho Nam</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>enjoy while living</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/skout90" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://stackoverflow.com/users/5809394" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Dynamo DB 설계 모범 케이스 분석
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-03-25T19:28:10+09:00">
+	
+		    2020.03.25
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/etc/">etc</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="스터디-배경"><a href="#스터디-배경" class="headerlink" title="스터디 배경"></a>스터디 배경</h3><p>테이블의 변경 히스토리를 저장하기 위해 DynamoDB를 사용하는 것이 좋다고 판단됌. 로그 데이터이기 때문에  데이터들의 일관성 문제가 없으며 많은 데이터를 효율적으로 저장하고 쿼리할 수 있기 때문.</p>
+<h3 id="개념"><a href="#개념" class="headerlink" title="개념"></a>개념</h3><p><a href="https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html" target="_blank" rel="noopener">https://yogae.github.io/aws/2018/12/06/dynamodb_summary.html</a></p>
+<p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SecondaryIndexes.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/SecondaryIndexes.html</a></p>
+<ul>
+<li><p>기본키</p>
+<ul>
+<li>파티션 키<ul>
+<li>내부 해시 함수에 대한 입력으로 사용되는 키</li>
+<li>파티션 키로만 구성되어 있는 테이블에서는 동일한 파티션 키 값을 가질 수 없음.</li>
+</ul>
+</li>
+<li>파티션 키 및 정렬 키 (복합 기본키)<ul>
+<li>동일한 파티션 키 값을 가질 수 있으며, 두 아이템의 정렬키 값을 달라야함.</li>
+<li>파티션 키가 동일한 모든 항목은 정렬키 값을 기준으로 정렬</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>보조 인덱스</p>
+<ul>
+<li>글로벌 보조 인덱스<ul>
+<li>파티션 키 및 정렬키가 기본테이블의 파티션/정렬키와 다를 수 있는 인덱스</li>
+<li>모든 글로벌 보조 인덱스는 파티션 키가 있어야 하며, 선택사항으로 정렬키를 가질 수 있음.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>모든 파티션에서 전체 테이블을 쿼리</p>
+<ul>
+<li>로컬 보조 인덱스<ul>
+<li>기본 테이블과 파티션 키는 동일하지만, 정렬 키는 다른 인덱스</li>
+<li>모든 로컬 보조 인덱스에는 기본 테이블의 파티션 및 정렬키가 자동적으로 포함 된다.</li>
+<li>파티션 키 값으로 지정한 대로 단일 파티션을 쿼리할 수 있음.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="프로비저닝-vs-온디멘드"><a href="#프로비저닝-vs-온디멘드" class="headerlink" title="프로비저닝 vs 온디멘드"></a>프로비저닝 vs 온디멘드</h3><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html</a></p>
+<p>DynamoDB의 과금 방식중 <code>온디멘드</code> 방식과 <code>프로비저닝</code> 방식이 있다. 우리 서비스의 경우</p>
+<ul>
+<li>트래픽이 점점 증가해나가고 있음, 또한 마케팅 여부에 따라 증가하거나 감소할 가능성이 있음.</li>
+<li>스크래핑 작업 특성상, 한번 스크래핑이 시작하면 많은양의 읽기 쓰기가 동작되며, 최적화된 쓰기/읽기 유닛 책정이 어려움.</li>
+</ul>
+<p>두가지 이유로 인해 읽기/쓰기 유닛을 책정하는 것보다는 온디멘드 방식을 사용하는 것이 좋다고 판단됌.</p>
+<blockquote>
+<p>온디멘드 방식을 사용하게 되면, 읽기/쓰기 유닛을 효율적으로 사용하기 위한 테이블 설계에 대한 부담이 줄어 드는 장점도 있다.</p>
+</blockquote>
+<h3 id="테이블-설계"><a href="#테이블-설계" class="headerlink" title="테이블 설계"></a>테이블 설계</h3><ul>
+<li>DynamoDB 애플리케이션에서는 <strong>가능한 적은 수의 테이블을 유지해</strong>야 합니다. 대부분의 잘 설계된 애플리케이션은 단 <em>하나의</em> 테이블만 요구합니다.</li>
+<li>쿼리를 처리할 때 데이터를 변화시키는 대신(RDBMS 시스템의 방식), NoSQL 데이터베이스는 <strong>데이터베이스의 모양이 쿼리 대상과 일치하도록</strong> 데이터를 구성합니다. 이는 속도와 확장성 향상에 중요한 요소입니다.</li>
+<li><strong>정렬 순서를 사용합니다.</strong>  핵심 설계가 함께 정렬할 것을 요구하는 경우, 관련 항목을 그룹으로 묶어 효율적으로 쿼리할 수 있습니다. 이는 중요한 NoSQL 설계 전략입니다.</li>
+</ul>
+<h3 id="파티션-키-설계"><a href="#파티션-키-설계" class="headerlink" title="파티션 키 설계"></a>파티션 키 설계</h3><ul>
+<li><p>워크로드 배분</p>
+<ul>
+<li><p>파티션 키 설계 : 트래픽이 하나의 항목으로 너무 집중되는 경우, 자주 액세스 하는 항목이 동일한 파티션에 상주하지 않도록 파티션 균형 재조정</p>
+</li>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html</a></p>
+<table>
+<thead>
+<tr>
+<th align="left">파티션 키 값</th>
+<th align="left">균일성</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">사용자 ID, 애플리케이션의 사용자가 많은 경우.</td>
+<td align="left">좋음</td>
+</tr>
+<tr>
+<td align="left">상태 코드, 가능한 상태 코드가 몇 개 없는 경우.</td>
+<td align="left">나쁨</td>
+</tr>
+<tr>
+<td align="left">항목 생성 날짜, 가장 가까운 시간(예: 날, 시, 분)으로 반올림.</td>
+<td align="left">나쁨</td>
+</tr>
+<tr>
+<td align="left">디바이스 ID, 각 디바이스가 비교적 비슷한 간격으로 데이터에 액세스하는 경우.</td>
+<td align="left">좋음</td>
+</tr>
+<tr>
+<td align="left">디바이스 ID, 추적되는 디바이스는 많지만 다른 디바이스보다 한 디바이스가 훨씬 더 인기 있는 경우.</td>
+<td align="left">나쁨</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>쓰기 샤딩</p>
+<ul>
+<li><p>여러 파티션 키 공간에 워크로드를 더 골고루 배분할 수 있도록, 파티션 키 값 끝에 난수나 접미사를 추가하여 병렬처리함</p>
+</li>
+<li><p>데이터 입력시, 가능하다면, 여러 파티션을 골고루 순회하며 입력할 수 있도록 쿼리</p>
+<ul>
+<li>아래 표에서 첫번째 표보다, 두번째 표가 서로 다른 파티션 키 값을 사용, 병렬처리 성능 향상</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">UserID</th>
+<th align="left">MessageID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">U1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">… 최대 100</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">… 최대 200</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="left">UserID</th>
+<th align="left">MessageID</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">U1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">U3</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+<tr>
+<td align="left">U1</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U2</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">U3</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<blockquote>
+<p>여러 UserID를 순회하면서 값을 입력한다면, 병렬 처리 성능이 향상한다.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="정렬키-설계"><a href="#정렬키-설계" class="headerlink" title="정렬키 설계"></a>정렬키 설계</h3><ul>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html</a></p>
+</li>
+<li><p>복합정렬키를 사용하면, 데이터의 계층적 관계를 정의할 수 있도록 도와준다</p>
+<p><code>[country]#[region]#[state]#[county]#[city]#[neighborhood]</code></p>
+<p>위와같이, 정렬키를 구성한다면, <code>begins_with</code>, <code>between</code>, <code>&gt;</code>, <code>&lt;</code> 등 연산자를 사용하는 범위 쿼리를 사용하여 위치 목록을 효율적으로 범위 쿼리 할 수 있다.</p>
+</li>
+</ul>
+<h3 id="보조키-설계"><a href="#보조키-설계" class="headerlink" title="보조키 설계"></a>보조키 설계</h3><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-indexes-general.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-indexes-general.html</a></p>
+<ul>
+<li><p>일반적으로 로컬 보조 인덱스보다, 글로벌 보조 인덱스 사용</p>
+</li>
+<li><p>스토리지 및 IO 비용 감소를 위해 : 인덱스 수와 크기를 최대한 작게 유지</p>
+</li>
+</ul>
+<h3 id="예시"><a href="#예시" class="headerlink" title="예시"></a>예시</h3><h4 id="Case1"><a href="#Case1" class="headerlink" title="Case1"></a>Case1</h4><p><a href="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-sort-keys.html</a></p>
+<p><img src="https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/images/VersionControl.png" alt="         기본 키와 데이터 항목 속성을 가진 테이블을 표시하는 버전 관리의 예       "></p>
+<p>버전 관리에 정렬키를 사용하는 경우로 v0_ v00_ v000_ 같은 계층구조로 버전을 효율적으로 쿼링함.</p>
+<h4 id="Case2"><a href="#Case2" class="headerlink" title="Case2"></a>Case2</h4><p><a href="https://dev.overnodes.com/entry/AWS-DynamoDBNoSQL" target="_blank" rel="noopener">https://dev.overnodes.com/entry/AWS-DynamoDBNoSQL</a></p>
+<p><img src="https://i.postimg.cc/gcxtDBmx/dynamodb-example-1.png" alt="image-20200324180519822"></p>
+<p><img src="https://i.postimg.cc/MpSsz6RB/dynamodb-example-2.png" alt="image-20200324180741274"></p>
+<blockquote>
+<p>Collector-1 / Collector-2, Details/Remittance-1 키의 네임이 아니라, Value이다</p>
+</blockquote>
+<h3 id="스터디-적용"><a href="#스터디-적용" class="headerlink" title="스터디 적용"></a>스터디 적용</h3><blockquote>
+<p>거래 태깅 변경 로그의 테이블 설계</p>
+</blockquote>
+<h4 id="파티션키-정렬키-설계"><a href="#파티션키-정렬키-설계" class="headerlink" title="파티션키, 정렬키 설계"></a>파티션키, 정렬키 설계</h4><ul>
+<li><p>키후보</p>
+<ol>
+<li><p>파티션키 : 회사 ID   /  정렬키 : 거래ID + 입력시간(DTS_UPDATE)</p>
+</li>
+<li><p>파티션키 : 거래 ID  /   정렬키 : 입력시간(DTS_UPDATE)</p>
+</li>
+<li><p>파티션키 : 거래ID + 입력시간(DTS_UPDATE)</p>
+</li>
+</ol>
+</li>
+<li><p>사용 쿼리</p>
+<ul>
+<li>조회 쿼리<ul>
+<li>한 회사의 종합적인 태그 변경 로그를 분석할 경우 1번의 케이스가 적절</li>
+<li>한 거래 내역의 태그 변경 로그를 쿼리할 경우 2번의 케이스가 적절</li>
+</ul>
+</li>
+<li>다중 입력시 병렬처리 성능 최적화 관점<ul>
+<li>1번 케이스의 경우, 스크래핑시나 스마트 태그시 한 파티션에 워크로드가 집중되는 문제가 있음</li>
+<li>3번 케이스의 경우, 워크로드 분산에는 최적화되지만, 데이터의 구조가 실제 사용 케이스와 다름</li>
+<li>2번 케이스가 적절함.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>조회쿼리/다중입력을 고려하여 2번 케이스가 가장 적절하다고 판단됌.</p>
+</blockquote>
+<h4 id="보조키-사용"><a href="#보조키-사용" class="headerlink" title="보조키 사용"></a>보조키 사용</h4><ul>
+<li>한 회사의 종합적인 태그 변경 로그를 분석할 케이스가 있을 수 있기 때문에 <code>회사ID</code> 보조키를 사용한다.</li>
+<li>2번 케이스로 구성할경우, 회사 ID는 기본키와 별개이므로, 글로벌 보조키를 사용한다.</li>
+</ul>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/06/20/Refactoring/1. 리팩터링-예시/"
+                    data-tooltip="1. 리팩터링 예시"
+                    aria-label="PREVIOUS: 1. 리팩터링 예시"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/09/Web/콘솔로그글자서식주기/"
+                    data-tooltip="콘솔로그 console.log 글자 서식 주기"
+                    aria-label="NEXT: 콘솔로그 console.log 글자 서식 주기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/06/20/Refactoring/1. 리팩터링-예시/"
+                    data-tooltip="1. 리팩터링 예시"
+                    aria-label="PREVIOUS: 1. 리팩터링 예시"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/09/Web/콘솔로그글자서식주기/"
+                    data-tooltip="콘솔로그 console.log 글자 서식 주기"
+                    aria-label="NEXT: 콘솔로그 console.log 글자 서식 주기"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#disqus_thread"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/favicon.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Junho Nam</h4>
+        
+            <div id="about-card-bio"><p>enjoy while living</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>full stack web developer</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Seoul, Korea
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-g4mkxjtcee760xuht66pquch3apo7j5mk6ywfkukd4ko1fduhlhzd6iuikso.min.js"></script>
+<!--SCRIPTS END-->
+<script type="text/javascript">      
+  var search_path = "search.xml";
+  if (search_path.length == 0) {
+    search_path = "search.xml";
+  }
+  var path = "/" + search_path;
+  searchFunc(path, 'local-search-input', 'local-search-result');
+</script>
+
+    
+        <script>
+          var disqus_config = function() {
+            this.page.url = 'https://skout90.github.io/2020/03/25/etc/dynamo-db-architecture-best-practice/';
+              
+            this.page.identifier = '2020/03/25/etc/dynamo-db-architecture-best-practice/';
+              
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            var disqus_shortname = 'kindrobot-disqus-com';
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+    
+
+
+
+
+    </body>
+</html>

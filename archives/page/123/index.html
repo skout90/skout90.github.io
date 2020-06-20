@@ -202,15 +202,15 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/GIT/merge_vs_rebase/"
-                            aria-label=": Merge VS Rebase"
+                            href="/2017/07/24/Ionic/css_ionic_component/"
+                            aria-label=": Ionic Component 한줄에 복수개 출력"
                         >
-                            Merge VS Rebase
+                            Ionic Component 한줄에 복수개 출력
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-24T13:54:01+09:00">
+    <time datetime="2017-07-24T14:43:13+09:00">
 	
 		    2017.07.24
     	
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/GIT/">GIT</a>
+    <a class="category-link" href="/categories/Ionic/">Ionic</a>
 
 
     
@@ -227,50 +227,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>merge를 하면 branch를 생성한 시점의 베이스를 기준으로 합병이 된다</p>
-<p>rebase는 <code>git rebase 브랜치</code> 에서 지정한 브랜치를 베이스로 기준 삼아 합병이 된다</p>
-<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><p><code>master</code> 와 <code>slave</code>가 있고 <code>master</code> 에서 <code>git merge slave</code> 를 하면</p>
-<ol>
-<li><code>master</code>의 커밋 내역 이후 <code>slave</code>의 커밋내역이 단순 합쳐짐.</li>
-<li>커밋을 묶음으로 관리 : 마지막 <code>merge</code> 커밋을 <code>reset</code> 하면 통째로 모든 <code>merge</code>커밋들이 사라짐.</li>
-</ol>
-<h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><ul>
-<li><p><code>master</code> 에서 <code>git rebase slave</code>를 하면</p>
-<p>슬레이브 뒤에 마스터의 커밋 이력이 쌓임.</p>
-</li>
-</ul>
+                    <p>아이오닉 컴포넌트 체크 박스 4개를 한줄에 출력해보자.</p>
 <ul>
-<li><p><code>slave</code> 에서 <code>git rebase master</code>를 하면</p>
-<p>마스터 커밋 뒤로 슬레이브 이력이 쌓임.</p>
-</li>
+<li><strong>html</strong></li>
 </ul>
-<ol>
-<li>트리 그래프도 브랜치 없이 일렬로 나타남.</li>
-<li>중복된 수정 내용은 로그가 남지 않음.</li>
-<li>reset시 통째로 merge 커밋들이 사라지지 않음.</li>
-</ol>
-<h2 id="rebase-과정"><a href="#rebase-과정" class="headerlink" title="rebase 과정"></a>rebase 과정</h2><ol>
-<li>커밋로그 보기</li>
-</ol>
-<p><code>git log --decorate --all --oneline --graph</code></p>
-<ol start="2">
-<li>데브의 마지막 커밋을 베이스로 머지함</li>
-</ol>
-<p><code>git rebase dev</code></p>
-<ol start="3">
-<li>conflict 수정 후</li>
-</ol>
-<p><code>git add 파일 전체경로</code></p>
-<ol start="4">
-<li>상태 확인</li>
-</ol>
-<p><code>git status</code></p>
-<ol start="5">
-<li>리베이스 계속</li>
-</ol>
-<p><code>git rebase --continue</code></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/git-merge-rebase.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/git-merge-rebase.html</a></p>
-<p><a href="https://blog.outsider.ne.kr/666" target="_blank" rel="noopener">https://blog.outsider.ne.kr/666</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>아침<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"morning"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>점심<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"noon"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>저녁<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"evening"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-item</span> <span class="attr">class</span>=<span class="string">"timeDivision"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-label</span>&gt;</span>심야<span class="tag">&lt;/<span class="name">ion-label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-checkbox</span> [(<span class="attr">ngModel</span>)]=<span class="string">"night"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-checkbox</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>scss</li>
+</ul>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.timeDivision</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">23%</span>;</span><br><span class="line">    <span class="attribute">display</span>: inline-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
                     
                         
@@ -280,7 +247,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/GIT/merge_vs_rebase/#post-footer"
+                                href="/2017/07/24/Ionic/css_ionic_component/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -320,7 +287,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 123 of 148</li>
+        <li class="pagination-number">page 123 of 150</li>
     </ul>
 </div>
 
@@ -330,7 +297,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

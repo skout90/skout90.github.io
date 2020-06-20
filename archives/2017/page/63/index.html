@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/04/Ionic/Ionic-Visual-Studio-Code-디버깅-방법/"
-                            aria-label=": Ionic Visual Studio Code 디버깅 방법"
+                            href="/2017/07/30/Angular/13. Angular-Directive/"
+                            aria-label=": 13. Angular Directive"
                         >
-                            Ionic Visual Studio Code 디버깅 방법
+                            13. Angular Directive
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-04T10:00:00+09:00">
+    <time datetime="2017-07-30T14:43:13+09:00">
 	
-		    2017.08.04
+		    2017.07.30
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+    <a class="category-link" href="/categories/Angular/">Angular</a>
 
 
     
@@ -227,24 +227,28 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Ionic에서 Vs Code의 디버깅 방법을 알아본다.</p>
-<h4 id="VS-code에서-Chrome-확장-프로그램을-다운-받는다"><a href="#VS-code에서-Chrome-확장-프로그램을-다운-받는다" class="headerlink" title="VS code에서 Chrome 확장 프로그램을 다운 받는다."></a>VS code에서 Chrome 확장 프로그램을 다운 받는다.</h4><p><code>Debugger for Chrome</code> 을 검색 및 설치 후, VS code를 재실행 시킨다.</p>
-<h4 id="package-json에-source-map-설정-추가"><a href="#package-json에-source-map-설정-추가" class="headerlink" title="package.json에 source map 설정 추가"></a>package.json에 source map 설정 추가</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> ...</span><br><span class="line">  "description": "설명",</span><br><span class="line">  // description 아래에 config 항목을 추가한다.</span><br><span class="line">  "config": &#123;</span><br><span class="line">    "ionic_bundler": "webpack",</span><br><span class="line">    "ionic_source_map": "source-map"</span><br><span class="line">  &#125;</span><br><span class="line">... </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <p>태그에 없는 기능을 추가적으로 부여한다.</p>
+<ul>
+<li>highlight.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Directive, ElementRef, Renderer &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Directive</span>(&#123;</span><br><span class="line">    selector: <span class="string">'[highlight]'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Highlight &#123;</span><br><span class="line">    <span class="keyword">constructor</span> (<span class="params"> el: ElementRef, renderer: Renderer </span>) &#123;</span><br><span class="line">        renderer.setElementStyle(el.nativeElement, <span class="string">'backgroundColor'</span>, <span class="string">'blue'</span>);</span><br><span class="line">        <span class="comment">// 다음과 같이 nativeElement를 통해서만 지정할 수 있다.</span></span><br><span class="line">        <span class="comment">// el.nativeElement.style.backgroundColor = 'grey';  </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="launch-json-설정"><a href="#launch-json-설정" class="headerlink" title="launch.json 설정"></a>launch.json 설정</h4><p><img src="http://i.imgur.com/n32HheM.png" alt="img"></p>
-<p>디버그 탭에서 다음과 같이 설정 한다.</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"version"</span>: <span class="string">"0.2.0"</span>,</span><br><span class="line">    <span class="attr">"configurations"</span>: [</span><br><span class="line">        ...</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"type"</span>: <span class="string">"chrome"</span>,</span><br><span class="line">            <span class="attr">"trace"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"request"</span>: <span class="string">"attach"</span>,</span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Attach to Chrome"</span>,</span><br><span class="line">            <span class="attr">"port"</span>: <span class="number">9222</span>,</span><br><span class="line">            <span class="attr">"sourceMaps"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"webRoot"</span>: <span class="string">"$&#123;workspaceRoot&#125;/www"</span>,</span><br><span class="line">            <span class="attr">"url"</span>: <span class="string">"http://localhost:8100/"</span></span><br><span class="line">        &#125;</span><br><span class="line">      ...</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ElementRef : highlight 디렉티브가 지정된 태그 자체를 나타냄(el.nativeElement)</p>
+<p>Renderer : 태그를 제어하기 위해 사용. 특히 스타일시트에 효과를 줄 때 많이 사용.</p>
+</blockquote>
+<ul>
+<li>app.module.ts</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">import &#123; Highlight &#125; from &apos;../pages/prescription/highlight&apos;;</span><br><span class="line">...</span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">	...</span><br><span class="line">    Highlight</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 
-<h4 id="chrome에-remote-debugging-port-속성을-추가한다"><a href="#chrome에-remote-debugging-port-속성을-추가한다" class="headerlink" title="chrome에 remote debugging port 속성을 추가한다."></a>chrome에 remote debugging port 속성을 추가한다.</h4><p><img src="http://i.imgur.com/A3lix9j.jpg" alt="img"></p>
-<p>크롬이 이미 실행중이라면, 닫고 다시 실행할 것!</p>
-<p>셋팅은 끝.</p>
-<p>위에서 설정한 바로가기를 통해 크롬을 실행하고,</p>
-<p><code>ionic serve</code>를 이용해서, 아이오닉 서버를 구동시킨다.</p>
-<p>크롬 화면에 아이오닉 페이지가 뜨면, 아래 그림 처럼</p>
-<p><code>Attach to Chrome</code>을 확인하고, 초록색 디버깅 버튼을 누른다.</p>
-<p><img src="http://i.imgur.com/T81erQX.png" alt="img"></p>
-<p>이제 break point를 걸고 쾌적한 디버깅을 즐기시면 됩니당ㅎㅎ</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://forum.ionicframework.com/t/how-to-debug-typescript-in-ionic-2-apps-using-vs-code-and-app-scripts-0-0-46/70023" target="_blank" rel="noopener">https://forum.ionicframework.com/t/how-to-debug-typescript-in-ionic-2-apps-using-vs-code-and-app-scripts-0-0-46/70023</a></p>
+<p>만들어준 디렉티비를 declarations에 추가한다.</p>
+<ul>
+<li>페이지.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`&lt;h2 highlight&gt;라라랄라랄&lt;/h2&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionModal &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=lZ7yPTI1xlc&amp;index=24&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=lZ7yPTI1xlc&amp;index=24&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
 
                     
                         
@@ -254,7 +258,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/04/Ionic/Ionic-Visual-Studio-Code-디버깅-방법/#post-footer"
+                                href="/2017/07/30/Angular/13. Angular-Directive/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -294,7 +298,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 63 of 112</li>
+        <li class="pagination-number">page 63 of 111</li>
     </ul>
 </div>
 
@@ -304,7 +308,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

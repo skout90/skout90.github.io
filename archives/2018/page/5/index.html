@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/09/02/DevOps/circleCI-빌드-배포-파일전송-리스타트/"
-                            aria-label=": CircleCI를 활용해서 build한 파일 서버에 배포하기"
+                            href="/2018/09/02/DevOps/ci-cd-reference/"
+                            aria-label=": CI / CD 링크 정리"
                         >
-                            CircleCI를 활용해서 build한 파일 서버에 배포하기
+                            CI / CD 링크 정리
                         </a>
                     
                 </h1>
@@ -227,58 +227,25 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>한창 CI/CD에 대한 연동 작업을 하고 있다. Circle CI를 활용하여 빌드 배포 자동화를 완성해보자. Circle CI는 1개의 컨테이너를 제공하는데, 1달에 1500 시간 사용할 수 있으며, 여러 repository 까지 무료로 제공해준다! </p>
-<p><a href="https://circleci.com" target="_blank" rel="noopener">https://circleci.com</a></p>
-<ul>
-<li>작업 흐름은 다음과 같다.</li>
-</ul>
-<ol>
-<li>git push</li>
-<li>circle ci 에서 event catch</li>
-<li>circle ci 빌드 시작<ol>
-<li>docker를 통해 ubuntu, node 이미지 실행</li>
-<li>build</li>
-</ol>
+                    <ul>
+<li><p>CI / CD 툴 비교</p>
+<blockquote>
+<p><a href="https://www.slant.co/topics/799/~best-continuous-integration-tools" target="_blank" rel="noopener">https://www.slant.co/topics/799/~best-continuous-integration-tools</a></p>
+</blockquote>
 </li>
-<li>성공한 build 파일을 배포할 서버로 전송</li>
-<li>운영 서버에 접속 후 서버 리스타트</li>
-</ol>
-<h2 id="Circle-CI-셋팅"><a href="#Circle-CI-셋팅" class="headerlink" title="Circle CI 셋팅"></a>Circle CI 셋팅</h2><ul>
-<li>Circle CI에 프로젝트 추가</li>
+<li><p>jenkins (doker활용) : CI / CD 툴<br><a href="http://woowabros.github.io/experience/2018/06/26/bros-cicd.html" target="_blank" rel="noopener">http://woowabros.github.io/experience/2018/06/26/bros-cicd.html</a><br><a href="https://codeforgeek.com/2016/04/continuous-integration-deployment-jenkins-node-js/" target="_blank" rel="noopener">https://codeforgeek.com/2016/04/continuous-integration-deployment-jenkins-node-js/</a></p>
+</li>
+<li><p>jenkins로 node 배포하기<br><a href="https://setyourmindpark.github.io/2017/04/22/jenkins/jenkins-2/" target="_blank" rel="noopener">https://setyourmindpark.github.io/2017/04/22/jenkins/jenkins-2/</a></p>
+</li>
+<li><p>Circle CI + code climate + heroku<br><a href="https://medium.freecodecamp.org/how-to-set-up-continuous-integration-and-deployment-for-your-react-app-d09ae4525250" target="_blank" rel="noopener">https://medium.freecodecamp.org/how-to-set-up-continuous-integration-and-deployment-for-your-react-app-d09ae4525250</a></p>
+</li>
+<li><p>code deploy : CD 툴- 다양한 배포전략을 도와줌.<br><a href="http://blog.dramancompany.com/2017/04/aws-code-deploy%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B0%B0%ED%8F%AC-%EC%9E%90%EB%8F%99%ED%99%94/" target="_blank" rel="noopener">http://blog.dramancompany.com/2017/04/aws-code-deploy%EB%A5%BC-%ED%86%B5%ED%95%9C-%EB%B0%B0%ED%8F%AC-%EC%9E%90%EB%8F%99%ED%99%94/</a><br>code deploy 셋팅<br><a href="https://jojoldu.tistory.com/281" target="_blank" rel="noopener">https://jojoldu.tistory.com/281</a></p>
+</li>
+<li><p>circle ci + aws code deploy<br><a href="https://jeongukjae.github.io/GitHub-+-CircleCI-+-AWS-CodeDeploy-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/" target="_blank" rel="noopener">https://jeongukjae.github.io/GitHub-+-CircleCI-+-AWS-CodeDeploy-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0/</a></p>
+</li>
+<li><p>netlify : 정적 웹페이지를 사용할시에 웹서버 + CI + CD 통합적인 환경 제공<br><a href="https://heropy.blog/2018/01/10/netlify/" target="_blank" rel="noopener">https://heropy.blog/2018/01/10/netlify/</a></p>
+</li>
 </ul>
-<p>Circle CI 대시보드 =&gt; Add Project 에서 원하는 repository 추가</p>
-<ul>
-<li>Circle CI에 연결된 프로젝트에 SSH Key를 추가</li>
-</ul>
-<p>다음 링크를 참고 : <a href="https://twpower.github.io/47-deploy-to-server-in-circle-ci" target="_blank" rel="noopener">https://twpower.github.io/47-deploy-to-server-in-circle-ci</a></p>
-<ul>
-<li>config.yml 셋팅</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd 프로젝트 경로로 이동</span><br><span class="line">mkdir .circleci</span><br><span class="line">cd .circleci</span><br><span class="line">sudo vi config.yml</span><br></pre></td></tr></table></figure>
-
-<p>다음과 같은 내용을 입력한다</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Javascript Node CircleCI 2.0 configuration file</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Check https://circleci.com/docs/2.0/language-javascript/ for more details</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"><span class="attr">  build:</span></span><br><span class="line"><span class="attr">    docker:</span></span><br><span class="line">      <span class="comment"># specify the version you desire here</span></span><br><span class="line"><span class="attr">      - image:</span> <span class="string">circleci/node:8</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Specify service dependencies here if necessary</span></span><br><span class="line">      <span class="comment"># CircleCI maintains a library of pre-built images</span></span><br><span class="line">      <span class="comment"># documented at https://circleci.com/docs/2.0/circleci-images/</span></span><br><span class="line">      <span class="comment"># - image: circleci/mongo:3.4.4</span></span><br><span class="line"></span><br><span class="line"><span class="attr">    working_directory:</span> <span class="string">~/web2.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">    steps:</span></span><br><span class="line">      <span class="comment"># 빌드한 결과를 SSH를 활용하여 운영서버에 전송하기 위한 모듈 install</span></span><br><span class="line"><span class="attr">      - run:</span> <span class="string">sudo</span> <span class="string">apt</span> <span class="string">install</span> <span class="bullet">-y</span> <span class="string">rsync</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">      -</span> <span class="string">checkout</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Download and cache dependencies</span></span><br><span class="line"><span class="attr">      - restore_cache:</span></span><br><span class="line"><span class="attr">          keys:</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">v1-dependencies-&#123;&#123;</span> <span class="string">checksum</span> <span class="string">"package.json"</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="comment"># fallback to using the latest cache if no exact match is found</span></span><br><span class="line"><span class="bullet">          -</span> <span class="string">v1-dependencies-</span></span><br><span class="line"></span><br><span class="line"><span class="attr">      - run:</span> <span class="string">yarn</span></span><br><span class="line"></span><br><span class="line"><span class="attr">      - save_cache:</span></span><br><span class="line"><span class="attr">          paths:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">node_modules</span></span><br><span class="line"><span class="attr">          key:</span> <span class="string">v1-dependencies-&#123;&#123;</span> <span class="string">checksum</span> <span class="string">"package.json"</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        </span><br><span class="line">      <span class="comment"># run build</span></span><br><span class="line"><span class="attr">      - run:</span> <span class="string">yarn</span> <span class="string">build</span> <span class="comment"># 여기에 해당하는 빌드 커맨드를 입력한다!</span></span><br><span class="line"></span><br><span class="line"><span class="attr">      - deploy:</span></span><br><span class="line"><span class="attr">          name:</span> <span class="string">SSH</span> <span class="string">File</span> <span class="string">Transfer</span></span><br><span class="line">          <span class="comment"># branch가 master라면 실행, 본인의 branch를 입력할것.</span></span><br><span class="line"><span class="attr">          command:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            if [ "$&#123;CIRCLE_BRANCH&#125;" == "master" ]; then</span></span><br><span class="line"><span class="string">                ./deploy-test.sh</span></span><br><span class="line"><span class="string">            fi</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>deploy-test.sh 생성</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd 프로젝트 루트</span><br><span class="line">sudo vi deploy-test.sh</span><br><span class="line">chmod +x deploy-test.sh</span><br></pre></td></tr></table></figure>
-
-<p>다음 내용을 입력하자</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/bash</span><br><span class="line"><span class="meta">#</span># file transfer</span><br><span class="line">rsync -avP [circle ci를 통해 빌드된 파일경로] [서버host]@[서버주소]:[빌드된 파일을 저장할 경로] -e "ssh -o StrictHostKeyChecking=no"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># server restart</span><br><span class="line">ssh [서버host]@[주소] -o StrictHostKeyChecking=no &lt;&lt;'ENDSSH'</span><br><span class="line"><span class="meta">#</span> 이곳에다가 커맨드를 입력한다.</span><br><span class="line"><span class="meta">#</span> 필자의 경우 pm2를 활용하여 서버를 리스타트 시켜주었다.</span><br><span class="line">/home/ubuntu/.yarn-global/bin/pm2 restart web</span><br><span class="line">ENDSSH</span><br></pre></td></tr></table></figure>
-
-<p>저장후 sh를 실행가능하도록 만든다</p>
-<blockquote>
-<p>chmod +x deploy-test.sh</p>
-</blockquote>
-<p>rsync를 활용하는 것이 굉장히 빠르다. (scp를 사용하면 파일전송만 1시간이 걸린다;;) rsync의 옵션의 경우 다음 링크를 참조( <a href="http://gyus.me/?p=214" target="_blank" rel="noopener">http://gyus.me/?p=214</a> )</p>
-<blockquote>
-<p> &lt;&lt;’ENDSSH’   ENDSSH</p>
-</blockquote>
-<p>여기서 ENDSSH는 원하는 글자로 바꿔도 된다. 시작 끝 태그만 동일하면 됌.</p>
-<p>자 이제 git 커밋을 자동하면 자동으로 빌드/배포/리스타트가 이루어진다!!</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>circle CI : <a href="https://twpower.github.io/47-deploy-to-server-in-circle-ci" target="_blank" rel="noopener">https://twpower.github.io/47-deploy-to-server-in-circle-ci</a></p>
-<p>rsync : <a href="http://gyus.me/?p=214" target="_blank" rel="noopener">http://gyus.me/?p=214</a></p>
 
                     
                         
@@ -288,7 +255,7 @@
                     
                         <p>
                             <a
-                                href="/2018/09/02/DevOps/circleCI-빌드-배포-파일전송-리스타트/#post-footer"
+                                href="/2018/09/02/DevOps/ci-cd-reference/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -338,7 +305,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

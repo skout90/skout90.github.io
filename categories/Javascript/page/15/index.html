@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/2.1. javascript-변수/"
-                            aria-label=": 02.1. Javascript 변수"
+                            href="/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/"
+                            aria-label=": 02.3. 유효범위와 컨텍스트"
                         >
-                            02.1. Javascript 변수
+                            02.3. 유효범위와 컨텍스트
                         </a>
                     
                 </h1>
@@ -227,45 +227,60 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="원시타입"><a href="#원시타입" class="headerlink" title="원시타입"></a>원시타입</h2><p><code>숫자</code> : number</p>
-<p><code>문자열</code> : string</p>
-<p><code>불리언(true/false)</code> : bool</p>
-<p><code>null</code> : null 이라는 빈값을 할당, 비어있는 객체를 뜻함(null은 객체형 데이터-ex: array, object-의 빈 값을 의미)</p>
-<p><code>undefined</code> : 변수를 선언만 하고 값을 할당하지 않음/즉, 자료형이 결정되지 않은 상태이다.</p>
-<p><code>NaN</code> : Not a Number 숫자가 아닌 값을 뜻함, 숫자가 아닌 값을 형변환시나, 연산 불가시.</p>
-<blockquote>
-<p>값 복사시, <strong>실제 값이 복사</strong>된다</p>
-</blockquote>
-<h2 id="래퍼객체"><a href="#래퍼객체" class="headerlink" title="래퍼객체"></a>래퍼객체</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'coding'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.length); <span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line">str.prop = <span class="string">'lala'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.prop); <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+                    <p>유효범위(Scope)는 변수의 수명을 의미한다. JS에서 <code>함수 내</code>에 선언한 변수는 지역변수가 되고, <code>함수 밖</code>에서 선언한 변수는 전역변수가 된다.</p>
+<ul>
+<li><strong>var 를 빼고 선언하면, 함수 내에서 선언하더라도 전역 변수로 선언된다.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fscope</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	vscope = <span class="string">'xx'</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(vscope); <span class="comment">// xx</span></span><br><span class="line">&#125;</span><br><span class="line">fscope();</span><br><span class="line"><span class="built_in">console</span>.log(vscope); <span class="comment">// xx</span></span><br></pre></td></tr></table></figure>
 
-<p>str은 원시 데이터타입으로 보이는데, 신기하게 객체처럼 메서드가 작동한다! 어떻게 된걸까?</p>
-<blockquote>
-<p>자바스크립트에서는 문자열과 관련된 어떤 작업을 하려고 할때 임시로 문자열 객체를 만들고 사용이 끝나면 제거한다.</p>
-</blockquote>
-<p>str.prop을 하는 순간 내부적으로 String 객체가 만들어 지고 저장되지만, 다시 해당 객체는 제거되기 때문에 str.prop을 호출하면 undefined가 나오는 것이다.</p>
-<p>래퍼 객체는 Number, String, Boolean이 존재한다.</p>
-<h2 id="참조"><a href="#참조" class="headerlink" title="참조"></a>참조</h2><p><code>var a = {};</code> 일때 a는 객체를 가리키는 참조이다. 객체의 메모리 공간을 직접 접근이 불가능하므로, 참조를 통해 접근한다.</p>
-<blockquote>
-<p>값 복사시, <strong>객체 자체가 아닌 참조(포인터)를 복사</strong>한다. 따라서 한쪽을 조작시 다른 쪽도 반영된다.</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.x = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<p>함수 내에서 <code>var</code>를 생략했을 때는, 먼저 지역변수를 체크하고 없다면 전역변수로 변수를 할당한다. </p>
+<ul>
+<li><strong>함수 스코프만 존재한다! : <code>{}</code> 스코프는 없음.</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">1</span>; i++) &#123;</span><br><span class="line">  <span class="keyword">var</span> name = <span class="string">'hahaha'</span>;</span><br><span class="line">&#125;</span><br><span class="line">alert(name); <span class="comment">// hahaha -&gt; 잘 동작!</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="매개변수-전달"><a href="#매개변수-전달" class="headerlink" title="매개변수 전달"></a>매개변수 전달</h2><p>위 변수들을 매개변수로 저장할 때에도, 값 복사와 동일한 결과가 나온다. 원시타입의 경우에는 값이 복사되고, 참조값의 경우에는 참조값이 복사된다.</p>
-<blockquote>
-<p>참조값을 함수로 넘겨 변경하면 밖에서도 변경된다</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addX</span>(<span class="params">ref</span>) </span>&#123;</span><br><span class="line">    ref.x = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line">addX(a);</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<p>java와 같은 <code>{}</code>함수 스코프를 쓰는 언어에서는 에러가 날 것이다.</p>
+<ul>
+<li><strong>정적 유효범위(statical scoping), 혹은 렉시컬(lexical scoping)</strong></li>
+</ul>
+<p>사용할때, 해당 함수 스코프에서 지역변수가 없으면 전역변수를 사용.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">10</span>;</span><br><span class="line">  b();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">b</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">document</span>.write(i); <span class="comment">// 5</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a();</span><br></pre></td></tr></table></figure>
 
-<h3 id="타입-판별"><a href="#타입-판별" class="headerlink" title="타입 판별"></a>타입 판별</h3><p>원시타입 : typeof </p>
-<p>참조타입 : instanceof </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// Object</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line">person <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="가비지-컬렉션"><a href="#가비지-컬렉션" class="headerlink" title="가비지 컬렉션"></a>가비지 컬렉션</h3><p>함수 스코프를 벗어난 변수들은 자동으로 가비지 컬렉션의 대상이 된다.</p>
+<h4 id="전역변수를-불가피하게-사용할-때"><a href="#전역변수를-불가피하게-사용할-때" class="headerlink" title="전역변수를 불가피하게 사용할 때"></a>전역변수를 불가피하게 사용할 때</h4><p>익명함수를 활용하여, 전역 변수를 지역변수화.</p>
 <blockquote>
-<p>그러나 전역변수는 해당 웹사이트가 종료되기 전까지 계속 존재하므로 사용하지 않게 되면 null로 초기화해주는 습관이 필요하다.</p>
+<p> 익명함수 선언 및 호출 후 <code>()</code> 괄호로 묶어줌.</p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> MYAPP = &#123;&#125;</span><br><span class="line">  MYAPP.calculator = &#123;</span><br><span class="line">    <span class="string">'left'</span> : <span class="literal">null</span>,</span><br><span class="line">    <span class="string">'right'</span> : <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  MYAPP.coordinate = &#123;</span><br><span class="line">    <span class="string">'left'</span> : <span class="literal">null</span>,</span><br><span class="line">    <span class="string">'right'</span> : <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  MYAPP.calculator.left = <span class="number">10</span>;</span><br><span class="line">  MYAPP.calculator.right = <span class="number">20</span>;</span><br><span class="line">&#125;())</span><br></pre></td></tr></table></figure>
+
+<h1 id="컨텍스트"><a href="#컨텍스트" class="headerlink" title="컨텍스트"></a>컨텍스트</h1><p>실행 <code>컨텍스트</code>는 다른 데이터가 접근 가능한지, 어떻게 행동할지(?) 규정되는 곳인다. 보통 <code>this</code>로 자신의 컨텍스트 값들을 접근할 수 있다.</p>
+<ul>
+<li>가장 바깥 컨텍스트는 전역 컨텍스트(Window)이다.</li>
+<li>함수 정의<ol>
+<li>JS 인터프리터 : (전역변수 객체 + 해당 함수 객체)를 함수 내부 [[Scope]] 프로퍼티에 저장한다.</li>
+</ol>
+</li>
+<li>함수 호출<ol>
+<li>실행 컨텍스트 생성</li>
+<li>[[Scope]] 프로퍼티 복사</li>
+<li>스코프 체인 생성</li>
+<li>arguments를 포함한 활성화 객체 만들어짐.</li>
+<li>스코프 체인 첫째에 활성화 객체가 위치하고, 둘째에 전역 밴수 객체가 위치.</li>
+</ol>
+</li>
+<li>함수 실행 끝<ol>
+<li>활성화 객체 파괴</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>스코프 체인? 실행중인 컨텍스트가 접근할 수 있는 모든 변수와 함수에 순서가 정의되어 있다.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> color = <span class="string">"blue"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(color === <span class="string">"blue"</span>) &#123;</span><br><span class="line">        color = <span class="string">"red"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  	<span class="keyword">else</span> &#123;</span><br><span class="line">        color = <span class="string">"blue"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.imgur.com/UEmXjTS.png" alt="img"></p>
+<p>위 changeColor()가 실행되면, 스코프 체인이 만들어지고, 체인의 앞쪽에는 <code>함수자체의 변수객체</code>와 <code>전역 컨텍스트의 변수 객체</code>가 들어 있다. color 변수는 <code>함수자체의 스코프 체인</code>에서 찾을 수 있으므로 접근이 가능하다. 없으면 스코프 체인을 따라 한단계 올라가, 전역 컨텍스트의 변수객체에 접근한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스</p>
+<p><a href="https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95/" target="_blank" rel="noopener">https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%B2%95/</a></p>
 
                     
                         
@@ -275,7 +290,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/2.1. javascript-변수/#post-footer"
+                                href="/2017/09/01/Javascript/2.3. 유효범위와 컨텍스트/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -325,7 +340,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

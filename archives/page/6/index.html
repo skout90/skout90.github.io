@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/08/30/Web/apache-server-file-setting/"
-                            aria-label=": Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기"
+                            href="/2019/10/15/CSS/SCSS-실사용팁-반응형처리/"
+                            aria-label=": SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장"
                         >
-                            Apache(webtier) 서버 파일(nas) 웹서버를 통해 Response 하기
+                            SCSS 실사용팁 rem 함수 처리, 색상 변수, ellipsis 확장
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-08-30T19:28:10+09:00">
+    <time datetime="2019-10-15T18:43:13+09:00">
 	
-		    2019.08.30
+		    2019.10.15
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,28 +227,19 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>웹티어(Webtier)는 아파치와 동일하게 설정을 가져간다고 한다</p>
-<p><code>httpd.conf</code> 파일을 수정하면 된다.</p>
+                    <p>css 단위로 <code>rem</code>을 사용한다.</p>
 <ul>
-<li>웹티어 경로</li>
-</ul>
-<p>/www/webtier/domains/[도메인주소]/config/fmwconfig/components/OHS/VCWeb1/httpd.conf</p>
-<blockquote>
-<p>못찾을 경우 find / -name “httpd.conf” 를 검색해서 알아내자!</p>
-</blockquote>
-<h3 id="alias-설정"><a href="#alias-설정" class="headerlink" title="alias 설정"></a>alias 설정</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;IfModule alias_module&gt;</span><br><span class="line">   # ...</span><br><span class="line"></span><br><span class="line">    Alias /vcomattach /vcomattach</span><br></pre></td></tr></table></figure>
+<li><p>_variables.scss</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$browser-context</span>: <span class="number">20</span>; <span class="comment">// 브라우저의 기본 폰트</span></span><br><span class="line"></span><br><span class="line">@function rem(<span class="variable">$pixels</span>, <span class="variable">$context</span>: <span class="variable">$browser-context</span>) &#123;</span><br><span class="line">  @return #&#123;$pixels/$context&#125;rem;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$primary-color</span>: <span class="number">#FF6D70</span>;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">mixin</span> pad-h (<span class="variable">$left</span>, <span class="variable">$right</span>) &#123;</span><br><span class="line">  <span class="attribute">padding-left</span>: <span class="variable">$left</span> <span class="meta">!important</span>;</span><br><span class="line">  <span class="attribute">padding-right</span>: <span class="variable">$right</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">%ellipsis &#123;</span><br><span class="line">  <span class="attribute">word-break</span>: break-all;</span><br><span class="line">  <span class="attribute">white-space</span>: nowrap;</span><br><span class="line">  <span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용시</span></span><br><span class="line">@<span class="keyword">import</span> <span class="string">"./variables"</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.page</span> &#123;</span><br><span class="line">  &amp;__icon-container &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: rem(<span class="number">100</span>);</span><br><span class="line">    @<span class="keyword">include</span> pad-h(rem(<span class="number">40</span>), rem(<span class="number">40</span>));</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$primary-color</span>;</span><br><span class="line">    @<span class="keyword">extend</span> %ellipsis;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>Alias /불러올 경로 /실제 파일 경로 </p>
-</blockquote>
-<h3 id="해당-디렉터리의-권한-설정"><a href="#해당-디렉터리의-권한-설정" class="headerlink" title="해당 디렉터리의 권한 설정"></a>해당 디렉터리의 권한 설정</h3><ul>
-<li>httpd.conf</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Directory /path&gt;</span><br><span class="line">    AllowOverride none</span><br><span class="line">    Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
+<p><code>@mixin</code>을 이용한 <code>@include</code>의 경우는 정의된 CSS를 각각 선언해주며 <code>@extend</code> 공통 CSS를 만들고 추가해주는 차이가 있다.</p>
+</li>
+<li><p>_reset.scss</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">height</span>: auto;</span><br><span class="line">  <span class="comment">// 브라우저에서 사용자가 디폴트 폰트 사이즈를 변경할 수 있으므로 %로 설정한다.</span></span><br><span class="line">  <span class="comment">// default 16px, 환산 20px, browswer-context와 맞춰줌</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">125%</span> <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">media</span> screen and (max-width: 700px) &#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">81.3%</span> <span class="meta">!important</span>; <span class="comment">// 환산 13px;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.34</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">media</span> screen and (max-width: 467px) &#123;</span><br><span class="line">  <span class="selector-tag">html</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">62.5%</span> <span class="meta">!important</span>; <span class="comment">// 환산 10px;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-tag">body</span> &#123;</span><br><span class="line">    <span class="attribute">line-height</span>: <span class="number">1.34</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>alias 설정과 권한 설정 모두 하위 디렉터리가 다 포함된다.</p>
-<p>웹서버에 다음과 같이 접근 가능</p>
-<p><code>웹서버주소/alias에등록한 경로</code></p>
+</li>
+</ul>
+<h2 id="Refenrece"><a href="#Refenrece" class="headerlink" title="Refenrece"></a>Refenrece</h2><p> [css에서의 em과 %] : <a href="https://aboooks.tistory.com/142" target="_blank" rel="noopener">https://aboooks.tistory.com/142</a></p>
 
                     
                         
@@ -258,7 +249,7 @@
                     
                         <p>
                             <a
-                                href="/2019/08/30/Web/apache-server-file-setting/#post-footer"
+                                href="/2019/10/15/CSS/SCSS-실사용팁-반응형처리/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -298,7 +289,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 6 of 148</li>
+        <li class="pagination-number">page 6 of 150</li>
     </ul>
 </div>
 
@@ -308,7 +299,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

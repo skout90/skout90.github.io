@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/CSS/CSS-flex레이아웃/"
-                            aria-label=": FLEX 레이아웃 정리"
+                            href="/2017/09/01/Google/firebase/"
+                            aria-label=": Firebase로 CRUD 기능 작성"
                         >
-                            FLEX 레이아웃 정리
+                            Firebase로 CRUD 기능 작성
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/Google/">Google</a>
 
 
     
@@ -227,31 +227,95 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>다음 레이아웃을 flex로 표현해보자<br><img src="http://i.imgur.com/okipVgU.png" alt="img"></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">  <span class="selector-class">.container</span> &#123;</span></span><br><span class="line">    display: flex;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">  &#125;</span><br><span class="line">  header&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-bottom</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line">  footer&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-top</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">display</span><span class="selector-pseudo">:flex</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">nav</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-right</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">aside</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-left</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;  </span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line">  nav, aside&#123;</span><br><span class="line">    flex-basis: 150px;</span><br><span class="line">    flex-shrink: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  main&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:10px</span> 22<span class="selector-tag">px</span> 5<span class="selector-tag">px</span> 4<span class="selector-tag">px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>헤더<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>html<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>css<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>javascript<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      Lorem ipsum dolor sit amet!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aside</span>&gt;</span></span><br><span class="line">      라젠카</span><br><span class="line">    <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    푸터푸터</span><br><span class="line">  <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+                    <p>웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.</p>
+<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><p>프로젝트를 만든다.</p>
+<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p><code>로그인방법</code> 탬에서 원하는 인증방식을 활성화 한다. <code>Authorized Domains</code>탬에서 리다이렉션 도메인을 추가할 수 있다.</p>
+<p><code>템플릿</code> 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.</p>
+<h3 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h3><p><code>데이터</code> 탭에서 저장된 데이터를 확인</p>
+<ul>
+<li>모든 데이터는 Json으로 저장</li>
+<li>데이터를 import/export 할 수 있음.</li>
+<li>캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.</li>
+<li>모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.</li>
+</ul>
+<p><code>규칙</code> 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정</p>
+<ul>
+<li>시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.</li>
+</ul>
+<h2 id="로컬-개발환경-셋팅"><a href="#로컬-개발환경-셋팅" class="headerlink" title="로컬 개발환경 셋팅"></a>로컬 개발환경 셋팅</h2><ol>
+<li><a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 에서 nodejs 설치</li>
+<li>firebase cli 설치</li>
+</ol>
+<blockquote>
+<p>&gt; npm install firebase-tools -g</p>
+</blockquote>
+<ol start="3">
+<li>firebase cli에 로그인</li>
+</ol>
+<p>컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.</p>
+<blockquote>
+<p>&gt; firebase login</p>
+<p>&gt; y</p>
+</blockquote>
+<p>이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭</p>
+<ol start="4">
+<li>firebase 프로젝트 설정</li>
+</ol>
+<blockquote>
+<p>&gt; cd [파이어베이스 프로젝트 경로]</p>
+<p>&gt; firebase init</p>
+</blockquote>
+<p><img src="http://i.imgur.com/fLauqJj.png" alt="img" title="오오오오오옷!!"></p>
+<blockquote>
+<p>오오오옷!!!! 간지</p>
+</blockquote>
+<p>‘Y’를 눌러 진행해준다</p>
+<ol start="5">
+<li>Database 셋팅</li>
+</ol>
+<ul>
+<li>설정 항목중에서 첫번째 Database를 선택</li>
+<li>위에서 생성한 프로젝트를 선택해준다.</li>
+</ul>
+<p>CLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.</p>
+<ul>
+<li>database.rule.json : DB 데이터 읽기 쓰기 규칙. </li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 디폴트 규칙</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">".read"</span>: <span class="string">"auth != null"</span>,</span><br><span class="line">    <span class="attr">".write"</span>: <span class="string">"auth != null"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="display-flex"><a href="#display-flex" class="headerlink" title="display: flex;"></a>display: flex;</h4><p>컨테이너에 등록함으써 flex 레이아웃 적용을 시작!</p>
-<h4 id="flex-direction-row"><a href="#flex-direction-row" class="headerlink" title="flex-direction : row;"></a>flex-direction : row;</h4><p><code>row</code>, <code>row-reverse</code>, <code>column</code>, <code>column-reverse</code> 값이 있다. row가 기본값, row는 세로 방향으로 행 레이아웃, column은 가로 방향으로 열 레이아웃.</p>
-<p>   1</p>
-<p>   2</p>
-<p>   3                        1      2      3     4     5</p>
-<p>   4</p>
-<p>   5</p>
-<p><code>&lt;row&gt;</code>                        <code>&lt;column&gt;</code></p>
-<h4 id="flex-basis-200px"><a href="#flex-basis-200px" class="headerlink" title="flex-basis : 200px;"></a>flex-basis : 200px;</h4><p>row와 column에 따라 해당방향으로 기본 크기를 설정한다.</p>
-<h4 id="flex-grow-1"><a href="#flex-grow-1" class="headerlink" title="flex-grow : 1;"></a>flex-grow : 1;</h4><p>모두 1이면 스크롤을 늘릴때, 공평하게 크기가 늘어남, 다른 것들은 1, 하나는 2이면 2가 2배의 비율로 늘어난다.</p>
-<h4 id="flex-shrink-0"><a href="#flex-shrink-0" class="headerlink" title="flex-shrink: 0;"></a>flex-shrink: 0;</h4><p>크기 클 수록 빨리 줄어든다. 0이면, 안줄어듬.</p>
-<h4 id="flex-wrap-nowrap"><a href="#flex-wrap-nowrap" class="headerlink" title="flex-wrap: nowrap;"></a>flex-wrap: nowrap;</h4><p>wrap : 창 크기에 따라 줄바꿈이 됌.</p>
-<p>nowrap : 줄바꿈이 안됌.</p>
-<h4 id="align-items-stretch"><a href="#align-items-stretch" class="headerlink" title="align-items: stretch;"></a>align-items: stretch;</h4><p>stretch : 컨테이너만큼 아이템들을 늘림</p>
-<p>flex-start/flex-end : 자기 크기를 유지함, 위/아래 부터 요소들 위치</p>
-<p>baseline : 가운데 baseline에 맞추어 자기 크기를 유지함.</p>
-<p>center : 수직 정렬</p>
-<h4 id="justify-content-center"><a href="#justify-content-center" class="headerlink" title="justify-content: center"></a>justify-content: center</h4><p>수평 정렬</p>
-<h4 id="order"><a href="#order" class="headerlink" title="order"></a>order</h4><p>순서 설정 order:0  order:1</p>
-<h4 id="두-요소를-양-끝에-정렬하기"><a href="#두-요소를-양-끝에-정렬하기" class="headerlink" title="두 요소를 양 끝에 정렬하기"></a>두 요소를 양 끝에 정렬하기</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-id">#container</span> &#123;</span></span><br><span class="line">    width: 500px;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    display: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#a</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    margin-right: auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#b</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    height: 200px;</span><br><span class="line">    margin-left: auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"a"</span>&gt;</span></span><br><span class="line">        a</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"b"</span>&gt;</span></span><br><span class="line">        b</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>public/index.html : 폴더를 생성하고 index파일을 생성한다.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.gstatic.com/firebasejs/4.1.2/firebase.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> config = &#123;</span></span><br><span class="line">      ...</span><br><span class="line">    &#125;;</span><br><span class="line">    firebase.initializeApp(config);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	성공!</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/" target="_blank" rel="noopener">https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/</a></p>
+<ul>
+<li>firebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"database"</span>: &#123;</span><br><span class="line">    <span class="attr">"rules"</span>: <span class="string">"database.rules.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hosting"</span>: &#123;</span><br><span class="line">    "public": "public", // 페이지가 들어 있는 폴더명</span><br><span class="line">    "rewrites": [&#123;</span><br><span class="line">      "source": "**",   // 페이지 주소</span><br><span class="line">      "destination": "/index.html" // 연결할 페이지</span><br><span class="line">     &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>서버 구동</li>
+</ol>
+<blockquote>
+<p>&gt; firebase serve</p>
+</blockquote>
+<p>위 키워드를 입력하고 <a href="http://localhost:5000" target="_blank" rel="noopener">http://localhost:5000</a> 을 접속하여 페이지가 나오는 것을 확인한다.</p>
+<h2 id="권한-인증"><a href="#권한-인증" class="headerlink" title="권한 인증"></a>권한 인증</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auth = firebase.auth();</span><br><span class="line"><span class="keyword">var</span> userInfo;</span><br><span class="line"><span class="keyword">var</span> authProvider = <span class="keyword">new</span> firebase.auth.GoogleAuthProvider();</span><br><span class="line"><span class="comment">// 팝업 형태로 열어줌</span></span><br><span class="line"><span class="comment">// 성공 실패 구분</span></span><br><span class="line">auth.onAuthStateChanged(<span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (user) &#123;</span><br><span class="line">    <span class="comment">// 인증 성공시</span></span><br><span class="line">    userInfo = user;</span><br><span class="line">    getKanbanlist(); <span class="comment">// 아래 함수 구현</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 인증 실패시, 인증 팝업창을 뛰워줌</span></span><br><span class="line">    auth.signInWithPopup(authProvider);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> database = firebase.database();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanbanlist</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.</span></span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">'kanbans/'</span> + userInfo.uid);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.</span></span><br><span class="line">  kanbanRef.on(<span class="string">'child_added'</span>, onChildAdded);</span><br><span class="line">  kanbanRef.on(<span class="string">'child_changed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = data.key;</span><br><span class="line">    <span class="keyword">var</span> txt = data.val().txt;</span><br><span class="line">    <span class="comment">// 해당 데이터로 html에 데이터를 수정.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onChildAdded</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key = data.key;</span><br><span class="line">  <span class="keyword">var</span> kanbanData = data.val();</span><br><span class="line">  <span class="keyword">var</span> txt = kanbanData.txt;</span><br><span class="line">  <span class="comment">// 해당 데이터를 html 요소에 추가.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 데이터 단일 건 가져오기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key)</span><br><span class="line">  .once(<span class="string">'value'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">snapshot</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (snapshot.val() != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 가져온 데이터를 저장</span></span><br><span class="line">      $(<span class="string">".textarea"</span>).val(snapshot.val().txt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 삭제하기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key);</span><br><span class="line">  kanbanRef.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="on"><a href="#on" class="headerlink" title="on"></a>on</h4><p><code>on(&#39;child_added&#39;, 메서드);</code> <code>on(&#39;child_changed&#39;, 메서드);</code> 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.</p>
+<h2 id="Firebase-서버-배포"><a href="#Firebase-서버-배포" class="headerlink" title="Firebase 서버 배포"></a>Firebase 서버 배포</h2><blockquote>
+<p>&gt; firebase deploy</p>
+</blockquote>
+<p>서버에 바로 작업 내역이 반영된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
 
                     
                         
@@ -261,7 +325,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/CSS/CSS-flex레이아웃/#post-footer"
+                                href="/2017/09/01/Google/firebase/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -301,7 +365,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 28 of 112</li>
+        <li class="pagination-number">page 28 of 111</li>
     </ul>
 </div>
 
@@ -311,7 +375,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

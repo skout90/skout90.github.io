@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/13/Javascript/5.2. Javascript-콜백/"
-                            aria-label=": 05.2. Function 콜백, Promise"
+                            href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                            aria-label=": NodeJs ORM을 위한 Bookshelf, Knex"
                         >
-                            05.2. Function 콜백, Promise
+                            NodeJs ORM을 위한 Bookshelf, Knex
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-13T01:00:00+09:00">
+    <time datetime="2017-08-15T19:28:10+09:00">
 	
-		    2017.08.13
+		    2017.08.15
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,106 +227,66 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="콜백이란"><a href="#콜백이란" class="headerlink" title="콜백이란?"></a>콜백이란?</h2><p>콜백이란 인자로 함수를 넘겨주고, 인자를 받은 함수가 해당 함수를 호출하는 것을 의미.</p>
-<p>JS에서는 <code>함수가 인자로 전달 될 수 있는 특성</code>을 이용하여 콜백이 동작한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 로직이 끝나면 콜백 함수를 호출</span></span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callbackFunc</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(callbackFunc, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>비동기 처리를 위해서도 콜백이 사용된다.</strong></li>
-</ul>
-<p>JS는 본래 비동기적으로 실행이된다. 그래서, 작업이 끝나고 실행되야할 함수를 콜백함수로 넘김으로써, 작업이 끝나고 실행되도록 할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">valueCallback</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> result;</span><br><span class="line">	<span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    	result = <span class="number">10</span>;</span><br><span class="line">    	valueCallback(result);</span><br><span class="line">	&#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">f1(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>2 초 후에, f1 함수 인자로 넘긴, 함수가 실행되는 것을 확인할 수 있다.</p>
-<h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><p>위 콜백 함수를 좀더 효율적으로 작성할 수 있게 해주는 것이 Promise 이다. Promise는 ES6이상에서는 언어에 내장되어 있으며, 그 이전 버젼에서는 <a href="http://bluebirdjs.com/docs/getting-started.html" target="_blank" rel="noopener">bluebird</a>와 <a href="https://github.com/kriskowal/q" target="_blank" rel="noopener">Q.js</a> 등의 라이브러리를 추가하여 사용할 수 있다.</p>
-<p>Promise 구현체를 사용하여 명세에 따라 정의한 Promise 객체는 모두 <code>then()</code> 메소드를 가지고 있어서 Callback을 사용하지 않고도 절차적으로 동작하는 코드를 짤 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; resolve(<span class="number">10</span>); &#125;, <span class="number">2000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">f1().then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="bluebird"><a href="#bluebird" class="headerlink" title="bluebird"></a>bluebird</h3><p>Promise의 구현체인 bluebird에 대해 알아보자</p>
-<h4 id="코어"><a href="#코어" class="headerlink" title="코어"></a>코어</h4><ul>
-<li><strong>new Promise()</strong></li>
-</ul>
-<p>Promise의 가장 기초가 되는 단위로, <code>new Promise(function(resolve, reject) {...})</code> 의 형태를 가진다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(error) reject(error);</span><br><span class="line">    <span class="keyword">else</span> resolve(success);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>then()</strong></li>
-</ul>
-<p>promise의 함수가 정상적으로 마무리를 했다면 resolve를 실행하는데, 그럼 .then()이 실행된다. 그 전까지 then의 실행은 보류된다.</p>
-<blockquote>
-<p> 위에서 실행했던 함수의 결과값을 매개변수로 갖을 수 있다.</p>
+                    <p>Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자.</p>
+<p>Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install knex –save<br>$ npm install bookshelf –save<br>// 아래와 같은 DB 엔진을 선택하여 설치<br>$ npm install pg<br>$ npm install mysql<br>$ npm install mariasql<br>$ npm install sqlite3</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">    <span class="keyword">else</span> resolve(users);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">users</span>)</span>&#123;</span><br><span class="line">    res.send(users);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>초기화</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> knex = <span class="built_in">require</span>(<span class="string">'knex'</span>)(&#123;</span><br><span class="line">  client: <span class="string">'mysql'</span>,</span><br><span class="line">  connection: &#123;</span><br><span class="line">    host     : <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    user     : <span class="string">'your_database_user'</span>,</span><br><span class="line">    password : <span class="string">'your_database_password'</span>,</span><br><span class="line">    database : <span class="string">'myapp_test'</span>,</span><br><span class="line">    charset  : <span class="string">'utf8'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bookshelf = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="쿼리-실행"><a href="#쿼리-실행" class="headerlink" title="쿼리 실행"></a>쿼리 실행</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 없이 모델 초기화</span></span><br><span class="line"><span class="keyword">let</span> subscriber = User.forge();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 방법 4가지</span></span><br><span class="line">subscriber.query(<span class="string">'where'</span>, <span class="string">'other_id'</span>, <span class="string">'='</span>, <span class="string">'5'</span>)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(&#123;<span class="attr">where</span>: &#123;<span class="attr">other_id</span>: <span class="string">'5'</span>&#125;, <span class="attr">orWhere</span>: &#123;<span class="attr">key</span>: <span class="string">'value'</span>&#125;&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(<span class="function"><span class="keyword">function</span>(<span class="params">qb</span>) </span>&#123;</span><br><span class="line">qb.where(<span class="string">'other_person'</span>, <span class="string">'LIKE'</span>, <span class="string">'%Demo'</span>).orWhere(<span class="string">'other_id'</span>, <span class="string">'&gt;'</span>, <span class="number">10</span>);&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> qb = subscriber.query();</span><br><span class="line">qb.where(&#123;<span class="attr">id</span>: <span class="number">1</span>&#125;).select()</span><br><span class="line">.then(<span class="function">(<span class="params">resp</span>)=&gt;</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="관계-정의"><a href="#관계-정의" class="headerlink" title="관계 정의"></a>관계 정의</h4><p>.belongsToMany, .hasMany 와 같이 관계를 정의해줄 수 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span>,</span><br><span class="line">  posts: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.hasMany(Posts, <span class="string">'userId'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag, <span class="string">'posts'</span>, <span class="string">'userId'</span>, <span class="string">'tagId'</span>)  </span><br><span class="line">  &#125;</span><br><span class="line">  wallet : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.hasOne(Wallets, <span class="string">'userId'</span>);  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Posts = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'posts'</span>,</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Wallets = booksehlf.Model.extend(&#123;</span><br><span class="line">    tableName: <span class="string">'wallets'</span>,</span><br><span class="line">    user : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.belongsTo(Users, <span class="string">'userId'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Tag = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'tags'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>catch()</strong></li>
+<li><strong>hasOne</strong></li>
 </ul>
-<p>에러가 발생하여 reject가 수행되었을때, 실행된다. catch를 마지막에 연결하면 모든 에러처리를 한꺼번에 할 수도 있다.</p>
-<ul>
-<li><strong>Promise.all()</strong></li>
-</ul>
-<p>Promise들을 병렬로 처리할 수 있게 해준다. then의 매개변수값으로 배열이 들어온다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.all([</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">        <span class="comment">// ....</span></span><br><span class="line">        <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">        <span class="keyword">else</span> resolve(result1);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">        <span class="comment">// ....</span></span><br><span class="line">        <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">        <span class="keyword">else</span> resolve(result2);</span><br><span class="line">    &#125;</span><br><span class="line">]).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> result1 = result[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> result2 = result[<span class="number">1</span>];</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>spread()</strong></li>
-</ul>
-<p>사용법은 then과 동일하지만 파라미터를 돌려주는 방식이 다르다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.all([</span><br><span class="line">	<span class="comment">//위와 동일    </span></span><br><span class="line">]).spread(<span class="function"><span class="keyword">function</span>(<span class="params">result1, result2</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>finally</strong>()</li>
-</ul>
-<p>무조건 마지막에 실행된다. 에러가 있어도 무조건 실행이 된다.</p>
-<ul>
-<li><strong>bind</strong>()</li>
-</ul>
-<p>then과 then 사이에서 변수를 공통으로 쓸 수 있게 만들어준다. .bind를 사용한 함수내에서 변수의 사용이 자유롭다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">somethingAsync().bind(&#123;&#125;).spread(function (aValue, bValue) &#123;</span><br><span class="line">    <span class="keyword">this</span>.aValue = aValue;</span><br><span class="line">    <span class="keyword">this</span>.bValue = bValue;</span><br><span class="line">    <span class="keyword">return</span> somethingElseAsync(aValue, bValue);</span><br><span class="line">&#125;).then(function (cValue) &#123;</span><br><span class="line">    <span class="comment">// 여기서도 그대로 쓸 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.aValue + <span class="keyword">this</span>.bValue + cValue;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Promise.map()</strong></li>
-</ul>
-<p>인자로 literable한 인자를 넣으면, 반복되며 해당 함수를 호출할 수 있게 해준다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promises = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; fileNames.length; ++i) &#123;</span><br><span class="line">    promises.push(fs.readFileAsync(fileNames[i]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Promise</span>.all(promises).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Using Promise.map:</span></span><br><span class="line"><span class="built_in">Promise</span>.map(fileNames, <span class="function"><span class="keyword">function</span>(<span class="params">fileName</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Promise.map awaits for returned promises as well.</span></span><br><span class="line">    <span class="keyword">return</span> fs.readFileAsync(fileName);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="프로미스화"><a href="#프로미스화" class="headerlink" title="프로미스화"></a>프로미스화</h4><ul>
-<li><strong>Promise.promisify()</strong></li>
-</ul>
-<p>인자로 받은 해당 함수를 promise wrapper로 감싸 리턴한다.  함수의 마지막 인자는 callback 함수이어야 한다.</p>
 <blockquote>
-<p> readFile을 promise로 바꾸는 예제</p>
+<p>return this.hasOne(Wallets, ‘userId’);  </p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> readFile = <span class="built_in">Promise</span>.promisify(<span class="built_in">require</span>(<span class="string">"fs"</span>).readFile);</span><br><span class="line"></span><br><span class="line">readFile(<span class="string">"myfile.js"</span>, <span class="string">"utf8"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">contents</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">eval</span>(contents);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"The result of evaluating myfile.js"</span>, result);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Error reading file"</span>, e);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Promise.promisifyAll()</strong></li>
-</ul>
-<p>모듈 객체의 함수들을 모두, promise wrapper로 감싸 리턴한다. promisify의 복수형</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">Promise</span>.promisifyAll(<span class="built_in">require</span>(<span class="string">"fs"</span>));</span><br><span class="line"></span><br><span class="line">fs.readFileAsync(<span class="string">"myfile.js"</span>, <span class="string">"utf8"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">contents</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(contents);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(e.stack);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="동기화-감시"><a href="#동기화-감시" class="headerlink" title="동기화 감시"></a>동기화 감시</h4><ul>
-<li>.isFulfilled / .isRejected / .isPending / .isCancelled</li>
-</ul>
-<p>Promise 안에서 로직을 실행하는 동안, 다음의 상태를 갖는다.</p>
+<p>1: 0..1 의 관계이다.  Wallets에서 <code>userId</code>로 질의를한다. </p>
 <blockquote>
-<p>pending</p>
-<p>아직 약속을 수행 중인 상태</p>
-<p>fulfilled</p>
-<p>약속이 지켜진 상태</p>
-<p>rejected</p>
-<p>약속이 못지켜진 상태</p>
-<p>settled</p>
-<p>약속이 지켜졌든 안지켜졌든 결론이 난 상태</p>
+<p>User.forge().fetch({withRelated: [‘wallet’]})</p>
+<p>SELECT * FROM wallets WHERE userId = ‘사용자ID’;</p>
 </blockquote>
-<p>상태 값을 확인 할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(result.isFulfilled()) &#123; &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%BD%9C%EB%B0%B1%EA%B3%BC-ajax/" target="_blank" rel="noopener">https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%BD%9C%EB%B0%B1%EA%B3%BC-ajax/</a></p>
-<p><a href="http://bluebirdjs.com/docs/api-reference.html" target="_blank" rel="noopener">http://bluebirdjs.com/docs/api-reference.html</a></p>
-<p><a href="http://programmingsummaries.tistory.com/325" target="_blank" rel="noopener">http://programmingsummaries.tistory.com/325</a></p>
-<p><a href="https://stackoverflow.com/questions/38340674/javascript-settimeout-callback" target="_blank" rel="noopener">https://stackoverflow.com/questions/38340674/javascript-settimeout-callback</a></p>
-<p><a href="http://html5around.com/wordpress/tutorials/node-js%EC%97%90%EC%84%9C-bluebird-%EA%B8%B0%EC%B4%88-%EC%82%AC%EC%9A%A9%EB%B2%95-callback-%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EB%B2%97%EC%96%B4%EB%82%98%EA%B8%B0/" target="_blank" rel="noopener">http://html5around.com/wordpress/tutorials/node-js%EC%97%90%EC%84%9C-bluebird-%EA%B8%B0%EC%B4%88-%EC%82%AC%EC%9A%A9%EB%B2%95-callback-%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EB%B2%97%EC%96%B4%EB%82%98%EA%B8%B0/</a></p>
+<ul>
+<li><strong>hanMany</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasMany(Posts, ‘userId’);</p>
+</blockquote>
+<p>1:다 의 관계를 갖는다.  Posts에서 <code>userId</code>로 질의를 한다.</p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘posts’]})</p>
+<p>SELECT * FROM posts WHERE  postId IN (userId들 ….)</p>
+</blockquote>
+<ul>
+<li><strong>belongsTo</strong> </li>
+</ul>
+<blockquote>
+<p>var Wallet = .. 생략</p>
+<p>return this.belongsTo(Users, ‘userId’);</p>
+</blockquote>
+<p>Users테이블에서 Wallet의 userId로 질의를 한다. 0..1 : 1 의 관계를 가진다.</p>
+<blockquote>
+<p>Wallet.forge().fetch({withRelated: [‘user’]})</p>
+<p>SELECT * FROM users WHERE userId = ‘사용자’;</p>
+</blockquote>
+<ul>
+<li><strong>belongsToMany</strong></li>
+</ul>
+<blockquote>
+<p>var User = …</p>
+<p>return this.belongsToMany(Tag, ‘posts’, ‘userId’, ‘tagId’)  </p>
+</blockquote>
+<p>posts의 userId와 tagId를 사용하여, User와 Tag를 조인한다.</p>
+<p>조인할때 디폴트로 user의 id와 tag의 id를 사용한다.</p>
+<p>다른 포린키로 조인하려면, 5,6번째인자로 user의 foreignKey/tag의 foreignKey를 쓴다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://bookshelfjs.org/#Model-instance-has" target="_blank" rel="noopener">http://bookshelfjs.org/#Model-instance-has</a></p>
 
                     
                         
@@ -336,7 +296,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/13/Javascript/5.2. Javascript-콜백/#post-footer"
+                                href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -376,7 +336,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 84 of 148</li>
+        <li class="pagination-number">page 84 of 150</li>
     </ul>
 </div>
 
@@ -386,7 +346,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

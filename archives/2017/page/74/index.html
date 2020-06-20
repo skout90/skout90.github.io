@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/display_visibility_태그정리/"
-                            aria-label=": CSS display, visibility 속성"
+                            href="/2017/07/24/CSS/상대-크기/"
+                            aria-label=": CSS 상대 크기"
                         >
-                            CSS display, visibility 속성
+                            CSS 상대 크기
                         </a>
                     
                 </h1>
@@ -227,40 +227,26 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>inline 속성 : <code>&lt;b&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;a&gt;</code> 등 줄 바꿈이 되지 않음, 주로 줄속에 넣는 요소</p>
-<p>block 속성 : <code>&lt;table&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;form&gt;</code> 등 줄 바꿈이 됌. 가로 화면 100%를 차지.</p>
-<h2 id="display"><a href="#display" class="headerlink" title="display"></a>display</h2><ul>
-<li><strong>display: inline</strong> : 요소들을 inline 요소 처럼 표시</li>
-<li><strong>display: block</strong> : 요소들을 block 요소 처럼 표시</li>
-<li><strong>display:none</strong> : 박스가 생성되지 않고, <em>공간을 차지하지도 않음.</em></li>
-<li><strong>float</strong> : block 요소들을 정렬함.</li>
-<li><strong>dispaly:inline-block</strong> : 박스모양을 inline처럼 늘어뜨림.</li>
-<li><strong>display:table-cell</strong> : 테이블 셀처럼 블록요소들을 늘어뜨린다.</li>
+                    <p>CSS 상대적인 크기에 대해 알아본다.</p>
+<h1 id="em"><a href="#em" class="headerlink" title="em"></a>em</h1><ul>
+<li>최근에 정의한(부모 요소) font-size를 1em 으로 함, 계속해서 누적됌.</li>
+<li>없으면 브라우저 기본값을 따름</li>
+<li>9pt = 16px = 1em</li>
 </ul>
-<h2 id="inline-float-inline-block-table-cell의-차이"><a href="#inline-float-inline-block-table-cell의-차이" class="headerlink" title="inline, float, inline-block, table-cell의 차이"></a>inline, float, inline-block, table-cell의 차이</h2><p>셋 모두, block 요소들을 쭉 늘어뜨려 정리하는 역할을 가지고 있다. 그럼 어떤 차이점이 있나?</p>
-<ol>
-<li><strong>inline, inline-block</strong></li>
-</ol>
-<p>인라인 요소를 사용할 경우, 정렬은 되지만 요소들을 엔터로 구분한 것 때문에 빈칸이 생기게 된다.</p>
-<p><img src="https://i.stack.imgur.com/aDgsb.png" alt="display:inline image"></p>
-<ol start="2">
-<li><strong>float</strong></li>
-</ol>
-<p>float 요소를 사용할 경우, 감싸고 있는 div요소가 붕괴된다.</p>
-<p><img src="https://i.stack.imgur.com/oIMvg.png" alt="float:left image"></p>
-<ol start="3">
-<li><strong>table-cell</strong></li>
-</ol>
-<p>빈칸 없이, 테이블 모양으로 늘어뜨려진다. margin 속성을 주어도 요소간에 공간이 생기지 않는다.</p>
-<p><img src="https://i.stack.imgur.com/BPtXn.png" alt="display:table-cell image"></p>
-<h2 id="visibility"><a href="#visibility" class="headerlink" title="visibility"></a>visibility</h2><p>어떤 요소를 보이게할지 숨길지 결정</p>
+<h1 id="REM"><a href="#REM" class="headerlink" title="REM"></a>REM</h1><ul>
+<li>최상위 브라우저 기본 폰트 크기를 1rem으로 함, 누적되지 않음.</li>
+</ul>
+<h2 id="vh-ve"><a href="#vh-ve" class="headerlink" title="vh, ve"></a>vh, ve</h2><p>브라우저 윈도우 크기의 1/100 크기를 “1”로 함</p>
 <ul>
-<li>visibility: visible : 기본값, 요소가 보임</li>
-<li>visibility: hidden : 요소가 보이지 않음, <em>공간을 차지함</em></li>
-<li>visibility: collapse : <table> 태그에서만 사용, 행과 열을 숨김.</table></li>
+<li>2000 x 1000 px 크기의 윈도우라면</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://stackoverflow.com/questions/11805352/floatleft-vs-displayinline-vs-displayinline-block-vs-displaytable-cell" target="_blank" rel="noopener">http://stackoverflow.com/questions/11805352/floatleft-vs-displayinline-vs-displayinline-block-vs-displaytable-cell</a></p>
-<p><a href="http://aboooks.tistory.com/85" target="_blank" rel="noopener">http://aboooks.tistory.com/85</a></p>
+<blockquote>
+<p>1vh = 10px</p>
+</blockquote>
+<blockquote>
+<p>1vw = 20px</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4" target="_blank" rel="noopener">http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4</a></p>
 
                     
                         
@@ -270,7 +256,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/display_visibility_태그정리/#post-footer"
+                                href="/2017/07/24/CSS/상대-크기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -310,7 +296,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 74 of 112</li>
+        <li class="pagination-number">page 74 of 111</li>
     </ul>
 </div>
 
@@ -320,7 +306,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

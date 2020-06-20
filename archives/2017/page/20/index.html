@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/"
-                            aria-label=": 05.1. Function 내장객체"
+                            href="/2017/09/10/Javascript/5. javascript-Function/"
+                            aria-label=": 05. Function"
                         >
-                            05.1. Function 내장객체
+                            05. Function
                         </a>
                     
                 </h1>
@@ -227,67 +227,38 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
-<li>arguments <em>(표준에서 제거 됌)</em></li>
+                    <h3 id="함수의-선언"><a href="#함수의-선언" class="headerlink" title="함수의 선언"></a><strong>함수의 선언</strong></h3><p>우리가 흔히 사용하는 <code>함수 = Function 객체의 인스턴스</code>이다.  <code>함수이름 = 함수 객체를 가리키는 포인터</code> 이다. 따라서 오버로딩이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수선언</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br><span class="line"><span class="comment">// 함수 표현식</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;; <span class="comment">// 마지막 ';'</span></span><br><span class="line"><span class="comment">// Funtion 객체 사용(권장X)</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"v1"</span>, <span class="string">"v2"</span>, <span class="string">"return v1 + v2"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>함수 선언식은 코드 실행전에도, 모든 실행 컨텍스트에서 접근이 가능하다.</p>
+<blockquote>
+<p>why? 함수 선언 호이스팅(끌어 올린다) 과정을 통해 실행 컨텍스트에 추가 되기 때문</p>
+</blockquote>
+<p>그렇지만 함수 표현식은 코드실행전 까지 사용이 불가능하다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(sum(<span class="number">10</span>, <span class="number">10</span>)); <span class="comment">// 에러</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">n1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h3><ul>
+<li><strong>함수는 값이다.</strong></li>
 </ul>
-<p>함수 내부에서, 매개변수에 접근하게 하는 속성</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(g.arguments[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line">g(<span class="number">1</span>); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+<p>Javascript에서는 함수도 값이다. <code>var a = function() {}</code> = <code>function a() {}</code> 따라서 객체 안에 저장될 수 있다.(객체 안에 저장되면 메서드라고 불림)</p>
+<ul>
+<li><strong>함수는 인자로 전달될 수 있다.</strong></li>
+</ul>
+<p>함수는 값이기 때문에 인자로 전달 될 수도 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increase</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrease</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(increase, <span class="number">1</span>));</span><br><span class="line">alert(calculator(decrease, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>arguments.callee()</li>
+<li><strong>함수는 함수의 리턴값으로 사용될 수 있다.</strong></li>
 </ul>
-<p>자신을 호출한다. 재귀함수를 사용할때 함수 이름 의존성 문제를 해결 할 수 있음.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * <span class="built_in">arguments</span>.callee(num<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> trueFactorial = factorial;</span><br><span class="line">factorial = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;;</span><br><span class="line"></span><br><span class="line">trueFactorial(<span class="number">5</span>); <span class="comment">// 120</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">mode</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> functions = &#123;</span><br><span class="line">    <span class="string">'increase'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num+<span class="number">1</span> &#125;,</span><br><span class="line">    <span class="string">'decrease'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num<span class="number">-1</span> &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> functions.mode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(<span class="string">'increase'</span>)(<span class="number">1</span>)); <span class="comment">// 2</span></span><br><span class="line">alert(calculator(<span class="string">'decrease'</span>)(<span class="number">1</span>)); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
 
-<p>만약 calle를 안썼다면, 값은 0이 될것이다.</p>
+<p>calculator(‘increase’) = function increase(num) { return num+1 }</p>
+<p>calculator(‘increase’)(1) = increase(1)</p>
 <ul>
-<li>caller</li>
+<li><strong>함수는 배열의 값으로 사용될 수 있다</strong></li>
 </ul>
-<p>현재 실행중인 함수를 호출한 함수.</p>
-<ul>
-<li>length</li>
-</ul>
-<p>함수 매개변수의 수</p>
-<ul>
-<li>Function.prototype.constructor</li>
-</ul>
-<p>함수를 생성하면, 함수 + 그 함수의 prototype 생성하게 되는데, prototype.constructor는 생성된 함수를 가리키고 있다.(실제로 무한루프다.)</p>
-<p><img src="https://cdn-images-1.medium.com/max/1000/1*PZe_YnLftVZwT1dNs1Iu0A.png" alt="img"></p>
-<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
-<li>Function.prototype.apply()</li>
-</ul>
-<blockquote>
-<p> 함수.apply(this로 사용될 객체/값, 함수에 전달할 인자집합(배열))</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">v1</span>:<span class="number">1</span>, <span class="attr">v2</span>:<span class="number">2</span>, <span class="attr">v3</span>:<span class="number">3</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> <span class="keyword">this</span>) &#123;</span><br><span class="line">    _sum += <span class="keyword">this</span>[name];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> _sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum.apply(obj)); <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> calculator = [</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num + <span class="number">10</span>; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num * num; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num / <span class="number">10</span>; &#125;</span><br><span class="line">];</span><br><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; calculator.length; i++) &#123;</span><br><span class="line">  num = calculator[i](num);</span><br><span class="line">  <span class="built_in">console</span>.log(num); <span class="comment">// 11, 121, 12.1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>넘겨준 객체의 메서드로 추가하고, 해당 메서드를 실행시킨다. apply의 중요점은 이를통해 <code>this</code>가 해당 객체를 가리키게 된다는 것이다. <em>객체 값이 바뀌지는 않는다.</em></p>
-<ul>
-<li>Function.prototype.call()</li>
-</ul>
-<blockquote>
-<p>함수.call(this로 사용될 객체/값, 인자1, 인자2, …)</p>
-</blockquote>
-<p>apply와 동일하나, 매개변수 넘기는 방식이 다름</p>
-<ul>
-<li>Function.prototype.bind()</li>
-</ul>
-<blockquote>
-<p>함수.bind(this로 사용될 객체/값, 인자1, 인자3, …)</p>
-</blockquote>
-<p>this 를 교체후, 함수를 리턴해준다.</p>
-<p>call(this, 1, 2, 3) 은 bind(this)(1, 2, 3) 과 같다.</p>
-<ul>
-<li>Function.prototype.toString()</li>
-</ul>
-<p>함수의 소스 코드를 string으로 변환하여 출력.</p>
-<ul>
-<li>Function.prototype.isPrototypeOf()</li>
-</ul>
-<blockquote>
-<p>함수.prototype.isPrototypeOf(인스턴스 객체)</p>
-</blockquote>
-<p>인스턴스 객체의 프로토타입이 해당 “함수”인지 확인</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
 <p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
 
@@ -299,7 +270,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/#post-footer"
+                                href="/2017/09/10/Javascript/5. javascript-Function/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -339,7 +310,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 20 of 112</li>
+        <li class="pagination-number">page 20 of 111</li>
     </ul>
 </div>
 
@@ -349,7 +320,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

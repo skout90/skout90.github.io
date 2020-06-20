@@ -202,15 +202,15 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/"
-                            aria-label=": 03.1. NavController를 통한 페이지 이동시 발생 이벤트"
+                            href="/2017/07/24/CSS/상대-크기/"
+                            aria-label=": CSS 상대 크기"
                         >
-                            03.1. NavController를 통한 페이지 이동시 발생 이벤트
+                            CSS 상대 크기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-24T14:43:13+09:00">
+    <time datetime="2017-07-24T18:43:13+09:00">
 	
 		    2017.07.24
     	
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Ionic/">Ionic</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,50 +227,26 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="NavController의-lifecycle-이벤트"><a href="#NavController의-lifecycle-이벤트" class="headerlink" title="NavController의 lifecycle 이벤트"></a>NavController의 lifecycle 이벤트</h3><p>NavController를 사용하여 페이지를 이동할때, 발생하는 이벤트들에 대해 정리해본다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">  openPage(page) &#123;</span><br><span class="line">    <span class="keyword">this</span>.navCtrl.push(page);</span><br><span class="line">  &#125;</span><br><span class="line">   ionViewDidLoad() &#123;</span><br><span class="line">     alert(<span class="string">'최초 로딩됌'</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="이벤트"><a href="#이벤트" class="headerlink" title="이벤트"></a>이벤트</h3><table>
-<thead>
-<tr>
-<th>이벤트 메서드 명</th>
-<th>Returns</th>
-<th>설명</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>ionViewDidLoad</code></td>
-<td>void</td>
-<td>처음 페이지가 로딩되었을때, 캐시된 페이지에서는 동작을 하지 않음.</td>
-</tr>
-<tr>
-<td><code>ionViewWillEnter</code></td>
-<td>void</td>
-<td>페이지에 들어가서, 페이지가 활성활 되었을때</td>
-</tr>
-<tr>
-<td><code>ionViewDidEnter</code></td>
-<td>void</td>
-<td>페이지에 완전히 접근하여 활성화가 되었을때, 캐시 여부와 관계없이 실행 됌.</td>
-</tr>
-<tr>
-<td><code>ionViewWillLeave</code></td>
-<td>void</td>
-<td>페이지를 막 떠나기 시작할때</td>
-</tr>
-<tr>
-<td><code>ionViewDidLeave</code></td>
-<td>void</td>
-<td>페이지 떠나기를 완료하였을 때</td>
-</tr>
-<tr>
-<td><code>ionViewWillUnload</code></td>
-<td>void</td>
-<td>페이지가 제거 돼고, 페이지의 엘리먼트가 제거 됐을때</td>
-</tr>
-</tbody></table>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://ionicframework.com/docs/api/navigation/NavController/" target="_blank" rel="noopener">http://ionicframework.com/docs/api/navigation/NavController/</a></p>
-<p><a href="https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
+                    <p>CSS 상대적인 크기에 대해 알아본다.</p>
+<h1 id="em"><a href="#em" class="headerlink" title="em"></a>em</h1><ul>
+<li>최근에 정의한(부모 요소) font-size를 1em 으로 함, 계속해서 누적됌.</li>
+<li>없으면 브라우저 기본값을 따름</li>
+<li>9pt = 16px = 1em</li>
+</ul>
+<h1 id="REM"><a href="#REM" class="headerlink" title="REM"></a>REM</h1><ul>
+<li>최상위 브라우저 기본 폰트 크기를 1rem으로 함, 누적되지 않음.</li>
+</ul>
+<h2 id="vh-ve"><a href="#vh-ve" class="headerlink" title="vh, ve"></a>vh, ve</h2><p>브라우저 윈도우 크기의 1/100 크기를 “1”로 함</p>
+<ul>
+<li>2000 x 1000 px 크기의 윈도우라면</li>
+</ul>
+<blockquote>
+<p>1vh = 10px</p>
+</blockquote>
+<blockquote>
+<p>1vw = 20px</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4" target="_blank" rel="noopener">http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4</a></p>
 
                     
                         
@@ -280,7 +256,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/#post-footer"
+                                href="/2017/07/24/CSS/상대-크기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -320,7 +296,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 113 of 148</li>
+        <li class="pagination-number">page 113 of 150</li>
     </ul>
 </div>
 
@@ -330,7 +306,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

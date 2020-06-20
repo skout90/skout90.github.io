@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/"
-                            aria-label=": 12. 장식자 정리 - @ViewChild, @ViewChildren"
+                            href="/2017/07/30/Angular/3.1. 자식-컴포넌트/"
+                            aria-label=": 03.1. 자식 컴포넌트"
                         >
-                            12. 장식자 정리 - @ViewChild, @ViewChildren
+                            03.1. 자식 컴포넌트
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-26T10:00:50+09:00">
+    <time datetime="2017-07-30T14:43:13+09:00">
 	
-		    2017.07.26
+		    2017.07.30
     	
     </time>
     
@@ -227,29 +227,25 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="ViewChild"><a href="#ViewChild" class="headerlink" title="@ViewChild"></a>@ViewChild</h2><p>자식 엘리먼트와 같이 캡슐화되어 있는, 템플릿의 경우 템플릿이 그려진 이후에 참조가 가능하다. 이때 @ViewChild를 이용하면 템플릿이 만들어지기 전에 참조 가능하다. </p>
-<p>지시자는 템플릿 내에 선언돼 있기 때문에(쉐도우 DOM), 초기화 되고 나서 지시자 정보를 얻을 수 있다. 때문에 <strong>@ViewChild와 setTimeout()</strong>함수를 이용해 상태정보를 알아냄.</p>
-<blockquote>
-<p>@ViewChild(클래스명) 변수명: 클래스명;</p>
-</blockquote>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;AfterViewInit, Component, Directive, Input, ViewChild&#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 지시자의 속성값은 DOM 생성 후 알 수 있음.</span></span><br><span class="line"><span class="meta">@Directive</span>(&#123; selector: <span class="string">'item'</span> &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Item &#123;</span><br><span class="line">  <span class="meta">@Input</span>() status: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'item-component'</span>,</span><br><span class="line">  template: <span class="string">'&lt;button&gt;알림창&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ItemComponent &#123;</span><br><span class="line">  display()&#123;</span><br><span class="line">    alert(<span class="string">'ItemComponent입니다'</span>);     </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'app-view-child'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;item status="false" *ngIf="isShow==false"&gt;&lt;/item&gt;</span></span><br><span class="line"><span class="string">    &lt;item status="true" *ngIf="isShow==true"&gt;&lt;/item&gt;    </span></span><br><span class="line"><span class="string">    &lt;button (click)="toggle()"&gt;선택&lt;/button&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">    isShow : &#123;&#123;isShow&#125;&#125;&lt;br&gt;</span></span><br><span class="line"><span class="string">    status : &#123;&#123;status&#125;&#125;&lt;br&gt;    </span></span><br><span class="line"><span class="string">    &lt;item-component (click)="display()"&gt;&lt;/item-component&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ViewchildComponent &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//@ViewChild를 통해 첫번째 item 엘리먼트를 가져옴.</span></span><br><span class="line">  <span class="meta">@ViewChild</span>(Item)</span><br><span class="line">  <span class="keyword">set</span> item(v: Item) &#123;    </span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123; <span class="keyword">this</span>.status = v.status; &#125;, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@ViewChild</span>(ItemComponent) itemComponent: ItemComponent;</span><br><span class="line">  isShow: <span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br><span class="line">  status: <span class="built_in">boolean</span>;</span><br><span class="line"> </span><br><span class="line">  toggle() &#123;</span><br><span class="line">    <span class="keyword">this</span>.isShow = !<span class="keyword">this</span>.isShow;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  display()&#123;</span><br><span class="line">    <span class="keyword">this</span>.itemComponent.display();</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="ViewChildren"><a href="#ViewChildren" class="headerlink" title="@ViewChildren"></a>@ViewChildren</h2><blockquote>
-<p>@ViewChildren(‘설명 레이블’) children:QueryList&lt;참조 변수의 형&gt;;</p>
-</blockquote>
-<p>복수개의 캡슐화된 엘리먼트(쉐도우 Dom)를 참조한다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&lt;child-cmp #child1 [childname]=<span class="string">"'자식1'"</span>&gt;&lt;<span class="regexp">/child-cmp&gt;</span></span><br><span class="line"><span class="regexp">&lt;child-cmp #child2 [childname]="'자식2'"&gt;&lt;/</span>child-cmp&gt;</span><br><span class="line">&lt;child-cmp #child3 [childname]=<span class="string">"'자식3'"</span>&gt;&lt;<span class="regexp">/child-cmp&gt;</span></span><br><span class="line"><span class="regexp">...</span></span><br><span class="line"><span class="regexp">export class ViewchildrenComponnet &#123;</span></span><br><span class="line"><span class="regexp">  @ViewChildren('child1,child2,child3') children:QueryList&lt;ChildCmp&gt;;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="번외"><a href="#번외" class="headerlink" title="번외"></a>번외</h4><ul>
-<li><p><strong>@ContentChild  : DOM의 단수 개의 엘리먼트 가져오기</strong></p>
-<p>@ContentChild(클래스명) 사용할 변수명: 클래스명;</p>
-</li>
-<li><p><strong>@ContentChildren : DOM의 복수 개의 엘리먼트 가져오기</strong></p>
-<p>@ContentChildren(클래스명) 사용할 변수명: 클래스명;</p>
-</li>
+                    <p>템플릿에 새로운 태그를 만들어 사용, 복잡한 코드를 알아보기 쉽게 하거나, 하나의 컴포넌트를 여러 곳에 만들어서 사용할 수 있음. 자식 컴포넌트의 selector를 부모 컴포넌트에 사용하면 됌.</p>
+<ul>
+<li>child-component.ts</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
-<p>@ViewChild와 @ConentChild의 차이 <a href="http://stackoverflow.com/questions/34326745/whats-the-difference-between-viewchild-and-contentchild" target="_blank" rel="noopener">http://stackoverflow.com/questions/34326745/whats-the-difference-between-viewchild-and-contentchild</a></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">    selector: <span class="string">'child-component'</span>,</span><br><span class="line">    template: <span class="string">'&lt;h2 (click)="onClick()"&gt;자식 컴포넌트 &#123;&#123; no &#125;&#125;&lt;/h2&gt;'</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ChildComponent &#123;</span><br><span class="line">    no: <span class="built_in">number</span> = <span class="number">0</span>;</span><br><span class="line">    onClick() &#123;</span><br><span class="line">        <span class="keyword">this</span>.no++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>app.module.ts</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">import &#123; ChildComponent &#125; from &apos;../components/child-component&apos;;</span><br><span class="line">...</span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">	...</span><br><span class="line">    ChildComponent</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>만들어준 컴포넌트를 <code>declarations</code>에 추가한다.</p>
+<p><em>자식 컴포넌트는 entryComponent에 추가해줄 필요가 없다.</em></p>
+<ul>
+<li>페이지.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ChildComponent &#125; <span class="keyword">from</span> <span class="string">'../components/child-component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">	&lt;h2&gt;이곳은 부모&lt;/h2&gt;</span></span><br><span class="line"><span class="string">	&lt;child-component&gt;&lt;/child-component&gt;</span></span><br><span class="line"><span class="string">	`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ParentComponent &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=mB5eYtFwJR4&amp;index=25&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=mB5eYtFwJR4&amp;index=25&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
 
                     
                         
@@ -259,7 +255,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/26/Angular/12. 장식자 정리-@ViewChild-@ViewChildren/#post-footer"
+                                href="/2017/07/30/Angular/3.1. 자식-컴포넌트/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -299,7 +295,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 103 of 148</li>
+        <li class="pagination-number">page 103 of 150</li>
     </ul>
 </div>
 
@@ -309,7 +305,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

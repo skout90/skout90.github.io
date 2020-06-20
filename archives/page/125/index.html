@@ -202,56 +202,75 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
-                            aria-label=": 08.2. Angular Reactive 폼"
+                            href="/2017/07/24/GIT/merge_vs_rebase/"
+                            aria-label=": Merge VS Rebase"
                         >
-                            08.2. Angular Reactive 폼
+                            Merge VS Rebase
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-15T09:09:21+09:00">
+    <time datetime="2017-07-24T13:54:01+09:00">
 	
-		    2017.07.15
+		    2017.07.24
     	
     </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/GIT/">GIT</a>
+
+
     
 </div>
 
             </div>
             
                 <div class="postShorten-content">
-                    <ol>
-<li>ReactiveFormModule Import 하기</li>
+                    <p>merge를 하면 branch를 생성한 시점의 베이스를 기준으로 합병이 된다</p>
+<p>rebase는 <code>git rebase 브랜치</code> 에서 지정한 브랜치를 베이스로 기준 삼아 합병이 된다</p>
+<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><p><code>master</code> 와 <code>slave</code>가 있고 <code>master</code> 에서 <code>git merge slave</code> 를 하면</p>
+<ol>
+<li><code>master</code>의 커밋 내역 이후 <code>slave</code>의 커밋내역이 단순 합쳐짐.</li>
+<li>커밋을 묶음으로 관리 : 마지막 <code>merge</code> 커밋을 <code>reset</code> 하면 통째로 모든 <code>merge</code>커밋들이 사라짐.</li>
 </ol>
-<ul>
-<li>app.module.ts</li>
+<h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><ul>
+<li><p><code>master</code> 에서 <code>git rebase slave</code>를 하면</p>
+<p>슬레이브 뒤에 마스터의 커밋 이력이 쌓임.</p>
+</li>
 </ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;            <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125;       <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ReactiveFormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;  <span class="comment">// &lt;-- #1 import module</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;        <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionModal &#125;   <span class="keyword">from</span> <span class="string">'[path]'</span>; <span class="comment">// &lt;-- #1 import component</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    ReactiveFormsModule <span class="comment">// &lt;-- #2 add to @NgModule imports</span></span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionModal, <span class="comment">// &lt;-- #3 declare app component</span></span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormControl, FormGroup &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h2&gt;Hero Detail&lt;/h2&gt;</span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">    &lt;input [formControl]="name"&gt;</span></span><br><span class="line"><span class="string">  &lt;/label&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;form [formGroup]="heroForm" novalidate&gt;</span></span><br><span class="line"><span class="string">    &lt;div&gt;</span></span><br><span class="line"><span class="string">      &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">        &lt;input formControlName="name"&gt;</span></span><br><span class="line"><span class="string">      &lt;/label&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;p&gt;Form value: &#123;&#123; heroForm.value | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Form status: &#123;&#123; heroForm.status | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionModal &#123;</span><br><span class="line">  name = <span class="keyword">new</span> FormControl();</span><br><span class="line"></span><br><span class="line">  heroForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    name: <span class="keyword">new</span> FormControl()</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>FormControl : 값이나 validity를 추적한다.</p>
-<p>FormGroup : 값이나 validity 추적을위한 AbstractControl 인스턴스 그룹.</p>
-<p>AbstractControl : FormControl, FormGroup, FormArray의 추상 클래스로, 프로퍼티나 common behaviors들을 제공한다.</p>
-</blockquote>
 <ul>
-<li>FormControl</li>
+<li><p><code>slave</code> 에서 <code>git rebase master</code>를 하면</p>
+<p>마스터 커밋 뒤로 슬레이브 이력이 쌓임.</p>
+</li>
 </ul>
-<p><code>FormControl 초기화</code> : 초기값, validators, async validators 값이 인자로 들어간다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">form = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  lowerCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.required),</span><br><span class="line">  upperCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>,</span><br><span class="line">               Validators.compose([</span><br><span class="line">                 Validators.required,</span><br><span class="line">                 Validators.pattern(<span class="string">"[A-Z]&#123;3&#125;"</span>)]))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>템플릿에 <code>[formControl]=&quot;폼컨트롤이름&quot;</code>으로 적용한다.</p>
-<ul>
-<li>FormGroup</li>
-</ul>
-<p><code>FormGroup 초기화</code>  : 폼 그룹 안에 폼컨트롤러를 선언해준다.</p>
-<p>, form에 <code>[formGroup]=&quot;폼그룹이름&quot;</code>으로 적용, input이나 select 태그에 <code>formControlName=&quot;폼컨트롤이름&quot;</code> 과 같이 적용한다.</p>
-<ul>
-<li>novalidators</li>
-</ul>
-<p><code>&lt;form&gt;</code> 태그 안에 novalidators는 브라우저가 원시 HTML 검증을 하지 않도록 해준다.</p>
+<ol>
+<li>트리 그래프도 브랜치 없이 일렬로 나타남.</li>
+<li>중복된 수정 내용은 로그가 남지 않음.</li>
+<li>reset시 통째로 merge 커밋들이 사라지지 않음.</li>
+</ol>
+<h2 id="rebase-과정"><a href="#rebase-과정" class="headerlink" title="rebase 과정"></a>rebase 과정</h2><ol>
+<li>커밋로그 보기</li>
+</ol>
+<p><code>git log --decorate --all --oneline --graph</code></p>
+<ol start="2">
+<li>데브의 마지막 커밋을 베이스로 머지함</li>
+</ol>
+<p><code>git rebase dev</code></p>
+<ol start="3">
+<li>conflict 수정 후</li>
+</ol>
+<p><code>git add 파일 전체경로</code></p>
+<ol start="4">
+<li>상태 확인</li>
+</ol>
+<p><code>git status</code></p>
+<ol start="5">
+<li>리베이스 계속</li>
+</ol>
+<p><code>git rebase --continue</code></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/git-merge-rebase.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/git-merge-rebase.html</a></p>
+<p><a href="https://blog.outsider.ne.kr/666" target="_blank" rel="noopener">https://blog.outsider.ne.kr/666</a></p>
 
                     
                         
@@ -261,7 +280,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/#post-footer"
+                                href="/2017/07/24/GIT/merge_vs_rebase/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -301,7 +320,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 125 of 148</li>
+        <li class="pagination-number">page 125 of 150</li>
     </ul>
 </div>
 
@@ -311,7 +330,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

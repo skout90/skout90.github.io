@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/10/24/Node.js/cookieParser란/"
-                            aria-label=": Node 모듈 cookieParser란 무엇인가"
+                            href="/2017/10/24/Node.js/express-session/"
+                            aria-label=": express session 정리"
                         >
-                            Node 모듈 cookieParser란 무엇인가
+                            express session 정리
                         </a>
                     
                 </h1>
@@ -227,44 +227,33 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>요청된 쿠키를 쉽게 추출할 수 있도록 해주는 미들웨어.</p>
-<p>request 객체에 cookies 속성이 부여된다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express      = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">var</span> cookieParser = <span class="built_in">require</span>(<span class="string">'cookie-parser'</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> app = express()</span><br><span class="line">app.use(cookieParser())</span><br><span class="line"> </span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Cookies: '</span>, req.cookies);</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line">app.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+                    <p>express-session과 connect-session-knex를 이용하여 세션관리를 하였다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> session = <span class="built_in">require</span>(<span class="string">'express-session'</span>);</span><br><span class="line"><span class="keyword">let</span> KSS = <span class="built_in">require</span>(<span class="string">'connect-session-knex'</span>)(session);</span><br><span class="line"></span><br><span class="line">app.use(session(&#123;</span><br><span class="line">    <span class="comment">//resave: true,</span></span><br><span class="line">    secret: <span class="string">'abcd'</span>,</span><br><span class="line">    cookie: &#123;<span class="attr">secure</span>: <span class="literal">false</span>, <span class="attr">maxAge</span>: <span class="literal">null</span>&#125;,</span><br><span class="line">    store: <span class="keyword">new</span> KSS(&#123;<span class="attr">knex</span>: knex, <span class="attr">tablename</span>: <span class="string">'sessions'</span>&#125;)</span><br><span class="line">&#125;));</span><br></pre></td></tr></table></figure>
 
-<p>아래와 같이 커맨드를 날리면 쿠키 값을 확인할 수 있다.</p>
+<h4 id="session-options"><a href="#session-options" class="headerlink" title="session(options)"></a>session(options)</h4><p>세션 미들웨어를 생성한다. 세션 데이터는 쿠키가 아닌 서버사이드에 저장된다.</p>
 <blockquote>
-<p>$ curl <a href="http://127.0.0.1:8080" target="_blank" rel="noopener">http://127.0.0.1:8080</a> –cookie “Cho=Kim;Greet=Hello” </p>
+<p>cookie-parser가 없어도 동작하지만, 만약 있다면 secret을 일치시키는 것이 좋다.</p>
 </blockquote>
+<p>기본 서버 세션 저장소인 MemoryStore은 개발 환경을 위한 것.</p>
+<p>&lt;프로퍼티&gt;</p>
 <ul>
-<li>cookieParser(secret, options)</li>
-</ul>
-<blockquote>
-<p>secret : signed 시키는 암호키로 string/array 형태 가능</p>
-<p>options</p>
+<li><p>cookie</p>
 <p>maxAge : 만료 시간을 밀리초 단위로 설정</p>
-<p>expires : 만료 날짜를 GMT 시간으로 설정</p>
+<p>expires : 만료 날짜를 GMT 시간으로 설정(maxAge와 동시 등록시 마지막것 사용)</p>
 <p>path : cookie의 경로 default “/“</p>
-<p>domain : 도메인 네임 default “loaded”</p>
-<p>secure : https에서만 cookie 사용할 수 있도록 한다.</p>
+<p>domain : 지정한 도메인으로 쿠키값을 저장한다.</p>
+<p>secure : https에서만 cookie 사용할 수 있도록 한다.(HTTPS여야만 작동)</p>
 <p>httpOnly : 웹서버를 통해서만 cookie 접근할 수 있도록 한다</p>
 <p>signed : cookie가 서명되어야 할 지를 결정한다.</p>
-</blockquote>
-<ul>
-<li>res.cookie(쿠키명, 값, options)</li>
+<p>sameSite : true/false 엄격하게 같은 사이트에서 쿠키를 사용할지.</p>
+</li>
+<li><p>genid</p>
+</li>
 </ul>
-<p>response(브라우저)에 쿠키 생성</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">res.cookie(<span class="string">'hasVisited'</span>, <span class="string">'1'</span>, &#123;</span><br><span class="line">    maxAge: <span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>,</span><br><span class="line">    httpOnly: <span class="literal">true</span>,</span><br><span class="line">    path:<span class="string">'/visitors'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>지정된 함수로 세션아이디를 사용한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.use(session(&#123;</span><br><span class="line">  genid: <span class="function"><span class="keyword">function</span>(<span class="params">req</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> genuuid()</span><br><span class="line">  &#125;,</span><br><span class="line">  secret: <span class="string">'keyboard cat'</span></span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>res.clearCookie(쿠키명, options)</li>
-</ul>
-<p>쿠키 제거, 경로를 지정했다면 options에 해당 경로를 넘겨 삭제할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.clearCookie(<span class="string">'hasVisited'</span>, &#123;<span class="attr">path</span>: <span class="string">'/visitors'</span>&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.npmjs.com/package/cookie-parser" target="_blank" rel="noopener">https://www.npmjs.com/package/cookie-parser</a></p>
-<p><a href="http://cinema4dr12.tistory.com/838" target="_blank" rel="noopener">http://cinema4dr12.tistory.com/838</a></p>
-<p><a href="http://nujabes403.blogspot.kr/2015/03/express-middleware-cookie-parser.html" target="_blank" rel="noopener">http://nujabes403.blogspot.kr/2015/03/express-middleware-cookie-parser.html</a></p>
-
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2>
                     
                         
 
@@ -273,7 +262,7 @@
                     
                         <p>
                             <a
-                                href="/2017/10/24/Node.js/cookieParser란/#post-footer"
+                                href="/2017/10/24/Node.js/express-session/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -313,7 +302,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 9 of 112</li>
+        <li class="pagination-number">page 9 of 111</li>
     </ul>
 </div>
 
@@ -323,7 +312,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

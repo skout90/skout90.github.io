@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Typescript/4. typescript-인터페이스/"
-                            aria-label=": 04. Typescript 인터페이스(Interface)"
+                            href="/2017/08/12/Typescript/2.1. typescript-webpack-환경구축/"
+                            aria-label=": 02.1. 타입스크립트 Webpack 환경 구축"
                         >
-                            04. Typescript 인터페이스(Interface)
+                            02.1. 타입스크립트 Webpack 환경 구축
                         </a>
                     
                 </h1>
@@ -227,14 +227,175 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="Interface"><a href="#Interface" class="headerlink" title="Interface"></a>Interface</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Person &#123;</span><br><span class="line">  name: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>; <span class="comment">// '?' 있을 수도 있고 없을 수도 있음.</span></span><br><span class="line">  [index: <span class="built_in">string</span>]: <span class="built_in">string</span>; <span class="comment">// indexable type : 프로퍼티 명으로 옵셔널하게 사용가능</span></span><br><span class="line">  [index: <span class="built_in">number</span>]: <span class="built_in">number</span>;</span><br><span class="line">  hello(): <span class="built_in">void</span>;</span><br><span class="line">  hi(): <span class="built_in">string</span>;</span><br><span class="line">  ho(): <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person: Person = &#123;</span><br><span class="line">  name: <span class="string">'Junho'</span>,</span><br><span class="line">  age: <span class="number">35</span>,</span><br><span class="line">  hello: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">  hi: (): <span class="function"><span class="params">string</span> =&gt;</span> &#123; <span class="keyword">return</span> <span class="string">'hi'</span>;  &#125;,</span><br><span class="line">  ho(): <span class="built_in">string</span> &#123; <span class="keyword">return</span> <span class="string">'hello'</span>; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">person.anybody = <span class="string">"junho"</span>; <span class="comment">// indexable type 사용</span></span><br><span class="line">person[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">p: Person</span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'안녕하세요 $&#123;p.name&#125; 입니다.'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <p>webpack이란 Module Bundler 이다. webpack과 같은 모듈 번들러로는 <code>grunt</code>, <code>gulp</code> 등이 있다.</p>
+<blockquote>
+<p> 각각 모듈들에 필요한 의존성에 대해 관계를 파악하여 그룹핑해주며, 여러 기능 자동 수행.</p>
+</blockquote>
+<p><img src="https://webpack.github.io/assets/what-is-webpack.png" alt="webpack에 대한 이미지 검색결과"></p>
+<p>여러가지 js, css, png 파일들이 모듈 번들러를 통해서 몇몇 파일들로 합쳐진다. </p>
+<h4 id="진행되야-하는-작업들"><a href="#진행되야-하는-작업들" class="headerlink" title="진행되야 하는 작업들"></a>진행되야 하는 작업들</h4><ul>
+<li>ECMA6 파일을 ECMA5 파일로 변경</li>
+<li>문서 최적화</li>
+<li>코드 테스트</li>
+<li>문서 문법 검증 </li>
+<li>SASS 컴파일</li>
+<li>…</li>
+</ul>
+<p>위와 같은 빌드 단계에서 진행되야 하는 것들을 일관화하여, 모듈화시켜주는데 기여한다. </p>
+<p>모듈화 시키는데 대표적인 작업 그룹이 있었으니 <code>CommonJs</code>와 <code>AMD(Asynchronous Module Definition)</code>가 있다.  <code>webpack</code>은 두 그룹의 명세를 모두 지원하는 javascript 도구이다.</p>
+<h3 id="사용법"><a href="#사용법" class="headerlink" title="사용법"></a>사용법</h3><p>typescript와 webpack 연동에 대해 다룬다.</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; [폴더명]/</span><br><span class="line">&gt; ├─ public/</span><br><span class="line">&gt; └─ src/</span><br><span class="line">&gt;    └─ components/</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>위와 같이 폴더 구조를 만든다. src는 타입스크립트 소스코들이 들어가고, webpack을 통한 결과물은 public에 위치한다. 컴포넌트들은 src/components에 위치할 것이다.</p>
+<h4 id="Typescript"><a href="#Typescript" class="headerlink" title="Typescript"></a>Typescript</h4><ol>
+<li>NPM 패키지로 전환</li>
+</ol>
+<blockquote>
+<p>&gt; npm init</p>
+</blockquote>
+<ol start="2">
+<li>Typescript 설치</li>
+</ol>
+<blockquote>
+<p> &gt; npm install –save-dev typescript</p>
+</blockquote>
+<p><code>-g</code>를 통해 글로벌로 설치하기도 하지만, 협업환경에서는 로컬로 설치한뒤 npm 스크립트를 이용하는 경우가 일반적임.</p>
+<ol start="3">
+<li>Typescript 파일 작성</li>
+</ol>
+<ul>
+<li>src/kanban/Kanban.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Kanban &#123;</span><br><span class="line">    show() &#123;</span><br><span class="line">        alert(<span class="string">"Hello, Stranger?"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="Class-Implements-Interface"><a href="#Class-Implements-Interface" class="headerlink" title="Class Implements Interface"></a>Class Implements Interface</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> IPerson &#123;</span><br><span class="line">  name: <span class="built_in">string</span>;</span><br><span class="line">  hello(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Persion <span class="keyword">implements</span> IPerson &#123;</span><br><span class="line">  name: <span class="built_in">string</span> = <span class="literal">null</span>;</span><br><span class="line">  hello(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'안녕하세요 $&#123;this.name&#125; 입니다.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">public</span> hi() : <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'안녕 준호임'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person: Person = <span class="keyword">new</span> Person(<span class="string">'Junho'</span>);</span><br><span class="line">person.hi();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>src/index.ts</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Kanban &#125; <span class="keyword">from</span> <span class="string">'./kanban/Kanban'</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> Kanban();</span><br><span class="line">    o.show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="Function-Interface"><a href="#Function-Interface" class="headerlink" title="Function Interface"></a>Function Interface</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> HelloPerson &#123;</span><br><span class="line">  (name: <span class="built_in">string</span>, age?: <span class="built_in">number</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> helloPerson: HelloPerson = <span class="function"><span class="keyword">function</span>(<span class="params">name: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">helloPerson(<span class="string">'Junho'</span>);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>src/index.html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;<span class="name">title</span>&gt;</span>TypeScript Greeter<span class="tag">&lt;/<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"index.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>함수인터페이스는 사용할때 타입체크를 함.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/?subscribe" target="_blank" rel="noopener">https://www.inflearn.com/course/%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%BD%94%EB%A6%AC%EC%95%84-1705-%EA%B8%B0%EC%B4%88-%EC%84%B8%EB%AF%B8%EB%82%98/?subscribe</a></p>
+<ol start="4">
+<li>TypeScript 설정파일</li>
+</ol>
+<p>root 폴더에 <code>tsconfig.json</code>을 생성한다</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="attr">"outDir"</span>: <span class="string">"./public/"</span>,</span><br><span class="line">        <span class="attr">"sourceMap"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"noImplicitAny"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"module"</span>: <span class="string">"commonjs"</span>,</span><br><span class="line">        <span class="attr">"target"</span>: <span class="string">"es5"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"include"</span>: [</span><br><span class="line">        <span class="string">"./src/**/*"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>compilerOptions</strong></p>
+<ul>
+<li>outDir : 컴파일 된 파일이 위치하는 장소</li>
+<li>sourceMap : 소스맵 사용 여부</li>
+</ul>
+<blockquote>
+<p>소스맵이란 : 자바스크립트를 한 파일로 합치거나 사이즈를 줄이기 위해서 압축하거나 난독화해서 배포하는 방식을 많이 취하는데 이 방법은 성능에는 좋지만 사실 디버깅이 어려워지는 문제가 있다. 소스맵은 이 원본 소스와 최종소스를 매핑해서 추적할 수 있는 방법</p>
+</blockquote>
+<ul>
+<li>noImplicityAny : <code>any</code> 로 선언된 식과 정의에 대해 에러를 발생시킴.</li>
+<li>module : 모듈 표준으로 <code>commonjs</code>를 사용한다.</li>
+<li>target : es5 형태로 컴파일 함.</li>
+</ul>
+<p><strong>files/include/exclude</strong></p>
+<p>컴파일 대상인 파일 설정</p>
+<p><code>files</code> 키워드로 파일을 정하거나   <code>&quot;files&quot;: [  &quot;src/index.ts&quot;],</code></p>
+<p><code>incude/exclude</code>로 경로를 지정할 수 있다.</p>
+<blockquote>
+<p> 더 자세한 옵션 값을 보려면</p>
+<p> <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html" target="_blank" rel="noopener">https://www.typescriptlang.org/docs/handbook/compiler-options.html</a></p>
+</blockquote>
+<p><em>컴파일 하려면….</em></p>
+<blockquote>
+<p>&gt; tsc ./src/index.ts</p>
+</blockquote>
+<p>위 명령어를 치면 ts가 js로 컴파일 되지만, index.html을 실행하면, <strong>오류가 발생한다.</strong> <code>export</code> 명령어는 webpack 모듈러를 사용하고 <code>commonjs</code>를 사용할 때만 사용할 수 있다.</p>
+<h4 id="Webpack"><a href="#Webpack" class="headerlink" title="Webpack"></a>Webpack</h4><ol>
+<li>webpack 설치</li>
+</ol>
+<blockquote>
+<p>&gt; npm install –save webpack</p>
+</blockquote>
+<ol start="2">
+<li>Typescript 로더 설치</li>
+</ol>
+<blockquote>
+<p>&gt; npm install –save-dev awesome-typescript-loader source-map-loader</p>
+</blockquote>
+<p><code>awesome-typescript-loader</code>는 웹팩이 ts 표준 설정파일인 tsconfig.json을 활용해서 컴파일하게 도와주는 로더이다. <code>Babel</code>을 통해 ES5로 변환해주며, 캐시를 활용하여 webpack 컴파일을 더 빠르게 해준다.</p>
+<p><code>source-map-loader</code>는 웹팩이 여러 라이브러리를 관리하는 과정에서 소스맵 데이터의 연속성을 유지하기 위해 필요하다. 소스맵이 변경될때마다, 웹팩에게 알려준다.</p>
+<ol start="3">
+<li>웹팩 설정</li>
+</ol>
+<ul>
+<li>webpack.config.js</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">  entry: <span class="string">'./src/index.ts'</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'public'</span>),</span><br><span class="line">    filename: <span class="string">'index.js'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123; test: <span class="regexp">/\.css$/</span>, use: <span class="string">'css-loader'</span> &#125;,</span><br><span class="line">      &#123; test: <span class="regexp">/\.ts$/</span>, use: <span class="string">'awesome-typescript-loader'</span> &#125;,</span><br><span class="line">      &#123; enforce: <span class="string">"pre"</span>, test: <span class="regexp">/\.js$/</span>, loader: <span class="string">"source-map-loader"</span> &#125;,</span><br><span class="line">      &#123; enforce: <span class="string">'pre'</span>, test: <span class="regexp">/\.ts$/</span>, loader: <span class="string">'tslint-loader'</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  resolve: &#123;</span><br><span class="line">    extensions: [<span class="string">".ts"</span>, <span class="string">".js"</span>, <span class="string">".json"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Entry(진입점)</strong> </p>
+<p>페이지 시작의 첫번째 파일로, Entry는 의존성 관계 파악 및 그룹핑을 위한 위치 정보를 알려주는 기능을 한다.</p>
+<p><strong>Output</strong></p>
+<p>웹팩의 <code>output</code> 프로퍼티는 웹팩에게 그룹핑된 코드를 어디 위치 시킬지 알려준다.</p>
+<p><code>output.filename</code>과 <code>output.path</code>프로퍼티는 웹팩에게 묶음의 이름과, 결과물 생성 위치를 알려준다.</p>
+<p><strong>Loaders</strong></p>
+<p>웹팩의 로더는 다른 리소스를 순수 JavaScript로 변환하고, css, html, scss, jpg 등을 종속성 정보에 추가함으로서 모듈로서 관리한다.</p>
+<p>Loader의 설정은 <code>rules</code> 프로퍼티를 통해 이루어지는데, rules 프로퍼티에는 두가지 속성이 있다.</p>
+<p><code>test</code> : <code>require() / import</code> 문에서 ‘.txt’파일로 해석되는 경로를 발견하면,</p>
+<p><code>use</code> or <code>loader</code> : 로더의 종류를 입력.</p>
+<p><em>로더 사용하기 위해서는</em></p>
+<blockquote>
+<p>&gt; npm install –save-dev css-loader awesome-typescript-loader </p>
+<p>&gt; npm install –save-dev tslint tslint-loader</p>
+</blockquote>
+<p><em>참고 : tslint 기본 설정 파일 생성</em></p>
+<blockquote>
+<p>&gt; ./node_modules/.bin/tslint –init </p>
+</blockquote>
+<p><strong>Resolve</strong><br>extensions를 등록해두면, import시에 확장자 생략이 가능하다.</p>
+<p><strong>Plugins</strong></p>
+<p>플러그인을 통해 <code>컴파일</code>이나, <code>chunks</code> 과정에서 사용자 정의 기능을  수행하는데 사용된다.  단순히 <code>require()</code> 키워드로 불러와서, <code>plugins</code> 속성에 추가하면 된다.</p>
+<p><code>html-webpack-plugin</code> : 컴파일 output 위치로 html 파일을 복사해주는 플러그인.</p>
+<blockquote>
+<p>&gt; npm install –save-dev html-webpack-plugin</p>
+</blockquote>
+<ul>
+<li>webpack.config.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line">...</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      template: <span class="string">'src/index.html'</span>,</span><br><span class="line">      inject: <span class="literal">false</span></span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>webpack 실행</li>
+</ol>
+<blockquote>
+<p>&gt; webpack</p>
+</blockquote>
+<p>위 커맨드를 입력하면 <code>public/index.html</code> 파일이 생성된 것을 볼 수있다.</p>
+<ol start="5">
+<li>webpack-dev-server 사용하기</li>
+</ol>
+<p>파일을 수정할 때 마다 webpack을 실행하는 것은 비효율적이다. 한 번 실행해놓고 파일을 수정하면 자동으로 반영되게 해주는 것이 <code>webpack-dev-server</code> 이다.</p>
+<blockquote>
+<p>&gt; npm install –save-dev webpack-dev-server</p>
+<p>&gt; ./node_modules/.bin/webpack-dev-server  –content-base public/ –open</p>
+</blockquote>
+<p><code>--content-base</code> : 소스파일 베이스 설정</p>
+<p><code>--open</code> : 브라우저를 실행</p>
+<p>실행 경로를 쓰기 귀찮으니, <code>package.json</code>에 다음을 추가</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  "scripts": &#123;</span><br><span class="line">    ...</span><br><span class="line">    "build": "webpack",</span><br><span class="line">    "start": "webpack-dev-server --content-base public/ --open"</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>&gt; npm start</p>
+</blockquote>
+<p>입력하면 경로 없이 dev-server 실행!</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>웹팩&amp;타입스크립트 연동 : <a href="https://www.typescriptlang.org/docs/handbook/react-&amp;-webpack.html" target="_blank" rel="noopener">https://www.typescriptlang.org/docs/handbook/react-&amp;-webpack.html</a></p>
+<p><a href="https://www.facebook.com/218158748272233/videos/993595284061905/" target="_blank" rel="noopener">https://www.facebook.com/218158748272233/videos/993595284061905/</a></p>
+<p><a href="https://hyunseob.github.io/2017/03/21/webpack2-beginners-guide/" target="_blank" rel="noopener">https://hyunseob.github.io/2017/03/21/webpack2-beginners-guide/</a></p>
+<p>tslint-loader : <a href="https://www.npmjs.com/package/tslint-loader" target="_blank" rel="noopener">https://www.npmjs.com/package/tslint-loader</a></p>
+<p>awesome-typescript-loader : <a href="https://github.com/s-panferov/awesome-typescript-loader" target="_blank" rel="noopener">https://github.com/s-panferov/awesome-typescript-loader</a></p>
+<p>source-map-loader : <a href="https://github.com/webpack-contrib/source-map-loader" target="_blank" rel="noopener">https://github.com/webpack-contrib/source-map-loader</a></p>
+<p>소스맵이란 : <a href="https://blog.outsider.ne.kr/916" target="_blank" rel="noopener">https://blog.outsider.ne.kr/916</a></p>
+<p>html-webpack-plugin, html-webpack-plugin : <a href="http://sixmen.com/ko/tech/2017-04-11-1-webpack-setup-tutorial-with-typescript-and-mithril/" target="_blank" rel="noopener">http://sixmen.com/ko/tech/2017-04-11-1-webpack-setup-tutorial-with-typescript-and-mithril/</a></p>
 
                     
                         
@@ -244,7 +405,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Typescript/4. typescript-인터페이스/#post-footer"
+                                href="/2017/08/12/Typescript/2.1. typescript-webpack-환경구축/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -294,7 +455,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

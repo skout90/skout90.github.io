@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/12/Angular/5.1. 의존성 주입/"
-                            aria-label=": 05.1. Angular 의존성 주입"
+                            href="/2017/07/12/Angular/6. Angular 파이프/"
+                            aria-label=": 06. Angular 파이프"
                         >
-                            05.1. Angular 의존성 주입
+                            06. Angular 파이프
                         </a>
                     
                 </h1>
@@ -227,39 +227,23 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>객체 생성과 설정에 들어가는 코드를 최소화하고, 컴포넌트 마다 일관된 방법으로 생성한 객체를 제공하기 위해서 필요함.</p>
-<ol>
-<li>@Injector : 주입할 클래스 선택</li>
-<li>Provider : 주입할 클래스를 제공자에 등록</li>
-<li>Dependency Injection : 생성자로 의존성 주입을 받음</li>
-</ol>
-<h2 id="제공자를-통한-의존성-주입"><a href="#제공자를-통한-의존성-주입" class="headerlink" title="제공자를 통한 의존성 주입"></a>제공자를 통한 의존성 주입</h2><ul>
-<li>클래스 제공자</li>
-</ul>
-<ol>
-<li><code>@Injectable()</code> 장식자 활용 </li>
-<li><code>@Component({ ... providers: [주입할 클래스]})</code></li>
-<li>생성자 패턴을 이용해 의존성 주입 <code>constructor(public [주입할 클래스명:클래스])</code></li>
-</ol>
+                    <p>템플릿에서 값의 표시되는 형태를 변환해서 보여주기 위해 사용, Filter라는 이름으로 불리기도 함.(|)</p>
 <ul>
-<li>값 제공자</li>
+<li>선언</li>
 </ul>
-<p>컴포넌트에 값을 제공할 목적으로 사용.</p>
-<ul>
-<li>팩토리 제공자</li>
-</ul>
-<p>싱글턴이 아닌 새롭게 생성한 객체를 의존성 주입을 통해 사용할 때.</p>
-<h2 id="제공자-없이-의존성-주입"><a href="#제공자-없이-의존성-주입" class="headerlink" title="제공자 없이 의존성 주입"></a>제공자 없이 의존성 주입</h2><ul>
-<li>팩토리 패턴</li>
-</ul>
-<p>제공자 이용하지 않고 새로운 객체를 만들어 의존성을 주입하고 싶을 때.</p>
-<ul>
-<li>주입기 이용</li>
-</ul>
-<p>Angular에서 만들어 놓은 팩토리 패턴, <code>new</code> 키워드 대신 <code>resolveAndCreate()</code> 메서드 활용</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ReflectiveInjector &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; 클래스 &#125; <span class="keyword">from</span> <span class="string">'...'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> injector: ReflectiveInjector = ReflectiveInjector.resoleveAndCreate([클래스명]);</span><br><span class="line">  <span class="keyword">return</span> injector.get(클래스명);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Pipe, PipeTransform &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Pipe</span>(&#123; name: <span class="string">'myupper'</span> &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyUpperPipe <span class="keyword">implements</span> PipeTransform &#123;</span><br><span class="line">  transform(phrase: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> phrase.toUpperCase();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<p>해당 문자열을 대문자로 바꿔주는 파이프.</p>
+<ul>
+<li>루트 모듈이나, 공유모듈에 등록</li>
+</ul>
+<p><code>@NgModule({declarations:[MyUpperPipe], exports: [MyUpperPipe]})</code></p>
+<ul>
+<li>사용</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'player'</span>,</span><br><span class="line">  template: <span class="string">`&lt;div highlight&gt;&#123;&#123;"player!!!"|myupper&#125;&#125;&lt;/div&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PlayerComponent &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/witinweb/angular-4-2-pipes-%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-651848186633" target="_blank" rel="noopener">https://medium.com/witinweb/angular-4-2-pipes-%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-651848186633</a></p>
 
                     
                         
@@ -269,7 +253,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/12/Angular/5.1. 의존성 주입/#post-footer"
+                                href="/2017/07/12/Angular/6. Angular 파이프/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -319,7 +303,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

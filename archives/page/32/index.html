@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/01/24/Vue/1.1.Computed-VS-Watch/"
-                            aria-label=": 01.1. Computed VS Watch vs Method 정리"
+                            href="/2018/03/03/Frontend/2.웹팩-바벨(babel)-연동/"
+                            aria-label=": 02. 웹팩(Webpack) 바벨(babel) 연동"
                         >
-                            01.1. Computed VS Watch vs Method 정리
+                            02. 웹팩(Webpack) 바벨(babel) 연동
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-24T19:28:10+09:00">
+    <time datetime="2018-03-03T19:28:10+09:00">
 	
-		    2018.01.24
+		    2018.03.03
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Vue/">Vue</a>
+    <a class="category-link" href="/categories/Frontend/">Frontend</a>
 
 
     
@@ -227,47 +227,104 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>computed와 watch… watch는 비동기적인 코드를 처리할때 쓴다고 정도만 알고 있었더니 너무 헷갈린다. computed로 안되지만 watch로는 동작하는 코드가 있다.. 한번 정리해보자.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;example&quot;&gt;</span><br><span class="line">  &#123;&#123;x&#125;&#125; &#123;&#123;y&#125;&#125; &#123;&#123;z&#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">var vm = new Vue(&#123;</span><br><span class="line">  el: &apos;#example&apos;,</span><br><span class="line">  data: &#123;</span><br><span class="line">    y: &apos;y&apos;</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  created: function() &#123;</span><br><span class="line">    // 3초후에 y값을 바꾼다.</span><br><span class="line">	setTimeout(()=&gt; this.y=&apos;kill bill&apos;, 3000);</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  computed: &#123;</span><br><span class="line">    x: function () &#123;</span><br><span class="line">      console.log(&apos;x open&apos;);</span><br><span class="line">	  return this.y;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  watch: &#123;</span><br><span class="line">    y: function (newVal, oldVal) &#123;</span><br><span class="line">      console.log(&apos;y open&apos;);</span><br><span class="line">      return this.y;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  methods: &#123;</span><br><span class="line">	z: function() &#123;</span><br><span class="line">	  console.log(&apos;z open&apos;);</span><br><span class="line">	  return &apos;z&apos;;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>3초 후에  y값을 바꾼다. y값을 바꾸면 y를 관찰하고 있던 y가 실행되며, y에 종속성이 있는 x 역시도 실행된다.</p>
+                    <p>구버젼 IE/안드로이드에서 최신 JS를 사용할 수 있도록 도와주는 바벨을 셋팅해보자</p>
+<h2 id="기본셋팅-및-arrow-function"><a href="#기본셋팅-및-arrow-function" class="headerlink" title="기본셋팅 및 arrow function"></a>기본셋팅 및 arrow function</h2><p>arrow function을 일반 function으로 바꿔보겠다!</p>
 <blockquote>
-<p>y open</p>
-<p>x open</p>
+<p>npm i babel-core babel-loader babel-plugin-transform-es2015-arrow-functions</p>
+<p>npm i babel-cli -g</p>
 </blockquote>
-<p>자 그럼 아래와 같은 템플릿은 어떨까?</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;example&quot;&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-
-<p>선언한 값들을 참조하지 않았다. 3초 후에 y값을 바꾸면</p>
-<blockquote>
-<p>y open</p>
-</blockquote>
-<p>computed는 아예 실행되지 않는다! 사용되지 않았으므로. </p>
-<h3 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h3><ul>
-<li>watch를 사용해야할 경우</li>
-</ul>
-<ol>
-<li>mustache(템플릿 표현식) 없이 값의 변화를 관찰하고 싶을때는 watch를 사용한다.</li>
-<li>비동기적 처리시 사용한다!</li>
-<li>값이 바뀔 때마다 매번 호출되어야 할 경우</li>
-<li>연산을 얼마나 자주 수행하는지 제한가능(lodash의 debounce 이용)</li>
-</ol>
 <ul>
-<li>computed 사용해야 할 경우</li>
+<li>.babelrc 생성</li>
 </ul>
-<ol>
-<li><p>종속된 값의 변화를 관찰하고 싶은 경우</p>
-</li>
-<li><p>mustache(템플릿 표현식) 을 사용하는 경우</p>
-</li>
-<li><p>동기 호출에 무관할 경우</p>
-<p>input의 v-model로 서버호출이 필요한데 computed 를 사용할 경우, 입력이 멈춰버린다. 값을 직접 리턴해야하기 때문.</p>
-</li>
-<li><p>동일한 인풋 값에 대해선, 캐싱이 적용된다!</p>
-</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Vue.js Quick Start 원형섭</p>
-<p><a href="https://kr.vuejs.org/v2/guide/computed.html" target="_blank" rel="noopener">https://kr.vuejs.org/v2/guide/computed.html</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-es2015-arrow-functions"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src/main.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>babel src/main.js 명령어 입력하면 converting 되는걸 볼 수 있음</p>
+</blockquote>
+<ul>
+<li>config/webpack.dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="string">"babel-loader"</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span></span><br><span class="line">      &#125;,</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> webpack –config=config/webpack.dev.js</p>
+</blockquote>
+<p>dist에서 변환된 내용을 확인할 수 있다!</p>
+<h2 id="Async-Await-Promise-적용"><a href="#Async-Await-Promise-적용" class="headerlink" title="Async Await(Promise) 적용"></a>Async Await(Promise) 적용</h2><blockquote>
+<p>npm i babel-plugin-async-to-promises</p>
+</blockquote>
+<ul>
+<li>.babelrc</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        <span class="string">"transform-es2015-arrow-functions"</span>,</span><br><span class="line">        <span class="string">"async-to-promises"</span></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'후후'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>babel src/main.js</p>
+</blockquote>
+<p>Promise 함수로 변환시키는 것을 볼 수 있다. 여기까지 해도, Promise를 지원하는 최신 브라우저에서는 동작하는데, IE11에서는 Promise를 이해하지 못한다. 그래서 polyfill을 적용해, Promise함수를 자동으로 삽입해주도록 해야한다.</p>
+<blockquote>
+<p>npm i babel-polyfill</p>
+</blockquote>
+<ul>
+<li>config/webpack.dev.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">entry: &#123;</span><br><span class="line">    main: [<span class="string">"babel-polyfill"</span>, <span class="string">"./src/main.js"</span>]</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>npm run dev</p>
+<p>yarn dev 또는 webpack-dev-server –config=config/webpack.dev.js</p>
+</blockquote>
+<p>main.js가 생성이 되었지만 용량이 꾀나 크다! [big]라고 나옴. polyfill은 모든 함수를 넣어주기 때문이다. 필요한 함수가 선별적으로 넣어주는 것이 가장 좋다!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"core-js/fn/promise"</span>, <span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="babel-사용을-조금더-간편하게"><a href="#babel-사용을-조금더-간편하게" class="headerlink" title="babel 사용을 조금더 간편하게"></a>babel 사용을 조금더 간편하게</h3><p>babel을 매번 찾아 선언해주는 것은 번거로운일이다. 그래서 바벨을 preset을 제공해준다. </p>
+<p>바로 <code>babel-preset-env</code> es2015, es2016, es2017 및 latest를 포함하고 있다.</p>
+<p><a href="http://babeljs.io/docs/plugins/" target="_blank" rel="noopener">http://babeljs.io/docs/plugins/</a></p>
+<blockquote>
+<p> <code>babel-stage</code> 를 사용하면 JS 표준으로 채택되지 않은 문법도 사용할 수가 있다!</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"env"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"targets"</span>: &#123;</span><br><span class="line">                    <span class="comment">// 브라우저 타겟을 설정</span></span><br><span class="line">                    <span class="string">"browsers"</span>: [<span class="string">"last 2 versions"</span>]</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="string">"debug"</span>: <span class="literal">true</span> <span class="comment">// 어떤 바벨 플러그인이 적용됐는지 확인</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="babel-runtime"><a href="#babel-runtime" class="headerlink" title="babel-runtime"></a>babel-runtime</h2><p>babel-polyfill 대신에 babel-runtime을 활용할 수도 있다. polyfill이 전역에 최신 JS 함수를 추가하는 거라면, babel-rutime은 전역 스코프를 오염시키지 않으며, 모듈 단위로 최신JS 파일을 포함시킨다.</p>
+<ul>
+<li>사용 시기</li>
+</ul>
+<blockquote>
+<p>전역 스코프를 오염해서 안되는 경우</p>
+<p>public 모듈 또는 가볍게 작동해야하는 라이브러리를 만들경우</p>
+</blockquote>
+<ul>
+<li>.babelrc</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"env"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"targets"</span>: &#123;</span><br><span class="line">                    <span class="string">"browsers"</span>: [<span class="string">"last 2 versions"</span>]</span><br><span class="line">                &#125;,</span><br><span class="line">            </span><br><span class="line">                <span class="string">"debug"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-runtime"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>main.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"babel-runtime/regenerator"</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">async</span> (args) =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">console</span>.log(<span class="string">'하하!'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'후후'</span>)</span><br><span class="line">    <span class="keyword">const</span> &#123;a, b&#125; = args</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a(&#123;<span class="attr">a</span>:<span class="number">1</span>, <span class="attr">b</span>:<span class="number">2</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>webpack.dev.js 에서 설정했던 폴리필을 제거</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">	entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>]</span><br><span class="line">  &#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>webpack -config=config/webpack.dev.js</p>
+</blockquote>
+<p>babel-runtime에 대한 상세 설정은 아래 URL을 참조</p>
+<p> <a href="https://babeljs.io/docs/plugins/transform-runtime/" target="_blank" rel="noopener">https://babeljs.io/docs/plugins/transform-runtime/</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics</a></p>
+<p>polyfill vs runtime : <a href="https://codersmind.com/babel-polyfill-babel-runtime-explained/" target="_blank" rel="noopener">https://codersmind.com/babel-polyfill-babel-runtime-explained/</a></p>
 
                     
                         
@@ -277,7 +334,7 @@
                     
                         <p>
                             <a
-                                href="/2018/01/24/Vue/1.1.Computed-VS-Watch/#post-footer"
+                                href="/2018/03/03/Frontend/2.웹팩-바벨(babel)-연동/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -317,7 +374,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 32 of 148</li>
+        <li class="pagination-number">page 32 of 150</li>
     </ul>
 </div>
 
@@ -327,7 +384,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/22/etc/자신의-npmmodule-사용하기/"
-                            aria-label=": 수정한 npm_module 사용하기"
+                            href="/2018/02/02/etc/cordova-css-check/"
+                            aria-label=": Cordova에서 플랫폼 체크 css 방법"
                         >
-                            수정한 npm_module 사용하기
+                            Cordova에서 플랫폼 체크 css 방법
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-22T19:28:10+09:00">
+    <time datetime="2018-02-02T19:28:10+09:00">
 	
-		    2017.09.22
+		    2018.02.02
     	
     </time>
     
@@ -227,19 +227,16 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>맘에 드는 npm_module을 수정하고 사용하고 싶을때..</p>
-<ol>
-<li>해당 git repository를 fork 한다</li>
-<li>수정한다.</li>
-<li>pacakge.json에 다음과 같이 등록</li>
-</ol>
+                    <p>cordova에서 빌드시 자동으로 body 태그의 클래스가 추가 된다.</p>
 <blockquote>
-<p>npm install <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a><username>/<repository>/tarball/master –save</repository></username></p>
+<p>.cordova</p>
+<p>.platform-ios</p>
+<p>.platform-android</p>
 </blockquote>
-<p>/tarball 이라는것으로 해야 한다. 그래야 gz파일이라는 걸로 다운받아지면서 설치가 가능함.</p>
-<p>내가 수정한 knex-logger</p>
-<p><a href="https://github.com/skout90/knex-logger" target="_blank" rel="noopener">https://github.com/skout90/knex-logger</a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm" target="_blank" rel="noopener">https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm</a></p>
+<p>즉 코르도바에서, ios 플랫폼인지 체크하고 싶다면</p>
+<blockquote>
+<p>.platform-ios.cordova </p>
+</blockquote>
 
                     
                         
@@ -249,7 +246,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/22/etc/자신의-npmmodule-사용하기/#post-footer"
+                                href="/2018/02/02/etc/cordova-css-check/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -289,7 +286,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 4 of 5</li>
+        <li class="pagination-number">page 4 of 7</li>
     </ul>
 </div>
 
@@ -299,7 +296,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

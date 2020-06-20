@@ -202,105 +202,58 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/12/17/etc/AWS정리/"
-                            aria-label=": "
+                            href="/2020/06/20/Refactoring/1. 리팩터링-예시/"
+                            aria-label=": 1. 리팩터링 예시"
                         >
-                            (no title)
+                            1. 리팩터링 예시
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-12-17T10:14:27+09:00">
+    <time datetime="2020-06-20T19:28:10+09:00">
 	
-		    2019.12.17
+		    2020.06.20
     	
     </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Refactoring/">Refactoring</a>
+
+
     
 </div>
 
             </div>
             
                 <div class="postShorten-content">
-                    <p>IDE</p>
+                    <h2 id="검색-엔진-최적화-SEO"><a href="#검색-엔진-최적화-SEO" class="headerlink" title="검색 엔진 최적화 SEO"></a>검색 엔진 최적화 SEO</h2><p>SEO(Search Engine Optimize) : 검색 엔진 최적화, 구글 엔진이 크롤링 보다 잘 하기 위해서 최적화가 필요.</p>
 <ul>
-<li>AWS Cloud9</li>
+<li>명확하고 동창적 title 태그 사용.</li>
+<li>description 메타태그 활용하기</li>
+<li>URL 구조 개선</li>
+<li>..</li>
 </ul>
-<p>기계 학습</p>
+<h3 id="canonical"><a href="#canonical" class="headerlink" title="canonical"></a>canonical</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"canonical"</span> <span class="attr">href</span>=<span class="string">"http://www.seo-korea.com"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>표준 URL을 설정함으로써, 검색엔진이 URL을 쉽게 최적화하여, PageRank 상승에 기여하고, 중복된 컨텐츠를 쉽게 없엘 수 있음.</p>
+<h3 id="sitemap-xml"><a href="#sitemap-xml" class="headerlink" title="sitemap.xml"></a>sitemap.xml</h3><p>루트에 sitemap.xml 파일 만들어 놓기 <code>abc.com/sitemap.xml</code></p>
 <ul>
-<li>SageMaker</li>
+<li>sitemap.xml</li>
 </ul>
-<p>Haddop</p>
-<p>HDFS / EMR</p>
-<p>ML.AWS 방문하면 머신러닝 정보 얻을 수 있음.</p>
-<h2 id="AWS-SAM-서버리스"><a href="#AWS-SAM-서버리스" class="headerlink" title="AWS SAM 서버리스"></a>AWS SAM 서버리스</h2><ul>
-<li><p>AWS CodeCommit - AWS CodeBuild - AWS Code Deploy</p>
-<p>위 과정을 AWS CodePipeline을 통해 진행</p>
-<blockquote>
-<p>또는 Code Start / Cloud9을 이용</p>
-</blockquote>
-</li>
-<li><p>AWS CodeStart : 데브 옵스를 위한 손쉬운 프로젝트 운영 -&gt; 위 과정을 추상화하여 제공</p>
-</li>
-</ul>
-<p>API Gateway</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sitemapindex</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/post-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:30.093Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/page-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/category-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:07.793Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">sitemapindex</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>AWS Cloud9 : 클라우드 기반 IDE/디버깅 손쉬운 개발</li>
+<li>page-sitemap.xml</li>
 </ul>
-<h2 id="마이크로-서비스"><a href="#마이크로-서비스" class="headerlink" title="마이크로 서비스"></a>마이크로 서비스</h2><ul>
-<li>컨테이너 스케줄링/스케일링 배포전략</li>
-</ul>
-<p>EC2/EKS </p>
-<ul>
-<li>호스팅</li>
-</ul>
-<p>EC2 / Fargate</p>
-<ul>
-<li>컨테이너 이미지 저장소</li>
-</ul>
-<p>ECR</p>
-<p>ECS : Elastic Container Service</p>
-<h2 id="CI-CD"><a href="#CI-CD" class="headerlink" title="CI / CD"></a>CI / CD</h2><p>하루에 여러번 코드를 커밋하고 병합하는것</p>
-<ul>
-<li>작은 범위의 코드</li>
-</ul>
-<p>CD는 개발자의 승인 필요 없이 자동 운영 환경 배포 : 코드가 테스트를 통과하기만 하면.</p>
-<p>빌드/배포/테스트 단계 자동화!</p>
-<p>릴리스 주기 가속화</p>
-<p>개발자들이 빠르게 피드백 얻을 수 있음</p>
-<p>향상된 협업</p>
-<p>신속한 전달</p>
-<p>신뢰성</p>
-<p>보안</p>
-<p>확장성</p>
-<h3 id="소스"><a href="#소스" class="headerlink" title="소스"></a>소스</h3><p>코드 레파지토리 : 버전관리 / 브랜칭 / 코드리뷰</p>
-<p>(코드 커밋) : 다른 서비스와 연동 가능</p>
-<p>GitHub/BitBucket</p>
-<h3 id="빌드"><a href="#빌드" class="headerlink" title="빌드"></a>빌드</h3><p>컴파일 / 유닛테스트 / 정적 분석 / 패키징</p>
-<p>(코드 빌드) : 컴파일 / 테스트 / 배포 준비 asset / VPC 액세스</p>
-<p>(젠킨스)</p>
-<h3 id="테스트"><a href="#테스트" class="headerlink" title="테스트"></a>테스트</h3><p>통합 테스트 / 부하 테스트 / 보안 테스트 / 적용 테스트</p>
-<h3 id="배포"><a href="#배포" class="headerlink" title="배포"></a>배포</h3><p>(코드 디플로이) : 배포를 자동화</p>
-<p>다양한 배포 기법 : Rolling, Blue/Green, Canary</p>
-<p>CI CD : CloudFormation 템플릿 작성 </p>
-<p><img src="/tmp/1531983286027.png" alt="1531983286027"></p>
-<ul>
-<li>Rolling 배포</li>
-</ul>
-<p>일부 인스턴스부터 구 버전에서 새 버전으로 점진적으로 옮겨가게 됌.</p>
-<ul>
-<li>Canary</li>
-</ul>
-<p>새 버전의 어플리케이션으로 프로덕션 트래픽의 일부를 분산</p>
-<p>A / B 테스팅 사용 가능 </p>
-<p>운영 환경 대체 / 중지 가능</p>
-<p><img src="/tmp/1531983773112.png" alt="1531983773112"></p>
-<p><img src="/tmp/1531984094582.png" alt="1531984094582"></p>
-<h2 id="영상-인식"><a href="#영상-인식" class="headerlink" title="영상 인식"></a>영상 인식</h2><ul>
-<li>Amazon Kinesis Video Streams</li>
-</ul>
-<p>이미지 또는 비디오를 Rekognition API에 제공하기만 하면, 서비스에서 객체, 사람, 텍스트, 장면 및 동작을 식별하고 부적절한 콘텐츠를 탐지할 수 있습니다. 또한, Amazon Rekognition은 여러분이 제공하는 이미지와 비디오에서 매우 정확한 얼굴 분석 및 얼굴 인식을 제공합니다. 사용자 확인, 인원 계산 및 공공 안전 등 다양한 사용 사례에서 얼굴을 탐지, 분석 및 비교할 수 있습니다</p>
-<p>성공적인 SaaS 기업들의 4가지 비밀 </p>
-<p>챗봇과 대화 인터페이스로 한 층 업그레이드 된 고객 경험</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">urlset</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:image</span>=<span class="string">"http://www.google.com/schemas/sitemap-image/1.1"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>daily<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>1<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/all-categories/<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>weekly<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>0.8<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">urlset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="구글-Search-Console-등록"><a href="#구글-Search-Console-등록" class="headerlink" title="구글 Search Console 등록"></a>구글 Search Console 등록</h3><p><a href="https://www.google.com/webmasters/tools/home" target="_blank" rel="noopener">https://www.google.com/webmasters/tools/home</a></p>
+<p>내 URL을 등록하고, 위의 sitemap.xml도 함께 등록해주자.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/" target="_blank" rel="noopener">http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/</a></p>
+<p><a href>http://tobeonline.tistory.com/entry/구글이-제시하는-검색엔진-최적화SEO-방법</a></p>
+<p><a href="http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/" target="_blank" rel="noopener">http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/</a></p>
+<p><a href="http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/" target="_blank" rel="noopener">http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/</a></p>
 
                     
                         
@@ -310,7 +263,7 @@
                     
                         <p>
                             <a
-                                href="/2019/12/17/etc/AWS정리/#post-footer"
+                                href="/2020/06/20/Refactoring/1. 리팩터링-예시/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -339,7 +292,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 1 of 148</li>
+        <li class="pagination-number">page 1 of 150</li>
     </ul>
 </div>
 
@@ -349,7 +302,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2019 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 
