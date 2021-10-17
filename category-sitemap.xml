@@ -9,7 +9,14 @@
 
     <url>
         <loc>https://skout90.github.io/categories/Refactoring/</loc>
-        <lastmod>2020-06-21T12:38:56.704Z</lastmod>
+        <lastmod>2021-10-17T07:36:00.151Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://skout90.github.io/categories/Web/</loc>
+        <lastmod>2020-07-25T11:12:02.952Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
@@ -17,13 +24,6 @@
     <url>
         <loc>https://skout90.github.io/categories/etc/</loc>
         <lastmod>2020-06-20T10:39:12.499Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>https://skout90.github.io/categories/Web/</loc>
-        <lastmod>2020-06-20T10:39:12.498Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/07/Spring/spring default config/"
-                            aria-label=": component-scan / annotation-config / annotation-driven 차이점"
+                            href="/2017/07/07/Spring/scheduler/"
+                            aria-label=": 심플하게 스프링 스케줄러 사용하기"
                         >
-                            component-scan / annotation-config / annotation-driven 차이점
+                            심플하게 스프링 스케줄러 사용하기
                         </a>
                     
                 </h1>
@@ -227,39 +227,42 @@
             </div>
             
                 <div class="postShorten-content">
-                    <ol>
-<li><h2 id="context-component-scan"><a href="#context-component-scan" class="headerlink" title="context:component-scan/"></a><a href="context:component-scan/" target="_blank" rel="noopener">context:component-scan/</a></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"org.controller"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+                    <p>Spring Quartz를 사용할때</p>
+<p>@Autowired가 안먹어서, 직접 bean을 찾아 등록해줘야 하는</p>
+<p>번거로움이 있었다.</p>
+<p>스프링 3버전 이상부터 간단히 스케줄러를 사용할 수 있다.</p>
+<ul>
+<li><strong>context-scheduler.xml</strong></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:task</span>=<span class="string">"http://www.springframework.org/schema/task"</span> <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.iyl.stock.service"</span> /&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!-- job bean --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"scheduleJob"</span> <span class="attr">class</span>=<span class="string">"com.iyl.stock.schedule.Schedule"</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">task:scheduled-tasks</span>&gt;</span> <span class="comment">&lt;!-- scheduled job list --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">task:scheduled</span> <span class="attr">ref</span>=<span class="string">"scheduleJob"</span> <span class="attr">method</span>=<span class="string">"executeJob"</span> <span class="attr">cron</span>=<span class="string">"0/30 * * * * ?"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- add more job here --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">task:scheduled-tasks</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>위의 선언은 특정 패키지(위에서는 org.controller) 안의 클래스들을 스캔하고 ,</p>
-<p>빈 인스턴스를 생성한다. </p>
-<p>아래와 같은 정확한 어노테이션이 존재해야지 빈을 생성할수있다. </p>
 <ul>
-<li><strong>@Component</strong></li>
-<li><strong>@Repository</strong></li>
-<li><strong>@Service</strong></li>
-<li><strong>@Controller</strong></li>
-<li><strong>@Autowired</strong></li>
+<li><strong>Schedule.java</strong></li>
 </ul>
-<p>​</p>
-</li>
-<li><h2 id="mvc-annotation-driven"><a href="#mvc-annotation-driven" class="headerlink" title="mvc:annotation-driven/"></a><a href="mvc:annotation-driven/" target="_blank" rel="noopener">mvc:annotation-driven/</a></h2><p>스프링 MVC 컴포넌트들의 디폴트 설정을 적용.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Schedule</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ScheduleService scheduleService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeJob</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.scheduleService.insertPush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>xml을 더 간단하게 하려면 다음을 추가하고.</p>
 <ul>
-<li><strong>HandlerMapping 및 HandlerAdapter 등록.</strong></li>
-<li><strong>@NumberFormat, @DateTimeFormat, @Valid</strong></li>
-<li><strong>Xml 및 JSON 읽고 쓰기</strong></li>
+<li><strong>context-schedule.xml</strong></li>
 </ul>
-<p>​</p>
-</li>
-<li><h2 id="context-annotation-config"><a href="#context-annotation-config" class="headerlink" title="context:annotation-config/"></a><a href="context:annotation-config/" target="_blank" rel="noopener">context:annotation-config/</a></h2><ul>
-<li><strong>@Required</strong></li>
-<li><strong>@Autowired</strong></li>
-<li><strong>@Resource, @PostConstruct, @PreDestory</strong></li>
-<li><strong>@Configuration</strong></li>
+<blockquote>
+<p>&lt;task:annotation-driven /&gt;</p>
+</blockquote>
+<p>java파일의 함수 위에 다음과 같은 어노테이션과 크론표현식을 추가해주면 끝.</p>
+<ul>
+<li><strong>Schedule.java</strong></li>
 </ul>
-<p>위 어노테이션 사용하기 위해서 필요.</p>
-</li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://hamait.tistory.com/322" target="_blank" rel="noopener">HAMA 블로그</a></p>
+<blockquote>
+<p>​      @Scheduled(cron=”0 19 16 * * ?”)</p>
+</blockquote>
+<p>아직 성능상이나 비효율적인 부분은 공부해야겠지만…</p>
+<p>너무 허무할 정도.</p>
+<p>단, 서비스를 Autowired하기 위해서</p>
+<p>&lt;context:component-scan base-package&gt;를 통해 </p>
+<p>bean을 한 번 더 스캔 후 등록하는데.</p>
+<p>나는 context-common.xml에서 위 작업을 이미 해놓고 있어서..</p>
+<p>이렇게 해도 성능상이나, 그 외 문제는 없을지 체크가 필요한듯..</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://darkhorizon.tistory.com/316" target="_blank" rel="noopener">SPRING 3.X 스케쥴러 사용하기</a></p>
 
                     
                         
@@ -269,7 +272,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/07/Spring/spring default config/#post-footer"
+                                href="/2017/07/07/Spring/scheduler/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -309,7 +312,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 145 of 150</li>
+        <li class="pagination-number">page 145 of 151</li>
     </ul>
 </div>
 
@@ -319,7 +322,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

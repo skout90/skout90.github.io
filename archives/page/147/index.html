@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/06/12/Angular/Angular CLI 커맨드 정리/"
-                            aria-label=": Angular CLI 커맨드 정리"
+                            href="/2017/06/12/Angular/10. Angular HTTP - Observable Promise 비교/"
+                            aria-label=": 10. Angular HTTP - Observable Promise 비교"
                         >
-                            Angular CLI 커맨드 정리
+                            10. Angular HTTP - Observable Promise 비교
                         </a>
                     
                 </h1>
@@ -227,59 +227,43 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Angular2 커맨드 정리</p>
-<h2 id="Node-js-설치"><a href="#Node-js-설치" class="headerlink" title="Node.js 설치"></a>Node.js 설치</h2><p><a href="https://nodejs.org/en/download" target="_blank" rel="noopener">https://nodejs.org/en/download</a></p>
-<h2 id="Angular-CLI-설치"><a href="#Angular-CLI-설치" class="headerlink" title="Angular CLI 설치"></a>Angular CLI 설치</h2><blockquote>
-<p>$ npm install -g angular-cli</p>
-</blockquote>
-<h2 id="프로젝트-만들기"><a href="#프로젝트-만들기" class="headerlink" title="프로젝트 만들기"></a>프로젝트 만들기</h2><blockquote>
-<p>$ ng new 프로젝트명</p>
-</blockquote>
-<h1 id="포트-변경"><a href="#포트-변경" class="headerlink" title="포트 변경"></a>포트 변경</h1><blockquote>
-<p>$ ng serve –port 4202</p>
-</blockquote>
-<h2 id="구성요소-추가"><a href="#구성요소-추가" class="headerlink" title="구성요소 추가"></a>구성요소 추가</h2><ul>
-<li><p>컴포넌트 추가</p>
-<blockquote>
-<p>$ ng g component 컴포넌트명</p>
-</blockquote>
-</li>
-</ul>
+                    <p>Obserable과 Promise는 비동기 프로그래밍을 위해 사용된다.</p>
+<p>어떤 차이점이 있는지 알아보자.</p>
+<h2 id="차이점"><a href="#차이점" class="headerlink" title="차이점"></a>차이점</h2><p>둘다 비동기 프로그래밍을 위해 사용되지만,</p>
+<p>차이점이 존재한다.</p>
 <ul>
-<li><p>지시자 추가</p>
-<blockquote>
-<p>$ ng g directive 지시자명</p>
-</blockquote>
-</li>
-<li><p>파이프 추가</p>
-<blockquote>
-<p>$ ng g pipe 파이프명</p>
-</blockquote>
-</li>
-<li><p>서비스 추가</p>
-<blockquote>
-<p>$ ng g service 서비스명</p>
-</blockquote>
-</li>
+<li>Promise</li>
 </ul>
-<h2 id="빌드-및-실행"><a href="#빌드-및-실행" class="headerlink" title="빌드 및 실행"></a>빌드 및 실행</h2><ul>
-<li><p>개발서버 실행</p>
-<blockquote>
-<p>$ ng serve</p>
-</blockquote>
-</li>
-<li><p>빌드</p>
-<blockquote>
-<p>$ ng build</p>
-</blockquote>
-</li>
-<li><p>프로덕션 빌드</p>
-<blockquote>
-<p>$ ng build -prod</p>
-</blockquote>
-</li>
+<p>하나의 이벤트만 핸들링이 가능.</p>
+<p>Subscribe(콜백 모니터링) 취소가 불가능.</p>
+<ul>
+<li>Observable</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<p>0 ~ N개 의 이벤트 핸들랭이 가능</p>
+<p>Unscribe를 통해, Subscribe 취소가 가능.</p>
+<p><code>Stream</code> 방식으로 코딩작성이 가능.</p>
+<p><code>map</code>, <code>forEach</code>, <code>reduce</code> 의 명령어를 제공</p>
+<p>Promise보다 더 강력한 기능이 제공되므로</p>
+<p>Observable이 더 많이 사용되는 추세라고 한다.</p>
+<h2 id="Promise-사용법"><a href="#Promise-사용법" class="headerlink" title="Promise 사용법"></a>Promise 사용법</h2><p>request 성공시 .then()이 실행된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; URLSearchParams, Jsonp &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">WikipediaService</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(private jsonp: Jsonp) &#123;&#125;</span><br><span class="line">  search (term: string) &#123;</span><br><span class="line">    <span class="keyword">var</span> search = <span class="keyword">new</span> URLSearchParams()</span><br><span class="line">    search.set(<span class="string">'search'</span>, term);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.jsonp</span><br><span class="line">                .get(<span class="string">'http://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK'</span>, &#123; search &#125;)</span><br><span class="line">                .toPromise()</span><br><span class="line">                .then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123;</span><br><span class="line">  items: <span class="built_in">Array</span>&lt;string&gt;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(private wikipediaService: WikipediaService) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  search(term) &#123;</span><br><span class="line">    <span class="keyword">this</span>.wikipediaService.search(term)</span><br><span class="line">                         .then(<span class="function"><span class="params">items</span> =&gt;</span> <span class="keyword">this</span>.items = items);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>예제 <a href="http://plnkr.co/edit/8ap1Lm?p=preview" target="_blank" rel="noopener">Plunker</a></p>
+<h2 id="Observable-사용법"><a href="#Observable-사용법" class="headerlink" title="Observable 사용법"></a>Observable 사용법</h2><ul>
+<li>서비스</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Http, Response &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Observable &#125; <span class="keyword">from</span> <span class="string">'rxjs/Observable'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'rxjs/add/operator/map'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Schedule &#125; <span class="keyword">from</span> <span class="string">'../models'</span>;</span><br><span class="line"></span><br><span class="line">@Injectable()</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduleService</span> </span>&#123;</span><br><span class="line">	<span class="keyword">constructor</span>(public http: Http) &#123; &#125;</span><br><span class="line">	private baseUrl = CommonTS.BASE_URL;</span><br><span class="line"></span><br><span class="line">	getScheduleList(): Observable&lt;Schedule[]&gt; &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.http</span><br><span class="line">          .get(<span class="keyword">this</span>.baseUrl + <span class="string">'/schedule/list.do'</span>)</span><br><span class="line">          .map(<span class="function">(<span class="params">res: Response</span>) =&gt;</span> res.json());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>서비스 실행</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> subscription = <span class="keyword">this</span>.scheduleService.getScheduleList().subscribe(</span><br><span class="line">    schedules =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.schedules = schedules;</span><br><span class="line">        subscription.unsubscribe();</span><br><span class="line">    &#125;, (err) =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err);</span><br><span class="line">          <span class="keyword">return</span> err;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li>stackoverflow의 <a href="http://stackoverflow.com/users/3375906/trungk18" target="_blank" rel="noopener">trungk18</a> 님 답변</li>
+</ul>
 
                     
                         
@@ -289,7 +273,7 @@
                     
                         <p>
                             <a
-                                href="/2017/06/12/Angular/Angular CLI 커맨드 정리/#post-footer"
+                                href="/2017/06/12/Angular/10. Angular HTTP - Observable Promise 비교/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -329,7 +313,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 147 of 150</li>
+        <li class="pagination-number">page 147 of 151</li>
     </ul>
 </div>
 
@@ -339,7 +323,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

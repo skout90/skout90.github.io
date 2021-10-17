@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Typescript/typescript-default-export/"
-                            aria-label=": export class와 default export class"
+                            href="/2017/08/12/Javascript/string-으로-element만들기/"
+                            aria-label=": Javascript String으로 Element 생성"
                         >
-                            export class와 default export class
+                            Javascript String으로 Element 생성
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Typescript/">Typescript</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,21 +227,11 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="default-export"><a href="#default-export" class="headerlink" title="default export"></a>default export</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> MyClass &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+                    <p>string으로 DOM element를 생성해보자</p>
+<p><strong>Template Element를 이용한다</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> html = <span class="string">"&lt;li&gt;1234&lt;/li&gt;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// element를 생성하여 추가합니다.</span></span><br><span class="line"><span class="keyword">const</span> template = <span class="built_in">document</span>.createElement(<span class="string">'template'</span>);</span><br><span class="line">template.innerHTML = html;</span><br><span class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">"collection"</span>)[<span class="number">0</span>].appendChild(template.content.firstChild);</span><br></pre></td></tr></table></figure>
 
-<p>export defulat의 경우, 파일당 하나의 default export만 가능하다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyClass <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
-
-<p>다음과 같이 rename을 해줄 수도 있다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyClassAlias <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="named-export"><a href="#named-export" class="headerlink" title="named export"></a>named export</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyClass &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyOtherClass &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
-
-<p>export의 경우, 다중 export가 가능하다, 이름도 지정 가능.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;MyClass, MyOtherClass <span class="keyword">as</span> MyOtherClassAlias&#125; <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
-
-<h3 id="어떤-것을-사용할까"><a href="#어떤-것을-사용할까" class="headerlink" title="어떤 것을 사용할까?"></a>어떤 것을 사용할까?</h3><p>프로젝트가 복잡해질 수록, named export가 유용하다는 의견이 있다. default export의 경우 해당 파일에서만 유효하지만, named export의 경우는 다른 파일들의 클래스에서도 유효하다고 한다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/33305954/typescript-export-vs-default-export" target="_blank" rel="noopener">https://stackoverflow.com/questions/33305954/typescript-export-vs-default-export</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro" target="_blank" rel="noopener">https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro</a></p>
 
                     
                         
@@ -251,7 +241,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Typescript/typescript-default-export/#post-footer"
+                                href="/2017/08/12/Javascript/string-으로-element만들기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -301,7 +291,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

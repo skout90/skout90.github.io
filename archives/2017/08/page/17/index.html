@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Typescript/typescript-함수스코프/"
-                            aria-label=": Typescript 함수스코프와 this의 이해"
+                            href="/2017/08/12/Typescript/5. typescript-제네릭/"
+                            aria-label=": 05. Typescript 제네릭(Generic)"
                         >
-                            Typescript 함수스코프와 this의 이해
+                            05. Typescript 제네릭(Generic)
                         </a>
                     
                 </h1>
@@ -227,16 +227,18 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Typescript로 코딩을 하다보면, this로 메서드나 함수를 불러오지 못할 때가 있다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Foo &#123;</span><br><span class="line">    bar = <span class="number">123</span>;</span><br><span class="line">    bas() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> Foo();</span><br><span class="line">x.bas();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> y = x.bas;</span><br><span class="line">y();</span><br></pre></td></tr></table></figure>
+                    <p>다형성을 위해 any를 쓰면, 헬퍼가 제대로 작동하지 않음. Generic을 쓰면 정상 작동함. <strong>Generic</strong>을 쓰자!</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">helloGeneric</span>&lt;<span class="title">T</span>&gt;(<span class="params">message: T</span>): <span class="title">T</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> message;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(hello&lt;<span class="built_in">string</span>&gt;(<span class="string">'Hello'</span>));</span><br></pre></td></tr></table></figure>
 
-<p>1번의 경우는 <code>this</code>가 <code>Foo</code>이며 <code>this.bar</code>의 결과도 올바르게 나오지만,</p>
-<p>2번의 경우는 <code>this</code>가 <code>Window</code>로 나온다. Window는 전역이고, bar는 전역에 있지 않기 때문에, <code>this.bar</code>의 결과는 <code>undefined</code> 가 나온다.</p>
-<h2 id="해결책"><a href="#해결책" class="headerlink" title="해결책"></a>해결책</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Foo &#123;</span><br><span class="line">    bar = <span class="number">123</span>;</span><br><span class="line">    bas = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> Foo();</span><br><span class="line">x.bas();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> y = x.bas;</span><br><span class="line">y();</span><br></pre></td></tr></table></figure>
+<ol>
+<li>Generic 타입을 쓰지 않으면 T로 추론.</li>
+<li>Generic 타입을 쓰면 T를 확인</li>
+</ol>
+<h3 id="Generic-Class"><a href="#Generic-Class" class="headerlink" title="Generic Class"></a>Generic Class</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Person&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> _name: T;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">name: T</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._name = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> junho = <span class="keyword">new</span> Person(<span class="string">'Junho'</span>);</span><br><span class="line"><span class="keyword">new</span> Person&lt;<span class="built_in">number</span>&gt;(<span class="string">'junho'</span>); <span class="comment">// error</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person&lt;T <span class="keyword">extends</span> <span class="built_in">string</span> | <span class="built_in">number</span>&gt; &#123; ...&#125; <span class="comment">// 다음과 같은 식으로 타입제한 가능</span></span><br></pre></td></tr></table></figure>
 
-<p>위와 같이 <code>= () =&gt;</code> 를 활용하면, this가 <code>Window</code>가 아닌 <code>Foo</code>가 되며, 결과도 정상적으로 나온다.</p>
-<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>해당 함수의 실행 스코프가 바뀌어도, <code>= () =&gt;</code>를 활용하면, 동일한 스코프를 유지시켜 준다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=tvocUcbCupA&amp;hd=1" target="_blank" rel="noopener">https://www.youtube.com/watch?v=tvocUcbCupA&amp;hd=1</a></p>
+<h3 id="Multitype"><a href="#Multitype" class="headerlink" title="Multitype"></a>Multitype</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Person&lt;T, K&gt; &#123;</span><br><span class="line">  name: T;</span><br><span class="line">  age: K;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// keyof T는 T의 key(attribute)인지를 확인</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getProperty</span>&lt;<span class="title">T</span>, <span class="title">K</span> <span class="title">extends</span> <span class="title">keyof</span> <span class="title">T</span>&gt; (<span class="params">obj: T, key: K</span>): <span class="title">T</span>[<span class="title">K</span>] </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
 
                     
                         
@@ -246,7 +248,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Typescript/typescript-함수스코프/#post-footer"
+                                href="/2017/08/12/Typescript/5. typescript-제네릭/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -296,7 +298,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/"
-                            aria-label=": 01. Ionic2의 프로젝트 구조"
+                            href="/2017/07/24/Ionic/1.1. app_component/"
+                            aria-label=": 01.1. Ionic App Component"
                         >
-                            01. Ionic2의 프로젝트 구조
+                            01.1. Ionic App Component
                         </a>
                     
                 </h1>
@@ -227,18 +227,53 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>src 폴더에 작업 코드가 있고, 컴파일 후 www 폴더로 전환되는 구조.</p>
-<p>ionic serve로 앱을 실행하면 src 폴더 내용이 컴파일되고 합쳐져서 www 폴더로 저장(<code>rollup js</code> 활용)</p>
-<p><code>www/build</code></p>
-<p>main.css</p>
+                    <h3 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h3><p>W3C 표준인 웹 컴포넌트 기술을 기반으로 HTML, CS, JS를 하나의 단위로 묶어주는 기술로, 앱을 구성하는 요소나 로직을 말함.</p>
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>Decorator는 주로 클래스, 서비스, 타입, 멤버변수 등을 ‘장식’하는 역할.</p>
+<ul>
+<li>클래스 앞에 <code>@Component</code>를 해주면 그 클래스는 컴포넌트가 됌.</li>
+<li>변수 앞에  <code>@Input</code> 를 해주면 외부로 부터 값을 받음</li>
+<li>변수 앞에 <code>@output</code>를 해주면 외부로 값을 보냄.</li>
+</ul>
+<p>Decorator는 Typescript의 실험적인 구문으로,  <code>tsconfig.json</code>의 <code>experimentalDecorators&quot; : true</code>를 설정하면 사용할 수 있음(ionic-cli 자동셋팅)</p>
+<p>Ionic2에서는 Typescript의 일부 Decorator만 사용 가능, 앵귤러와도 약간 다름.</p>
 <blockquote>
-<p>src 폴더의 모든 css 파일들이 main.css 파일들이 저장 됌</p>
+<p>ex) 앵귤러의 decorations 등을 아이오닉에서는 사용 불가</p>
 </blockquote>
-<p>main.js</p>
-<blockquote>
-<p>src 폴더의 모든 TS 파일들이 js로 컴파일되고 합쳐져 main.js로 저장.</p>
-</blockquote>
-<p>index.html을 보면 build/main.js와 build/main.css를 참조하는 것을 확인할 수 있다.</p>
+<h3 id="Ionic의-컴포넌트"><a href="#Ionic의-컴포넌트" class="headerlink" title="Ionic의 컴포넌트"></a>Ionic의 컴포넌트</h3><p><code>@Component 데코레이터</code>로 장식된 클래스를 컴포넌트라고 통칭함.</p>
+<h3 id="메타데이터"><a href="#메타데이터" class="headerlink" title="메타데이터"></a>메타데이터</h3><p>메타에디터 : <code>@Component</code> 에는 하나의 객체 파라미터를 전달할 수 있음 이를 메타데이터라고 함.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: ... <span class="comment">// 컴포넌트를 어디에 표시할지</span></span><br><span class="line">  template: ... <span class="comment">// 컴포넌트 내용을 담는 곳</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>app.component.ts</li>
+</ul>
+<p>앱이 최초 실행되는 위치이다. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HomePage &#125; <span class="keyword">from</span> <span class="string">'../pages/home/home'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  template: <span class="string">'&lt;ion-nav #content [root]="rootPage"&gt;&lt;/ion-nav&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123;</span><br><span class="line">  rootPage: any = TabsPage;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Component의 메타데이터에, <code>selector</code>가 없는 대신 디폴트로 <code>ion-app</code>이 사용된다.</p>
+<p><code>[root]</code> 는 DOM 속성으로, 어떤 페이지가 RootPage 인지 표시.</p>
+<p><strong>#은 참조변수의 의미</strong>이다. 참조변수가 #content이라고 선언돼 있을때 root 페이지를 참조하려면 과 같이 접근한다.</p>
+<ul>
+<li>home.ts</li>
+</ul>
+<p>앱 컴포넌트에서 참조한 HomePage</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">	selector: <span class="string">'page-home'</span>,</span><br><span class="line">	templateUrl: <span class="string">'home.html'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomePage &#123;</span><br><span class="line">	<span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"시작!"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>app.module.ts</li>
+</ul>
+<p>어떤 페이지, 서비스를 사용하는지, 어떤 컴포넌트가 루트 컴포넌트인지.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    MyApp,</span><br><span class="line">    HomePage,</span><br><span class="line">  ],</span><br><span class="line">  imports: [</span><br><span class="line">    IonicModule.forRoot(MyApp)</span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [IonicApp],</span><br><span class="line">  entryComponents: [</span><br><span class="line">    MyApp,</span><br><span class="line">    HomePage,</span><br><span class="line">    ...</span><br><span class="line">  ],</span><br><span class="line">  providers: [</span><br><span class="line">    ...</span><br><span class="line">    &#123; provide: ErrorHandler, useClass: IonicErrorHandler &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>@NgModule을 통해 AppModule을 장식</p>
+<ol>
+<li><p>declarations : 사용할 컴포넌트들 등록</p>
+</li>
+<li><p>imports: [ IonicModule.forRoot(MyApp) ] : 루트 컴포넌트 등록(MyApp)</p>
+</li>
+<li><p>entryComponents : 페이지 컴포넌트를 등록.</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=zp3goVaR8Vg&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq&amp;index=9" target="_blank" rel="noopener">https://www.youtube.com/watch?v=zp3goVaR8Vg&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq&amp;index=9</a></p>
 
                     
                         
@@ -248,7 +283,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/1. Ionic 프로젝트 구조/#post-footer"
+                                href="/2017/07/24/Ionic/1.1. app_component/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -288,7 +323,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 116 of 150</li>
+        <li class="pagination-number">page 116 of 151</li>
     </ul>
 </div>
 
@@ -298,7 +333,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

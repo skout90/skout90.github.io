@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
-                            aria-label=": 02.2. Javascript 연산자, 비교"
+                            href="/2017/09/03/CSS/CSS-마진겹침현상/"
+                            aria-label=": CSS 마진 겹침 현상"
                         >
-                            02.2. Javascript 연산자, 비교
+                            CSS 마진 겹침 현상
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,35 +227,25 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="과"><a href="#과" class="headerlink" title="==과 ==="></a>==과 ===</h2><p>==는 값이 동일한지 비교, 자동으로 형변환해서 비교한다</p>
-<p>===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다.</p>
-<p>JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장.</p>
-<p>switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.)</p>
-<h2 id="연산자"><a href="#연산자" class="headerlink" title="연산자"></a>연산자</h2><h4 id><a href="#" class="headerlink" title="!"></a>!</h4><p>객체, “”, NaN에도 적용이 가능, Boolean과 같은 효과.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(!!a); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="amp-amp"><a href="#amp-amp" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h4><p>값이 boolean이 아닐시</p>
-<ol>
-<li>둘중 하나라도, null/NaN/undefined라면 null/NaN/undefined 반환.</li>
-<li>객체 &amp;&amp; (_)  : 앞 피연산자가 객체라면, 두번째 피연산자 반환.</li>
-<li>true &amp;&amp; (객체) : 앞 피연산자가 true 일때만, 뒤 연산자 반환</li>
+                    <h2 id="마진겹침현상-세-가지"><a href="#마진겹침현상-세-가지" class="headerlink" title="마진겹침현상 세 가지"></a>마진겹침현상 세 가지</h2><ol>
+<li>위,아래 엘리먼트들의 마진이 겹칠시 둘 중 마진이 큰게 둘 사이의 마진이 된다.</li>
 </ol>
-<h4 id="-1"><a href="#-1" class="headerlink" title="||"></a>||</h4><p>값이 boolen이 아닐시</p>
-<ol>
-<li>둘 모두 null/NaN/undefined라면, null/NaN/undefined 반환</li>
-<li>(객체) || _ : 앞 피연산자가 객체라면, 첫번째 객체 반환</li>
-<li>false ||  (객체) : 뒤 피연산자 반환.</li>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">div</span> &#123; <span class="attribute">border </span>: <span class="number">1px</span> solid grey &#125;</span></span><br><span class="line"><span class="css">	<span class="selector-class">.up</span> &#123; <span class="attribute">margin-bottom</span>: <span class="number">40px</span> &#125;</span></span><br><span class="line"><span class="css">	<span class="selector-class">.down</span> &#123; <span class="attribute">margin-top</span>: <span class="number">30px</span> &#125;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"up"</span>&gt;</span>abc<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"down"</span>&gt;</span>def<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://i.imgur.com/Rz5XDXc.png" alt="img"></p>
+<ol start="2">
+<li>위,아래 엘리먼트들의 마진이 겹치고, 위의 엘리먼트의 시각적 요소가 없어지면, 시각적 요소가 없어진 엘리먼트 마진의 top-bottom과/ left-right은 큰값으로 합쳐져 계산된다.</li>
 </ol>
-<h4 id="-2"><a href="#-2" class="headerlink" title="+"></a>+</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> + <span class="string">"5"</span> <span class="comment">// 55</span></span><br><span class="line"><span class="string">"abc ="</span> + <span class="number">3</span> + <span class="number">8</span> <span class="comment">// abc38</span></span><br><span class="line"><span class="number">5</span> - <span class="literal">true</span> <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.up</span> &#123;</span></span><br><span class="line">  margin-top: 30px;</span><br><span class="line">  margin-bottom: 40px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.down</span> &#123;</span></span><br><span class="line">  border : 1px solid grey;</span><br><span class="line">  margin-top: 20px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"up"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"down"</span>&gt;</span>def<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="lt"><a href="#lt" class="headerlink" title="&lt;"></a>&lt;</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="string">"Brick"</span> &lt; <span class="string">"alphabet"</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>up의 margin-top/margin-bottom, down의 margin-top 중 가장 큰값으로 마진을 계산</p>
+<ol start="3">
+<li>부모,자식 엘리먼트 사이에서 부모의 시각적 요소가 없어지면 부모,자식 마진 중 마진이 큰 쪽이 자식 마진처럼 사용된다.</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.parent</span> &#123;</span></span><br><span class="line">  margin-top: 60px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.child</span> &#123;</span></span><br><span class="line">  border : 1px solid grey;</span><br><span class="line">  margin-top: 30px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>사전식 배열로 비교하려면, toLowerCase()를 사용해서 비교하자. JS 비교는 대문자가 더 앞서 위치함.</p>
-<h2 id="객체-비교"><a href="#객체-비교" class="headerlink" title="객체 비교"></a>객체 비교</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;<span class="attr">a</span>: <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line">o1 == o2; <span class="comment">// false</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(o1) == <span class="built_in">JSON</span>.stringify(o2); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>o1과 o2는 객체 그 자체가 아니라, 객체를 가리키는 포인터이기 때문에 동등비교가 되지 않는다. 따라서 JSON.stringify를 통해 비교하는 것이 좋다고 한다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<p>.child의 margin-top이 60 이상이 될때 적용된다. 그전에 겹쳐서 .parent의 margin-top 이 사용.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>생활코딩 CSS</p>
 
                     
                         
@@ -265,7 +255,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/#post-footer"
+                                href="/2017/09/03/CSS/CSS-마진겹침현상/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -315,7 +305,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

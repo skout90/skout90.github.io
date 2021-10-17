@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/소켓이란/"
-                            aria-label=": 소켓이란"
+                            href="/2017/08/15/Node.js/3. 소켓통신/"
+                            aria-label=": 03. 소켓 통신"
                         >
-                            소켓이란
+                            03. 소켓 통신
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,35 +227,61 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API"><a href="#http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API" class="headerlink" title="http 프로토콜 기반으로 웹브라우저와 웹 서버간 양방향 통신을 지원하기 위한 표준 API"></a>http 프로토콜 기반으로 웹브라우저와 웹 서버간 <code>양방향 통신</code>을 지원하기 위한 표준 API</h4><ul>
-<li>서버와 클라이언트에는 각각 소켓이라는 부분이 있고 이 부분을 통해 서로 정보를 공유한다.</li>
+                    <p>소켓 통신을 하기 위한 Node.JS에 대표적인 통신기술들</p>
+<ul>
+<li>TCP Socket</li>
+<li>Web Socket</li>
+<li>socket.io</li>
 </ul>
-<h2 id="기존의-양방향-통신"><a href="#기존의-양방향-통신" class="headerlink" title="기존의 양방향 통신"></a>기존의 양방향 통신</h2><p>http 규격 자체가 서버로의 단방향 통신을 위해 만들어짐. webSocket 이전에는 일반 http request에 트릭을 이용해 실시간인 것 처럼 보이게 하였다.</p>
-<ol>
-<li><p>polling : 클라이언트가 평범한 http request를 계속 날림, but.. 비효율적</p>
-<p><img src="http://2.bp.blogspot.com/-cvWY81etsao/ViZSUVxywxI/AAAAAAAAMHo/wxrd6dIntM8/s320/HttpPolling.gif" alt="img"></p>
-</li>
-<li><p>long polling : 클라이언트가 http request를 날리고 기다림, 서버의 이벤트 response를 받고 연결 종료. but 이벤트의 시간간격이 좁거나 다수 클라이언트 동시 접속시 부하 문제 있음.</p>
-<p><img src="http://2.bp.blogspot.com/-eL9rxi8th2A/ViZSW0ggEwI/AAAAAAAAMH4/k4S4-dRz3t4/s320/HttpLongPolling.gif" alt="img"></p>
-</li>
-<li><p>streaming : 서버로 http request를 날리고, 요청 끊지 않고 필요한 메세지만 보내기를 반복.</p>
-<p><img src="http://4.bp.blogspot.com/-sRVlAdeU-Kw/ViZSWw-wB2I/AAAAAAAAMH0/3CmKGISDV-A/s320/HttpStreaming.gif" alt="img"></p>
-</li>
-</ol>
-<h2 id="Web-Socket"><a href="#Web-Socket" class="headerlink" title="Web Socket"></a>Web Socket</h2><p>HTML5 표준의 일부로 webSocket이 만들어지게 된다.</p>
+<p><a href="https://github.com/skout90/TIL/blob/master/Web/socket.md" target="_blank" rel="noopener">https://github.com/skout90/TIL/blob/master/Web/socket.md</a></p>
+<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><ul>
+<li>모듈 설치</li>
+</ul>
 <blockquote>
-<p>webSocket이 기존의 일반 TCP Socket과 다른 점은 최초 접속이 일반 http request를 통해 handshaking 과정을 통해 이루어 진다는 점. http request를 그대로 사용하기 때문에 기존 80, 443 포트로 접속하여도 방화벽 열지 않고도 양방형 통신이 가능, CORS 적용 과정도 동일.</p>
+<p>$ npm install websocket</p>
 </blockquote>
-<h6 id="그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원"><a href="#그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원" class="headerlink" title="그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원"></a>그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원</h6><h4 id="지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자"><a href="#지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자" class="headerlink" title="지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!"></a>지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!</h4><ul>
-<li><p><strong>socket.io(<a href="http://socket.io" target="_blank" rel="noopener">http://socket.io</a>)</strong></p>
-<p>node.js 기반으로 만들어진 기술, 브라우저에 구애 받지 않고 실시간 통신이 가능. 모든 코드가 javascript로 작성되어 있어서 자바 개발자들은 socket.io를 쓸 수 없다. <a href="https://github.com/keesun/mod-socket-io" target="_blank" rel="noopener">자바로 개발이 가능하게 해주는 방법</a>이 몇가지 있긴한 것 같지만 역시 javascript 기반 솔루션은 javascript로 개발해야 문제발생을 줄일 수 있음.</p>
-</li>
-<li><p><strong>sockJS(<a href="http://sockjs.org" target="_blank" rel="noopener">http://sockjs.org</a>)</strong></p>
-<p>springframework에서 websocket 지원. 서버 개발시 스프링 설정에서 일반 webSocket으로 통신할지 SockJS 호환으로 통신할지 결정할 수 있음.</p>
-</li>
+<ul>
+<li>app.js 생성</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://blog.naver.com/PostView.nhn?blogId=myca11&logNo=80146459609" target="_blank" rel="noopener">오바나딩요-Socket이란</a></p>
-<p><a href="http://adrenal.tistory.com/20" target="_blank" rel="noopener">시나몬브레드webSocket 으로 개발하기 전에 알고 있어야 할 것들</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> WebSocketServer = <span class="built_in">require</span>(<span class="string">'websocket'</span>).server;</span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Received request for '</span> + req.url);</span><br><span class="line">  res.writeHead(<span class="number">404</span>);</span><br><span class="line">  res.end();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 클라이언트 접속을 대기</span></span><br><span class="line">server.listen(<span class="number">8000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Server is listening on port 8000'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// WebSocket객체의 wsSever생성</span></span><br><span class="line">wsServer = <span class="keyword">new</span> WebSocketServer(&#123;</span><br><span class="line">  httpServer: server,</span><br><span class="line">  autoAcceptConnections: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 서버에 request 요청이 오면</span></span><br><span class="line">wsServer.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">request</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 연결 객체를 만듬, 이름을 지정 'echo'</span></span><br><span class="line">  <span class="keyword">var</span> connection = request.accept(<span class="string">'echo'</span>, request.origin); </span><br><span class="line">  <span class="comment">// 메세지가 오면 처리할 함수 지정</span></span><br><span class="line">  connection.on(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">message</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (message.type === <span class="string">'utf8'</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Received message: '</span> + message.utf8Data);</span><br><span class="line">      <span class="comment">// 클라이언트에게 메세지를 보냄.</span></span><br><span class="line">      connection.sendUTF(message.utf8Data);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (message.type === <span class="string">'binary'</span>) &#123;</span><br><span class="line">      connection.sendBytes(message.binaryData);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    connection.on(<span class="string">'close'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">reasonCode, description</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'Peer '</span> + connection.remoteAddress + <span class="string">' disconnected.'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Example WebSocket<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="comment">// 웹소켓이 브라우저에 존재하면</span></span></span><br><span class="line"><span class="javascript"><span class="keyword">if</span> (<span class="string">'WebSocket'</span> <span class="keyword">in</span> <span class="built_in">window</span>) &#123;</span></span><br><span class="line"><span class="javascript">  <span class="comment">// 웹소켓 서버주소와 프로토콜(echo)을 지정하여, WebSocket 객체를 만듦.</span></span></span><br><span class="line"><span class="javascript">  <span class="keyword">var</span> ws = <span class="keyword">new</span> WebSocket(<span class="string">'ws://127.0.0.1:8000'</span>, <span class="string">'echo'</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">  <span class="comment">// 웹소켓이 연결되었을때</span></span></span><br><span class="line"><span class="javascript">  ws.onopen = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    $(<span class="string">'#status'</span>).text(<span class="string">'connected'</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span></span><br><span class="line"><span class="javascript">      ws.send(<span class="string">'Hello '</span> + i);</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="javascript">  <span class="comment">// 메세지를 받았을때</span></span></span><br><span class="line"><span class="javascript">  ws.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    $(<span class="string">'#messages'</span>).append($(<span class="string">'&lt;li&gt;'</span>).text(<span class="string">'Received message: '</span> + evt.data));</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="javascript">  <span class="comment">// 연결이 끊어졌을때</span></span></span><br><span class="line"><span class="javascript">  ws.onclose = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    $(<span class="string">'#status'</span>).text(<span class="string">'connection is closed'</span>);</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="javascript"><span class="keyword">else</span></span></span><br><span class="line"><span class="javascript">  $(<span class="string">'#status'</span>).text(<span class="string">'WebSocket not supported.'</span>);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Status: <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"status"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line">Messages: <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"messages"</span>&gt;</span><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>실행</li>
+</ul>
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p><code>app.js</code> 실행후, <code>index.html</code> 파일을  더블클릭하여 웹브라우저에서 열면 서버로부터 받은 메세지가 나오는 것을 확인할 수 있다.</p>
+<h2 id="socket-io"><a href="#socket-io" class="headerlink" title="socket.io"></a>socket.io</h2><p>서버와 클라이언트가 한번씩 메세지를 주고 받는 예제 작성</p>
+<ul>
+<li>모듈 설치</li>
+</ul>
+<blockquote>
+<p>$ npm install socket.io</p>
+</blockquote>
+<ul>
+<li><strong>app.js</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 클라이언트의 접속을 대기</span></span><br><span class="line"><span class="keyword">var</span> io = <span class="built_in">require</span>(<span class="string">'socket.io'</span>).listen(<span class="number">8000</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 클라이언트가 접속할 시에 실행</span></span><br><span class="line">io.sockets.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">socket</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 'server' 이름으로 메시지 전송</span></span><br><span class="line">  socket.emit(<span class="string">'server'</span>, &#123; <span class="attr">hello</span>: <span class="string">'world 1'</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 'client' 이름의 메시지 수신했을 때</span></span><br><span class="line">  socket.on(<span class="string">'client'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>index.html</strong></li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Example Socket.IO<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://127.0.0.1:8000/socket.io/socket.io.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="keyword">var</span> socket = io.connect(<span class="string">'http://127.0.0.1:8000'</span>);</span></span><br><span class="line"><span class="javascript"><span class="comment">// 'server'라는 이름의 메세지가 왔을때 </span></span></span><br><span class="line"><span class="javascript">socket.on(<span class="string">'server'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">  $(<span class="string">'#messages'</span>).append($(<span class="string">'&lt;li&gt;'</span>).text(<span class="string">'Received message: '</span> + data.hello));</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="javascript"><span class="comment">// 'client'라는 이름으로 메세지 송신</span></span></span><br><span class="line"><span class="javascript">socket.emit(<span class="string">'client'</span>, &#123; <span class="attr">hello</span>: <span class="string">'world 2'</span> &#125;);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">Messages: <span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"messages"</span>&gt;</span><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>실행</li>
+</ul>
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p><code>app.js</code> 실행후, <code>index.html</code> 파일을  더블클릭하여 웹브라우저에서 열면 서버로부터 받은 메세지가 나오는 것을 확인할 수 있다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
 
                     
                         
@@ -265,7 +291,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/소켓이란/#post-footer"
+                                href="/2017/08/15/Node.js/3. 소켓통신/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -315,7 +341,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

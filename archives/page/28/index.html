@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/03/18/Frontend/20.웹팩-디버깅/"
-                            aria-label=": 20. 웹팩(Webpack) 디버깅"
+                            href="/2018/03/25/Frontend/4.웹팩-React연동/"
+                            aria-label=": 04. 웹팩(webpack) React 연동"
                         >
-                            20. 웹팩(Webpack) 디버깅
+                            04. 웹팩(webpack) React 연동
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-03-18T19:28:10+09:00">
+    <time datetime="2018-03-25T19:28:10+09:00">
 	
-		    2018.03.18
+		    2018.03.25
     	
     </time>
     
@@ -227,18 +227,34 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>디버깅도 편하게 할 수 있다. 서버/클라이언트 코드 모두.</p>
+                    <p>react를 연동해보자, 이전 포스팅과 연결된다.</p>
+<blockquote>
+<p>npm i react react-dom babel-preset-react</p>
+</blockquote>
 <ul>
-<li>config/webpack.dev.js</li>
+<li>src/main.js</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">devServer: &#123;</span><br><span class="line">  contentBase: <span class="string">"dist"</span>,</span><br><span class="line">  overlay: <span class="literal">true</span>,</span><br><span class="line">  stats: &#123;</span><br><span class="line">    colors: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  hot: <span class="literal">true</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment">// 해당줄을 추가: 웹팩 번들링된 코드가 아니라</span></span><br><span class="line"><span class="comment">// 본래 JS 코드로 볼 수 있게 해준다.</span></span><br><span class="line">devtool: <span class="string">"source-map"</span>,</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">"babel-runtime/regenerator"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"babel-register"</span>); <span class="comment">// 추가</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"webpack-hot-middleware/client?reload=true"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./main.css"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./index.html"</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">"./app.js"</span>); <span class="comment">// 추가</span></span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>원하는 라인에 <code>debugger</code>를 입력한다.</li>
-<li>브라우저에서 크롬 개발자 도구를 킨다.</li>
-<li>서버 코드는 개발자 도구 Element 탭 옆에 초록색 nodejs 버튼을 클릭해서 확인가능</li>
-<li>클라이언트 코드는 기존 개발자 도구 창에서 확인 가능하다!</li>
-</ol>
+<ul>
+<li>src/index.html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"profile"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"./images/bglam.png"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello Sunwoo!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"react-root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"main-bundle.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src/app.js</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">"react-dom"</span></span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">    &lt;h1&gt;Hello, <span class="keyword">from</span> React!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">"react-root"</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>.babelrc</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [</span><br><span class="line">        [</span><br><span class="line">            <span class="string">"env"</span>,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">"targets"</span>: &#123;</span><br><span class="line">                    <span class="string">"browsers"</span>: [<span class="string">"last 2 versions"</span>]</span><br><span class="line">                &#125;,</span><br><span class="line">            </span><br><span class="line">                <span class="string">"debug"</span>: <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        ],</span><br><span class="line">        <span class="string">"babel-preset-react"</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [<span class="string">"transform-runtime"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위와 같이 리액트 바벨 프리셋을 추가해주자!</p>
+<blockquote>
+<p>소스변경시에도 리액트의 state 값을 유지시켜주는 핫모듈도 있지만, 왜 때문인지 연동이 안되서 일단 보류 한다.</p>
+</blockquote>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics</a></p>
 
                     
@@ -249,7 +265,7 @@
                     
                         <p>
                             <a
-                                href="/2018/03/18/Frontend/20.웹팩-디버깅/#post-footer"
+                                href="/2018/03/25/Frontend/4.웹팩-React연동/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -289,7 +305,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 28 of 150</li>
+        <li class="pagination-number">page 28 of 151</li>
     </ul>
 </div>
 
@@ -299,7 +315,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/2.1. build-and-test/"
-                            aria-label=": 02.1. 빌드 및 테스트"
+                            href="/2017/07/24/Ionic/4. mvc-http-request/"
+                            aria-label=": 04. MVC 패턴으로 Http request"
                         >
-                            02.1. 빌드 및 테스트
+                            04. MVC 패턴으로 Http request
                         </a>
                     
                 </h1>
@@ -227,54 +227,50 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="웹에서-테스트"><a href="#웹에서-테스트" class="headerlink" title="웹에서 테스트"></a>웹에서 테스트</h2><blockquote>
-<p>$ ionic serve</p>
-<p>또는,</p>
-<p>$ ionic serve -lab</p>
-</blockquote>
-<p>으로 테스트 해볼 수 있다.</p>
-<h2 id="빌드"><a href="#빌드" class="headerlink" title="빌드"></a>빌드</h2><p>안드로이드 빌드시 : 안드로이드 SDK 필요</p>
-<p><a href="https://developer.android.com/studio/index.html?hl=ko" target="_blank" rel="noopener">안드로이드 스튜디오</a></p>
-<p>IOS 빌드시 : Apple Developer 계정 등록 필요.(년 $99 필요)</p>
-<p><a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple Developer</a> </p>
-<p>플랫폼 추가가 필요</p>
+                    <p>Angular 2, Ionic 2 기준 MVC 생성</p>
+<h2 id="모델-생성"><a href="#모델-생성" class="headerlink" title="모델 생성"></a>모델 생성</h2><p>src/models 폴더를 생성</p>
+<ul>
+<li>index.ts 파일 생성</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'./[모델명].model'</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>[모델명].model.ts 파일 생성 : 안에 자료형을 생성해줍니다.</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> interface [모델명] &#123;</span><br><span class="line">  [변수이름]: [자료형];</span><br><span class="line">  userNo: number;</span><br><span class="line">  startDt: <span class="built_in">Date</span>;</span><br><span class="line">  timeDivision: string;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="서비스-생성"><a href="#서비스-생성" class="headerlink" title="서비스 생성"></a>서비스 생성</h2><p>아이오닉 작업 폴더에서 아래 커맨드 입력</p>
 <blockquote>
-<p>$ cordova platform add [android/ios]</p>
+<p>$ ionic g provider [서비스이름]</p>
 </blockquote>
-<p>빌드</p>
-<blockquote>
-<p>$ ionic build [android/ios]</p>
-</blockquote>
-<p>혹시 빌드 중에 아래 오류가 나오는 경우</p>
-<p><em>could not find gradle wrapper within android sdk</em></p>
-<p><a href="https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" target="_blank" rel="noopener">SDK tools package</a> </p>
-<p>C:\Users\CURRENT_USER\AppData\Local\Android\sdk</p>
-<p>에 압축을 풀어주고, 다시 시도해보자.</p>
-<p>빌드 하면 apk 파일이 생성된다.</p>
-<h2 id="에뮬레이터"><a href="#에뮬레이터" class="headerlink" title="에뮬레이터"></a>에뮬레이터</h2><p>빌드후 안드로이드 스튜디오에 들어가</p>
-<p>AVD를 생성 후, 실행시킨다.   <a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">생성법</a></p>
-<p>다음</p>
-<blockquote>
-<p>$ ionic emulate [android/ios]</p>
-</blockquote>
-<p>키고 위 명령어를 입력하면, 자동으로 apk가 설치되고 실행된다.</p>
-<h2 id="실제-디바이스-실행"><a href="#실제-디바이스-실행" class="headerlink" title="실제 디바이스 실행"></a>실제 디바이스 실행</h2><p>실제 디바이스에서는 빌드후</p>
-<blockquote>
-<p>$ ionic run [android/ios]</p>
-</blockquote>
-<p>를 입력하면된다. USB에 꼽은 상태로 하면 되는 것 같은데.</p>
-<p>기기가 없어서 실제 실행은 못시켜보았다.</p>
-<h2 id="아이콘-변경"><a href="#아이콘-변경" class="headerlink" title="아이콘 변경"></a>아이콘 변경</h2><ol>
-<li>이미지를 복사 <project folder>/resources</project></li>
-<li><blockquote>
-<p>$ ionic resources</p>
-</blockquote>
-</li>
-<li>생성된 파일들을 <project folder>/resources/res 에서 <project folder>/platforms/android/res 로 이동시킨다.</project></project></li>
-</ol>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">어제보다 오늘 더 블로그</a></p>
-<p><a href="https://forum.ionicframework.com/t/ionic-run-android-does-not-install-app-in-device/21795/6" target="_blank" rel="noopener">Ionic Forum</a></p>
-<p><a href="http://ionicframework.com/docs/v1/cli/run.html" target="_blank" rel="noopener">Ionic Doc</a></p>
+<p>그럼 providers 폴더 아래 서비스가 생성된다.</p>
+<ul>
+<li>[서비스파일명].ts : 아래를 참고하여 http 통신 부분을 작성한다.</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; Http, Response &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;Observable&#125; <span class="keyword">from</span> <span class="string">'rxjs/Observable'</span>; <span class="xml"><span class="comment">&lt;!-- Obserable을 사용하여 비동기통신 --&gt;</span></span></span><br><span class="line"><span class="xml">import 'rxjs/add/operator/map';</span></span><br><span class="line"><span class="xml">import 'rxjs/add/operator/delay';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">import &#123;Schedule&#125; from '../models'; <span class="comment">&lt;!-- 위에서 생선한 모델명을 &#123;&#125;안에 입력 --&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">@Injectable()</span></span><br><span class="line"><span class="xml">export class ScheduleService &#123;</span></span><br><span class="line"><span class="xml">    constructor(public http: Http) &#123;&#125;</span></span><br><span class="line"><span class="xml">    </span></span><br><span class="line">    getSchedules(): Observable&lt;Schedule[]&gt; &#123;</span><br><span class="line">        return this.http</span><br><span class="line">          .get('http://localhost/schedule/selectScheduleList.do') &lt;!-- 호출한 url 입력--&gt;</span><br><span class="line">          .delay(2000)</span><br><span class="line">          .map((res: Response) =&gt; res.json());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>index.ts</li>
+</ul>
+<p>providers 폴더 안에 index 파일을 작성한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'./[추가한 서비스파일명]'</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="모듈-추가"><a href="#모듈-추가" class="headerlink" title="모듈 추가"></a>모듈 추가</h2><ul>
+<li>app.module.ts</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule, ErrorHandler &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; IonicApp, IonicModule, IonicErrorHandler &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; MyApp &#125; <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HomePage &#125; <span class="keyword">from</span> <span class="string">'../pages/home/home'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SchedulePage &#125; <span class="keyword">from</span> <span class="string">'../pages/schedule/schedule'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; ScheduleService &#125; <span class="keyword">from</span> <span class="string">'../providers'</span>; <span class="xml"><span class="comment">&lt;!-- 추가한 서비스경로를 기입 --&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">import &#123; StatusBar &#125; from '@ionic-native/status-bar';</span></span><br><span class="line"><span class="xml">import &#123; SplashScreen &#125; from '@ionic-native/splash-screen';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">@NgModule(&#123;</span></span><br><span class="line"><span class="xml">  declarations: [</span></span><br><span class="line"><span class="xml">    MyApp,</span></span><br><span class="line"><span class="xml">    HomePage,</span></span><br><span class="line"><span class="xml">    SchedulePage</span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  imports: [</span></span><br><span class="line"><span class="xml">    IonicModule.forRoot(MyApp)</span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  bootstrap: [IonicApp],</span></span><br><span class="line"><span class="xml">  entryComponents: [</span></span><br><span class="line"><span class="xml">    MyApp,</span></span><br><span class="line"><span class="xml">    HomePage,</span></span><br><span class="line"><span class="xml">    SchedulePage</span></span><br><span class="line"><span class="xml">  ],</span></span><br><span class="line"><span class="xml">  providers: [</span></span><br><span class="line"><span class="xml">    ScheduleService, <span class="comment">&lt;!-- 추가한 서비스를 기입 --&gt;</span></span></span><br><span class="line"><span class="xml">    StatusBar,</span></span><br><span class="line"><span class="xml">    SplashScreen,</span></span><br><span class="line"><span class="xml">    &#123;provide: ErrorHandler, useClass: IonicErrorHandler&#125;</span></span><br><span class="line"><span class="xml">  ]</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br><span class="line"><span class="xml">export class AppModule &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="뷰페이지-작성"><a href="#뷰페이지-작성" class="headerlink" title="뷰페이지 작성"></a>뷰페이지 작성</h2><ul>
+<li>schedule.ts</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, OnInit &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>; <span class="xml"><span class="comment">&lt;!-- OnInit 추가 --&gt;</span></span></span><br><span class="line"><span class="xml">import &#123; NavController, Refresher, NavParams &#125; from 'ionic-angular'; <span class="comment">&lt;!-- Refresher 추가 --&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">import &#123;ScheduleService&#125; from '../../providers'; <span class="comment">&lt;!-- 서비스와 모델 추가 --&gt;</span></span></span><br><span class="line"><span class="xml">import &#123;Schedule&#125; from '../../models';</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">@Component(&#123;</span></span><br><span class="line"><span class="xml">  selector: 'page-schedule',</span></span><br><span class="line"><span class="xml">  templateUrl: 'schedule.html'</span></span><br><span class="line"><span class="xml">&#125;)</span></span><br><span class="line"><span class="xml">export class SchedulePage implements OnInit &#123;</span></span><br><span class="line"><span class="xml">    schedules: Schedule[] = [];	<span class="comment">&lt;!-- json 호출 결과를 담을 변수 추가 --&gt;</span></span></span><br><span class="line"><span class="xml">    loading: boolean;</span></span><br><span class="line"><span class="xml">    constructor(</span></span><br><span class="line"><span class="xml">        private scheduleService: ScheduleService, <span class="comment">&lt;!-- 서비스 생성자에 추가 --&gt;</span></span></span><br><span class="line"><span class="xml">        public navCtrl: NavController,</span></span><br><span class="line"><span class="xml">        public navParams: NavParams</span></span><br><span class="line"><span class="xml">    ) &#123;&#125;</span></span><br><span class="line"><span class="xml">    </span></span><br><span class="line"><span class="xml">    ngOnInit() &#123;</span></span><br><span class="line"><span class="xml">        this.loading = true;</span></span><br><span class="line"><span class="xml">        const subscription = this.scheduleService.getSchedules().subscribe(schedules =&gt; &#123;</span></span><br><span class="line"><span class="xml">          this.schedules = schedules;</span></span><br><span class="line"><span class="xml">          this.loading = false;</span></span><br><span class="line"><span class="xml">          subscription.unsubscribe();</span></span><br><span class="line"><span class="xml">        &#125;, () =&gt; this.loading = false);</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">    doRefresh(refresher: Refresher) &#123;</span></span><br><span class="line"><span class="xml">        const subscription = this.scheduleService.getSchedules().subscribe(schedules =&gt; &#123;</span></span><br><span class="line"><span class="xml">          this.schedules = schedules;</span></span><br><span class="line"><span class="xml">          refresher.complete()</span></span><br><span class="line"><span class="xml">          subscription.unsubscribe();</span></span><br><span class="line"><span class="xml">        &#125;, () =&gt; refresher.complete());</span></span><br><span class="line"><span class="xml">    &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>[페이지명].html</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">menuToggle</span> <span class="attr">ion-button</span> <span class="attr">icon-only</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"menu"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span>IYLM 메인 페이지<span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-navbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-item-group</span> [<span class="attr">hidden</span>]=<span class="string">"loading"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ion-list-header</span> <span class="attr">default</span>&gt;</span></span><br><span class="line">                스케줄 리스트</span><br><span class="line">            <span class="tag">&lt;/<span class="name">ion-list-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">a</span> <span class="attr">ion-item</span> *<span class="attr">ngFor</span>=<span class="string">"let schedule of schedules"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">span</span> <span class="attr">item-left</span> <span class="attr">text-left</span>&gt;</span>&#123;&#123;schedule.schNo&#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;&#123;schedule.userNo&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;&#123;schedule.startDt | date:'y-M-d HH:mm'&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;&#123;schedule.endDt | date:'y-M-d HH:mm'&#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123;schedule.timeDivision&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123;schedule.pushTime&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">item-right</span> <span class="attr">ion-button</span> <span class="attr">icon-only</span> <span class="attr">default</span>&gt;</span></span><br><span class="line">                    detail</span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ion-item-group</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-list</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/angularjs-de/ionic2-pizza-service" target="_blank" rel="noopener">bengtler’s Git SampleSource</a></p>
 
                     
                         
@@ -284,7 +280,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/2.1. build-and-test/#post-footer"
+                                href="/2017/07/24/Ionic/4. mvc-http-request/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -324,7 +320,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 122 of 150</li>
+        <li class="pagination-number">page 122 of 151</li>
     </ul>
 </div>
 
@@ -334,7 +330,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

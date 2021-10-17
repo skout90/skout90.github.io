@@ -202,195 +202,56 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/14/Frontend/HTML5-태그-정리/"
-                            aria-label=": HTML5 태그 정리"
+                            href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/"
+                            aria-label=": 08.2. Angular Reactive 폼"
                         >
-                            HTML5 태그 정리
+                            08.2. Angular Reactive 폼
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-14T19:44:25+09:00">
+    <time datetime="2017-07-15T09:09:21+09:00">
 	
-		    2017.07.14
+		    2017.07.15
     	
     </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Frontend/">Frontend</a>
-
-
     
 </div>
 
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="문서형-정의"><a href="#문서형-정의" class="headerlink" title="문서형 정의"></a>문서형 정의</h4><table>
-<thead>
-<tr>
-<th>HTML 5</th>
-<th>HTML4.01</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;!DOCTYPE html&gt;</code></td>
-<td><!DOCTYPE HTML PUBLIC "-//W3C//DTD//HTML4.01//EN"></td>
-</tr>
-<tr>
-<td><code>&lt;style&gt;&lt;/style&gt;</code></td>
-<td><code>&lt;style type=&quot;text/css&quot;&gt;&lt;/style&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;script&gt;&lt;/script&gt;</code></td>
-<td><code>&lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;</code></td>
-</tr>
-<tr>
-<td><code>&lt;meta charset=&quot;UTF-8&quot;&gt;</code></td>
-<td><code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html&quot;; EUC-KR&quot;&gt;</code></td>
-</tr>
-</tbody></table>
-<h4 id="문서-구성"><a href="#문서-구성" class="headerlink" title="문서 구성"></a>문서 구성</h4><p>텍스트를 의미적으로 구분, 시작적 변화 없음. HTML 문서 안에서 텍스트가 어떤 위치에 있는지 나타내기 위한 태그.</p>
-<p><img src="http://www.cellbiol.com/bioinformatics_web_development/wp-content/uploads/2017/01/html5_tags.png" alt="section article에 대한 이미지 검색결과"></p>
-<table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;section&gt;</code></td>
-<td>소단락, 제목을 붙여도 좋을 만한 문장의 모음</td>
-</tr>
-<tr>
-<td><code>&lt;article&gt;</code></td>
-<td>컨텐츠, 뉴스기사/블로그/게시판 컨텐츠</td>
-</tr>
-<tr>
-<td><code>&lt;header&gt;</code></td>
-<td>헤더가 되는 컨텐츠, 섹션이나 아티클의 제목을 표현</td>
-</tr>
-<tr>
-<td><code>&lt;footer&gt;</code></td>
-<td>푸터, 저작관 관련 정보, 페이지 링크</td>
-</tr>
-<tr>
-<td><code>&lt;nav&gt;</code></td>
-<td>웹페이지 내비게이션 콘텐츠, 페이지 목차, 항목 리스트</td>
-</tr>
-<tr>
-<td><code>&lt;aside&gt;</code></td>
-<td>보충 컨텐츠, 메인 컨텐츠와는 관계가 약한 컨텐츠</td>
-</tr>
-<tr>
-<td><code>&lt;time&gt;</code></td>
-<td>텍스트가 날짜나 그와 관련된 것이라는 것을 나타냄</td>
-</tr>
-<tr>
-<td><code>&lt;figure&gt;</code></td>
-<td>도표를 나타내는데 사용</td>
-</tr>
-<tr>
-<td><code>&lt;figcaption&gt;</code></td>
-<td>도표의 제목, figure 요소 안에서 사용</td>
-</tr>
-</tbody></table>
-<h4 id="기능-태그"><a href="#기능-태그" class="headerlink" title="기능 태그"></a>기능 태그</h4><table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>&lt;mark&gt;</code></td>
-<td>하이라이트 표시</td>
-</tr>
-<tr>
-<td><meter></meter><code>&lt;meter&gt;</code></td>
-<td>지정 값을 막대그래프로 나타냄, min/max, low/high/optimum 속성 사용</td>
-</tr>
-<tr>
-<td><progress></progress><code>&lt;progress&gt;</code></td>
-<td>프로그레스 바, max 속성으로 최대값 지정</td>
-</tr>
-<tr>
-<td><code>&lt;output&gt;</code></td>
-<td>폼안에서 계산 결과를 나타냄</td>
-</tr>
-<tr>
-<td><code>&lt;details&gt;</code></td>
-<td>접혀있지만, 조작에 따라 상세 정보를 나타냄. open 속성을 지정하면 열린 상태로 작성</td>
-</tr>
-<tr>
-<td><code>&lt;summary&gt;</code></td>
-<td>details 요소에서 지정한 내용의 모음을 나타냄. 접혀있을 때는 이 부분만 표시</td>
-</tr>
-</tbody></table>
+                    <ol>
+<li>ReactiveFormModule Import 하기</li>
+</ol>
 <ul>
-<li>output, details 예제</li>
+<li>app.module.ts</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">oninput</span>=<span class="string">"r.value = v1.valueAsNumber + v2.valueAsNumber"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">name</span>=<span class="string">"v1"</span> <span class="attr">value</span>=<span class="string">0</span>&gt;</span></span><br><span class="line">  +<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">name</span>=<span class="string">"v1"</span> <span class="attr">value</span>=<span class="string">0</span>&gt;</span></span><br><span class="line">  = <span class="tag">&lt;<span class="name">output</span> <span class="attr">name</span>=<span class="string">"r"</span>&gt;</span><span class="tag">&lt;/<span class="name">output</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">summary</span>&gt;</span></span><br><span class="line">  	옵션</span><br><span class="line">  <span class="tag">&lt;/<span class="name">summary</span>&gt;</span></span><br><span class="line">  확인 메일을 보낸다.</span><br><span class="line"><span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;            <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125;       <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ReactiveFormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;  <span class="comment">// &lt;-- #1 import module</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;        <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; PrescriptionModal &#125;   <span class="keyword">from</span> <span class="string">'[path]'</span>; <span class="comment">// &lt;-- #1 import component</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports: [</span><br><span class="line">    BrowserModule,</span><br><span class="line">    ReactiveFormsModule <span class="comment">// &lt;-- #2 add to @NgModule imports</span></span><br><span class="line">  ],</span><br><span class="line">  declarations: [</span><br><span class="line">    AppComponent,</span><br><span class="line">    PrescriptionModal, <span class="comment">// &lt;-- #3 declare app component</span></span><br><span class="line">  ],</span><br><span class="line">  bootstrap: [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="input-type-속성"><a href="#input-type-속성" class="headerlink" title="input type 속성"></a>input type 속성</h4><table>
-<thead>
-<tr>
-<th>태그</th>
-<th>기능</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>search</td>
-<td>검색 키워드</td>
-</tr>
-<tr>
-<td>tel</td>
-<td>전화번호 입력</td>
-</tr>
-<tr>
-<td>url</td>
-<td>URL 입력</td>
-</tr>
-<tr>
-<td>email</td>
-<td>메일 주소 입력</td>
-</tr>
-<tr>
-<td>month</td>
-<td>연월 입력</td>
-</tr>
-<tr>
-<td>week</td>
-<td>주 입력</td>
-</tr>
-<tr>
-<td>date</td>
-<td>날짜 입력</td>
-</tr>
-<tr>
-<td>time</td>
-<td>시각 입력</td>
-</tr>
-<tr>
-<td>datetime</td>
-<td>UTD(협정 세계시) 입력</td>
-</tr>
-<tr>
-<td>number</td>
-<td>수치 입력</td>
-</tr>
-<tr>
-<td>range</td>
-<td>지정 범위의 수치 입력, min 속성 최소값, max 속성 최대값</td>
-</tr>
-<tr>
-<td>color</td>
-<td>색 입력</td>
-</tr>
-</tbody></table>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>HTML5가 보이는 그림책 - ANK Co., Ltd 저, 이영란 역</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; FormControl, FormGroup &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;h2&gt;Hero Detail&lt;/h2&gt;</span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;Just a FormControl&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">    &lt;input [formControl]="name"&gt;</span></span><br><span class="line"><span class="string">  &lt;/label&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;h3&gt;&lt;i&gt;FormControl in a FormGroup&lt;/i&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">  &lt;form [formGroup]="heroForm" novalidate&gt;</span></span><br><span class="line"><span class="string">    &lt;div&gt;</span></span><br><span class="line"><span class="string">      &lt;label&gt;Name:</span></span><br><span class="line"><span class="string">        &lt;input formControlName="name"&gt;</span></span><br><span class="line"><span class="string">      &lt;/label&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  &lt;/form&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  &lt;p&gt;Form value: &#123;&#123; heroForm.value | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  &lt;p&gt;Form status: &#123;&#123; heroForm.status | json &#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> PrescriptionModal &#123;</span><br><span class="line">  name = <span class="keyword">new</span> FormControl();</span><br><span class="line"></span><br><span class="line">  heroForm = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">    name: <span class="keyword">new</span> FormControl()</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>FormControl : 값이나 validity를 추적한다.</p>
+<p>FormGroup : 값이나 validity 추적을위한 AbstractControl 인스턴스 그룹.</p>
+<p>AbstractControl : FormControl, FormGroup, FormArray의 추상 클래스로, 프로퍼티나 common behaviors들을 제공한다.</p>
+</blockquote>
+<ul>
+<li>FormControl</li>
+</ul>
+<p><code>FormControl 초기화</code> : 초기값, validators, async validators 값이 인자로 들어간다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">form = <span class="keyword">new</span> FormGroup(&#123;</span><br><span class="line">  lowerCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>, Validators.required),</span><br><span class="line">  upperCase: <span class="keyword">new</span> FormControl(<span class="string">''</span>,</span><br><span class="line">               Validators.compose([</span><br><span class="line">                 Validators.required,</span><br><span class="line">                 Validators.pattern(<span class="string">"[A-Z]&#123;3&#125;"</span>)]))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>템플릿에 <code>[formControl]=&quot;폼컨트롤이름&quot;</code>으로 적용한다.</p>
+<ul>
+<li>FormGroup</li>
+</ul>
+<p><code>FormGroup 초기화</code>  : 폼 그룹 안에 폼컨트롤러를 선언해준다.</p>
+<p>, form에 <code>[formGroup]=&quot;폼그룹이름&quot;</code>으로 적용, input이나 select 태그에 <code>formControlName=&quot;폼컨트롤이름&quot;</code> 과 같이 적용한다.</p>
+<ul>
+<li>novalidators</li>
+</ul>
+<p><code>&lt;form&gt;</code> 태그 안에 novalidators는 브라우저가 원시 HTML 검증을 하지 않도록 해준다.</p>
 
                     
                         
@@ -400,7 +261,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/14/Frontend/HTML5-태그-정리/#post-footer"
+                                href="/2017/07/15/Angular/8.2. Angular-Reactive-폼/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -440,7 +301,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 128 of 150</li>
+        <li class="pagination-number">page 128 of 151</li>
     </ul>
 </div>
 
@@ -450,7 +311,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

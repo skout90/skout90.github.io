@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Typescript/7. typescript-데코레이터/"
-                            aria-label=": 07. Typescript 데코레이터(Decorator)"
+                            href="/2017/08/12/Typescript/5. typescript-제네릭/"
+                            aria-label=": 05. Typescript 제네릭(Generic)"
                         >
-                            07. Typescript 데코레이터(Decorator)
+                            05. Typescript 제네릭(Generic)
                         </a>
                     
                 </h1>
@@ -227,29 +227,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p><code>tsonfig.json</code>에서 <code>&quot;experimentalDecorators&quot;: true</code> 명시해줘야 사용가능</p>
-<h2 id="Class-Decorator"><a href="#Class-Decorator" class="headerlink" title="Class Decorator"></a>Class Decorator</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 인자가 없을 시엔, 생성자 함수를 선언해줘야</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params">constructFn: <span class="built_in">Function</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(constructFn);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@hello</span></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <p>다형성을 위해 any를 쓰면, 헬퍼가 제대로 작동하지 않음. Generic을 쓰면 정상 작동함. <strong>Generic</strong>을 쓰자!</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">helloGeneric</span>&lt;<span class="title">T</span>&gt;(<span class="params">message: T</span>): <span class="title">T</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> message;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(hello&lt;<span class="built_in">string</span>&gt;(<span class="string">'Hello'</span>));</span><br></pre></td></tr></table></figure>
 
-<h2 id="Method-Decorator"><a href="#Method-Decorator" class="headerlink" title="Method Decorator"></a>Method Decorator</h2><p><strong>read only 데코레이터 예제</strong></p>
-<p>함수를 재작성할 수 없게 함.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">editable</span>(<span class="params">canBeEditable: <span class="built_in">boolean</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">target: <span class="built_in">any</span>, propName: <span class="built_in">string</span>, description: PropertyDescriptor</span>) </span>&#123;</span><br><span class="line">        description.writable = canBeEditable;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="meta">@editable</span>(<span class="literal">false</span>)</span><br><span class="line">    hello() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'hello'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person();</span><br><span class="line">p.hello(); <span class="comment">// hello</span></span><br><span class="line">p.hello = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'world'</span>);</span><br><span class="line">&#125;</span><br><span class="line">p.hello(); <span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>Generic 타입을 쓰지 않으면 T로 추론.</li>
+<li>Generic 타입을 쓰면 T를 확인</li>
+</ol>
+<h3 id="Generic-Class"><a href="#Generic-Class" class="headerlink" title="Generic Class"></a>Generic Class</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Person&lt;T&gt; &#123;</span><br><span class="line">  <span class="keyword">private</span> _name: T;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">name: T</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._name = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> junho = <span class="keyword">new</span> Person(<span class="string">'Junho'</span>);</span><br><span class="line"><span class="keyword">new</span> Person&lt;<span class="built_in">number</span>&gt;(<span class="string">'junho'</span>); <span class="comment">// error</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person&lt;T <span class="keyword">extends</span> <span class="built_in">string</span> | <span class="built_in">number</span>&gt; &#123; ...&#125; <span class="comment">// 다음과 같은 식으로 타입제한 가능</span></span><br></pre></td></tr></table></figure>
 
-<p>target/propName/PropertyDescriptor를 파라미터로 받는 함수를 리턴해주어야 함.</p>
-<h2 id="Property-Decorator"><a href="#Property-Decorator" class="headerlink" title="Property Decorator"></a>Property Decorator</h2><p>target/propName을 파라미터로 받는 함수를 리턴해주어야 함.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writable</span>(<span class="params">canBeWritable: <span class="built_in">boolean</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">target: <span class="built_in">any</span>, propName: <span class="built_in">string</span></span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            writable: canBeWritable</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="meta">@writable</span>(<span class="literal">false</span>)</span><br><span class="line">    name: <span class="built_in">string</span> = <span class="string">"junho"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(p.name); <span class="comment">// junho</span></span><br><span class="line">p.name = <span class="string">'dd'</span>; <span class="comment">// error!</span></span><br></pre></td></tr></table></figure>
+<h3 id="Multitype"><a href="#Multitype" class="headerlink" title="Multitype"></a>Multitype</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Person&lt;T, K&gt; &#123;</span><br><span class="line">  name: T;</span><br><span class="line">  age: K;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// keyof T는 T의 key(attribute)인지를 확인</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getProperty</span>&lt;<span class="title">T</span>, <span class="title">K</span> <span class="title">extends</span> <span class="title">keyof</span> <span class="title">T</span>&gt; (<span class="params">obj: T, key: K</span>): <span class="title">T</span>[<span class="title">K</span>] </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Parameter-Decorator"><a href="#Parameter-Decorator" class="headerlink" title="Parameter Decorator"></a>Parameter Decorator</h2><p>target/methodName/paramIndex를 파라미터로 가져야함</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printInfo</span>(<span class="params">target: <span class="built_in">any</span>, methodName: <span class="built_in">string</span>, paramIndex: <span class="built_in">number</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(target);</span><br><span class="line">    <span class="built_in">console</span>.log(methodName);</span><br><span class="line">    <span class="built_in">console</span>.log(paramIndex);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Person &#123;</span><br><span class="line">    <span class="keyword">private</span> _name: <span class="built_in">string</span>;</span><br><span class="line">    <span class="keyword">private</span> _age: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params">name: <span class="built_in">string</span>, <span class="meta">@printInfo</span> age: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>._name = name;</span><br><span class="line">        <span class="keyword">this</span>._age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hello( <span class="meta">@printInfo</span> message: <span class="built_in">string</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p> 결과</p>
-<p>Person {}</p>
-<p>hello</p>
-<p>0</p>
-<p>[Funcion: Person]</p>
-<p>undefined</p>
-<p>1</p>
-</blockquote>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
 
                     
@@ -260,7 +248,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Typescript/7. typescript-데코레이터/#post-footer"
+                                href="/2017/08/12/Typescript/5. typescript-제네릭/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -300,7 +288,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 92 of 150</li>
+        <li class="pagination-number">page 92 of 151</li>
     </ul>
 </div>
 
@@ -310,7 +298,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

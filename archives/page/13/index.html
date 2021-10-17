@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/12/05/React/RN-CODE-PUSH/"
-                            aria-label=": React Native dev/Staging/Production 코드 푸시 적용 참고 링크"
+                            href="/2018/12/22/Node.js/Bookshelf-Plugins살펴보자/"
+                            aria-label=": Bookshelf plugins를 살펴보자"
                         >
-                            React Native dev/Staging/Production 코드 푸시 적용 참고 링크
+                            Bookshelf plugins를 살펴보자
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-12-05T19:28:10+09:00">
+    <time datetime="2018-12-22T19:28:10+09:00">
 	
-		    2018.12.05
+		    2018.12.22
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/React/">React</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,8 +227,29 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="셋팅-방법"><a href="#셋팅-방법" class="headerlink" title="셋팅 방법"></a>셋팅 방법</h2><p><a href="https://github.com/kjk7034/ReactNativeStudy/blob/master/docs/CodePush.md" target="_blank" rel="noopener">https://github.com/kjk7034/ReactNativeStudy/blob/master/docs/CodePush.md</a></p>
-<h2 id="명령어-모음"><a href="#명령어-모음" class="headerlink" title="명령어 모음"></a>명령어 모음</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;code-push:test-a&quot;: &quot;code-push release-react bGlam-Inc/bglam-b2c-app-android android&quot;,</span><br><span class="line">&quot;code-push:prod-a&quot;: &quot;code-push release-react bGlam-Inc/bglam-b2c-app-android android -d Production&quot;,</span><br><span class="line">&quot;code-push:info-a&quot;: &quot;code-push deployment ls bGlam-Inc/bglam-b2c-app-android -k&quot;,</span><br><span class="line">&quot;code-push:test-i&quot;: &quot;code-push release-react bGlam-Inc/bglam-b2c-app-ios ios&quot;,</span><br><span class="line">&quot;code-push:prod-i&quot;: &quot;code-push release-react bGlam-Inc/bglam-b2c-app-ios ios -d Production&quot;,</span><br><span class="line">&quot;code-push:info-i&quot;: &quot;code-push deployment ls bGlam-Inc/bglam-b2c-app-ios -k&quot;</span><br></pre></td></tr></table></figure>
+                    <p>Bookshelf에 다양한 플러그인들이 많은데, 이번기회에 쓸만한 플러그인이 있나 한번 훝어 보기로 했다.</p>
+<p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
+<h3 id="Virtuals"><a href="#Virtuals" class="headerlink" title="Virtuals"></a>Virtuals</h3><p><a href="https://github.com/bookshelf/bookshelf/wiki/Plugin:-Virtuals" target="_blank" rel="noopener">https://github.com/bookshelf/bookshelf/wiki/Plugin:-Virtuals</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bs = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([<span class="string">'virtuals'</span>]);</span><br><span class="line"><span class="keyword">var</span> ModelWithVirtuals = bookshelf.Model.extend(&#123;</span><br><span class="line">  virtuals: &#123;</span><br><span class="line">    fullName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.get(<span class="string">'firstName'</span>) + <span class="string">' '</span> + <span class="keyword">this</span>.get(<span class="string">'lastName'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>virtuals 안에 새로운 칼럼을 조작해서 만들 수 있다!</p>
+<h3 id="Processor"><a href="#Processor" class="headerlink" title="Processor"></a>Processor</h3><p><a href="https://github.com/bookshelf/bookshelf/wiki/Plugin:-Processor" target="_blank" rel="noopener">https://github.com/bookshelf/bookshelf/wiki/Plugin:-Processor</a></p>
+<p>같은 칼럼을 조작하고 싶을때! 인자로 함수를 넘겨야함.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">bookshelf.plugin(<span class="string">'processor'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> castToDate = <span class="built_in">require</span>(<span class="string">'./processors/to-date'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MyModel = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'things'</span>,</span><br><span class="line">  processors: &#123;</span><br><span class="line">    <span class="comment">// loginDate is a model attribute name</span></span><br><span class="line">    loginDate: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>(value);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="hidden"><a href="#hidden" class="headerlink" title="hidden"></a>hidden</h3><p>패스워드 같은 것을 리턴되지 않게 할 수 있음!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bs = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([<span class="string">'visibility'</span>]);</span><br><span class="line">Db.Users = Orm.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">, <span class="attr">hidden</span>: [<span class="string">'password'</span>, <span class="string">'salt'</span>, <span class="string">'secret'</span>, <span class="string">'hashtype'</span>]</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// toJSON() 할때 이런식으로 하면 해당 칼럼이 빠짐</span></span><br><span class="line">toJSON(&#123; <span class="attr">visibility</span>: <span class="literal">false</span> &#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="bookshelf-signals"><a href="#bookshelf-signals" class="headerlink" title="bookshelf-signals"></a>bookshelf-signals</h3><p><a href="https://github.com/bogus34/bookshelf-signals" target="_blank" rel="noopener">https://github.com/bogus34/bookshelf-signals</a></p>
+<p>이벤트를 각 모델에 셋팅할 필요 없이 중앙에다가 셋팅할 수 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Signals = <span class="built_in">require</span>(<span class="string">'bookshelf-signals'</span>)</span><br><span class="line"><span class="keyword">const</span> db = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([Signals]);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="title">extend</span> <span class="title">db</span>.<span class="title">Model</span>(</span>&#123;</span><br><span class="line">  tabeName: <span class="string">'users'</span>  </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">db.on(<span class="string">'saved'</span>, User, () =&gt; <span class="built_in">console</span>.log(<span class="string">'user was saved!'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>on(String event, [(Class|String) cls], Function handler)</p>
+<p>두번째 인자가 배열인것에 주목!! 로깅을 위한 공통 createdAt 이나 updatedAt 같은것을 이곳에서 한꺼번에 셋팅할 수 있겠다.</p>
+<p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
+<p>그외에도 더 많은 플러그인이 있으니 위 링크 참조</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
+
                     
                         
 
@@ -237,7 +258,7 @@
                     
                         <p>
                             <a
-                                href="/2018/12/05/React/RN-CODE-PUSH/#post-footer"
+                                href="/2018/12/22/Node.js/Bookshelf-Plugins살펴보자/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -277,7 +298,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 13 of 150</li>
+        <li class="pagination-number">page 13 of 151</li>
     </ul>
 </div>
 
@@ -287,7 +308,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

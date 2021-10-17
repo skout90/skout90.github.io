@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/06/12/Angular/11. Angular 이벤트/"
-                            aria-label=": 11. Angular 이벤트"
+                            href="/2017/07/07/Spring/spring default config/"
+                            aria-label=": component-scan / annotation-config / annotation-driven 차이점"
                         >
-                            11. Angular 이벤트
+                            component-scan / annotation-config / annotation-driven 차이점
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-06-12T10:00:50+09:00">
+    <time datetime="2017-07-07T19:28:10+09:00">
 	
-		    2017.06.12
+		    2017.07.07
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Angular/">Angular</a>
+    <a class="category-link" href="/categories/Spring/">Spring</a>
 
 
     
@@ -227,22 +227,39 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Mouse-click-이벤트"><a href="#Mouse-click-이벤트" class="headerlink" title="Mouse click 이벤트"></a>Mouse click 이벤트</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">'&lt;button ion-button (click)="onClick()&gt;버튼&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TabsPage &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  onClick() &#123;</span><br><span class="line">    alert(<span class="string">'dd'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <ol>
+<li><h2 id="context-component-scan"><a href="#context-component-scan" class="headerlink" title="context:component-scan/"></a><a href="context:component-scan/" target="_blank" rel="noopener">context:component-scan/</a></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"org.controller"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Mousemove-mouseleave-mouse-over-이벤트-동작"><a href="#Mousemove-mouseleave-mouse-over-이벤트-동작" class="headerlink" title="Mousemove, mouseleave, mouse over 이벤트 동작"></a>Mousemove, mouseleave, mouse over 이벤트 동작</h2><h3 id="지시자-선언"><a href="#지시자-선언" class="headerlink" title="지시자 선언"></a>지시자 선언</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Directive, ElementRef, HostListener, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Directive</span>(&#123;</span><br><span class="line">  selector: <span class="string">'[highlight]'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HighlightDirective &#123;</span><br><span class="line">  <span class="keyword">private</span> el: HTMLElement;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">el: ElementRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.el = el.nativeElement;</span><br><span class="line">    <span class="keyword">this</span>.el.style.fontSize = <span class="string">"30px"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mousemove'</span>) onMouseMove() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="string">"blue"</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"white"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mouseleave'</span>) onMouseLeave() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"black"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="템플릿"><a href="#템플릿" class="headerlink" title="템플릿"></a>템플릿</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'member-list'</span>,</span><br><span class="line">  template: <span class="string">` </span></span><br><span class="line"><span class="string">  &lt;div highlight (mouseover)="setLike('like this')"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123;like&#125;&#125;  </span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MemberListComponent &#123;</span><br><span class="line">  like: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  setLike(likethis: <span class="built_in">string</span>)&#123;</span><br><span class="line">    <span class="keyword">this</span>.like = likethis;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Key-이벤트"><a href="#Key-이벤트" class="headerlink" title="Key 이벤트"></a>Key 이벤트</h2><p>특정 키의 이벤트시 동작하는 이벤트</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'key-up4'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;input #box</span></span><br><span class="line"><span class="string">      (keyup.enter)="update(box.value)"</span></span><br><span class="line"><span class="string">      (blur)="update(box.value)"&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &lt;p&gt;&#123;&#123;value&#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> KeyUpComponent_v4 &#123;</span><br><span class="line">  value = <span class="string">''</span>;</span><br><span class="line">  update(value: <span class="built_in">string</span>) &#123; <span class="keyword">this</span>.value = value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<blockquote>
-<p>그외 이벤트 정보 : <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/Events</a></p>
-</blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
-<p><a href="https://angular.io/guide/user-input" target="_blank" rel="noopener">https://angular.io/guide/user-input</a></p>
+<p>위의 선언은 특정 패키지(위에서는 org.controller) 안의 클래스들을 스캔하고 ,</p>
+<p>빈 인스턴스를 생성한다. </p>
+<p>아래와 같은 정확한 어노테이션이 존재해야지 빈을 생성할수있다. </p>
+<ul>
+<li><strong>@Component</strong></li>
+<li><strong>@Repository</strong></li>
+<li><strong>@Service</strong></li>
+<li><strong>@Controller</strong></li>
+<li><strong>@Autowired</strong></li>
+</ul>
+<p>​</p>
+</li>
+<li><h2 id="mvc-annotation-driven"><a href="#mvc-annotation-driven" class="headerlink" title="mvc:annotation-driven/"></a><a href="mvc:annotation-driven/" target="_blank" rel="noopener">mvc:annotation-driven/</a></h2><p>스프링 MVC 컴포넌트들의 디폴트 설정을 적용.</p>
+<ul>
+<li><strong>HandlerMapping 및 HandlerAdapter 등록.</strong></li>
+<li><strong>@NumberFormat, @DateTimeFormat, @Valid</strong></li>
+<li><strong>Xml 및 JSON 읽고 쓰기</strong></li>
+</ul>
+<p>​</p>
+</li>
+<li><h2 id="context-annotation-config"><a href="#context-annotation-config" class="headerlink" title="context:annotation-config/"></a><a href="context:annotation-config/" target="_blank" rel="noopener">context:annotation-config/</a></h2><ul>
+<li><strong>@Required</strong></li>
+<li><strong>@Autowired</strong></li>
+<li><strong>@Resource, @PostConstruct, @PreDestory</strong></li>
+<li><strong>@Configuration</strong></li>
+</ul>
+<p>위 어노테이션 사용하기 위해서 필요.</p>
+</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://hamait.tistory.com/322" target="_blank" rel="noopener">HAMA 블로그</a></p>
 
                     
                         
@@ -252,7 +269,7 @@
                     
                         <p>
                             <a
-                                href="/2017/06/12/Angular/11. Angular 이벤트/#post-footer"
+                                href="/2017/07/07/Spring/spring default config/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -292,7 +309,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 146 of 150</li>
+        <li class="pagination-number">page 146 of 151</li>
     </ul>
 </div>
 
@@ -302,7 +319,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

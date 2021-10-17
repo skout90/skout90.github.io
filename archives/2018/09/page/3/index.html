@@ -267,8 +267,12 @@
 <ul>
 <li>certbot nginx plugin 통해 SSL 인증이 자동으로된다!!</li>
 </ul>
+<p>권한 오류를 위해 certbot-auto를 <code>/usr/local/bin</code> 경로로 이동시켜주자</p>
 <blockquote>
-<p>cd certbot</p>
+<p>sudo mv certbot-auto /usr/local/bin</p>
+</blockquote>
+<p>(<a href="https://community.letsencrypt.org/t/certbot-auto-deployment-best-practices/91979" target="_blank" rel="noopener">https://community.letsencrypt.org/t/certbot-auto-deployment-best-practices/91979</a>)</p>
+<blockquote>
 <p>certbot-auto --nginx -d example.com -d <a href="http://www.example.com" target="_blank" rel="noopener">www.example.com</a></p>
 </blockquote>
 <p>그럼 아래와 같은 문구가 나옴</p>
@@ -349,7 +353,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

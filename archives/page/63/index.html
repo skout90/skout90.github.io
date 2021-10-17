@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
-                            aria-label=": 02.2. Javascript 연산자, 비교"
+                            href="/2017/09/05/Javascript/2. javascript-구문/"
+                            aria-label=": 02. Javascript 구문"
                         >
-                            02.2. Javascript 연산자, 비교
+                            02. Javascript 구문
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-03T19:28:10+09:00">
+    <time datetime="2017-09-05T19:28:10+09:00">
 	
-		    2017.09.03
+		    2017.09.05
     	
     </time>
     
@@ -227,35 +227,27 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="과"><a href="#과" class="headerlink" title="==과 ==="></a>==과 ===</h2><p>==는 값이 동일한지 비교, 자동으로 형변환해서 비교한다</p>
-<p>===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다.</p>
-<p>JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장.</p>
-<p>switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.)</p>
-<h2 id="연산자"><a href="#연산자" class="headerlink" title="연산자"></a>연산자</h2><h4 id><a href="#" class="headerlink" title="!"></a>!</h4><p>객체, “”, NaN에도 적용이 가능, Boolean과 같은 효과.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(!!a); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+                    <p>알아두면 좋은 구문들을 기록한다.</p>
+<h3 id="async-defer"><a href="#async-defer" class="headerlink" title="async, defer"></a>async, defer</h3><p>script를 비동기적으로 다운한다. 외부파일만 적용된다.</p>
+<p><img src="http://www.growingwiththeweb.com/images/2014/02/26/async-vs-defer-twitter.png" alt="async defer에 대한 이미지 검색결과"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="keyword">async</span> src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script defer src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<h4 id="amp-amp"><a href="#amp-amp" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h4><p>값이 boolean이 아닐시</p>
-<ol>
-<li>둘중 하나라도, null/NaN/undefined라면 null/NaN/undefined 반환.</li>
-<li>객체 &amp;&amp; (_)  : 앞 피연산자가 객체라면, 두번째 피연산자 반환.</li>
-<li>true &amp;&amp; (객체) : 앞 피연산자가 true 일때만, 뒤 연산자 반환</li>
-</ol>
-<h4 id="-1"><a href="#-1" class="headerlink" title="||"></a>||</h4><p>값이 boolen이 아닐시</p>
-<ol>
-<li>둘 모두 null/NaN/undefined라면, null/NaN/undefined 반환</li>
-<li>(객체) || _ : 앞 피연산자가 객체라면, 첫번째 객체 반환</li>
-<li>false ||  (객체) : 뒤 피연산자 반환.</li>
-</ol>
-<h4 id="-2"><a href="#-2" class="headerlink" title="+"></a>+</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> + <span class="string">"5"</span> <span class="comment">// 55</span></span><br><span class="line"><span class="string">"abc ="</span> + <span class="number">3</span> + <span class="number">8</span> <span class="comment">// abc38</span></span><br><span class="line"><span class="number">5</span> - <span class="literal">true</span> <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<p><code>async</code>는 다운 받는 즉시 실행</p>
+<p><code>defer</code>는 html파싱이 끝난 후 실행시킨다.</p>
+<h3 id><a href="#" class="headerlink" title></a><!DOCTYPE html></h3><p>문서형정의(DTD:Document Type Definition)은 html 버젼을 선언하여, 렌더링에 도움을 준다. 생략시에는 쿼크모드로 돌입한다.</p>
+<blockquote>
+<p>쿼크모드 : 여러 비표준기능이 실행 되는 모드로, 브라우저 별로 실행결과가 다를 수 있다.</p>
+</blockquote>
+<p><code>&lt;!DOCTYPE html&gt;</code>을 선언하면 html5로 파싱한다.</p>
+<p><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</code> : Strict DTD  - center, font, iframe, strike, u, 새창띄우기 등이 제외되는 html 4.01 모드</p>
+<h3 id="스트릭트-모드"><a href="#스트릭트-모드" class="headerlink" title="스트릭트 모드"></a>스트릭트 모드</h3><p>“user strict” 를 선언하면 적용된다. : ECMA Script3의 안전하지 않은 구문들을 사용할시 에러를 발생시킨다. IE10+이상 브라우저에서 지원한다. </p>
+<h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">with</span>(user) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">  	<span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="lt"><a href="#lt" class="headerlink" title="&lt;"></a>&lt;</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="string">"Brick"</span> &lt; <span class="string">"alphabet"</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>with를 사용하면 객체 이름 없이 변수를 사용할 수 있다. <em>그러나 성능 및 디버깅 어려움의 이유로 사용이 지양된다.</em></p>
+<h3 id="Switch-문"><a href="#Switch-문" class="headerlink" title="Switch 문"></a>Switch 문</h3><p>switch문 ===로 비교.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(<span class="string">"hello world"</span>) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello"</span> + <span class="string">"world"</span>) &#123;</span><br><span class="line">  	<span class="comment">/* 계속 진행 */</span>    </span><br><span class="line">  &#125; </span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello world"</span> :</span><br><span class="line">    alert(<span class="string">"45"</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span> :</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>사전식 배열로 비교하려면, toLowerCase()를 사용해서 비교하자. JS 비교는 대문자가 더 앞서 위치함.</p>
-<h2 id="객체-비교"><a href="#객체-비교" class="headerlink" title="객체 비교"></a>객체 비교</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;<span class="attr">a</span>: <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line">o1 == o2; <span class="comment">// false</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(o1) == <span class="built_in">JSON</span>.stringify(o2); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<p>o1과 o2는 객체 그 자체가 아니라, 객체를 가리키는 포인터이기 때문에 동등비교가 되지 않는다. 따라서 JSON.stringify를 통해 비교하는 것이 좋다고 한다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스</p>
 
                     
                         
@@ -265,7 +257,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/#post-footer"
+                                href="/2017/09/05/Javascript/2. javascript-구문/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -305,7 +297,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 63 of 150</li>
+        <li class="pagination-number">page 63 of 151</li>
     </ul>
 </div>
 
@@ -315,7 +307,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/SEO-검색엔진최적화/"
-                            aria-label=": 검색 엔진 최적화 SEO"
+                            href="/2017/08/15/Node.js/1. NodeJS란/"
+                            aria-label=": 01. NodeJS 란?"
                         >
-                            검색 엔진 최적화 SEO
+                            01. NodeJS 란?
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,33 +227,41 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="검색-엔진-최적화-SEO"><a href="#검색-엔진-최적화-SEO" class="headerlink" title="검색 엔진 최적화 SEO"></a>검색 엔진 최적화 SEO</h2><p>SEO(Search Engine Optimize) : 검색 엔진 최적화, 구글 엔진이 크롤링 보다 잘 하기 위해서 최적화가 필요.</p>
+                    <p>Node.js를 이해하기 위해서는 먼저 javascript에 대해 이해할 필요가 있음.</p>
+<p>##자바스크립트</p>
+<p>자바스크립트는 넷스케이프 웹 브라우저에서 HTML의 DOM(Document Object Model) 객체를 제어하기 위해 개발되었음.</p>
+<p>초창기에는 매우 느렸으나, 구글이 크롬과 함께 V8 자바스크립트 엔진을 개발하면서, 기존 웹브라우저에 포함된 엔진보다 월등히 빨라진 성능을 보였음.</p>
+<p>기존 JS엔진들은 자바스크립트를 바이트코드로 변환하거나 인터프리트하여 처리했지만 V8은 JIT(Just In Time) 컴파일 방식을 사용하여 성능을 획기적으로 개선.</p>
+<blockquote>
+<p>JIT 컴파일 방식은 자바스크립트를 인터프리트하지 않고 실행 즉시 기계어(x86, ARM등)로 컴파일</p>
+</blockquote>
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>2009년 라이언 달이라는 프로그래머가 구글의<code>V8 자바스크립트 엔진</code>을 웹 브라우저가 아닌 서버로 사용할 수 있도록 만든 것이 Node.js</p>
 <ul>
-<li>명확하고 동창적 title 태그 사용.</li>
-<li>description 메타태그 활용하기</li>
-<li>URL 구조 개선</li>
-<li>..</li>
+<li>JS의 간결함</li>
+<li>V8 JS 엔진의 월등한 속도</li>
+<li>단일 스레드(Non-bloking I/O)</li>
+<li>소켓 통신</li>
+<li>HTTP 웹서버로 실행 가능</li>
+<li>npm(Node Packaged Modules)은 Node.js로 만들어진 모듈을 인터넷에서 받아서 설치해주는 패키지 매니저.</li>
 </ul>
-<h3 id="canonical"><a href="#canonical" class="headerlink" title="canonical"></a>canonical</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"canonical"</span> <span class="attr">href</span>=<span class="string">"http://www.seo-korea.com"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>표준 URL을 설정함으로써, 검색엔진이 URL을 쉽게 최적화하여, PageRank 상승에 기여하고, 중복된 컨텐츠를 쉽게 없엘 수 있음.</p>
-<h3 id="sitemap-xml"><a href="#sitemap-xml" class="headerlink" title="sitemap.xml"></a>sitemap.xml</h3><p>루트에 sitemap.xml 파일 만들어 놓기 <code>abc.com/sitemap.xml</code></p>
+<h2 id="단일-스레드-모델-Non-blocking-I-O"><a href="#단일-스레드-모델-Non-blocking-I-O" class="headerlink" title="단일 스레드 모델, Non-blocking I/O"></a>단일 스레드 모델, Non-blocking I/O</h2><p>멀티 스레드 방식은 복잡한 동기화 문제가 골칫거리 였음. 동기화 모델이나 락에 대해 학습해야 하고 쓰기가 상당히 어려워 생산성 저하로 이어짐.</p>
+<p>Node.js는 멀티스레드 모델 대신 단일 스레드 모델과 Non-blocking I/O를 채택.</p>
 <ul>
-<li>sitemap.xml</li>
+<li><strong>Blocking 방식</strong></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sitemapindex</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/post-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:30.093Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/page-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/category-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:07.793Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">sitemapindex</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> result;</span><br><span class="line">   result = sum(<span class="number">1</span>, <span class="number">2</span>);          <span class="comment">// 1</span></span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">"sum: %d"</span>, result);   <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;                    <span class="comment">// 3      </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>위 C언어 코드의 실행은 그냥 줄 순서, printf 함수로 결과를 찍으려면 sum 함수가 끝날 때까지 기다려야 함. 이를 <code>Blocking</code> 방식이라고 함.</p>
 <ul>
-<li>page-sitemap.xml</li>
+<li><strong>Non-Blocking 방식</strong></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">urlset</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:image</span>=<span class="string">"http://www.google.com/schemas/sitemap-image/1.1"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>daily<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>1<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/all-categories/<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>weekly<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>0.8<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">urlset</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'./컴배콤.txt'</span> <span class="comment">/* 1 */</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// 3</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello JavaScript'</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="구글-Search-Console-등록"><a href="#구글-Search-Console-등록" class="headerlink" title="구글 Search Console 등록"></a>구글 Search Console 등록</h3><p><a href="https://www.google.com/webmasters/tools/home" target="_blank" rel="noopener">https://www.google.com/webmasters/tools/home</a></p>
-<p>내 URL을 등록하고, 위의 sitemap.xml도 함께 등록해주자.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/" target="_blank" rel="noopener">http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/</a></p>
-<p><a href>http://tobeonline.tistory.com/entry/구글이-제시하는-검색엔진-최적화SEO-방법</a></p>
-<p><a href="http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/" target="_blank" rel="noopener">http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/</a></p>
-<p><a href="http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/" target="_blank" rel="noopener">http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/</a></p>
+<p><code>fs.readFile()</code>의 결과값이 나올때까지 기다리지 않고, 그다음 줄 <code>console.log(&#39;Hello JavaScript&#39;);</code>를 실행해버림. 시간 경과 후 파일을 다 읽었으면 <code>console.log(data)</code>가 실행됌.</p>
+<blockquote>
+<p>총 2개의 스레드로 작동 : 시간이 오래 걸리는 작업은 워커 스레드로 보내고, 메인 스레드는 코드를 계속 실행. 워커 스레드에서 작업이 끝나면 결과를 다시 메인 스레드로 보냄.</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
 
                     
                         
@@ -263,7 +271,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/SEO-검색엔진최적화/#post-footer"
+                                href="/2017/08/15/Node.js/1. NodeJS란/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -303,7 +311,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 78 of 150</li>
+        <li class="pagination-number">page 78 of 151</li>
     </ul>
 </div>
 
@@ -313,7 +321,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

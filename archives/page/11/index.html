@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/12/28/Javascript/this바인딩-분석/"
-                            aria-label=": this 바인딩 분석"
+                            href="/2019/04/01/CSS/CSS-animation-Bounce/"
+                            aria-label=": Bounce 애니메이션"
                         >
-                            this 바인딩 분석
+                            Bounce 애니메이션
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-12-28T19:28:10+09:00">
+    <time datetime="2019-04-01T19:28:10+09:00">
 	
-		    2018.12.28
+		    2019.04.01
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/CSS/">CSS</a>
 
 
     
@@ -227,26 +227,11 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="기본-바인딩"><a href="#기본-바인딩" class="headerlink" title="기본 바인딩"></a>기본 바인딩</h2><p>전역함수 내에서 this 호출시 <strong>this = window</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'apple'</span>;</span><br><span class="line"></span><br><span class="line">getFruitName(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
+                    <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.bounce</span> &#123;</span><br><span class="line">  <span class="attribute">border </span>: <span class="number">1px</span> grey solid;</span><br><span class="line">  <span class="attribute">animation</span>: q-bounce <span class="number">2s</span> infinite;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">keyframes</span> q-bounce &#123;</span><br><span class="line">  0%, 20%, 50%, 80%, 100% &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(0)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  40% &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-30px)</span><br><span class="line">  &#125;</span><br><span class="line">  60% &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-15px)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="암시적-바인딩"><a href="#암시적-바인딩" class="headerlink" title="암시적 바인딩"></a>암시적 바인딩</h2><h3 id="객체-function-함수-할당시"><a href="#객체-function-함수-할당시" class="headerlink" title="객체 function 함수 할당시"></a>객체 function 함수 할당시</h3><p>객체 내에 function 함수를 호출시 <strong>this = 해당 객체</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.onPress(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"bounce"</span>&gt;</span></span><br><span class="line">  안녕하세요!</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="객체-arrow-function-함수-할당시"><a href="#객체-arrow-function-함수-할당시" class="headerlink" title="객체 arrow function 함수 할당시"></a>객체 arrow function 함수 할당시</h3><p>객체 내 arrow function 함수 호출시 <strong>this = 해당 컨텍스트의 부모 객체</strong></p>
-<blockquote>
-<p>arrow function은 의도적으로 컨텍스트를 할당할 수 있기 때문에 명시적 할당에 더 가깝다고 볼 수도 있다.</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"><span class="keyword">const</span> z = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">z.onPress(); <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="객체에-할당된-function-함수를-복사시"><a href="#객체에-할당된-function-함수를-복사시" class="headerlink" title="객체에 할당된 function 함수를 복사시"></a>객체에 할당된 function 함수를 복사시</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    getFruitName: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obj.getFruitName</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
-
-<p>getCopyFruitName은 일반 함수이므로 obj.getFruitName을 할당하는 순간, this는 전역 객체가 되어버린다.</p>
-<h2 id="명시적-바인딩"><a href="#명시적-바인딩" class="headerlink" title="명시적 바인딩"></a>명시적 바인딩</h2><p>우리가 의도한대로, this를 바인딩해보자!</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obje = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obje.onPress</span><br><span class="line"><span class="keyword">const</span> getCorectCopyFruitName = obje.onPress.bind(obje)</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br><span class="line">getCorrectCopyFruitName() <span class="comment">// apple</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<p><a class="jsbin-embed" href="https://jsbin.com/waqokamali/embed?html,css,output" target="_blank" rel="noopener">JS Bin on jsbin.com</a><script src="https://static.jsbin.com/js/embed.min.js?4.1.7"></script></p>
 
                     
                         
@@ -256,7 +241,7 @@
                     
                         <p>
                             <a
-                                href="/2018/12/28/Javascript/this바인딩-분석/#post-footer"
+                                href="/2019/04/01/CSS/CSS-animation-Bounce/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -296,7 +281,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 11 of 150</li>
+        <li class="pagination-number">page 11 of 151</li>
     </ul>
 </div>
 
@@ -306,7 +291,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

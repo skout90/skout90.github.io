@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/"
-                            aria-label=": 02. NodeJs Express 시작하기"
+                            href="/2017/08/15/Node.js/4. 템플릿엔진/"
+                            aria-label=": 04. 템플릿 엔진 - EJS, Jade, Handlebars"
                         >
-                            02. NodeJs Express 시작하기
+                            04. 템플릿 엔진 - EJS, Jade, Handlebars
                         </a>
                     
                 </h1>
@@ -227,51 +227,165 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h1 id="Node-JS-웹서버-만들기"><a href="#Node-JS-웹서버-만들기" class="headerlink" title="Node JS 웹서버 만들기"></a>Node JS 웹서버 만들기</h1><h2 id="NodeJS-다운로드"><a href="#NodeJS-다운로드" class="headerlink" title="NodeJS 다운로드"></a>NodeJS 다운로드</h2><p><a href="https://nodejs.org/ko/" target="_blank" rel="noopener">https://nodejs.org/ko/</a></p>
-<h2 id="사용하기"><a href="#사용하기" class="headerlink" title="사용하기"></a>사용하기</h2><ul>
-<li><strong>app.js 파일 생성</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello World'</span>);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>$ node app.js</p>
-</blockquote>
-<p>터미널에서 위 명령어 입력하여 app.js 실행.</p>
-<h2 id="웹-서버-만들기"><a href="#웹-서버-만들기" class="headerlink" title="웹 서버 만들기"></a>웹 서버 만들기</h2><ul>
-<li><strong>app.js</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.writeHead(<span class="number">200</span>, &#123; <span class="string">'Content-Type'</span> : <span class="string">'text/plain'</span> &#125;);</span><br><span class="line">  res.end(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>$ node app.js</p>
-</blockquote>
-<p>명령어 입력 하면, <code>server.listen()</code>함수로 인해 8000포트로 접속을 대기함. 클라이언트가  <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a> 으로 접속하면 Hello World가 나옴.</p>
-<h2 id="express로-웹-서버-만들기"><a href="#express로-웹-서버-만들기" class="headerlink" title="express로 웹 서버 만들기"></a>express로 웹 서버 만들기</h2><p><code>express</code>는 Node.js에서 가장 유명한 웹 프레임워크 모듈. 더 간단하고 다양한 템플릿 엔진 기능을 활용해서 웹서버를 만들 수 있음.</p>
+                    <p>express로 웹서버를 만들더라도 파일을 하나하나 정의하기에는 무리가 있음. express에서 템플릿 엔진을 사용하면 PHP나 JSP처럼 서버에서 HTML을 동적으로 생성할 수 있음.</p>
+<h2 id="EJS-Embedded-JavaScript"><a href="#EJS-Embedded-JavaScript" class="headerlink" title="EJS(Embedded JavaScript)"></a>EJS(Embedded JavaScript)</h2><p>서버에서 자바스크립트로 HTML을 생성하는 템플릿 엔진</p>
 <ul>
-<li><strong>app.js 작성</strong></li>
+<li>설치 및 실행</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>) <span class="comment">// 모듈 로딩</span></span><br><span class="line">  , http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line">  , app = express()</span><br><span class="line">  , server = http.createServer(app); <span class="comment">// app객체와 http 서버 연결</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123; <span class="comment">// HTTP GET 메서드 처리</span></span><br><span class="line">  res.send(<span class="string">'Hello /'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/world.html'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 8000 번 포트로 서버 실행</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Express server listening on port '</span> + server.address().port);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>$ npm install -g express-generator</p>
+<p>$ express –ejs</p>
+</blockquote>
+<ul>
+<li>구조<ul>
+<li>app.js</li>
+<li>bin<ul>
+<li>www</li>
+</ul>
+</li>
+<li>package.json</li>
+<li>public<ul>
+<li>images</li>
+<li>javascripts</li>
+<li>stylesheets<ul>
+<li>style.css</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>routes<ul>
+<li>index.js</li>
+<li>users.js</li>
+</ul>
+</li>
+<li>views<ul>
+<li>error.ejs</li>
+<li>index.ejs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>$ npm install</p>
+</blockquote>
+<p>생성후 위 명령어만 입력하면 package.js에 정의된 모듈이 모두 설치됌. bin 디렉터리 아래 <code>www</code> 파일이 생성되는데 node로 실행</p>
+<blockquote>
+<p>$ node bin/www</p>
+</blockquote>
+<p>웹 브라우정에서 <strong><a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a></strong> 으로 접속하면. 빈화면에 <strong>Express Welcome to Express</strong> 라고 표시됌.</p>
+<ul>
+<li>EJS 기본 문법</li>
+</ul>
+<p><code>view/index.eja</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">'stylesheet'</span> <span class="attr">href</span>=<span class="string">'/stylesheets/style.css'</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome to <span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;% %&gt;</code> 안에 자바스크립트를 사용하면 됌. 변수 출력은 <code>&lt;%= 변수 %&gt;</code>로 가능.</p>
+<ul>
+<li>Welcome to Express 5번 출력하기</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">'stylesheet'</span> <span class="attr">href</span>=<span class="string">'/stylesheets/style.css'</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    &lt;% for (var i = 0; i &lt; 5; i++) &#123; %&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>Welcome to <span class="tag">&lt;<span class="name">%=</span> <span class="attr">title</span> %&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>express를 설치</strong></li>
+<li>title 변수의 위치</li>
 </ul>
+<p><code>routes/index.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> router = express.Router();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* GET home page. */</span></span><br><span class="line">router.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.render(<span class="string">'index'</span>, &#123; <span class="attr">title</span>: <span class="string">'Express'</span> &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = router;</span><br></pre></td></tr></table></figure>
+
+<p>템플릿 엔진을 이용해서 HTML 생성 가능 아래 사이트 참조</p>
+<p><a href="https://code.google.com/p/embeddedjavascript/wiki/ViewHelpers" target="_blank" rel="noopener">https://code.google.com/p/embeddedjavascript/wiki/ViewHelpers</a></p>
+<h2 id="Jade"><a href="#Jade" class="headerlink" title="Jade"></a>Jade</h2><p>HTML을 간략화한 템플릿 엔진</p>
 <blockquote>
-<p>$ npm install express</p>
+<p>$ npm install -g express-generator</p>
+<p>$ express</p>
 </blockquote>
-<p>app.js가 있는 디렉터리에서 명령어 실행할것, 명령을 실행하면 디렉터리에 node_modules 디렉터리가 생성됌. 그 안에 express 모듈들이 존재.</p>
-<p>전역 설치를 위해서는</p>
-<blockquote>
-<p>$ npm install -g express</p>
-</blockquote>
-<p>그러면 app.js 디렉터리와 상관없이 모듈 사용 가능.</p>
+<p>express-generator에 아무 옵션을 주지 않으면 Jade로 어플리케이션을 생성</p>
 <ul>
-<li><strong>실행</strong></li>
+<li>구조<ul>
+<li>app.js</li>
+<li>bin<ul>
+<li>www</li>
 </ul>
+</li>
+<li>package.json</li>
+<li>public<ul>
+<li>images</li>
+<li>javascripts</li>
+<li>stylesheets<ul>
+<li>style.css</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>routes<ul>
+<li>index.js</li>
+<li>users.js</li>
+</ul>
+</li>
+<li>views<ul>
+<li>error.ejs</li>
+<li>index.ejs</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>EJS와 같이 <code>npm install</code> 입력하면 package.js에 정의된 모듈들이 설치.</p>
 <blockquote>
-<p>$ node app.js</p>
+<p>$ node bin/www</p>
 </blockquote>
-<p>웹 브라우저에서 <strong><a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a></strong> 으로 접속하면 빈화면에 <strong>Hello /</strong>가 표시되고 <strong><a href="http://127.0.0.1:8000/world.html" target="_blank" rel="noopener">http://127.0.0.1:8000/world.html</a></strong>로 접속하면 <strong>Hello World</strong>가 표시</p>
+<p><a href="http://127.0.0.1:3000으로" target="_blank" rel="noopener">http://127.0.0.1:3000으로</a> 접속하면 <strong>Express Welcome to Express</strong>라고 나오는 것을 확인.</p>
+<ul>
+<li>views/layout.jade</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">doctype html</span><br><span class="line">html</span><br><span class="line">  head</span><br><span class="line">    title= title</span><br><span class="line">    link(rel=&apos;stylesheet&apos;, href=&apos;/stylesheets/style.css&apos;)</span><br><span class="line">  body</span><br><span class="line">    block content</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>views/index.jade</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">extends layout</span><br><span class="line"></span><br><span class="line">block content</span><br><span class="line">  h1= title</span><br><span class="line">  p Welcome to #&#123;title&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>index.jade</code>는 <code>extends layout</code> 문법을 이용하여 <code>layout.jade</code>파일을 상속.</p>
+<p>layout.jade, index.jade 파일 모두 <code>block content</code>가 있음.</p>
+<p>layout.jade 파일에서 block을 선언하고, index.jade 파일에서 block을 정의</p>
+<ul>
+<li>변수 출력 :  ex) <code>h1= title</code> </li>
+<li>변수 할당 : <code>${ }</code></li>
+</ul>
+<ul>
+<li>jade의 예제</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">extends layout</span><br><span class="line"></span><br><span class="line">block content</span><br><span class="line">  h1= title</span><br><span class="line">  p Welcome to #&#123;title&#125;</span><br><span class="line"></span><br><span class="line">  #&#123; items = [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;] &#125;</span><br><span class="line">  each item, i in items</span><br><span class="line">    li #&#123;item&#125;: #&#123;i&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>routes/index.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&apos;express&apos;);</span><br><span class="line">var router = express.Router();</span><br><span class="line"></span><br><span class="line">/* GET home page. */</span><br><span class="line">router.get(&apos;/&apos;, function(req, res) &#123;</span><br><span class="line">  res.render(&apos;index&apos;, &#123; title: &apos;Express&apos; &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">module.exports = router;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Handlebars"><a href="#Handlebars" class="headerlink" title="Handlebars"></a>Handlebars</h2><p>템플릿 엔진 핸들바스의 사용법을 정리해보자.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install –save handlebars</p>
+</blockquote>
+<h4 id="템플릿-작성-hbs"><a href="#템플릿-작성-hbs" class="headerlink" title="템플릿 작성(.hbs)"></a>템플릿 작성(.hbs)</h4><p>변수 바인딩, if문, each문의 예제</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span> <span class="attr">id</span>=<span class="string">"entry-template"</span> <span class="attr">type</span>=<span class="string">"text/x-handlebars-template"</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"entry"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><span class="template-variable">&#123;&#123;title&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span></span></span><br><span class="line"><span class="xml">      </span><span class="template-variable">&#123;&#123;body&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"comments"</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">each</span></span> comments&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span></span><span class="template-variable">&#123;&#123;title&#125;&#125;</span><span class="xml">&gt;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><span class="template-variable">&#123;&#123;body&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">each</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">if</span></span> author&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><span class="template-variable">&#123;&#123;firstName&#125;&#125;</span><span class="xml"> </span><span class="template-variable">&#123;&#123;lastName&#125;&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-variable">&#123;&#123;<span class="builtin-name">else</span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  	<span class="tag">&lt;<span class="name">h1</span>&gt;</span>Unknown Author<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">if</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="JS-code-작성"><a href="#JS-code-작성" class="headerlink" title="JS code 작성"></a>JS code 작성</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> source   = $(<span class="string">"#entry-template"</span>).html();</span><br><span class="line"><span class="keyword">var</span> template = Handlebars.compile(source);</span><br><span class="line"><span class="keyword">var</span> context = &#123;<span class="attr">title</span>: <span class="string">"My New Post"</span>,</span><br><span class="line">               body: <span class="string">"This is my first post!"</span>,</span><br><span class="line">               comments: [</span><br><span class="line">                 &#123; <span class="attr">title</span>: <span class="string">'1'</span>, <span class="attr">body</span>: <span class="string">'xx'</span>&#125;,</span><br><span class="line">    			&#123; <span class="attr">title</span>: <span class="string">'2'</span>, <span class="attr">body</span>: <span class="string">'yy'</span>&#125;</span><br><span class="line">               ],</span><br><span class="line">               author: &#123; <span class="attr">firstName</span>: <span class="string">'Nam'</span>, <span class="attr">lastName</span>: <span class="string">'Junho'</span>&#125;</span><br><span class="line">              &#125;;</span><br><span class="line"><span class="keyword">var</span> html    = template(context);</span><br></pre></td></tr></table></figure>
+
+<h4 id="partial"><a href="#partial" class="headerlink" title="partial"></a>partial</h4><figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"post"</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-variable">&#123;&#123;&gt; userMessage tagName="h1" &#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;#<span class="name"><span class="builtin-name">each</span></span> comments&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">    </span><span class="template-variable">&#123;&#123;&gt; userMessage tagName="h2" &#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml">  </span><span class="template-tag">&#123;&#123;/<span class="name"><span class="builtin-name">each</span></span>&#125;&#125;</span><span class="xml"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Handlebars.registerPartial(<span class="string">'userMessage'</span>,</span><br><span class="line">    <span class="string">'&lt;&#123;&#123;tagName&#125;&#125;&gt;By &#123;&#123;author.firstName&#125;&#125; &#123;&#123;author.lastName&#125;&#125;&lt;/&#123;&#123;tagName&#125;&#125;&gt;'</span></span><br><span class="line">    + <span class="string">'&lt;div class="body"&gt;&#123;&#123;body&#125;&#125;&lt;/div&gt;'</span>);</span><br><span class="line"><span class="keyword">var</span> context = &#123;</span><br><span class="line">  author: &#123;<span class="attr">firstName</span>: <span class="string">"Alan"</span>, <span class="attr">lastName</span>: <span class="string">"Johnson"</span>&#125;,</span><br><span class="line">  body: <span class="string">"I Love Handlebars"</span>,</span><br><span class="line">  comments: [&#123;</span><br><span class="line">    author: &#123;<span class="attr">firstName</span>: <span class="string">"Yehuda"</span>, <span class="attr">lastName</span>: <span class="string">"Katz"</span>&#125;,</span><br><span class="line">    body: <span class="string">"Me too!"</span></span><br><span class="line">  &#125;]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>결과</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>By Alan Johnson<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span>I Love Handlebars<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Comments<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">h2</span>&gt;</span>By Yehuda Katz<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span>Me Too!<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="helper"><a href="#helper" class="headerlink" title="helper"></a>helper</h4><p>위의 <code>each</code>나 <code>if</code> 는 내장 helper이며, 그 외에도 다양한 helper를 사용하기 위해서는 swag를 사용하면 된다</p>
+<blockquote>
+<p>$ npm install swag –save</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Browser --&gt;</span><br><span class="line">&lt;script src=&quot;../path_to/handlebars.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;../path_to/swag.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;Swag.registerHelpers(Handlebars);&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">// Node</span><br><span class="line">Handlebars = require(&apos;handlebars&apos;);</span><br><span class="line">Swag = require(&apos;swag&apos;);</span><br><span class="line">Swag.registerHelpers(Handlebars);</span><br></pre></td></tr></table></figure>
+
+<p>string, date, collections 등을 조작하는 다양한 헬퍼를 확인할 수 있다.</p>
+<p><a href="https://github.com/elving/swag" target="_blank" rel="noopener">https://github.com/elving/swag</a></p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
+<p><a href="http://handlebarsjs.com/" target="_blank" rel="noopener">http://handlebarsjs.com/</a></p>
 
                     
                         
@@ -281,7 +395,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/#post-footer"
+                                href="/2017/08/15/Node.js/4. 템플릿엔진/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -331,7 +445,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/12/Angular/5.1. 의존성 주입/"
-                            aria-label=": 05.1. Angular 의존성 주입"
+                            href="/2017/07/12/Angular/5. Angular 서비스/"
+                            aria-label=": 05. Angular 서비스"
                         >
-                            05.1. Angular 의존성 주입
+                            05. Angular 서비스
                         </a>
                     
                 </h1>
@@ -227,37 +227,40 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>객체 생성과 설정에 들어가는 코드를 최소화하고, 컴포넌트 마다 일관된 방법으로 생성한 객체를 제공하기 위해서 필요함.</p>
-<ol>
-<li>@Injector : 주입할 클래스 선택</li>
-<li>Provider : 주입할 클래스를 제공자에 등록</li>
-<li>Dependency Injection : 생성자로 의존성 주입을 받음</li>
-</ol>
-<h2 id="제공자를-통한-의존성-주입"><a href="#제공자를-통한-의존성-주입" class="headerlink" title="제공자를 통한 의존성 주입"></a>제공자를 통한 의존성 주입</h2><ul>
-<li>클래스 제공자</li>
-</ul>
-<ol>
-<li><code>@Injectable()</code> 장식자 활용 </li>
-<li><code>@Component({ ... providers: [주입할 클래스]})</code></li>
-<li>생성자 패턴을 이용해 의존성 주입 <code>constructor(public [주입할 클래스명:클래스])</code></li>
-</ol>
+                    <p>컴포넌트에 제공할 목적으로 외부에 정의한 클래스. 모든 컴포넌트에 공통적으로 존재할 수 있는 공통 관심 기능을 서비스로 만듬.</p>
+<p>Angular CLI 사용할 경우 </p>
+<blockquote>
+<p>$ ng g service</p>
+</blockquote>
+<h2 id="정의"><a href="#정의" class="headerlink" title="정의"></a>정의</h2><p>서비스 정의는 @Injectable 장식자를 사용. 주입 가능한 클래스라는 의미. 서비스 클래스 라는 것을 명시하는 역할.</p>
 <ul>
-<li>값 제공자</li>
+<li>서비스</li>
 </ul>
-<p>컴포넌트에 값을 제공할 목적으로 사용.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloService &#123;</span><br><span class="line">  sayHello()&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"Hello 서비스!"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>팩토리 제공자</li>
+<li>컴포넌트</li>
 </ul>
-<p>싱글턴이 아닌 새롭게 생성한 객체를 의존성 주입을 통해 사용할 때.</p>
-<h2 id="제공자-없이-의존성-주입"><a href="#제공자-없이-의존성-주입" class="headerlink" title="제공자 없이 의존성 주입"></a>제공자 없이 의존성 주입</h2><ul>
-<li>팩토리 패턴</li>
-</ul>
-<p>제공자 이용하지 않고 새로운 객체를 만들어 의존성을 주입하고 싶을 때.</p>
+<p>providers에 서비스를 등록해준다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; HelloService &#125; <span class="keyword">from</span> <span class="string">'./hello.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'hello'</span>,</span><br><span class="line">  template: <span class="string">`&#123;&#123;welcome&#125;&#125;`</span>,</span><br><span class="line">  providers: [HelloService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloComponent &#123;</span><br><span class="line">  welcome: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">helloService: HelloService</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.welcome = helloService.sayHello();    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="서비스를-통한-데이터-교환"><a href="#서비스를-통한-데이터-교환" class="headerlink" title="서비스를 통한 데이터 교환"></a>서비스를 통한 데이터 교환</h2><p>부모 컴포넌트에는 제공자 설정을 통해 주입. 자식 컴포넌트에는 제공자 설정을 하지 않고 서비스를 받아서 사용하면 같은 서비스를 통해 값 공유 가능.</p>
 <ul>
-<li>주입기 이용</li>
+<li>공유 서비스 정의</li>
 </ul>
-<p>Angular에서 만들어 놓은 팩토리 패턴, <code>new</code> 키워드 대신 <code>resolveAndCreate()</code> 메서드 활용</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ReflectiveInjector &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; 클래스 &#125; <span class="keyword">from</span> <span class="string">'...'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> injector: ReflectiveInjector = ReflectiveInjector.resoleveAndCreate([클래스명]);</span><br><span class="line">  <span class="keyword">return</span> injector.get(클래스명);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Injectable &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> SharedService &#123;</span><br><span class="line">  num: <span class="built_in">number</span>;</span><br><span class="line">  message: <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">public</span> names: <span class="built_in">string</span>[] = [];</span><br><span class="line">  addName(data: <span class="built_in">string</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.names.unshift(data);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>자식 컴포넌트</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'car-component'</span>,</span><br><span class="line">  template: <span class="string">`car 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)="s.message='car'"&gt;선택&lt;/button&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CarComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'taxi-component'</span>,</span><br><span class="line">  template: <span class="string">`taxi 컴포넌트 : &#123;&#123; s.message&#125;&#125; &lt;button (click)="s.message='taxi'"&gt;선택&lt;/button&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TaxiComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>부모 컴포넌트</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; SharedService &#125; <span class="keyword">from</span> <span class="string">'./shared.service'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'parent-component'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  부모 컴포넌트 : &#123;&#123;s.message&#125;&#125; &lt;button (click)="s.message='parent'"&gt;선택&lt;/button&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">  &lt;car-component&gt;&lt;/car-component&gt;&lt;br&gt;</span></span><br><span class="line"><span class="string">  &lt;taxi-component&gt;&lt;/taxi-component&gt;`</span>,</span><br><span class="line">  providers: [SharedService]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> ParentComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> s: SharedService</span>) &#123;</span><br><span class="line">    s.message = <span class="string">"hello"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
 
@@ -269,7 +272,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/12/Angular/5.1. 의존성 주입/#post-footer"
+                                href="/2017/07/12/Angular/5. Angular 서비스/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -309,7 +312,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 135 of 150</li>
+        <li class="pagination-number">page 135 of 151</li>
     </ul>
 </div>
 
@@ -319,7 +322,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

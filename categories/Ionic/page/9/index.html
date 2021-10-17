@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/2. Ionic-시작하기/"
-                            aria-label=": 02. Ionic 시작하기"
+                            href="/2017/07/24/Ionic/2.1. build-and-test/"
+                            aria-label=": 02.1. 빌드 및 테스트"
                         >
-                            02. Ionic 시작하기
+                            02.1. 빌드 및 테스트
                         </a>
                     
                 </h1>
@@ -227,67 +227,54 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>아이오닉을 시작하기 위해서</p>
-<p>기본 셋팅과, 명령어를 알아본다.</p>
-<h2 id="Node-설치"><a href="#Node-설치" class="headerlink" title="Node 설치"></a>Node 설치</h2><p><a href="https://nodejs.org" target="_blank" rel="noopener">https://nodejs.org</a></p>
-<p>설치 후 커맨드 창을 열어</p>
-<blockquote>
-<p>$ node</p>
-<p>&gt; console.log(‘hello node’);</p>
-<p>hello node</p>
-<p>undefined</p>
-</blockquote>
-<p>와 같이 나온다면 성공.</p>
-<h2 id="Cordova-설치"><a href="#Cordova-설치" class="headerlink" title="Cordova 설치"></a>Cordova 설치</h2><p>코도바는 하이브리드 앱에서 네이티브 앱의 기능을 사용할 수 있게 하는 라이브러리다.</p>
-<blockquote>
-<p>npm install -g cordova</p>
-</blockquote>
-<h2 id="CLI-설치하기"><a href="#CLI-설치하기" class="headerlink" title="CLI 설치하기"></a>CLI 설치하기</h2><p>CLI는 아이오닉 프레임워크 개발에 가장 기초가 되는 툴이다.</p>
-<p>start/build/serve/run/emulate/info 같은 명령어를 사용하기 위해서는</p>
-<p>CLI 툴을 설치해야 한다.</p>
-<p>node와 npm이 설치 되어 있어야 한다.</p>
-<blockquote>
-<p>$ npm install -g ionic</p>
-</blockquote>
-<h2 id="명령어"><a href="#명령어" class="headerlink" title="명령어"></a>명령어</h2><ul>
-<li>새 프로젝트 만들기</li>
-</ul>
-<blockquote>
-<p>$ ionic start –v2 myApp blank</p>
-</blockquote>
-<p>blank 대신 다른 템플릿을 입력할 수도 있다. (blank/sidemenu/tabs/tutorial,github-url)</p>
-<ul>
-<li>정보 보기</li>
-</ul>
-<blockquote>
-<p>$ ionic info</p>
-</blockquote>
-<ul>
-<li>디버깅</li>
-</ul>
-<blockquote>
+                    <h2 id="웹에서-테스트"><a href="#웹에서-테스트" class="headerlink" title="웹에서 테스트"></a>웹에서 테스트</h2><blockquote>
 <p>$ ionic serve</p>
+<p>또는,</p>
+<p>$ ionic serve -lab</p>
 </blockquote>
-<ul>
-<li>플랫폼별 브라우저 확인</li>
-</ul>
+<p>으로 테스트 해볼 수 있다.</p>
+<h2 id="빌드"><a href="#빌드" class="headerlink" title="빌드"></a>빌드</h2><p>안드로이드 빌드시 : 안드로이드 SDK 필요</p>
+<p><a href="https://developer.android.com/studio/index.html?hl=ko" target="_blank" rel="noopener">안드로이드 스튜디오</a></p>
+<p>IOS 빌드시 : Apple Developer 계정 등록 필요.(년 $99 필요)</p>
+<p><a href="https://developer.apple.com/" target="_blank" rel="noopener">Apple Developer</a> </p>
+<p>플랫폼 추가가 필요</p>
 <blockquote>
-<p>$ ionic serve –lab</p>
+<p>$ cordova platform add [android/ios]</p>
 </blockquote>
-<ul>
-<li>업로드</li>
-</ul>
+<p>빌드</p>
 <blockquote>
-<p>$ ionic upload</p>
+<p>$ ionic build [android/ios]</p>
 </blockquote>
-<ul>
-<li>사용가능 명령어 확인</li>
-</ul>
+<p>혹시 빌드 중에 아래 오류가 나오는 경우</p>
+<p><em>could not find gradle wrapper within android sdk</em></p>
+<p><a href="https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" target="_blank" rel="noopener">SDK tools package</a> </p>
+<p>C:\Users\CURRENT_USER\AppData\Local\Android\sdk</p>
+<p>에 압축을 풀어주고, 다시 시도해보자.</p>
+<p>빌드 하면 apk 파일이 생성된다.</p>
+<h2 id="에뮬레이터"><a href="#에뮬레이터" class="headerlink" title="에뮬레이터"></a>에뮬레이터</h2><p>빌드후 안드로이드 스튜디오에 들어가</p>
+<p>AVD를 생성 후, 실행시킨다.   <a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">생성법</a></p>
+<p>다음</p>
 <blockquote>
-<p>$ ionic .</p>
+<p>$ ionic emulate [android/ios]</p>
 </blockquote>
-<h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><p><a href="http://ionicframework.com/docs/cli/" target="_blank" rel="noopener">Ionic docs</a></p>
-<p><a href="https://medium.com/witinweb/ionic-2-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-ed011c7fe69b" target="_blank" rel="noopener">스키머님 블로그</a></p>
+<p>키고 위 명령어를 입력하면, 자동으로 apk가 설치되고 실행된다.</p>
+<h2 id="실제-디바이스-실행"><a href="#실제-디바이스-실행" class="headerlink" title="실제 디바이스 실행"></a>실제 디바이스 실행</h2><p>실제 디바이스에서는 빌드후</p>
+<blockquote>
+<p>$ ionic run [android/ios]</p>
+</blockquote>
+<p>를 입력하면된다. USB에 꼽은 상태로 하면 되는 것 같은데.</p>
+<p>기기가 없어서 실제 실행은 못시켜보았다.</p>
+<h2 id="아이콘-변경"><a href="#아이콘-변경" class="headerlink" title="아이콘 변경"></a>아이콘 변경</h2><ol>
+<li>이미지를 복사 <project folder>/resources</project></li>
+<li><blockquote>
+<p>$ ionic resources</p>
+</blockquote>
+</li>
+<li>생성된 파일들을 <project folder>/resources/res 에서 <project folder>/platforms/android/res 로 이동시킨다.</project></project></li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://nowordeath.tistory.com/108" target="_blank" rel="noopener">어제보다 오늘 더 블로그</a></p>
+<p><a href="https://forum.ionicframework.com/t/ionic-run-android-does-not-install-app-in-device/21795/6" target="_blank" rel="noopener">Ionic Forum</a></p>
+<p><a href="http://ionicframework.com/docs/v1/cli/run.html" target="_blank" rel="noopener">Ionic Doc</a></p>
 
                     
                         
@@ -297,7 +284,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/2. Ionic-시작하기/#post-footer"
+                                href="/2017/07/24/Ionic/2.1. build-and-test/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -347,7 +334,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

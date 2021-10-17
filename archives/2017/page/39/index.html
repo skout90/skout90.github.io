@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/SEO-검색엔진최적화/"
-                            aria-label=": 검색 엔진 최적화 SEO"
+                            href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/"
+                            aria-label=": 02. NodeJs Express 시작하기"
                         >
-                            검색 엔진 최적화 SEO
+                            02. NodeJs Express 시작하기
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,33 +227,51 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="검색-엔진-최적화-SEO"><a href="#검색-엔진-최적화-SEO" class="headerlink" title="검색 엔진 최적화 SEO"></a>검색 엔진 최적화 SEO</h2><p>SEO(Search Engine Optimize) : 검색 엔진 최적화, 구글 엔진이 크롤링 보다 잘 하기 위해서 최적화가 필요.</p>
-<ul>
-<li>명확하고 동창적 title 태그 사용.</li>
-<li>description 메타태그 활용하기</li>
-<li>URL 구조 개선</li>
-<li>..</li>
+                    <h1 id="Node-JS-웹서버-만들기"><a href="#Node-JS-웹서버-만들기" class="headerlink" title="Node JS 웹서버 만들기"></a>Node JS 웹서버 만들기</h1><h2 id="NodeJS-다운로드"><a href="#NodeJS-다운로드" class="headerlink" title="NodeJS 다운로드"></a>NodeJS 다운로드</h2><p><a href="https://nodejs.org/ko/" target="_blank" rel="noopener">https://nodejs.org/ko/</a></p>
+<h2 id="사용하기"><a href="#사용하기" class="headerlink" title="사용하기"></a>사용하기</h2><ul>
+<li><strong>app.js 파일 생성</strong></li>
 </ul>
-<h3 id="canonical"><a href="#canonical" class="headerlink" title="canonical"></a>canonical</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"canonical"</span> <span class="attr">href</span>=<span class="string">"http://www.seo-korea.com"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello World'</span>);</span><br></pre></td></tr></table></figure>
 
-<p>표준 URL을 설정함으로써, 검색엔진이 URL을 쉽게 최적화하여, PageRank 상승에 기여하고, 중복된 컨텐츠를 쉽게 없엘 수 있음.</p>
-<h3 id="sitemap-xml"><a href="#sitemap-xml" class="headerlink" title="sitemap.xml"></a>sitemap.xml</h3><p>루트에 sitemap.xml 파일 만들어 놓기 <code>abc.com/sitemap.xml</code></p>
-<ul>
-<li>sitemap.xml</li>
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p>터미널에서 위 명령어 입력하여 app.js 실행.</p>
+<h2 id="웹-서버-만들기"><a href="#웹-서버-만들기" class="headerlink" title="웹 서버 만들기"></a>웹 서버 만들기</h2><ul>
+<li><strong>app.js</strong></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sitemapindex</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/post-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:30.093Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/page-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sitemap</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/category-sitemap.xml<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:07.793Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">sitemap</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">sitemapindex</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.writeHead(<span class="number">200</span>, &#123; <span class="string">'Content-Type'</span> : <span class="string">'text/plain'</span> &#125;);</span><br><span class="line">  res.end(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p>명령어 입력 하면, <code>server.listen()</code>함수로 인해 8000포트로 접속을 대기함. 클라이언트가  <a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a> 으로 접속하면 Hello World가 나옴.</p>
+<h2 id="express로-웹-서버-만들기"><a href="#express로-웹-서버-만들기" class="headerlink" title="express로 웹 서버 만들기"></a>express로 웹 서버 만들기</h2><p><code>express</code>는 Node.js에서 가장 유명한 웹 프레임워크 모듈. 더 간단하고 다양한 템플릿 엔진 기능을 활용해서 웹서버를 만들 수 있음.</p>
+<ul>
+<li><strong>app.js 작성</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>) <span class="comment">// 모듈 로딩</span></span><br><span class="line">  , http = <span class="built_in">require</span>(<span class="string">'http'</span>)</span><br><span class="line">  , app = express()</span><br><span class="line">  , server = http.createServer(app); <span class="comment">// app객체와 http 서버 연결</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123; <span class="comment">// HTTP GET 메서드 처리</span></span><br><span class="line">  res.send(<span class="string">'Hello /'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/world.html'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.send(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">8000</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 8000 번 포트로 서버 실행</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Express server listening on port '</span> + server.address().port);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>page-sitemap.xml</li>
+<li><strong>express를 설치</strong></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;?xml-stylesheet type="text/xsl" href="sitemap.xsl"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">urlset</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:image</span>=<span class="string">"http://www.google.com/schemas/sitemap-image/1.1"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.sitemaps.org/schemas/sitemap/0.9"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>daily<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>1<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">loc</span>&gt;</span>https://skout90.github.io/all-categories/<span class="tag">&lt;/<span class="name">loc</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">lastmod</span>&gt;</span>2017-07-11T07:52:32.290Z<span class="tag">&lt;/<span class="name">lastmod</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">changefreq</span>&gt;</span>weekly<span class="tag">&lt;/<span class="name">changefreq</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">priority</span>&gt;</span>0.8<span class="tag">&lt;/<span class="name">priority</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">urlset</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="구글-Search-Console-등록"><a href="#구글-Search-Console-등록" class="headerlink" title="구글 Search Console 등록"></a>구글 Search Console 등록</h3><p><a href="https://www.google.com/webmasters/tools/home" target="_blank" rel="noopener">https://www.google.com/webmasters/tools/home</a></p>
-<p>내 URL을 등록하고, 위의 sitemap.xml도 함께 등록해주자.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/" target="_blank" rel="noopener">http://www.aun-korea.com/%EB%A7%88%EC%BC%80%ED%84%B0%EC%83%81%EC%8B%9D-%EB%84%A4%EC%9D%B4%EB%B2%84-%EA%B5%AC%EA%B8%80%EC%97%90-%EA%B2%80%EC%83%89%EB%85%B8%EC%B6%9C%EC%9D%B4-%EC%9E%98%EB%90%98%EA%B2%8C-%ED%95%98%EB%8A%94/</a></p>
-<p><a href>http://tobeonline.tistory.com/entry/구글이-제시하는-검색엔진-최적화SEO-방법</a></p>
-<p><a href="http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/" target="_blank" rel="noopener">http://www.seo-korea.com/%ED%91%9C%EC%A4%80-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%84%A4%EC%A0%95-link-rel-canonical/</a></p>
-<p><a href="http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/" target="_blank" rel="noopener">http://futurecreator.github.io/2016/06/15/hexo-google-site-search-console-analytics/</a></p>
+<blockquote>
+<p>$ npm install express</p>
+</blockquote>
+<p>app.js가 있는 디렉터리에서 명령어 실행할것, 명령을 실행하면 디렉터리에 node_modules 디렉터리가 생성됌. 그 안에 express 모듈들이 존재.</p>
+<p>전역 설치를 위해서는</p>
+<blockquote>
+<p>$ npm install -g express</p>
+</blockquote>
+<p>그러면 app.js 디렉터리와 상관없이 모듈 사용 가능.</p>
+<ul>
+<li><strong>실행</strong></li>
+</ul>
+<blockquote>
+<p>$ node app.js</p>
+</blockquote>
+<p>웹 브라우저에서 <strong><a href="http://127.0.0.1:8000" target="_blank" rel="noopener">http://127.0.0.1:8000</a></strong> 으로 접속하면 빈화면에 <strong>Hello /</strong>가 표시되고 <strong><a href="http://127.0.0.1:8000/world.html" target="_blank" rel="noopener">http://127.0.0.1:8000/world.html</a></strong>로 접속하면 <strong>Hello World</strong>가 표시</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
 
                     
                         
@@ -263,7 +281,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/SEO-검색엔진최적화/#post-footer"
+                                href="/2017/08/15/Node.js/2. NodeJS-Express시작하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -313,7 +331,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

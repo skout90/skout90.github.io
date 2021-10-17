@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Node.js/1. NodeJS란/"
-                            aria-label=": 01. NodeJS 란?"
+                            href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                            aria-label=": NodeJs ORM을 위한 Bookshelf, Knex"
                         >
-                            01. NodeJS 란?
+                            NodeJs ORM을 위한 Bookshelf, Knex
                         </a>
                     
                 </h1>
@@ -227,41 +227,66 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Node.js를 이해하기 위해서는 먼저 javascript에 대해 이해할 필요가 있음.</p>
-<p>##자바스크립트</p>
-<p>자바스크립트는 넷스케이프 웹 브라우저에서 HTML의 DOM(Document Object Model) 객체를 제어하기 위해 개발되었음.</p>
-<p>초창기에는 매우 느렸으나, 구글이 크롬과 함께 V8 자바스크립트 엔진을 개발하면서, 기존 웹브라우저에 포함된 엔진보다 월등히 빨라진 성능을 보였음.</p>
-<p>기존 JS엔진들은 자바스크립트를 바이트코드로 변환하거나 인터프리트하여 처리했지만 V8은 JIT(Just In Time) 컴파일 방식을 사용하여 성능을 획기적으로 개선.</p>
-<blockquote>
-<p>JIT 컴파일 방식은 자바스크립트를 인터프리트하지 않고 실행 즉시 기계어(x86, ARM등)로 컴파일</p>
+                    <p>Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자.</p>
+<p>Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install knex –save<br>$ npm install bookshelf –save<br>// 아래와 같은 DB 엔진을 선택하여 설치<br>$ npm install pg<br>$ npm install mysql<br>$ npm install mariasql<br>$ npm install sqlite3</p>
 </blockquote>
-<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>2009년 라이언 달이라는 프로그래머가 구글의<code>V8 자바스크립트 엔진</code>을 웹 브라우저가 아닌 서버로 사용할 수 있도록 만든 것이 Node.js</p>
 <ul>
-<li>JS의 간결함</li>
-<li>V8 JS 엔진의 월등한 속도</li>
-<li>단일 스레드(Non-bloking I/O)</li>
-<li>소켓 통신</li>
-<li>HTTP 웹서버로 실행 가능</li>
-<li>npm(Node Packaged Modules)은 Node.js로 만들어진 모듈을 인터넷에서 받아서 설치해주는 패키지 매니저.</li>
+<li>초기화</li>
 </ul>
-<h2 id="단일-스레드-모델-Non-blocking-I-O"><a href="#단일-스레드-모델-Non-blocking-I-O" class="headerlink" title="단일 스레드 모델, Non-blocking I/O"></a>단일 스레드 모델, Non-blocking I/O</h2><p>멀티 스레드 방식은 복잡한 동기화 문제가 골칫거리 였음. 동기화 모델이나 락에 대해 학습해야 하고 쓰기가 상당히 어려워 생산성 저하로 이어짐.</p>
-<p>Node.js는 멀티스레드 모델 대신 단일 스레드 모델과 Non-blocking I/O를 채택.</p>
-<ul>
-<li><strong>Blocking 방식</strong></li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> result;</span><br><span class="line">   result = sum(<span class="number">1</span>, <span class="number">2</span>);          <span class="comment">// 1</span></span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">"sum: %d"</span>, result);   <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;                    <span class="comment">// 3      </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> knex = <span class="built_in">require</span>(<span class="string">'knex'</span>)(&#123;</span><br><span class="line">  client: <span class="string">'mysql'</span>,</span><br><span class="line">  connection: &#123;</span><br><span class="line">    host     : <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    user     : <span class="string">'your_database_user'</span>,</span><br><span class="line">    password : <span class="string">'your_database_password'</span>,</span><br><span class="line">    database : <span class="string">'myapp_test'</span>,</span><br><span class="line">    charset  : <span class="string">'utf8'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bookshelf = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>위 C언어 코드의 실행은 그냥 줄 순서, printf 함수로 결과를 찍으려면 sum 함수가 끝날 때까지 기다려야 함. 이를 <code>Blocking</code> 방식이라고 함.</p>
-<ul>
-<li><strong>Non-Blocking 방식</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line">fs.readFile(<span class="string">'./컴배콤.txt'</span> <span class="comment">/* 1 */</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log(data); <span class="comment">// 3</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Hello JavaScript'</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<h4 id="쿼리-실행"><a href="#쿼리-실행" class="headerlink" title="쿼리 실행"></a>쿼리 실행</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 없이 모델 초기화</span></span><br><span class="line"><span class="keyword">let</span> subscriber = User.forge();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 방법 4가지</span></span><br><span class="line">subscriber.query(<span class="string">'where'</span>, <span class="string">'other_id'</span>, <span class="string">'='</span>, <span class="string">'5'</span>)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(&#123;<span class="attr">where</span>: &#123;<span class="attr">other_id</span>: <span class="string">'5'</span>&#125;, <span class="attr">orWhere</span>: &#123;<span class="attr">key</span>: <span class="string">'value'</span>&#125;&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(<span class="function"><span class="keyword">function</span>(<span class="params">qb</span>) </span>&#123;</span><br><span class="line">qb.where(<span class="string">'other_person'</span>, <span class="string">'LIKE'</span>, <span class="string">'%Demo'</span>).orWhere(<span class="string">'other_id'</span>, <span class="string">'&gt;'</span>, <span class="number">10</span>);&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> qb = subscriber.query();</span><br><span class="line">qb.where(&#123;<span class="attr">id</span>: <span class="number">1</span>&#125;).select()</span><br><span class="line">.then(<span class="function">(<span class="params">resp</span>)=&gt;</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
 
-<p><code>fs.readFile()</code>의 결과값이 나올때까지 기다리지 않고, 그다음 줄 <code>console.log(&#39;Hello JavaScript&#39;);</code>를 실행해버림. 시간 경과 후 파일을 다 읽었으면 <code>console.log(data)</code>가 실행됌.</p>
+<h4 id="관계-정의"><a href="#관계-정의" class="headerlink" title="관계 정의"></a>관계 정의</h4><p>.belongsToMany, .hasMany 와 같이 관계를 정의해줄 수 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span>,</span><br><span class="line">  posts: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.hasMany(Posts, <span class="string">'userId'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag, <span class="string">'posts'</span>, <span class="string">'userId'</span>, <span class="string">'tagId'</span>)  </span><br><span class="line">  &#125;</span><br><span class="line">  wallet : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.hasOne(Wallets, <span class="string">'userId'</span>);  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Posts = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'posts'</span>,</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Wallets = booksehlf.Model.extend(&#123;</span><br><span class="line">    tableName: <span class="string">'wallets'</span>,</span><br><span class="line">    user : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.belongsTo(Users, <span class="string">'userId'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Tag = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'tags'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>hasOne</strong></li>
+</ul>
 <blockquote>
-<p>총 2개의 스레드로 작동 : 시간이 오래 걸리는 작업은 워커 스레드로 보내고, 메인 스레드는 코드를 계속 실행. 워커 스레드에서 작업이 끝나면 결과를 다시 메인 스레드로 보냄.</p>
+<p>return this.hasOne(Wallets, ‘userId’);  </p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pyrasis.com/nodejs/nodejs-HOWTO" target="_blank" rel="noopener">http://pyrasis.com/nodejs/nodejs-HOWTO</a></p>
+<p>1: 0..1 의 관계이다.  Wallets에서 <code>userId</code>로 질의를한다. </p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘wallet’]})</p>
+<p>SELECT * FROM wallets WHERE userId = ‘사용자ID’;</p>
+</blockquote>
+<ul>
+<li><strong>hanMany</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasMany(Posts, ‘userId’);</p>
+</blockquote>
+<p>1:다 의 관계를 갖는다.  Posts에서 <code>userId</code>로 질의를 한다.</p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘posts’]})</p>
+<p>SELECT * FROM posts WHERE  postId IN (userId들 ….)</p>
+</blockquote>
+<ul>
+<li><strong>belongsTo</strong> </li>
+</ul>
+<blockquote>
+<p>var Wallet = .. 생략</p>
+<p>return this.belongsTo(Users, ‘userId’);</p>
+</blockquote>
+<p>Users테이블에서 Wallet의 userId로 질의를 한다. 0..1 : 1 의 관계를 가진다.</p>
+<blockquote>
+<p>Wallet.forge().fetch({withRelated: [‘user’]})</p>
+<p>SELECT * FROM users WHERE userId = ‘사용자’;</p>
+</blockquote>
+<ul>
+<li><strong>belongsToMany</strong></li>
+</ul>
+<blockquote>
+<p>var User = …</p>
+<p>return this.belongsToMany(Tag, ‘posts’, ‘userId’, ‘tagId’)  </p>
+</blockquote>
+<p>posts의 userId와 tagId를 사용하여, User와 Tag를 조인한다.</p>
+<p>조인할때 디폴트로 user의 id와 tag의 id를 사용한다.</p>
+<p>다른 포린키로 조인하려면, 5,6번째인자로 user의 foreignKey/tag의 foreignKey를 쓴다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://bookshelfjs.org/#Model-instance-has" target="_blank" rel="noopener">http://bookshelfjs.org/#Model-instance-has</a></p>
 
                     
                         
@@ -271,7 +296,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Node.js/1. NodeJS란/#post-footer"
+                                href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -310,7 +335,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 

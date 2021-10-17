@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Javascript/string-으로-element만들기/"
-                            aria-label=": Javascript String으로 Element 생성"
+                            href="/2017/08/12/Javascript/javascript-프로토타입/"
+                            aria-label=": Javascript Prototype(프로토타입)"
                         >
-                            Javascript String으로 Element 생성
+                            Javascript Prototype(프로토타입)
                         </a>
                     
                 </h1>
@@ -227,11 +227,18 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>string으로 DOM element를 생성해보자</p>
-<p><strong>Template Element를 이용한다</strong></p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> html = <span class="string">"&lt;li&gt;1234&lt;/li&gt;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// element를 생성하여 추가합니다.</span></span><br><span class="line"><span class="keyword">const</span> template = <span class="built_in">document</span>.createElement(<span class="string">'template'</span>);</span><br><span class="line">template.innerHTML = html;</span><br><span class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">"collection"</span>)[<span class="number">0</span>].appendChild(template.content.firstChild);</span><br></pre></td></tr></table></figure>
+                    <p>프로토타입이란, 어떠한 객체가 만들어지기 위해 그 객체의 모태가 되는 원형을 뜻한다.</p>
+<p><img src="http://insanehong.kr/post/javascript-prototype/@img/object.jpeg" alt="img"></p>
+<p> <strong>__proto__</strong> </p>
+<p>A라는 객체를 만들기 위해 사용된 원형, 상위로부터 물려받은 객체의 정보.</p>
+<p><strong>constructor.prototype</strong></p>
+<p>프로토타입 프로퍼티로, 자신을 원형으로 만들어질 다른 객체가 참조할 프로토 타입, 자식에게 물려줄 객체의 정보.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//#예제 1.</span></span><br><span class="line"><span class="keyword">var</span> A = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.x = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">         <span class="built_in">console</span>.log(<span class="string">'hello'</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">A.x=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'world'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> B = <span class="keyword">new</span> A();</span><br><span class="line"><span class="keyword">var</span> C = <span class="keyword">new</span> A();</span><br><span class="line">B.x(); <span class="comment">// hello</span></span><br><span class="line">C.x(); <span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro" target="_blank" rel="noopener">https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//#예제 2.</span></span><br><span class="line"><span class="keyword">var</span> A = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; &#125;;</span><br><span class="line">A.x=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'hello'</span>);</span><br><span class="line">&#125;;</span><br><span class="line">A.prototype.x = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">'world'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> B = <span class="keyword">new</span> A();</span><br><span class="line"><span class="keyword">var</span> C = <span class="keyword">new</span> A();</span><br><span class="line">B.x(); <span class="comment">// world</span></span><br><span class="line">C.x(); <span class="comment">// world</span></span><br></pre></td></tr></table></figure>
+
+<p>B와 C는 constructor.prototype정보를 바탕으로, 생성이 되기 때문에 예제 2와 같이 prototype을 수정해 주어야 한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://insanehong.kr/post/javascript-prototype/" target="_blank" rel="noopener">http://insanehong.kr/post/javascript-prototype/</a></p>
 
                     
                         
@@ -241,7 +248,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Javascript/string-으로-element만들기/#post-footer"
+                                href="/2017/08/12/Javascript/javascript-프로토타입/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -291,7 +298,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2020 Junho Nam. All Rights Reserved.
+        Copyrights &copy; 2021 Junho Nam. All Rights Reserved.
     </span>
 </footer>
 
