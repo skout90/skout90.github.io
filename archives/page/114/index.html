@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/적용-우선순위/"
-                            aria-label=": CSS 적용 우선순위"
+                            href="/2017/07/24/CSS/요소벌-정렬방법/"
+                            aria-label=": 요소별 수직, 수평 정렬 방법, 수평 수직 정렬"
                         >
-                            CSS 적용 우선순위
+                            요소별 수직, 수평 정렬 방법, 수평 수직 정렬
                         </a>
                     
                 </h1>
@@ -228,11 +228,56 @@
             
                 <div class="postShorten-content">
                     <ol>
-<li>!important를 붙인 속성</li>
-<li>인라인 스타일(inline style) &gt; 내부 스타일(internal style) &gt; 외부 스타일(external sytle) &gt; 브라우저 기본값 순</li>
-<li>특정도(specify) 우선순위 id priority &gt; class priority &gt; type priority</li>
-<li>두 가지가 똑같은 등급일 때, 가장 마지막으로 적용한 것이 가장 우선한다.</li>
+<li>수직정렬</li>
+<li>block 자체 수평정렬</li>
+<li>inline 수평정렬</li>
+<li>정중앙 정렬(flex)</li>
 </ol>
+<h2 id="수직정렬"><a href="#수직정렬" class="headerlink" title="수직정렬"></a>수직정렬</h2><ol>
+<li>바깥 요소(outer)로 감싼다.</li>
+<li>height를 설정한다.</li>
+<li>바깥요소에 <code>vertical-align:middle; display:table-cell;</code> 셋팅</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"outer"</span> <span class="attr">style</span>=<span class="string">"height:100px;"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"inner"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>vertical-align: baseline|<em>length</em>|sub|super|top|text-top|middle|bottom|text-bottom|initial|inherit;</p>
+<p><a href="https://www.w3schools.com/cssref/playit.asp?filename=playcss_vertical-align&amp;preval=25px" target="_blank" rel="noopener">https://www.w3schools.com/cssref/playit.asp?filename=playcss_vertical-align&amp;preval=25px</a></p>
+<p>또는 <strong>flex</strong>를 활용</p>
+<p>요소에 </p>
+<ol>
+<li><code>display:flex; align-items:center</code>  하거나 </li>
+<li><code>display:flex; flex-direction:column;justify-content:center;</code> </li>
+</ol>
+<p>둘중 하나를 사용</p>
+<h2 id="block-자체-수평-정렬"><a href="#block-자체-수평-정렬" class="headerlink" title="block 자체 수평 정렬"></a>block 자체 수평 정렬</h2><p>block 요소는 원래 한줄을 다 차지한다. 따라서 요소 자체의 수평정렬이 불가하다. 그렇기 때문에 width를 통해 정렬이 가능하도록 해주고 해주고 왼쪽 오른쪽 마진 값, 또는 float으로 정렬한다.</p>
+<ul>
+<li><p>수평정렬</p>
+<ul>
+<li><p>block 요소의 정렬을 위해서는 <em>width 설정</em>이 필요.</p>
+</li>
+<li><p>가운데 정렬 : 좌우의 margin 값을 auto로 자동 맞춤 <code>margin: 0 auto</code></p>
+</li>
+<li><p>왼쪽 오른쪽 정렬 : <code>float: left, right</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="inline-수평-정렬"><a href="#inline-수평-정렬" class="headerlink" title="inline 수평 정렬"></a>inline 수평 정렬</h2><ul>
+<li>inline요소의 경우 감싸는 <code>wrapper div</code> 추가가 필요<ul>
+<li>text-align: left,right,center : inline을 감싸고 있는 div에 적용.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"text-align:center;"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>sdfsdf<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="수평-수직-정렬"><a href="#수평-수직-정렬" class="headerlink" title="수평 수직 정렬"></a>수평 수직 정렬</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.area</span>&#123;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">background</span>: red;</span><br><span class="line">    <span class="attribute">margin</span>:<span class="number">10px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">    <span class="attribute">display</span>:table-cell;</span><br><span class="line">    <span class="attribute">vertical-align</span>:middle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div class="area"&gt;</span><br><span class="line">    울랄라</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>flex 이용</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#outer</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>: flex;           <span class="comment">/* establish flex container */</span></span><br><span class="line">    <span class="attribute">flex-direction</span>: column;  <span class="comment">/* make main axis vertical */</span></span><br><span class="line">    <span class="attribute">justify-content</span>: center; <span class="comment">/* center items vertically, in this case */</span></span><br><span class="line">    <span class="attribute">align-items</span>: center;     <span class="comment">/* center items horizontally, in this case */</span></span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> grey solid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-id">#inner</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: center;     <span class="comment">/* will center text in &lt;p&gt;, which is not a flex item */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;div id="outer" style="height:100px;"&gt;</span><br><span class="line">  &lt;span id="inner"&gt;12345&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.w3schools.com/cssref/pr_pos_vertical-align.asp" target="_blank" rel="noopener">https://www.w3schools.com/cssref/pr_pos_vertical-align.asp</a></p>
+<p><a href="http://inspiredjw.com/entry/CSS%EB%A1%9C-DIV-%ED%83%9C%EA%B7%B8%EB%A5%BC-%EC%83%81%ED%95%98-%EC%A2%8C%EC%9A%B0-%EA%B0%80%EC%9A%B4%EB%8D%B0-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0" target="_blank" rel="noopener">http://inspiredjw.com/entry/CSS%EB%A1%9C-DIV-%ED%83%9C%EA%B7%B8%EB%A5%BC-%EC%83%81%ED%95%98-%EC%A2%8C%EC%9A%B0-%EA%B0%80%EC%9A%B4%EB%8D%B0-%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0</a></p>
+<p><a href="https://stackoverflow.com/questions/19026884/flexbox-center-horizontally-and-vertically" target="_blank" rel="noopener">https://stackoverflow.com/questions/19026884/flexbox-center-horizontally-and-vertically</a></p>
 
                     
                         
@@ -242,7 +287,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/적용-우선순위/#post-footer"
+                                href="/2017/07/24/CSS/요소벌-정렬방법/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -282,7 +327,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 114 of 151</li>
+        <li class="pagination-number">page 114 of 152</li>
     </ul>
 </div>
 

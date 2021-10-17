@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/"
-                            aria-label=": CSS3 새로운 스타일 정리"
+                            href="/2017/07/24/GIT/pull_request/"
+                            aria-label=": Git Pull Request 방법 정리"
                         >
-                            CSS3 새로운 스타일 정리
+                            Git Pull Request 방법 정리
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-16T00:29:35+09:00">
+    <time datetime="2017-07-24T13:54:01+09:00">
 	
-		    2017.07.16
+		    2017.07.24
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/GIT/">GIT</a>
 
 
     
@@ -227,42 +227,109 @@
             </div>
             
                 <div class="postShorten-content">
-                    <div class="myResize">Junho's Hexo Blog</div>
-
-<style>
-
-.myResize { width: 200px; height: 50px; border: solid black 2px; overflow: auto; resize: both; box-shadow: #ff8080 3px 3px 2px; text-shadow: #ff8080 3px 3px 2px;}
-
-</style>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"myResize"</span>&gt;</span>Junho's Hexo Blog<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.myResize</span> &#123;</span></span><br><span class="line">  width: 300px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  border: solid black 2px;</span><br><span class="line">  overflow: auto;</span><br><span class="line">  resize: both;</span><br><span class="line"><span class="css">  <span class="selector-tag">box-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">px</span>;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">text-shadow</span>: <span class="selector-id">#ff8080</span> 3<span class="selector-tag">px</span> 3<span class="selector-tag">px</span> 2<span class="selector-tag">p</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="1-resize-크기를-변경할-수-있는-박스-만들기"><a href="#1-resize-크기를-변경할-수-있는-박스-만들기" class="headerlink" title="1. resize : 크기를 변경할 수 있는 박스 만들기"></a>1. resize : 크기를 변경할 수 있는 박스 만들기</h4><p><code>resize: both;</code></p>
+                    <ol>
+<li>저장소에서 fork 버튼을 눌러, 개인 repository에 포크 한다.</li>
+<li>로컬 저장소와 원격 저장소 추가</li>
+</ol>
 <ul>
-<li>none : 크기 변경 불가</li>
-<li>horizontal, vertical, both : 수평, 높이, 수평과 폭 높이 둘다 변경 가능, </li>
+<li>로컬 저장소를 클론</li>
 </ul>
-<h4 id="2-box-shadow-박스에-그림자-효과-주기"><a href="#2-box-shadow-박스에-그림자-효과-주기" class="headerlink" title="2. box-shadow : 박스에 그림자 효과 주기"></a>2. box-shadow : 박스에 그림자 효과 주기</h4><p><code>box-shadow: #ff8080 3px 3px 2px;</code></p>
+<blockquote>
+<p>$ git clone fork깃주소 폴더명</p>
+</blockquote>
 <ul>
-<li>가로위치, 세로 위치, 불투명, 확대 반지름</li>
-<li>그림자의 색</li>
-<li>inset 지정시 그림자를 박스 안쪽에 표시</li>
+<li>로컬 저장소에 원격저장소[원본 프로젝트] 추가</li>
 </ul>
-<h4 id="3-text-shadow-문자열에-그림자-효과-주기"><a href="#3-text-shadow-문자열에-그림자-효과-주기" class="headerlink" title="3. text-shadow : 문자열에 그림자 효과 주기"></a>3. text-shadow : 문자열에 그림자 효과 주기</h4><p><code>text-shadow: #ff8080 3px 3px 2p;</code></p>
+<blockquote>
+<p>$ git remote add upstream 원본깃주소</p>
+</blockquote>
+<p><em>원본 저장소의 별칭은 보통 upstream을 사용, 다른 별칭 사용해도 무관</em></p>
+<ol start="3">
+<li>작업은 매번 Branch를 만들어서 Branch 단위로 한다.</li>
+</ol>
 <ul>
-<li>위치와 크기 : 가로, 세로, 불투명, 확대 반지름</li>
-<li>색 : 그림자색</li>
+<li>브랜치 생성</li>
 </ul>
-<hr>
-
-<h4 id="word-wrap-문자-줄바꿈-처리"><a href="#word-wrap-문자-줄바꿈-처리" class="headerlink" title="word-wrap : 문자 줄바꿈 처리"></a>word-wrap : 문자 줄바꿈 처리</h4><ul>
-<li>normal : 줄을 바꿀 수 없는 경우, 줄 바꿈하지 않고 표시, 공백과 같이 줄 바꿀 수 있는 경 줄 바꿈</li>
-<li>break-word : 단어 중간에서 줄바꿈.</li>
+<blockquote>
+<p>$ git branch [브랜치명]</p>
+</blockquote>
+<ul>
+<li>브랜치 이동</li>
 </ul>
-<h4 id="writing-mode-vertical-rl-세로-쓰기-표시"><a href="#writing-mode-vertical-rl-세로-쓰기-표시" class="headerlink" title="writing-mode: vertical-rl: 세로 쓰기 표시"></a>writing-mode: vertical-rl: 세로 쓰기 표시</h4><ul>
-<li>horizontal-tb</li>
-<li>vertical-lr : 세로 왼쪽 쓰기</li>
-<li>vertical-rl : 세로 오른쪽 쓰기</li>
+<blockquote>
+<p>$ git checkout [브랜치명]</p>
+</blockquote>
+<ol start="4">
+<li>작업 내역 커밋</li>
+</ol>
+<ul>
+<li>인덱스 확인, 등록, 커밋</li>
 </ul>
+<blockquote>
+<p>$ git status</p>
+<p>$ git add .</p>
+<p>$ git commit -m ‘[메세지]’</p>
+</blockquote>
+<ol start="5">
+<li>원본 저장소 내역 업데이트</li>
+</ol>
+<ul>
+<li>원본 저장소의 소스를 로컬 저장소로 가져옴.</li>
+</ul>
+<blockquote>
+<p>$ git fetch upstream</p>
+</blockquote>
+<ul>
+<li>커밋 내역을 합침</li>
+</ul>
+<blockquote>
+<p>$ git rebase upstream/master</p>
+</blockquote>
+<ol start="6">
+<li>Pull Request 보내기</li>
+</ol>
+<ul>
+<li>push 하기</li>
+</ul>
+<blockquote>
+<p>$ git push origin [브랜치명]</p>
+</blockquote>
+<ul>
+<li>fork 한 저장소에서 pull request 작성</li>
+</ul>
+<p>github 포크한 저장소로 이동후, <code>Crete Pull Request</code>를 눌러 변경 사항 확인 및 pull request 메세지를 작성한다.</p>
+<ol start="7">
+<li>원본 저장소에서 변경사항 Merge 하기</li>
+</ol>
+<ul>
+<li>원본 저장소의 pull request 메뉴에서 <code>Merge</code> 버튼을 눌러 변경사항 Merge</li>
+</ul>
+<p>Or</p>
+<ul>
+<li>직접 명령어 입력</li>
+</ul>
+<blockquote>
+<p>$ git checkout master</p>
+<p>$ git remote add [기여자별칭] 기여자깃주소</p>
+<p>$ git fetch [기여자별칭]</p>
+<p>$ git rebase [기여자별칭/브랜치명]</p>
+<p>$ git push origin master</p>
+</blockquote>
+<p><em>그외 명령어</em></p>
+<ul>
+<li>리모트 저장소 목록 확인</li>
+</ul>
+<blockquote>
+<p>$ git remote -v</p>
+</blockquote>
+<ul>
+<li>리모트 저장소 삭제</li>
+</ul>
+<blockquote>
+<p> $ git remote rm [별칭 이름]</p>
+</blockquote>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://dogfeet.github.io/articles/2012/how-to-github.html" target="_blank" rel="noopener">http://dogfeet.github.io/articles/2012/how-to-github.html</a></p>
+<p><a href="https://www.slideshare.net/mobile/jungseobshin/github-pull-request" target="_blank" rel="noopener">https://www.slideshare.net/mobile/jungseobshin/github-pull-request</a></p>
 
                     
                         
@@ -272,7 +339,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/16/CSS/CSS3-새로운-스타일-정리/#post-footer"
+                                href="/2017/07/24/GIT/pull_request/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -312,7 +379,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 127 of 151</li>
+        <li class="pagination-number">page 127 of 152</li>
     </ul>
 </div>
 

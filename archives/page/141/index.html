@@ -202,15 +202,15 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/12/Angular/2. Angular 프로젝트 구성/"
-                            aria-label=": 02. Angular 프로젝트의 구성"
+                            href="/2017/07/12/Angular/3. Angular 컴포넌트/"
+                            aria-label=": 03. Angular 컴포넌트"
                         >
-                            02. Angular 프로젝트의 구성
+                            03. Angular 컴포넌트
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-07-12T10:00:10+09:00">
+    <time datetime="2017-07-12T10:00:20+09:00">
 	
 		    2017.07.12
     	
@@ -227,130 +227,48 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>앵귤러2의 프로젝트는 어떻게 구성되어 있는지 정리해보자</p>
-<ul>
-<li>./app</li>
-<li>./index.html</li>
-<li>./node_modules</li>
-<li>./package.json</li>
-<li>./styles.css</li>
-<li>./systemjs.config.js</li>
-<li>./tsconfig.json</li>
-<li>./typings.json</li>
-</ul>
-<h2 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h2><p>npm 명령을 통해 외부 모듈에 대한 “의존성 관리”를 해준다. </p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"angular-quickstart"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"start"</span>: <span class="string">"tsc &amp;&amp; concurrently \"tsc -w\" \"lite-server\" "</span>,</span><br><span class="line">    <span class="attr">"lite"</span>: <span class="string">"lite-server"</span>,</span><br><span class="line">    <span class="attr">"postinstall"</span>: <span class="string">"typings install"</span>,</span><br><span class="line">    <span class="attr">"tsc"</span>: <span class="string">"tsc"</span>,</span><br><span class="line">    <span class="attr">"tsc:w"</span>: <span class="string">"tsc -w"</span>,</span><br><span class="line">    <span class="attr">"typings"</span>: <span class="string">"typings"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"licenses"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"type"</span>: <span class="string">"MIT"</span>,</span><br><span class="line">      <span class="attr">"url"</span>: <span class="string">"https://github.com/angular/angular.io/blob/master/LICENSE"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"@angular/common"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/compiler"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/core"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/forms"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/http"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/platform-browser"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/platform-browser-dynamic"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/router"</span>: <span class="string">"~3.0.2"</span>,</span><br><span class="line">    <span class="attr">"@angular/upgrade"</span>: <span class="string">"~2.0.2"</span>,</span><br><span class="line">    <span class="attr">"angular-in-memory-web-api"</span>: <span class="string">"~0.1.5"</span>,</span><br><span class="line">    <span class="attr">"bootstrap"</span>: <span class="string">"^3.3.7"</span>,</span><br><span class="line">    <span class="attr">"core-js"</span>: <span class="string">"^2.4.1"</span>,</span><br><span class="line">    <span class="attr">"reflect-metadata"</span>: <span class="string">"^0.1.8"</span>,</span><br><span class="line">    <span class="attr">"rxjs"</span>: <span class="string">"5.0.0-beta.12"</span>,</span><br><span class="line">    <span class="attr">"systemjs"</span>: <span class="string">"0.19.39"</span>,</span><br><span class="line">    <span class="attr">"zone.js"</span>: <span class="string">"^0.6.25"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"devDependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"concurrently"</span>: <span class="string">"^3.0.0"</span>,</span><br><span class="line">    <span class="attr">"lite-server"</span>: <span class="string">"^2.2.2"</span>,</span><br><span class="line">    <span class="attr">"typescript"</span>: <span class="string">"^2.0.3"</span>,</span><br><span class="line">    <span class="attr">"typings"</span>:<span class="string">"^1.4.0"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>기본 설정 값으로 package.json파일을 만드려면</p>
-<blockquote>
-<p>$ npm init –yes</p>
-</blockquote>
-<p>설정한 pacakge.json 파일대로 패키지 설치하려면</p>
-<blockquote>
-<p>$ npm install</p>
-</blockquote>
-<p>개발 서버 실행</p>
-<blockquote>
-<p>$ npm start</p>
-</blockquote>
-<ul>
-<li>자주 사용하는 npm 명령어</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>명령어</th>
-<th>의미</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>npm install –global 패키지명</td>
-<td>패키지를 로컬 전역에 설치함</td>
-</tr>
-<tr>
-<td>npm install –global 패키지명@버전</td>
-<td>패키지의 특정 버전을 로컬 전역에 설치함</td>
-</tr>
-<tr>
-<td>npm install -g 패키지명@latest</td>
-<td>패키지의 최신 버전을 로컬에 설치함</td>
-</tr>
-<tr>
-<td>npm uninstall -g 패키지명</td>
-<td>로컬에 설치된 패키지를 삭제</td>
-</tr>
-<tr>
-<td>npm view 패키지명 versions</td>
-<td>원격 저장소에 등록된 모든 패키지 버전 확인</td>
-</tr>
-<tr>
-<td>npm view 패지지명 version</td>
-<td>원격저장소에 등록된 최신 패키지 버전만 확인</td>
-</tr>
-</tbody></table>
-<h2 id="typings-json"><a href="#typings-json" class="headerlink" title="typings.json"></a>typings.json</h2><p>타입스크립트가 외부라이브러리(node, jasmine, core-js)를 인식할 수 있게 한다.</p>
-<h2 id="tsconfig-json"><a href="#tsconfig-json" class="headerlink" title="tsconfig.json"></a>tsconfig.json</h2><p>타입스크립트를 자바스크립트로 변환할 때 필요한 설정 정보.</p>
-<h2 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h2><p>프로젝트의 시작 페이지.</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hello Angular 2 Application<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 첫번째. 전역 스타일 호출 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"styles.css"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 두번째. 폴리필 라이브러리 호출 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/core-js/client/shim.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/zone.js@0.6.25?main=browser"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/reflect-metadata@0.1.3"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 세번째. SystemJS 라이브러리 호출과 설정 --&gt;</span>	</span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/systemjs@0.19.27/dist/system.src.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"systemjs.config.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">      System.import(<span class="string">'app'</span>).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123; <span class="built_in">console</span>.error(err); &#125;);</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- 네번째. application 표시 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">my-app</span>&gt;</span>Loading...<span class="tag">&lt;/<span class="name">my-app</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><strong>styles.css</strong></p>
-<p>앱 전역 스타일링</p>
+                    <p>Angular 컴포넌트는 W3C 표준인 웹 컴포넌트 기술을 기반으로 함. 이 웹 컴포넌트는 HTML, CS, JS를 하나의 단위로 묶어주는 기술.</p>
+<h2 id="웹-컴포넌트의-요소"><a href="#웹-컴포넌트의-요소" class="headerlink" title="웹 컴포넌트의 요소"></a>웹 컴포넌트의 요소</h2><ul>
+<li><p>HTML 템플릿</p>
+<p>컴포넌트의 UI를 표현하는 영역. 재사용 가능하다는 특징.</p>
 </li>
-<li><p><strong>폴리필 라이브러리 임포트</strong></p>
-<blockquote>
-<p>폴리필? 구버전의 브라우저가 최신 스크립트 기능에 대응하도록 보완하는 라이브러리</p>
-</blockquote>
-<ul>
-<li>core-js : ES6 지원을 위한 폴리필</li>
-<li>zonde.js : 변화 감지를 위한 라이브러리</li>
-<li>reflect-metadata : ES7 장식자 추가를 위한 폴리필</li>
-</ul>
+<li><p>템플릿 호출</p>
+<p>링크 엘리먼트를 이용해 호출</p>
+<p><code>&lt;link rel=&quot;import&quot; href=&quot;template.html&quot;&gt;</code></p>
 </li>
-<li><p><strong>SystemJS 라이브러리</strong></p>
-<p>동적 모듈 로더, systemjs.config.js 파일을 통해 모듈 구성</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">global</span>) </span>&#123;</span><br><span class="line">  System.config(&#123;</span><br><span class="line">    paths: &#123;</span><br><span class="line">      <span class="comment">// 경로에 대한 별칭 설정</span></span><br><span class="line">      <span class="string">'npm:'</span>: <span class="string">'node_modules/'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    map: &#123;</span><br><span class="line">      app: <span class="string">'app'</span>,</span><br><span class="line">      <span class="string">'@angular/core'</span>: <span class="string">'npm:@angular/core/bundles/core.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/common'</span>: <span class="string">'npm:@angular/common/bundles/common.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/compiler'</span>: <span class="string">'npm:@angular/compiler/bundles/compiler.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/platform-browser'</span>: <span class="string">'npm:@angular/platform-browser/bundles/platform-browser.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/platform-browser-dynamic'</span>: <span class="string">'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/http'</span>: <span class="string">'npm:@angular/http/bundles/http.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/router'</span>: <span class="string">'npm:@angular/router/bundles/router.umd.js'</span>,</span><br><span class="line">      <span class="string">'@angular/forms'</span>: <span class="string">'npm:@angular/forms/bundles/forms.umd.js'</span>,</span><br><span class="line">      <span class="comment">// 다른 라이브러리</span></span><br><span class="line">      <span class="string">'rxjs'</span>:                      <span class="string">'npm:rxjs'</span>,</span><br><span class="line">      <span class="string">'angular-in-memory-web-api'</span>: <span class="string">'npm:angular-in-memory-web-api'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 파일이름이 없거나 확장자가 없을때의 처리방법에 대한 설정</span></span><br><span class="line">    packages: &#123;</span><br><span class="line">      app: &#123;</span><br><span class="line">        main: <span class="string">'./main.js'</span>,</span><br><span class="line">        defaultExtension: <span class="string">'js'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      rxjs: &#123;</span><br><span class="line">        defaultExtension: <span class="string">'js'</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="string">'angular-in-memory-web-api'</span>: &#123;</span><br><span class="line">        main: <span class="string">'./index.js'</span>,</span><br><span class="line">        defaultExtension: <span class="string">'js'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<li><p>쉐도우 DOM</p>
+<p>쉐도우 DOM은 문서 DOM 외부에 존재하기 때문에 문서 DOM에서 정의한 스타일이나 이벤트가 적용되지 않고 캡슐화됌.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 쉐도우 DOM으로 &lt;some-component&gt; 와 같이 상세내용은 캡슐화되어 보이지않음.</span></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'some-component'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;h1&gt;I am Shadow DOM!&lt;/h1&gt;</span></span><br><span class="line"><span class="string">    &lt;h2&gt;Nice to meet you :)&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;ng-content&gt;&lt;/ng-content&gt;</span></span><br><span class="line"><span class="string">  `</span>;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">class</span> SomeComponent &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>paths 필드 : 경로에 대한 별칭</li>
-<li>map 필드 : 모듈 호출 정의<ul>
-<li>app 필드 : 어플리케이션 디렉터리 위치 설정</li>
-<li>node_module의 별칭 (npm:@angular/..)으로 Angular 모듈 임포트</li>
-<li>Angular모듈은 @을 기재해서 외부 라이브러리와 구분</li>
-</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DOM으로 캡슐화되지 않아, 사용자가 볼 수 있음.</span></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'another-component'</span>,</span><br><span class="line">  directives: [SomeComponent],</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;some-component&gt;</span></span><br><span class="line"><span class="string">      &lt;h1&gt;Hi! I am Light DOM!&lt;/h1&gt;</span></span><br><span class="line"><span class="string">      &lt;h2&gt;So happy to see you!&lt;/h2&gt;</span></span><br><span class="line"><span class="string">    &lt;/some-component&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">class</span> AnotherComponent &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li>packages : 확장자 처리</li>
-</ul>
-</li>
-<li><my-app>
-
-<p>Angular 앱이 실행되는 위치이다. my-app은 어플리케이션 최상위 컴포넌트이다.</p>
-<ul>
-<li>app.component.ts</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line">@Component(&#123;</span><br><span class="line">  selector: <span class="string">'my-app'</span>,</span><br><span class="line">  template: <span class="string">'&lt;h1&gt;Hello Angular 2 Application&lt;/h1&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">AppComponent</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
-
-<p>selector의 이름이 <my-app>에 대응하는 것을 확인할 수 있다.</my-app></p>
-<ul>
-<li>app.module.ts</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; NgModule &#125;      <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; BrowserModule &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppComponent &#125;   <span class="keyword">from</span> <span class="string">'./app.component'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  imports:      [ BrowserModule ],</span><br><span class="line">  declarations: [ AppComponent ],</span><br><span class="line">  bootstrap:    [ AppComponent ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppModule &#123; &#125;</span><br></pre></td></tr></table></figure>
-
-<p>애플리케이션 차원의 모듈파일. 전역으로 사용되는 모듈이나 최상위 컴포넌트를 등록. bootstrap 속성에는 애플리케이션을 실행할 때 가장 먼저 호출하게 할 컴포넌트를 등록</p>
-<ul>
-<li><p>main.ts</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; platformBrowserDynamic &#125; <span class="keyword">from</span> <span class="string">'@angular/platform-browser-dynamic'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; AppModule &#125; <span class="keyword">from</span> <span class="string">'./app.module'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> platform = platformBrowserDynamic();</span><br><span class="line">platform.bootstrapModule(AppModule);</span><br></pre></td></tr></table></figure>
-
+<li><p>커스텀 엘리먼트</p>
+<p>이름을 임의로 정의해서 만든 엘리먼트 <code>&lt;hello-button&gt;&lt;/hello-button&gt;</code></p>
 </li>
 </ul>
-<p>app.modules.ts 파일을 임포트 해서 platform-browser-dynamic을 등록.</p>
 <blockquote>
-<p>platform-browser-dynamic은 Angular의 모든 API에 대한 진입점.</p>
+<p>앵귤러2에서는 웹 컴포넌트를 활용하여 html의 <nav> 블록 요소들을 컴포넌트화시켜 사용합니다.</nav></p>
 </blockquote>
-<p>platform의 bootstrapModule() 메서드에 방금 정의한 AppModule을 지정.</p>
-</my-app></li>
+<h2 id="컴포넌트-Component-생성"><a href="#컴포넌트-Component-생성" class="headerlink" title="컴포넌트(Component) 생성"></a>컴포넌트(Component) 생성</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'hello-world'</span>, </span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">	&lt;div&gt;&#123;&#123;msg&#125;&#125;&lt;/div&gt;</span></span><br><span class="line"><span class="string">	&lt;textarea [(ngModel)]="title"&gt;&lt;/textarea&gt;`</span>,</span><br><span class="line">  styles: [<span class="string">'div &#123; background: blue; &#125;'</span>] &#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HelloWorld &#123;</span><br><span class="line">  msg: <span class="built_in">string</span> = <span class="string">"hello"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>정의</strong></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular 2 프로그래밍 - 정진욱</p>
+<p>@Component 장식자를 이용해 정의.</p>
+<ul>
+<li><strong>지시자</strong></li>
+</ul>
+<p>selector 속성에 컴포넌트를 등록하면 html파일이나, 다른 컴포넌트에</p>
+<blockquote>
+<hellow-world>
+</hellow-world></blockquote>
+<p>형식으로 사용할 수 있다.</p>
+<ul>
+<li><strong>템플릿속성, 스타일 속성</strong></li>
+</ul>
+<p>template, templateUrl : 내부, 외부 파일에 HTML과 템플릿 문법을 이용해 템플릿 정의.</p>
+<p>style, styleUrls : 내부, 외부 CSS 파일에 템플릿 스타일 적용.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
 
                     
                         
@@ -360,7 +278,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/12/Angular/2. Angular 프로젝트 구성/#post-footer"
+                                href="/2017/07/12/Angular/3. Angular 컴포넌트/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -400,7 +318,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 141 of 151</li>
+        <li class="pagination-number">page 141 of 152</li>
     </ul>
 </div>
 

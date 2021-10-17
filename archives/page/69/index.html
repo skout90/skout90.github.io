@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Google/firebase/"
-                            aria-label=": Firebase로 CRUD 기능 작성"
+                            href="/2017/09/01/Google/cloud_function/"
+                            aria-label=": Cloud Function"
                         >
-                            Firebase로 CRUD 기능 작성
+                            Cloud Function
                         </a>
                     
                 </h1>
@@ -227,95 +227,27 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.</p>
-<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><p>프로젝트를 만든다.</p>
-<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p><code>로그인방법</code> 탬에서 원하는 인증방식을 활성화 한다. <code>Authorized Domains</code>탬에서 리다이렉션 도메인을 추가할 수 있다.</p>
-<p><code>템플릿</code> 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.</p>
-<h3 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h3><p><code>데이터</code> 탭에서 저장된 데이터를 확인</p>
+                    <p>AWS lambda나, 구글 클라우드 펑션은 서버코드를 클라우드화해버려서 Serverless를 지향하는 아키텍쳐이다. 서버 없이 함수 호출 횟수만큼 과금한다. 구글 클라우더 펑션 기준으로 정리를 해본다.</p>
+<h2 id="동작-조건"><a href="#동작-조건" class="headerlink" title="동작 조건"></a>동작 조건</h2><h5 id="개발-언어"><a href="#개발-언어" class="headerlink" title="개발 언어"></a>개발 언어</h5><p>node.js 6.9.1 버전 기반으로 작동.</p>
+<h5 id="트리거"><a href="#트리거" class="headerlink" title="트리거"></a>트리거</h5><p>이벤트에 따라서, 코드를 수행해준다.</p>
 <ul>
-<li>모든 데이터는 Json으로 저장</li>
-<li>데이터를 import/export 할 수 있음.</li>
-<li>캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.</li>
-<li>모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.</li>
+<li>Pub/Sub 메세지 큐에서 들어오는 메세지</li>
+<li>Firebase 모바일 SDK에 의해서 발생되는 이벤트</li>
+<li>Google Cloud Storage 서비스에 의해서 파일이 생성,수정,삭데 되었을때</li>
+<li>HTTP로 들어오는 요청 (REST API)</li>
 </ul>
-<p><code>규칙</code> 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정</p>
-<ul>
-<li>시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.</li>
+<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><h4 id="펑션-종류"><a href="#펑션-종류" class="headerlink" title="펑션 종류"></a>펑션 종류</h4><ul>
+<li>HTTP 펑션 : request, response </li>
 </ul>
-<h2 id="로컬-개발환경-셋팅"><a href="#로컬-개발환경-셋팅" class="headerlink" title="로컬 개발환경 셋팅"></a>로컬 개발환경 셋팅</h2><ol>
-<li><a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 에서 nodejs 설치</li>
-<li>firebase cli 설치</li>
-</ol>
-<blockquote>
-<p>&gt; npm install firebase-tools -g</p>
-</blockquote>
-<ol start="3">
-<li>firebase cli에 로그인</li>
-</ol>
-<p>컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.</p>
-<blockquote>
-<p>&gt; firebase login</p>
-<p>&gt; y</p>
-</blockquote>
-<p>이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭</p>
-<ol start="4">
-<li>firebase 프로젝트 설정</li>
-</ol>
-<blockquote>
-<p>&gt; cd [파이어베이스 프로젝트 경로]</p>
-<p>&gt; firebase init</p>
-</blockquote>
-<p><img src="http://i.imgur.com/fLauqJj.png" alt="img" title="오오오오오옷!!"></p>
-<blockquote>
-<p>오오오옷!!!! 간지</p>
-</blockquote>
-<p>‘Y’를 눌러 진행해준다</p>
-<ol start="5">
-<li>Database 셋팅</li>
-</ol>
-<ul>
-<li>설정 항목중에서 첫번째 Database를 선택</li>
-<li>위에서 생성한 프로젝트를 선택해준다.</li>
-</ul>
-<p>CLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.</p>
-<ul>
-<li>database.rule.json : DB 데이터 읽기 쓰기 규칙. </li>
-</ul>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 디폴트 규칙</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">".read"</span>: <span class="string">"auth != null"</span>,</span><br><span class="line">    <span class="attr">".write"</span>: <span class="string">"auth != null"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">exports.httpFunction = <span class="function"><span class="keyword">function</span> <span class="title">httpFunction</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span>(req.method)&#123;</span><br><span class="line">          <span class="keyword">case</span> <span class="string">'POST'</span>:</span><br><span class="line">           res.send(<span class="string">'SUCCESS!'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>public/index.html : 폴더를 생성하고 index파일을 생성한다.</li>
+<li>백그라운드 펑션 : GCS, Pub/Sub 등의 이벤트로 트리거된다고 함.</li>
 </ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.gstatic.com/firebasejs/4.1.2/firebase.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> config = &#123;</span></span><br><span class="line">      ...</span><br><span class="line">    &#125;;</span><br><span class="line">    firebase.initializeApp(config);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	성공!</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>firebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정</li>
+<h4 id="배포하기"><a href="#배포하기" class="headerlink" title="배포하기"></a>배포하기</h4><ul>
+<li>Web UI나 CLI를 통해 배포한다. <a href="http://bcho.tistory.com/1168" target="_blank" rel="noopener">조대협님 블로그 참조</a></li>
 </ul>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"database"</span>: &#123;</span><br><span class="line">    <span class="attr">"rules"</span>: <span class="string">"database.rules.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hosting"</span>: &#123;</span><br><span class="line">    "public": "public", // 페이지가 들어 있는 폴더명</span><br><span class="line">    "rewrites": [&#123;</span><br><span class="line">      "source": "**",   // 페이지 주소</span><br><span class="line">      "destination": "/index.html" // 연결할 페이지</span><br><span class="line">     &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>서버 구동</li>
-</ol>
-<blockquote>
-<p>&gt; firebase serve</p>
-</blockquote>
-<p>위 키워드를 입력하고 <a href="http://localhost:5000" target="_blank" rel="noopener">http://localhost:5000</a> 을 접속하여 페이지가 나오는 것을 확인한다.</p>
-<h2 id="권한-인증"><a href="#권한-인증" class="headerlink" title="권한 인증"></a>권한 인증</h2><ul>
-<li>index.html</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auth = firebase.auth();</span><br><span class="line"><span class="keyword">var</span> userInfo;</span><br><span class="line"><span class="keyword">var</span> authProvider = <span class="keyword">new</span> firebase.auth.GoogleAuthProvider();</span><br><span class="line"><span class="comment">// 팝업 형태로 열어줌</span></span><br><span class="line"><span class="comment">// 성공 실패 구분</span></span><br><span class="line">auth.onAuthStateChanged(<span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (user) &#123;</span><br><span class="line">    <span class="comment">// 인증 성공시</span></span><br><span class="line">    userInfo = user;</span><br><span class="line">    getKanbanlist(); <span class="comment">// 아래 함수 구현</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 인증 실패시, 인증 팝업창을 뛰워줌</span></span><br><span class="line">    auth.signInWithPopup(authProvider);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h2><ul>
-<li>index.html</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> database = firebase.database();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanbanlist</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.</span></span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">'kanbans/'</span> + userInfo.uid);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.</span></span><br><span class="line">  kanbanRef.on(<span class="string">'child_added'</span>, onChildAdded);</span><br><span class="line">  kanbanRef.on(<span class="string">'child_changed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = data.key;</span><br><span class="line">    <span class="keyword">var</span> txt = data.val().txt;</span><br><span class="line">    <span class="comment">// 해당 데이터로 html에 데이터를 수정.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onChildAdded</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key = data.key;</span><br><span class="line">  <span class="keyword">var</span> kanbanData = data.val();</span><br><span class="line">  <span class="keyword">var</span> txt = kanbanData.txt;</span><br><span class="line">  <span class="comment">// 해당 데이터를 html 요소에 추가.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 데이터 단일 건 가져오기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key)</span><br><span class="line">  .once(<span class="string">'value'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">snapshot</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (snapshot.val() != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 가져온 데이터를 저장</span></span><br><span class="line">      $(<span class="string">".textarea"</span>).val(snapshot.val().txt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 삭제하기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key);</span><br><span class="line">  kanbanRef.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="on"><a href="#on" class="headerlink" title="on"></a>on</h4><p><code>on(&#39;child_added&#39;, 메서드);</code> <code>on(&#39;child_changed&#39;, 메서드);</code> 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.</p>
-<h2 id="Firebase-서버-배포"><a href="#Firebase-서버-배포" class="headerlink" title="Firebase 서버 배포"></a>Firebase 서버 배포</h2><blockquote>
-<p>&gt; firebase deploy</p>
-</blockquote>
-<p>서버에 바로 작업 내역이 반영된다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p> [조대협의 블로그] : <a href="http://bcho.tistory.com/1168" target="_blank" rel="noopener">http://bcho.tistory.com/1168</a></p>
 
                     
                         
@@ -325,7 +257,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Google/firebase/#post-footer"
+                                href="/2017/09/01/Google/cloud_function/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -365,7 +297,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 69 of 151</li>
+        <li class="pagination-number">page 69 of 152</li>
     </ul>
 </div>
 

@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/상대-크기/"
-                            aria-label=": CSS 상대 크기"
+                            href="/2017/07/24/CSS/scss-문법정리/"
+                            aria-label=": SCSS 문법 정리"
                         >
-                            CSS 상대 크기
+                            SCSS 문법 정리
                         </a>
                     
                 </h1>
@@ -227,26 +227,45 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>CSS 상대적인 크기에 대해 알아본다.</p>
-<h1 id="em"><a href="#em" class="headerlink" title="em"></a>em</h1><ul>
-<li>최근에 정의한(부모 요소) font-size를 1em 으로 함, 계속해서 누적됌.</li>
-<li>없으면 브라우저 기본값을 따름</li>
-<li>9pt = 16px = 1em</li>
+                    <h2 id="변수"><a href="#변수" class="headerlink" title="변수"></a>변수</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$변수명: <span class="number">#ff0000</span>;</span><br><span class="line"><span class="selector-tag">div</span>&#123;</span><br><span class="line">  <span class="attribute">color</span>: $변수명;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="스타일-변수-처리"><a href="#스타일-변수-처리" class="headerlink" title="스타일 변수 처리"></a>스타일 변수 처리</h2><blockquote>
+<p>선언 : @mixin mixin명 {}</p>
+<p>호출 : @include mixin명 {}</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> boxStyle &#123;</span><br><span class="line">  <span class="attribute">border</span> : <span class="number">1px</span> <span class="variable">$red</span> <span class="number">#000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  @<span class="keyword">include</span> boxStyle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>선언 : @mixin mixin명(파라미터){}</p>
+<p>호출 : @include mixin명(파라미터)</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> style(<span class="variable">$color</span>, <span class="variable">$size</span>) &#123;</span><br><span class="line">  <span class="attribute">border</span> : <span class="variable">$size</span> <span class="variable">$color</span> <span class="number">#000</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  @<span class="keyword">include</span> style(<span class="number">#fff064</span>, 10px)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="상속"><a href="#상속" class="headerlink" title="상속"></a>상속</h2><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.menu</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.menu1</span> &#123;</span><br><span class="line">  @<span class="keyword">extend</span> .menu;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="부모참조선택자"><a href="#부모참조선택자" class="headerlink" title="부모참조선택자"></a>부모참조선택자</h2><ul>
+<li>scss</li>
 </ul>
-<h1 id="REM"><a href="#REM" class="headerlink" title="REM"></a>REM</h1><ul>
-<li>최상위 브라우저 기본 폰트 크기를 1rem으로 함, 누적되지 않음.</li>
-</ul>
-<h2 id="vh-ve"><a href="#vh-ve" class="headerlink" title="vh, ve"></a>vh, ve</h2><p>브라우저 윈도우 크기의 1/100 크기를 “1”로 함</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$red</span>: <span class="number">#ff0000</span>;</span><br><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: <span class="variable">$red</span>;</span><br><span class="line">  &amp; <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$red</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>2000 x 1000 px 크기의 윈도우라면</li>
+<li>css</li>
 </ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div &#123; color: #ff0000; &#125;</span><br><span class="line">div span &#123; color: #ff0000; &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="컴파일"><a href="#컴파일" class="headerlink" title="컴파일"></a>컴파일</h2><p>scss가 존재하는 경로로 이동해서</p>
 <blockquote>
-<p>1vh = 10px</p>
+<p>&gt; sass –style <strong>nested</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 기본</p>
+<p>&gt; sass –style <strong>expanded</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 확장</p>
+<p>&gt; sass –style <strong>compact</strong> 작성된scss명.scss 바꿔줄css명.css      &lt;- 축약</p>
 </blockquote>
-<blockquote>
-<p>1vw = 20px</p>
+<h4 id="자동-컴파일"><a href="#자동-컴파일" class="headerlink" title="자동 컴파일"></a>자동 컴파일</h4><blockquote>
+<p>&gt; sass –watch 작성된.scss</p>
+<p>&gt; sass –watch –style 스타일종류 작성된.scss</p>
+<p>&gt; sass –watch .:. </p>
+<p>&gt; sass –watch –style 스타일종류 .:. </p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4" target="_blank" rel="noopener">http://pshweb.tistory.com/entry/REM-%EA%B3%BC-EM-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B4%85%EC%8B%9C%EB%8B%A4</a></p>
+<h2 id="Refenrece"><a href="#Refenrece" class="headerlink" title="Refenrece"></a>Refenrece</h2><p> [회복맨 블로그] : <a href="http://recoveryman.tistory.com/277" target="_blank" rel="noopener">http://recoveryman.tistory.com/277</a></p>
 
                     
                         
@@ -256,7 +275,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/상대-크기/#post-footer"
+                                href="/2017/07/24/CSS/scss-문법정리/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -296,7 +315,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 112 of 151</li>
+        <li class="pagination-number">page 112 of 152</li>
     </ul>
 </div>
 

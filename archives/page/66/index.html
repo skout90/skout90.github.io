@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/CSS/CSS-flex레이아웃/"
-                            aria-label=": FLEX 레이아웃 정리"
+                            href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/"
+                            aria-label=": 02.2. Javascript 연산자, 비교"
                         >
-                            FLEX 레이아웃 정리
+                            02.2. Javascript 연산자, 비교
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-01T19:28:10+09:00">
+    <time datetime="2017-09-03T19:28:10+09:00">
 	
-		    2017.09.01
+		    2017.09.03
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,31 +227,35 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>다음 레이아웃을 flex로 표현해보자<br><img src="http://i.imgur.com/okipVgU.png" alt="img"></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">  <span class="selector-class">.container</span> &#123;</span></span><br><span class="line">    display: flex;</span><br><span class="line">    flex-direction: column;</span><br><span class="line">  &#125;</span><br><span class="line">  header&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-bottom</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line">  footer&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-top</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">display</span><span class="selector-pseudo">:flex</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">nav</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-right</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.content</span> <span class="selector-tag">aside</span>&#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-left</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;  </span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line">  nav, aside&#123;</span><br><span class="line">    flex-basis: 150px;</span><br><span class="line">    flex-shrink: 0;</span><br><span class="line">  &#125;</span><br><span class="line">  main&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:10px</span> 22<span class="selector-tag">px</span> 5<span class="selector-tag">px</span> 4<span class="selector-tag">px</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>헤더<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>html<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>css<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span>javascript<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">      Lorem ipsum dolor sit amet!</span><br><span class="line">    <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aside</span>&gt;</span></span><br><span class="line">      라젠카</span><br><span class="line">    <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    푸터푸터</span><br><span class="line">  <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+                    <h2 id="과"><a href="#과" class="headerlink" title="==과 ==="></a>==과 ===</h2><p>==는 값이 동일한지 비교, 자동으로 형변환해서 비교한다</p>
+<p>===는 값과 타입 모두 동일한지 비교, 형변환하지 않는다.</p>
+<p>JS는 상당히 유연한 언어라서, 모든 형변환 케이스를 숙지하고 있기 힘들기 때문에 === 사용하는 것을 권장.</p>
+<p>switch 문 인자로 int 값이 아닌 “string”형태도 가능.(다른 자료형이 되는지는 체크 필요.)</p>
+<h2 id="연산자"><a href="#연산자" class="headerlink" title="연산자"></a>연산자</h2><h4 id><a href="#" class="headerlink" title="!"></a>!</h4><p>객체, “”, NaN에도 적용이 가능, Boolean과 같은 효과.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(!!a); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="display-flex"><a href="#display-flex" class="headerlink" title="display: flex;"></a>display: flex;</h4><p>컨테이너에 등록함으써 flex 레이아웃 적용을 시작!</p>
-<h4 id="flex-direction-row"><a href="#flex-direction-row" class="headerlink" title="flex-direction : row;"></a>flex-direction : row;</h4><p><code>row</code>, <code>row-reverse</code>, <code>column</code>, <code>column-reverse</code> 값이 있다. row가 기본값, row는 세로 방향으로 행 레이아웃, column은 가로 방향으로 열 레이아웃.</p>
-<p>   1</p>
-<p>   2</p>
-<p>   3                        1      2      3     4     5</p>
-<p>   4</p>
-<p>   5</p>
-<p><code>&lt;row&gt;</code>                        <code>&lt;column&gt;</code></p>
-<h4 id="flex-basis-200px"><a href="#flex-basis-200px" class="headerlink" title="flex-basis : 200px;"></a>flex-basis : 200px;</h4><p>row와 column에 따라 해당방향으로 기본 크기를 설정한다.</p>
-<h4 id="flex-grow-1"><a href="#flex-grow-1" class="headerlink" title="flex-grow : 1;"></a>flex-grow : 1;</h4><p>모두 1이면 스크롤을 늘릴때, 공평하게 크기가 늘어남, 다른 것들은 1, 하나는 2이면 2가 2배의 비율로 늘어난다.</p>
-<h4 id="flex-shrink-0"><a href="#flex-shrink-0" class="headerlink" title="flex-shrink: 0;"></a>flex-shrink: 0;</h4><p>크기 클 수록 빨리 줄어든다. 0이면, 안줄어듬.</p>
-<h4 id="flex-wrap-nowrap"><a href="#flex-wrap-nowrap" class="headerlink" title="flex-wrap: nowrap;"></a>flex-wrap: nowrap;</h4><p>wrap : 창 크기에 따라 줄바꿈이 됌.</p>
-<p>nowrap : 줄바꿈이 안됌.</p>
-<h4 id="align-items-stretch"><a href="#align-items-stretch" class="headerlink" title="align-items: stretch;"></a>align-items: stretch;</h4><p>stretch : 컨테이너만큼 아이템들을 늘림</p>
-<p>flex-start/flex-end : 자기 크기를 유지함, 위/아래 부터 요소들 위치</p>
-<p>baseline : 가운데 baseline에 맞추어 자기 크기를 유지함.</p>
-<p>center : 수직 정렬</p>
-<h4 id="justify-content-center"><a href="#justify-content-center" class="headerlink" title="justify-content: center"></a>justify-content: center</h4><p>수평 정렬</p>
-<h4 id="order"><a href="#order" class="headerlink" title="order"></a>order</h4><p>순서 설정 order:0  order:1</p>
-<h4 id="두-요소를-양-끝에-정렬하기"><a href="#두-요소를-양-끝에-정렬하기" class="headerlink" title="두 요소를 양 끝에 정렬하기"></a>두 요소를 양 끝에 정렬하기</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-id">#container</span> &#123;</span></span><br><span class="line">    width: 500px;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    display: flex;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#a</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    margin-right: auto;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-id">#b</span> &#123;</span></span><br><span class="line">    width: 20%;</span><br><span class="line"><span class="css">    <span class="selector-tag">border</span>: <span class="selector-tag">solid</span> 1<span class="selector-tag">px</span> <span class="selector-id">#000</span>;</span></span><br><span class="line">    height: 200px;</span><br><span class="line">    margin-left: auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"a"</span>&gt;</span></span><br><span class="line">        a</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"b"</span>&gt;</span></span><br><span class="line">        b</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="amp-amp"><a href="#amp-amp" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h4><p>값이 boolean이 아닐시</p>
+<ol>
+<li>둘중 하나라도, null/NaN/undefined라면 null/NaN/undefined 반환.</li>
+<li>객체 &amp;&amp; (_)  : 앞 피연산자가 객체라면, 두번째 피연산자 반환.</li>
+<li>true &amp;&amp; (객체) : 앞 피연산자가 true 일때만, 뒤 연산자 반환</li>
+</ol>
+<h4 id="-1"><a href="#-1" class="headerlink" title="||"></a>||</h4><p>값이 boolen이 아닐시</p>
+<ol>
+<li>둘 모두 null/NaN/undefined라면, null/NaN/undefined 반환</li>
+<li>(객체) || _ : 앞 피연산자가 객체라면, 첫번째 객체 반환</li>
+<li>false ||  (객체) : 뒤 피연산자 반환.</li>
+</ol>
+<h4 id="-2"><a href="#-2" class="headerlink" title="+"></a>+</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span> + <span class="string">"5"</span> <span class="comment">// 55</span></span><br><span class="line"><span class="string">"abc ="</span> + <span class="number">3</span> + <span class="number">8</span> <span class="comment">// abc38</span></span><br><span class="line"><span class="number">5</span> - <span class="literal">true</span> <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/" target="_blank" rel="noopener">https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/flex-%EA%B8%B0%ED%83%80-%EC%86%8D%EC%84%B1%EB%93%A4/</a></p>
+<h4 id="lt"><a href="#lt" class="headerlink" title="&lt;"></a>&lt;</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="string">"Brick"</span> &lt; <span class="string">"alphabet"</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>사전식 배열로 비교하려면, toLowerCase()를 사용해서 비교하자. JS 비교는 대문자가 더 앞서 위치함.</p>
+<h2 id="객체-비교"><a href="#객체-비교" class="headerlink" title="객체 비교"></a>객체 비교</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123;<span class="attr">a</span>: <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line">o1 == o2; <span class="comment">// false</span></span><br><span class="line"><span class="built_in">JSON</span>.stringify(o1) == <span class="built_in">JSON</span>.stringify(o2); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>o1과 o2는 객체 그 자체가 아니라, 객체를 가리키는 포인터이기 때문에 동등비교가 되지 않는다. 따라서 JSON.stringify를 통해 비교하는 것이 좋다고 한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
+<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
 
                     
                         
@@ -261,7 +265,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/CSS/CSS-flex레이아웃/#post-footer"
+                                href="/2017/09/03/Javascript/2.2. javascript-연산자-비교문/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -301,7 +305,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 66 of 151</li>
+        <li class="pagination-number">page 66 of 152</li>
     </ul>
 </div>
 

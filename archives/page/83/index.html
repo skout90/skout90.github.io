@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/15/Web/REST란/"
-                            aria-label=": REST 란"
+                            href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/"
+                            aria-label=": NodeJs ORM을 위한 Bookshelf, Knex"
                         >
-                            REST 란
+                            NodeJs ORM을 위한 Bookshelf, Knex
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Web/">Web</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,21 +227,66 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>자원지향구조 기반, 자원에 고유한 URI를 부여하고 HTTP METHOD를 통한 CRUD 작업을 함으로써, 각 컴포넌트간의 상호작용을 촉진하고 서로 정보를 교환.</p>
-<h2 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h2><ul>
-<li><p>무상태성(Stateless)</p>
-<p>쿠키/세션 불필요, 직관적인 오브젝트로의 접근</p>
-</li>
-<li><p>자원지향구조(ROA : Resource Oriented Architecture)로 웹 서비스 컨텐츠, DB 내용 등을 하나의 자원으로 파악.</p>
-</li>
-<li><p>자원에 고유한 URI 부여.</p>
-<p>ex) <a href="http://www.myhome.com/posts/123" target="_blank" rel="noopener">www.myhome.com/posts/123</a></p>
-</li>
-<li><p>HTTP METHOD 활용(POST, GET, PUT, DELETE)</p>
-</li>
+                    <p>Node.Js 로 ORM 환경을 지원하기 위해, Knex와 Bookshelf를 활용해보자.</p>
+<p>Knex는 쿼리 빌더를 위한 라이브러리이며, Bookshelf는 knex가 만든 쿼리를 DB에 날리기 위한 JS 라이브러리 이다.</p>
+<h4 id="설치"><a href="#설치" class="headerlink" title="설치"></a>설치</h4><blockquote>
+<p>$ npm install knex –save<br>$ npm install bookshelf –save<br>// 아래와 같은 DB 엔진을 선택하여 설치<br>$ npm install pg<br>$ npm install mysql<br>$ npm install mariasql<br>$ npm install sqlite3</p>
+</blockquote>
+<ul>
+<li>초기화</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><strong>김민균 IT 블로그</strong> <a href="http://blog.naver.com/mkzzang0928/220947811979" target="_blank" rel="noopener">RESTFUL API</a></p>
-<p><a href="http://egloos.zum.com/killins/v/3092502" target="_blank" rel="noopener">http://egloos.zum.com/killins/v/3092502</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> knex = <span class="built_in">require</span>(<span class="string">'knex'</span>)(&#123;</span><br><span class="line">  client: <span class="string">'mysql'</span>,</span><br><span class="line">  connection: &#123;</span><br><span class="line">    host     : <span class="string">'127.0.0.1'</span>,</span><br><span class="line">    user     : <span class="string">'your_database_user'</span>,</span><br><span class="line">    password : <span class="string">'your_database_password'</span>,</span><br><span class="line">    database : <span class="string">'myapp_test'</span>,</span><br><span class="line">    charset  : <span class="string">'utf8'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bookshelf = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="쿼리-실행"><a href="#쿼리-실행" class="headerlink" title="쿼리 실행"></a>쿼리 실행</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// new 없이 모델 초기화</span></span><br><span class="line"><span class="keyword">let</span> subscriber = User.forge();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 방법 4가지</span></span><br><span class="line">subscriber.query(<span class="string">'where'</span>, <span class="string">'other_id'</span>, <span class="string">'='</span>, <span class="string">'5'</span>)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(&#123;<span class="attr">where</span>: &#123;<span class="attr">other_id</span>: <span class="string">'5'</span>&#125;, <span class="attr">orWhere</span>: &#123;<span class="attr">key</span>: <span class="string">'value'</span>&#125;&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line">subscriber.query(<span class="function"><span class="keyword">function</span>(<span class="params">qb</span>) </span>&#123;</span><br><span class="line">qb.where(<span class="string">'other_person'</span>, <span class="string">'LIKE'</span>, <span class="string">'%Demo'</span>).orWhere(<span class="string">'other_id'</span>, <span class="string">'&gt;'</span>, <span class="number">10</span>);&#125;)</span><br><span class="line">.fetch(). then(<span class="function">(<span class="params">model</span>)=&gt;</span> &#123;&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> qb = subscriber.query();</span><br><span class="line">qb.where(&#123;<span class="attr">id</span>: <span class="number">1</span>&#125;).select()</span><br><span class="line">.then(<span class="function">(<span class="params">resp</span>)=&gt;</span>&#123;&#125;);</span><br></pre></td></tr></table></figure>
+
+<h4 id="관계-정의"><a href="#관계-정의" class="headerlink" title="관계 정의"></a>관계 정의</h4><p>.belongsToMany, .hasMany 와 같이 관계를 정의해줄 수 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> User = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span>,</span><br><span class="line">  posts: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.hasMany(Posts, <span class="string">'userId'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag, <span class="string">'posts'</span>, <span class="string">'userId'</span>, <span class="string">'tagId'</span>)  </span><br><span class="line">  &#125;</span><br><span class="line">  wallet : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">this</span>.hasOne(Wallets, <span class="string">'userId'</span>);  </span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Posts = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'posts'</span>,</span><br><span class="line">  tags: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.belongsToMany(Tag);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Wallets = booksehlf.Model.extend(&#123;</span><br><span class="line">    tableName: <span class="string">'wallets'</span>,</span><br><span class="line">    user : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.belongsTo(Users, <span class="string">'userId'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Tag = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'tags'</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>hasOne</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasOne(Wallets, ‘userId’);  </p>
+</blockquote>
+<p>1: 0..1 의 관계이다.  Wallets에서 <code>userId</code>로 질의를한다. </p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘wallet’]})</p>
+<p>SELECT * FROM wallets WHERE userId = ‘사용자ID’;</p>
+</blockquote>
+<ul>
+<li><strong>hanMany</strong></li>
+</ul>
+<blockquote>
+<p>return this.hasMany(Posts, ‘userId’);</p>
+</blockquote>
+<p>1:다 의 관계를 갖는다.  Posts에서 <code>userId</code>로 질의를 한다.</p>
+<blockquote>
+<p>User.forge().fetch({withRelated: [‘posts’]})</p>
+<p>SELECT * FROM posts WHERE  postId IN (userId들 ….)</p>
+</blockquote>
+<ul>
+<li><strong>belongsTo</strong> </li>
+</ul>
+<blockquote>
+<p>var Wallet = .. 생략</p>
+<p>return this.belongsTo(Users, ‘userId’);</p>
+</blockquote>
+<p>Users테이블에서 Wallet의 userId로 질의를 한다. 0..1 : 1 의 관계를 가진다.</p>
+<blockquote>
+<p>Wallet.forge().fetch({withRelated: [‘user’]})</p>
+<p>SELECT * FROM users WHERE userId = ‘사용자’;</p>
+</blockquote>
+<ul>
+<li><strong>belongsToMany</strong></li>
+</ul>
+<blockquote>
+<p>var User = …</p>
+<p>return this.belongsToMany(Tag, ‘posts’, ‘userId’, ‘tagId’)  </p>
+</blockquote>
+<p>posts의 userId와 tagId를 사용하여, User와 Tag를 조인한다.</p>
+<p>조인할때 디폴트로 user의 id와 tag의 id를 사용한다.</p>
+<p>다른 포린키로 조인하려면, 5,6번째인자로 user의 foreignKey/tag의 foreignKey를 쓴다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://bookshelfjs.org/#Model-instance-has" target="_blank" rel="noopener">http://bookshelfjs.org/#Model-instance-has</a></p>
 
                     
                         
@@ -251,7 +296,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/15/Web/REST란/#post-footer"
+                                href="/2017/08/15/Node.js/NodeJs-ORM을-위한-Bookshelf-Knex/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -291,7 +336,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 83 of 151</li>
+        <li class="pagination-number">page 83 of 152</li>
     </ul>
 </div>
 

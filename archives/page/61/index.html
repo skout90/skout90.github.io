@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/06/CSS/CSS-float레이아웃/"
-                            aria-label=": float로 레이아웃 만들기"
+                            href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/"
+                            aria-label=": 05.1. Function 내장객체"
                         >
-                            float로 레이아웃 만들기
+                            05.1. Function 내장객체
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-06T19:28:10+09:00">
+    <time datetime="2017-09-10T19:28:10+09:00">
 	
-		    2017.09.06
+		    2017.09.10
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,16 +227,69 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>float로 다음 레이아웃을 만들어봅시다.</p>
-<p><img src="http://i.imgur.com/okipVgU.png" alt="img"></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">  *&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">box-sizing</span><span class="selector-pseudo">:border-box</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.container</span> &#123;</span></span><br><span class="line">    width : 500px;</span><br><span class="line">    border: 1px solid gray;</span><br><span class="line">    margin: auto;</span><br><span class="line">  &#125;</span><br><span class="line">  header&#123;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-bottom</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line">  nav&#123;</span><br><span class="line">    float: left;</span><br><span class="line"><span class="css">    <span class="selector-tag">width</span><span class="selector-pseudo">:150px</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-right</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line">  main&#123;</span><br><span class="line">    float: left;</span><br><span class="line"><span class="css">    <span class="selector-tag">width</span><span class="selector-pseudo">:200px</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:10px</span> 22<span class="selector-tag">px</span> 5<span class="selector-tag">px</span> 4<span class="selector-tag">px</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-left</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-right</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    margin-left: -1px;</span><br><span class="line">  &#125;</span><br><span class="line">  aside&#123;</span><br><span class="line">    float: left;</span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">width</span><span class="selector-pseudo">:150px</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">border-left</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line">    margin-left: -1px;</span><br><span class="line">  &#125;</span><br><span class="line">  footer&#123;</span><br><span class="line">    clear: both;</span><br><span class="line"><span class="css">    <span class="selector-tag">border-top</span><span class="selector-pseudo">:1px</span> <span class="selector-tag">solid</span> <span class="selector-tag">gray</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">padding</span><span class="selector-pseudo">:20px</span>;</span></span><br><span class="line">    text-align: center;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>헤더<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">nav</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>html<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>css<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span>&gt;</span>javascript<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">main</span>&gt;</span></span><br><span class="line">    Lorem ipsum dolor sit amet!</span><br><span class="line">  <span class="tag">&lt;/<span class="name">main</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">aside</span>&gt;</span></span><br><span class="line">    라젠카</span><br><span class="line">  <span class="tag">&lt;/<span class="name">aside</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">footer</span>&gt;</span></span><br><span class="line">    푸터푸터</span><br><span class="line">  <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
+<li>arguments <em>(표준에서 제거 됌)</em></li>
+</ul>
+<p>함수 내부에서, 매개변수에 접근하게 하는 속성</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">g</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(g.arguments[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line">g(<span class="number">1</span>); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="box-sizing-border-box"><a href="#box-sizing-border-box" class="headerlink" title="box-sizing:border-box;"></a>box-sizing:border-box;</h3><p>원래 width를 border를 제외하고 계산하는데, 같이 계싼하게 하는 옵션.</p>
-<h3 id="float"><a href="#float" class="headerlink" title="float"></a>float</h3><p><code>float:left;</code>로 설정하면, 다음 요소가 옆으로 흐르듯이 겹친다.</p>
-<p>겹치고 싶지 않을 때는 <code>clear: both;</code>를 사용.</p>
-<h3 id="width-설정"><a href="#width-설정" class="headerlink" title="width 설정"></a>width 설정</h3><p>float를 설정하면, 스크롤을 줄였을때 div가 내려오기 때문에, width를 설정하여, 내려오지 않게 한다.</p>
-<h3 id="margin-left-1px"><a href="#margin-left-1px" class="headerlink" title="margin-left: -1px;"></a>margin-left: -1px;</h3><p>border가 겹칠 때는 margin 값을 조작하여 해결!</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/float-%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-holy-grail-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83/" target="_blank" rel="noopener">https://www.inflearn.com/course/css-%EA%B8%B0%EB%B3%B8%EB%B6%80%ED%84%B0-%ED%99%9C%EC%9A%A9%EA%B9%8C%EC%A7%80/float-%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-holy-grail-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83/</a></p>
+<ul>
+<li>arguments.callee()</li>
+</ul>
+<p>자신을 호출한다. 재귀함수를 사용할때 함수 이름 의존성 문제를 해결 할 수 있음.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">factorial</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(num &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * <span class="built_in">arguments</span>.callee(num<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> trueFactorial = factorial;</span><br><span class="line">factorial = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;;</span><br><span class="line"></span><br><span class="line">trueFactorial(<span class="number">5</span>); <span class="comment">// 120</span></span><br></pre></td></tr></table></figure>
+
+<p>만약 calle를 안썼다면, 값은 0이 될것이다.</p>
+<ul>
+<li>caller</li>
+</ul>
+<p>현재 실행중인 함수를 호출한 함수.</p>
+<ul>
+<li>length</li>
+</ul>
+<p>함수 매개변수의 수</p>
+<ul>
+<li>Function.prototype.constructor</li>
+</ul>
+<p>함수를 생성하면, 함수 + 그 함수의 prototype 생성하게 되는데, prototype.constructor는 생성된 함수를 가리키고 있다.(실제로 무한루프다.)</p>
+<p><img src="https://cdn-images-1.medium.com/max/1000/1*PZe_YnLftVZwT1dNs1Iu0A.png" alt="img"></p>
+<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
+<li>Function.prototype.apply()</li>
+</ul>
+<blockquote>
+<p> 함수.apply(this로 사용될 객체/값, 함수에 전달할 인자집합(배열))</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">v1</span>:<span class="number">1</span>, <span class="attr">v2</span>:<span class="number">2</span>, <span class="attr">v3</span>:<span class="number">3</span>&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (name <span class="keyword">in</span> <span class="keyword">this</span>) &#123;</span><br><span class="line">    _sum += <span class="keyword">this</span>[name];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> _sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(sum.apply(obj)); <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p>넘겨준 객체의 메서드로 추가하고, 해당 메서드를 실행시킨다. apply의 중요점은 이를통해 <code>this</code>가 해당 객체를 가리키게 된다는 것이다. <em>객체 값이 바뀌지는 않는다.</em></p>
+<ul>
+<li>Function.prototype.call()</li>
+</ul>
+<blockquote>
+<p>함수.call(this로 사용될 객체/값, 인자1, 인자2, …)</p>
+</blockquote>
+<p>apply와 동일하나, 매개변수 넘기는 방식이 다름</p>
+<ul>
+<li>Function.prototype.bind()</li>
+</ul>
+<blockquote>
+<p>함수.bind(this로 사용될 객체/값, 인자1, 인자3, …)</p>
+</blockquote>
+<p>this 를 교체후, 함수를 리턴해준다.</p>
+<p>call(this, 1, 2, 3) 은 bind(this)(1, 2, 3) 과 같다.</p>
+<ul>
+<li>Function.prototype.toString()</li>
+</ul>
+<p>함수의 소스 코드를 string으로 변환하여 출력.</p>
+<ul>
+<li>Function.prototype.isPrototypeOf()</li>
+</ul>
+<blockquote>
+<p>함수.prototype.isPrototypeOf(인스턴스 객체)</p>
+</blockquote>
+<p>인스턴스 객체의 프로토타입이 해당 “함수”인지 확인</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
+<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
 
                     
                         
@@ -246,7 +299,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/06/CSS/CSS-float레이아웃/#post-footer"
+                                href="/2017/09/10/Javascript/5.1. javascript-Function내장객체/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -286,7 +339,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 61 of 151</li>
+        <li class="pagination-number">page 61 of 152</li>
     </ul>
 </div>
 

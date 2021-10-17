@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/2.1. javascript-변수/"
-                            aria-label=": 02.1. Javascript 변수"
+                            href="/2017/09/01/Google/firebase/"
+                            aria-label=": Firebase로 CRUD 기능 작성"
                         >
-                            02.1. Javascript 변수
+                            Firebase로 CRUD 기능 작성
                         </a>
                     
                 </h1>
@@ -218,7 +218,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/Google/">Google</a>
 
 
     
@@ -227,45 +227,95 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="원시타입"><a href="#원시타입" class="headerlink" title="원시타입"></a>원시타입</h2><p><code>숫자</code> : number</p>
-<p><code>문자열</code> : string</p>
-<p><code>불리언(true/false)</code> : bool</p>
-<p><code>null</code> : null 이라는 빈값을 할당, 비어있는 객체를 뜻함(null은 객체형 데이터-ex: array, object-의 빈 값을 의미)</p>
-<p><code>undefined</code> : 변수를 선언만 하고 값을 할당하지 않음/즉, 자료형이 결정되지 않은 상태이다.</p>
-<p><code>NaN</code> : Not a Number 숫자가 아닌 값을 뜻함, 숫자가 아닌 값을 형변환시나, 연산 불가시.</p>
+                    <p>웹과 모바일 개발에 필요한 기능을 제공하는 BaaS(BackEnd as  a Service)로, 프론트 엔드개발에 더축 집중할 수 있음. 이번 시간에 DB 접근, 인증, CRUD작업에 대해 포스팅한다.</p>
+<h2 id="시작하기"><a href="#시작하기" class="headerlink" title="시작하기"></a>시작하기</h2><p>프로젝트를 만든다.</p>
+<h3 id="Authentication"><a href="#Authentication" class="headerlink" title="Authentication"></a>Authentication</h3><p><code>로그인방법</code> 탬에서 원하는 인증방식을 활성화 한다. <code>Authorized Domains</code>탬에서 리다이렉션 도메인을 추가할 수 있다.</p>
+<p><code>템플릿</code> 탭에서는 이메일 주소 인증을 위한 템플릿을 설정할 수 있음.</p>
+<h3 id="Database"><a href="#Database" class="headerlink" title="Database"></a>Database</h3><p><code>데이터</code> 탭에서 저장된 데이터를 확인</p>
+<ul>
+<li>모든 데이터는 Json으로 저장</li>
+<li>데이터를 import/export 할 수 있음.</li>
+<li>캐싱 방식으로 사용되기 때문에, Offline시에도 사용이 가능.</li>
+<li>모든 클라이언트에게 데이터 변경시, 모든 클라이언트에게 전송이됌.</li>
+</ul>
+<p><code>규칙</code> 탭에서는 데이터의 읽기 쓰기 권한 규칙을 설정</p>
+<ul>
+<li>시뮬레이터를 활용하여 권한이 제대로 설정되었는지 확인 가능.</li>
+</ul>
+<h2 id="로컬-개발환경-셋팅"><a href="#로컬-개발환경-셋팅" class="headerlink" title="로컬 개발환경 셋팅"></a>로컬 개발환경 셋팅</h2><ol>
+<li><a href="http://nodejs.org" target="_blank" rel="noopener">http://nodejs.org</a> 에서 nodejs 설치</li>
+<li>firebase cli 설치</li>
+</ol>
 <blockquote>
-<p>값 복사시, <strong>실제 값이 복사</strong>된다</p>
+<p>&gt; npm install firebase-tools -g</p>
 </blockquote>
-<h2 id="래퍼객체"><a href="#래퍼객체" class="headerlink" title="래퍼객체"></a>래퍼객체</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">'coding'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.length); <span class="comment">// 6</span></span><br><span class="line"></span><br><span class="line">str.prop = <span class="string">'lala'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(str.prop); <span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>firebase cli에 로그인</li>
+</ol>
+<p>컴퓨터와 파이어베이스를 연결하고, 프로젝트에 대한 Access를 허용시켜줌.</p>
+<blockquote>
+<p>&gt; firebase login</p>
+<p>&gt; y</p>
+</blockquote>
+<p>이후 권한허용 여부를 묻는 브라우저 새창이 나오면 Firebase CLI 허용 버튼을 클릭</p>
+<ol start="4">
+<li>firebase 프로젝트 설정</li>
+</ol>
+<blockquote>
+<p>&gt; cd [파이어베이스 프로젝트 경로]</p>
+<p>&gt; firebase init</p>
+</blockquote>
+<p><img src="http://i.imgur.com/fLauqJj.png" alt="img" title="오오오오오옷!!"></p>
+<blockquote>
+<p>오오오옷!!!! 간지</p>
+</blockquote>
+<p>‘Y’를 눌러 진행해준다</p>
+<ol start="5">
+<li>Database 셋팅</li>
+</ol>
+<ul>
+<li>설정 항목중에서 첫번째 Database를 선택</li>
+<li>위에서 생성한 프로젝트를 선택해준다.</li>
+</ul>
+<p>CLI를 통해 자동으로 index.html및 기본 파일들이 설정되는데, 안되는 경우 다음과 같이 파일을 확인.</p>
+<ul>
+<li>database.rule.json : DB 데이터 읽기 쓰기 규칙. </li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 디폴트 규칙</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"rules"</span>: &#123;</span><br><span class="line">    <span class="attr">".read"</span>: <span class="string">"auth != null"</span>,</span><br><span class="line">    <span class="attr">".write"</span>: <span class="string">"auth != null"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>str은 원시 데이터타입으로 보이는데, 신기하게 객체처럼 메서드가 작동한다! 어떻게 된걸까?</p>
-<blockquote>
-<p>자바스크립트에서는 문자열과 관련된 어떤 작업을 하려고 할때 임시로 문자열 객체를 만들고 사용이 끝나면 제거한다.</p>
-</blockquote>
-<p>str.prop을 하는 순간 내부적으로 String 객체가 만들어 지고 저장되지만, 다시 해당 객체는 제거되기 때문에 str.prop을 호출하면 undefined가 나오는 것이다.</p>
-<p>래퍼 객체는 Number, String, Boolean이 존재한다.</p>
-<h2 id="참조"><a href="#참조" class="headerlink" title="참조"></a>참조</h2><p><code>var a = {};</code> 일때 a는 객체를 가리키는 참조이다. 객체의 메모리 공간을 직접 접근이 불가능하므로, 참조를 통해 접근한다.</p>
-<blockquote>
-<p>값 복사시, <strong>객체 자체가 아닌 참조(포인터)를 복사</strong>한다. 따라서 한쪽을 조작시 다른 쪽도 반영된다.</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = a;</span><br><span class="line">b.x = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>public/index.html : 폴더를 생성하고 index파일을 생성한다.</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.gstatic.com/firebasejs/4.1.2/firebase.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="comment">// .... 이곳에 웹용 파이어베이스 코드를 추가해준다.(firebase 홈)</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> config = &#123;</span></span><br><span class="line">      ...</span><br><span class="line">    &#125;;</span><br><span class="line">    firebase.initializeApp(config);</span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	성공!</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="매개변수-전달"><a href="#매개변수-전달" class="headerlink" title="매개변수 전달"></a>매개변수 전달</h2><p>위 변수들을 매개변수로 저장할 때에도, 값 복사와 동일한 결과가 나온다. 원시타입의 경우에는 값이 복사되고, 참조값의 경우에는 참조값이 복사된다.</p>
-<blockquote>
-<p>참조값을 함수로 넘겨 변경하면 밖에서도 변경된다</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addX</span>(<span class="params">ref</span>) </span>&#123;</span><br><span class="line">    ref.x = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line">addX(a);</span><br><span class="line"><span class="built_in">console</span>.log(a.x); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>firebase.json : 호스팅시 어떤 폴더를 이용할 것이며, 어떤 경로와 어떤 파일을 연결할지 설정</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"database"</span>: &#123;</span><br><span class="line">    <span class="attr">"rules"</span>: <span class="string">"database.rules.json"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"hosting"</span>: &#123;</span><br><span class="line">    "public": "public", // 페이지가 들어 있는 폴더명</span><br><span class="line">    "rewrites": [&#123;</span><br><span class="line">      "source": "**",   // 페이지 주소</span><br><span class="line">      "destination": "/index.html" // 연결할 페이지</span><br><span class="line">     &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="타입-판별"><a href="#타입-판별" class="headerlink" title="타입 판별"></a>타입 판별</h3><p>원시타입 : typeof </p>
-<p>참조타입 : instanceof </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// Object</span></span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line">person <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="가비지-컬렉션"><a href="#가비지-컬렉션" class="headerlink" title="가비지 컬렉션"></a>가비지 컬렉션</h3><p>함수 스코프를 벗어난 변수들은 자동으로 가비지 컬렉션의 대상이 된다.</p>
+<ol start="6">
+<li>서버 구동</li>
+</ol>
 <blockquote>
-<p>그러나 전역변수는 해당 웹사이트가 종료되기 전까지 계속 존재하므로 사용하지 않게 되면 null로 초기화해주는 습관이 필요하다.</p>
+<p>&gt; firebase serve</p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
-<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
+<p>위 키워드를 입력하고 <a href="http://localhost:5000" target="_blank" rel="noopener">http://localhost:5000</a> 을 접속하여 페이지가 나오는 것을 확인한다.</p>
+<h2 id="권한-인증"><a href="#권한-인증" class="headerlink" title="권한 인증"></a>권한 인증</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auth = firebase.auth();</span><br><span class="line"><span class="keyword">var</span> userInfo;</span><br><span class="line"><span class="keyword">var</span> authProvider = <span class="keyword">new</span> firebase.auth.GoogleAuthProvider();</span><br><span class="line"><span class="comment">// 팝업 형태로 열어줌</span></span><br><span class="line"><span class="comment">// 성공 실패 구분</span></span><br><span class="line">auth.onAuthStateChanged(<span class="function"><span class="keyword">function</span> (<span class="params">user</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (user) &#123;</span><br><span class="line">    <span class="comment">// 인증 성공시</span></span><br><span class="line">    userInfo = user;</span><br><span class="line">    getKanbanlist(); <span class="comment">// 아래 함수 구현</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 인증 실패시, 인증 팝업창을 뛰워줌</span></span><br><span class="line">    auth.signInWithPopup(authProvider);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h2><ul>
+<li>index.html</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> database = firebase.database();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanbanlist</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Firebase console DB에서 만든 데이터 경로대로 데이터를 받아옴.</span></span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">'kanbans/'</span> + userInfo.uid);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Firebase는 비동기 방식, FB DB에 추가되면 즉시 콜백으로 데이터를 받아온다.</span></span><br><span class="line">  kanbanRef.on(<span class="string">'child_added'</span>, onChildAdded);</span><br><span class="line">  kanbanRef.on(<span class="string">'child_changed'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> key = data.key;</span><br><span class="line">    <span class="keyword">var</span> txt = data.val().txt;</span><br><span class="line">    <span class="comment">// 해당 데이터로 html에 데이터를 수정.</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">onChildAdded</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key = data.key;</span><br><span class="line">  <span class="keyword">var</span> kanbanData = data.val();</span><br><span class="line">  <span class="keyword">var</span> txt = kanbanData.txt;</span><br><span class="line">  <span class="comment">// 해당 데이터를 html 요소에 추가.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 데이터 단일 건 가져오기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key)</span><br><span class="line">  .once(<span class="string">'value'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">snapshot</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (snapshot.val() != <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// 가져온 데이터를 저장</span></span><br><span class="line">      $(<span class="string">".textarea"</span>).val(snapshot.val().txt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 삭제하기</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deleteKanban</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">  kanbanRef = database.ref(<span class="string">"kanbans/"</span> + userInfo.uid + <span class="string">"/"</span> + key);</span><br><span class="line">  kanbanRef.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="on"><a href="#on" class="headerlink" title="on"></a>on</h4><p><code>on(&#39;child_added&#39;, 메서드);</code> <code>on(&#39;child_changed&#39;, 메서드);</code> 함수를 통해 DB에 데이터가 수정, 추가시에 콜백 함수가 실행된다. 리얼타임 DB의 위력을 볼 수 있다.</p>
+<h2 id="Firebase-서버-배포"><a href="#Firebase-서버-배포" class="headerlink" title="Firebase 서버 배포"></a>Firebase 서버 배포</h2><blockquote>
+<p>&gt; firebase deploy</p>
+</blockquote>
+<p>서버에 바로 작업 내역이 반영된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course-status-2/" target="_blank" rel="noopener">https://www.inflearn.com/course-status-2/</a></p>
 
                     
                         
@@ -275,7 +325,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/2.1. javascript-변수/#post-footer"
+                                href="/2017/09/01/Google/firebase/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -315,7 +365,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 70 of 151</li>
+        <li class="pagination-number">page 70 of 152</li>
     </ul>
 </div>
 

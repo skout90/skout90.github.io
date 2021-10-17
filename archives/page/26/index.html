@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/03/25/Frontend/6.웹팩-Typescript연동/"
-                            aria-label=": 06. 웹팩(Webpack) Typescript 연동"
+                            href="/2018/04/18/Node.js/에러-핸들링/"
+                            aria-label=": 에러 핸들링"
                         >
-                            06. 웹팩(Webpack) Typescript 연동
+                            에러 핸들링
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-03-25T19:28:10+09:00">
+    <time datetime="2018-04-18T19:28:10+09:00">
 	
-		    2018.03.25
+		    2018.04.18
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Frontend/">Frontend</a>
+    <a class="category-link" href="/categories/Node-js/">Node.js</a>
 
 
     
@@ -227,28 +227,34 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>웹팩과 타입스크립트를 연동한다. 웹팩 3번 포스팅에 이어서 작성</p>
-<blockquote>
-<p>npm i typescript awesome-typescript-loader</p>
-</blockquote>
+                    <h1 id="에러-핸들링"><a href="#에러-핸들링" class="headerlink" title="에러 핸들링"></a>에러 핸들링</h1><p><a href="http://blog.jeonghwan.net/node/2017/08/17/express-error-handling.html" target="_blank" rel="noopener">http://blog.jeonghwan.net/node/2017/08/17/express-error-handling.html</a></p>
+<p><a href="https://github.com/FEDevelopers/tech.description/wiki/%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B5%EC%8A%A4%ED%94%84%EB%A0%88%EC%8A%A4-%EA%B0%80%EC%9D%B4%EB%93%9C" target="_blank" rel="noopener">https://github.com/FEDevelopers/tech.description/wiki/%EC%97%90%EB%9F%AC-%EC%B2%98%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-%EC%9D%B5%EC%8A%A4%ED%94%84%EB%A0%88%EC%8A%A4-%EA%B0%80%EC%9D%B4%EB%93%9C</a></p>
 <ul>
-<li>webpack.dev.js</li>
+<li>에러 래퍼 패턴</li>
 </ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: &#123;</span><br><span class="line">      main: [<span class="string">"./src/main.js"</span>],</span><br><span class="line">      ts: [<span class="string">"./src/index.ts"</span>]  <span class="comment">// ts파일을 추가하자!</span></span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      ...</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">        use: [</span><br><span class="line">          &#123;</span><br><span class="line">            loader: <span class="string">"awesome-typescript-loader"</span> <span class="comment">// loader를 추가</span></span><br><span class="line">          &#125;</span><br><span class="line">        ],</span><br><span class="line">      &#125;,</span><br><span class="line">      ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">wrapAsync</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 모든 오류를 .catch() 처리하고 체인의 next() 미들웨어에 전달하세요 </span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// (이 경우에는 오류 처리기)</span></span><br><span class="line"></span><br><span class="line">    fn(req, res, next).catch(next);</span><br><span class="line"></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>tsconfig.js</li>
+<li>에러 정의 및 핸들러<ul>
+<li><a href="https://github.com/hapijs/boom" target="_blank" rel="noopener">https://github.com/hapijs/boom</a></li>
+<li>400<ul>
+<li>400 : 파라미터 불충분 : badRequest</li>
+<li>401 : 로그인 필요 : unauthorized</li>
+<li>404 : 페이지 없음</li>
 </ul>
-<p>타입스크립트 컴파일 설정 파일이다!</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="string">"module"</span>: <span class="string">"commonjs"</span>, <span class="comment">// commonjs 모듈 방식 사용</span></span><br><span class="line">        <span class="string">"moduleResolution"</span>: <span class="string">"node"</span>, <span class="comment">// node_modules폴더에서 모듈 검색</span></span><br><span class="line">        <span class="string">"target"</span>: <span class="string">"es5"</span>, <span class="comment">// es5 코드로 컴파일</span></span><br><span class="line">        <span class="string">"allowJS"</span> : <span class="literal">true</span>, <span class="comment">// JS파일 포함 허용</span></span><br><span class="line">        <span class="string">"lib"</span>: [<span class="string">"es5"</span>, <span class="string">"es6"</span>, <span class="string">"dom"</span>], <span class="comment">// 컴파일을 위한 라이브러리</span></span><br><span class="line">        <span class="string">"sourceMap"</span> : <span class="literal">true</span>, </span><br><span class="line">        <span class="string">"experimentalDecorators"</span>: <span class="literal">true</span>, <span class="comment">// 데코레이터 허용</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>index.ts</li>
+</li>
+<li>500<ul>
+<li>500 : 서버 에러 </li>
+<li>504 : gatewayTimeout : 서버 시간 초과</li>
 </ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Greeting</span>(<span class="params">greeting: <span class="built_in">string</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(greeting)</span><br><span class="line">&#125;</span><br><span class="line">Greeting(<span class="string">'lala'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>에러 핸들러</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// inheritance</span></span><br><span class="line">errors.create(&#123;</span><br><span class="line">    name: <span class="string">'FatalError'</span>,</span><br><span class="line">    defaultMessage: <span class="string">'A fatal error occurred'</span>,</span><br><span class="line">&#125;);</span><br><span class="line">errors.create(&#123;</span><br><span class="line">    name: <span class="string">'FatalSecurityError'</span>,</span><br><span class="line">    defaultMessage: <span class="string">'A security error occurred, the app must exit'</span>,</span><br><span class="line">    parent: errors.FatalError</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> errors.FatalSecurityError();</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e <span class="keyword">instanceof</span> errors.FatalError) &#123;</span><br><span class="line">        <span class="comment">// exit</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Application is shutting down..."</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span> <span class="title">handleAssertionError</span>(<span class="params">error, req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> AssertionError) &#123;</span><br><span class="line">    res.status(<span class="number">400</span>).json(&#123;</span><br><span class="line">      type: <span class="string">'AssertionError'</span>,</span><br><span class="line">      message: error.message</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  next(error);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(<span class="function"><span class="keyword">function</span> <span class="title">handleDatabaseError</span>(<span class="params">error, req, res, next</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (error <span class="keyword">instanceof</span> MongoError) &#123;</span><br><span class="line">    res.status(<span class="number">503</span>).json(&#123;</span><br><span class="line">      type: <span class="string">'MongoError'</span>,</span><br><span class="line">      message: error.message</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  next(error);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-<p>타입스크립트 연동 완료.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/webpack-beyond-the-basics/" target="_blank" rel="noopener">https://www.udemy.com/webpack-beyond-the-basics/</a></p>
+<h3 id="남은-해결-과제"><a href="#남은-해결-과제" class="headerlink" title="남은 해결 과제"></a>남은 해결 과제</h3><p>bookshelf 에러 핸들링</p>
 
                     
                         
@@ -258,7 +264,7 @@
                     
                         <p>
                             <a
-                                href="/2018/03/25/Frontend/6.웹팩-Typescript연동/#post-footer"
+                                href="/2018/04/18/Node.js/에러-핸들링/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -298,7 +304,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 26 of 151</li>
+        <li class="pagination-number">page 26 of 152</li>
     </ul>
 </div>
 

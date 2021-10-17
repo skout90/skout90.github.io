@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/03/CSS/CSS-마진겹침현상/"
-                            aria-label=": CSS 마진 겹침 현상"
+                            href="/2017/09/05/Javascript/2. javascript-구문/"
+                            aria-label=": 02. Javascript 구문"
                         >
-                            CSS 마진 겹침 현상
+                            02. Javascript 구문
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-03T19:28:10+09:00">
+    <time datetime="2017-09-05T19:28:10+09:00">
 	
-		    2017.09.03
+		    2017.09.05
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,25 +227,27 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="마진겹침현상-세-가지"><a href="#마진겹침현상-세-가지" class="headerlink" title="마진겹침현상 세 가지"></a>마진겹침현상 세 가지</h2><ol>
-<li>위,아래 엘리먼트들의 마진이 겹칠시 둘 중 마진이 큰게 둘 사이의 마진이 된다.</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">div</span> &#123; <span class="attribute">border </span>: <span class="number">1px</span> solid grey &#125;</span></span><br><span class="line"><span class="css">	<span class="selector-class">.up</span> &#123; <span class="attribute">margin-bottom</span>: <span class="number">40px</span> &#125;</span></span><br><span class="line"><span class="css">	<span class="selector-class">.down</span> &#123; <span class="attribute">margin-top</span>: <span class="number">30px</span> &#125;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"up"</span>&gt;</span>abc<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"down"</span>&gt;</span>def<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+                    <p>알아두면 좋은 구문들을 기록한다.</p>
+<h3 id="async-defer"><a href="#async-defer" class="headerlink" title="async, defer"></a>async, defer</h3><p>script를 비동기적으로 다운한다. 외부파일만 적용된다.</p>
+<p><img src="http://www.growingwiththeweb.com/images/2014/02/26/async-vs-defer-twitter.png" alt="async defer에 대한 이미지 검색결과"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="keyword">async</span> src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script defer src=<span class="string">".."</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<p><img src="http://i.imgur.com/Rz5XDXc.png" alt="img"></p>
-<ol start="2">
-<li>위,아래 엘리먼트들의 마진이 겹치고, 위의 엘리먼트의 시각적 요소가 없어지면, 시각적 요소가 없어진 엘리먼트 마진의 top-bottom과/ left-right은 큰값으로 합쳐져 계산된다.</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.up</span> &#123;</span></span><br><span class="line">  margin-top: 30px;</span><br><span class="line">  margin-bottom: 40px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.down</span> &#123;</span></span><br><span class="line">  border : 1px solid grey;</span><br><span class="line">  margin-top: 20px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"up"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"down"</span>&gt;</span>def<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>async</code>는 다운 받는 즉시 실행</p>
+<p><code>defer</code>는 html파싱이 끝난 후 실행시킨다.</p>
+<h3 id><a href="#" class="headerlink" title></a><!DOCTYPE html></h3><p>문서형정의(DTD:Document Type Definition)은 html 버젼을 선언하여, 렌더링에 도움을 준다. 생략시에는 쿼크모드로 돌입한다.</p>
+<blockquote>
+<p>쿼크모드 : 여러 비표준기능이 실행 되는 모드로, 브라우저 별로 실행결과가 다를 수 있다.</p>
+</blockquote>
+<p><code>&lt;!DOCTYPE html&gt;</code>을 선언하면 html5로 파싱한다.</p>
+<p><code>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html4/strict.dtd&quot;&gt;</code> : Strict DTD  - center, font, iframe, strike, u, 새창띄우기 등이 제외되는 html 4.01 모드</p>
+<h3 id="스트릭트-모드"><a href="#스트릭트-모드" class="headerlink" title="스트릭트 모드"></a>스트릭트 모드</h3><p>“user strict” 를 선언하면 적용된다. : ECMA Script3의 안전하지 않은 구문들을 사용할시 에러를 발생시킨다. IE10+이상 브라우저에서 지원한다. </p>
+<h3 id="with"><a href="#with" class="headerlink" title="with"></a>with</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">with</span>(user) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">  	<span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>up의 margin-top/margin-bottom, down의 margin-top 중 가장 큰값으로 마진을 계산</p>
-<ol start="3">
-<li>부모,자식 엘리먼트 사이에서 부모의 시각적 요소가 없어지면 부모,자식 마진 중 마진이 큰 쪽이 자식 마진처럼 사용된다.</li>
-</ol>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.parent</span> &#123;</span></span><br><span class="line">  margin-top: 60px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.child</span> &#123;</span></span><br><span class="line">  border : 1px solid grey;</span><br><span class="line">  margin-top: 30px;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"parent"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"child"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>with를 사용하면 객체 이름 없이 변수를 사용할 수 있다. <em>그러나 성능 및 디버깅 어려움의 이유로 사용이 지양된다.</em></p>
+<h3 id="Switch-문"><a href="#Switch-문" class="headerlink" title="Switch 문"></a>Switch 문</h3><p>switch문 ===로 비교.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(<span class="string">"hello world"</span>) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello"</span> + <span class="string">"world"</span>) &#123;</span><br><span class="line">  	<span class="comment">/* 계속 진행 */</span>    </span><br><span class="line">  &#125; </span><br><span class="line">  <span class="keyword">case</span> <span class="string">"hello world"</span> :</span><br><span class="line">    alert(<span class="string">"45"</span>);</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">default</span> :</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>.child의 margin-top이 60 이상이 될때 적용된다. 그전에 겹쳐서 .parent의 margin-top 이 사용.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>생활코딩 CSS</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍, 니콜라스 자카스</p>
 
                     
                         
@@ -255,7 +257,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/03/CSS/CSS-마진겹침현상/#post-footer"
+                                href="/2017/09/05/Javascript/2. javascript-구문/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -295,7 +297,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 64 of 151</li>
+        <li class="pagination-number">page 64 of 152</li>
     </ul>
 </div>
 

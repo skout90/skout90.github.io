@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/06/12/Angular/Angular CLI 커맨드 정리/"
-                            aria-label=": Angular CLI 커맨드 정리"
+                            href="/2017/06/12/Angular/9.2. HTML 바인딩/"
+                            aria-label=": 09.2. HTML 바인딩"
                         >
-                            Angular CLI 커맨드 정리
+                            09.2. HTML 바인딩
                         </a>
                     
                 </h1>
@@ -227,59 +227,20 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Angular2 커맨드 정리</p>
-<h2 id="Node-js-설치"><a href="#Node-js-설치" class="headerlink" title="Node.js 설치"></a>Node.js 설치</h2><p><a href="https://nodejs.org/en/download" target="_blank" rel="noopener">https://nodejs.org/en/download</a></p>
-<h2 id="Angular-CLI-설치"><a href="#Angular-CLI-설치" class="headerlink" title="Angular CLI 설치"></a>Angular CLI 설치</h2><blockquote>
-<p>$ npm install -g angular-cli</p>
-</blockquote>
-<h2 id="프로젝트-만들기"><a href="#프로젝트-만들기" class="headerlink" title="프로젝트 만들기"></a>프로젝트 만들기</h2><blockquote>
-<p>$ ng new 프로젝트명</p>
-</blockquote>
-<h1 id="포트-변경"><a href="#포트-변경" class="headerlink" title="포트 변경"></a>포트 변경</h1><blockquote>
-<p>$ ng serve –port 4202</p>
-</blockquote>
-<h2 id="구성요소-추가"><a href="#구성요소-추가" class="headerlink" title="구성요소 추가"></a>구성요소 추가</h2><ul>
-<li><p>컴포넌트 추가</p>
-<blockquote>
-<p>$ ng g component 컴포넌트명</p>
-</blockquote>
-</li>
+                    <ul>
+<li>방법 1</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [innerHTML]=&quot;theHtmlString&quot;&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><p>지시자 추가</p>
-<blockquote>
-<p>$ ng g directive 지시자명</p>
-</blockquote>
-</li>
-<li><p>파이프 추가</p>
-<blockquote>
-<p>$ ng g pipe 파이프명</p>
-</blockquote>
-</li>
-<li><p>서비스 추가</p>
-<blockquote>
-<p>$ ng g service 서비스명</p>
-</blockquote>
-</li>
+<li><p>방법 2</p>
+<h1 id="id-부여"><a href="#id-부여" class="headerlink" title="id 부여"></a>id 부여</h1></li>
 </ul>
-<h2 id="빌드-및-실행"><a href="#빌드-및-실행" class="headerlink" title="빌드 및 실행"></a>빌드 및 실행</h2><ul>
-<li><p>개발서버 실행</p>
-<blockquote>
-<p>$ ng serve</p>
-</blockquote>
-</li>
-<li><p>빌드</p>
-<blockquote>
-<p>$ ng build</p>
-</blockquote>
-</li>
-<li><p>프로덕션 빌드</p>
-<blockquote>
-<p>$ ng build -prod</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div #scheduleContents&gt;&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="컴포넌트-코드"><a href="#컴포넌트-코드" class="headerlink" title="컴포넌트 코드"></a>컴포넌트 코드</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component, ViewChild, ElementRef &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">    templateUrl: <span class="string">"some html file"</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainPageComponent &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ViewChild</span>(<span class="string">'dataContainer'</span>) dataContainer: ElementRef;</span><br><span class="line"></span><br><span class="line">    loadData(data) &#123; <span class="comment">// 데이터를 불러오는 로직 추가</span></span><br><span class="line">        <span class="keyword">this</span>.dataContainer.nativeElement.innerHTML = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://stackoverflow.com/questions/31548311/angular-2-html-binding" target="_blank" rel="noopener">http://stackoverflow.com/questions/31548311/angular-2-html-binding</a></p>
 
                     
                         
@@ -289,7 +250,7 @@
                     
                         <p>
                             <a
-                                href="/2017/06/12/Angular/Angular CLI 커맨드 정리/#post-footer"
+                                href="/2017/06/12/Angular/9.2. HTML 바인딩/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -318,7 +279,18 @@
           </li>
         
         
-        <li class="pagination-number">page 151 of 151</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/page/152/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 151 of 152</li>
     </ul>
 </div>
 

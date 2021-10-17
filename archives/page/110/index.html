@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/CSS/position속성정리/"
-                            aria-label=": CSS Position 속성 정리"
+                            href="/2017/07/24/CSS/display_visibility_태그정리/"
+                            aria-label=": CSS display, visibility 속성"
                         >
-                            CSS Position 속성 정리
+                            CSS display, visibility 속성
                         </a>
                     
                 </h1>
@@ -227,30 +227,40 @@
             </div>
             
                 <div class="postShorten-content">
-                    <ul>
-<li><strong>static 속성</strong><ul>
-<li>기본값</li>
-<li><code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code>  속성이 <strong>무시</strong>됌.</li>
+                    <p>inline 속성 : <code>&lt;b&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;img&gt;</code>, <code>&lt;a&gt;</code> 등 줄 바꿈이 되지 않음, 주로 줄속에 넣는 요소</p>
+<p>block 속성 : <code>&lt;table&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;form&gt;</code> 등 줄 바꿈이 됌. 가로 화면 100%를 차지.</p>
+<h2 id="display"><a href="#display" class="headerlink" title="display"></a>display</h2><ul>
+<li><strong>display: inline</strong> : 요소들을 inline 요소 처럼 표시</li>
+<li><strong>display: block</strong> : 요소들을 block 요소 처럼 표시</li>
+<li><strong>display:none</strong> : 박스가 생성되지 않고, <em>공간을 차지하지도 않음.</em></li>
+<li><strong>float</strong> : block 요소들을 정렬함.</li>
+<li><strong>dispaly:inline-block</strong> : 박스모양을 inline처럼 늘어뜨림.</li>
+<li><strong>display:table-cell</strong> : 테이블 셀처럼 블록요소들을 늘어뜨린다.</li>
 </ul>
-</li>
-<li><strong>relative 속성</strong><ul>
-<li>별도의 프로퍼티 지정하지 않는 이상 static과 동일</li>
-<li><strong>인접요소</strong>와의 거리 설정 <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> 지정</li>
+<h2 id="inline-float-inline-block-table-cell의-차이"><a href="#inline-float-inline-block-table-cell의-차이" class="headerlink" title="inline, float, inline-block, table-cell의 차이"></a>inline, float, inline-block, table-cell의 차이</h2><p>셋 모두, block 요소들을 쭉 늘어뜨려 정리하는 역할을 가지고 있다. 그럼 어떤 차이점이 있나?</p>
+<ol>
+<li><strong>inline, inline-block</strong></li>
+</ol>
+<p>인라인 요소를 사용할 경우, 정렬은 되지만 요소들을 엔터로 구분한 것 때문에 빈칸이 생기게 된다.</p>
+<p><img src="https://i.stack.imgur.com/aDgsb.png" alt="display:inline image"></p>
+<ol start="2">
+<li><strong>float</strong></li>
+</ol>
+<p>float 요소를 사용할 경우, 감싸고 있는 div요소가 붕괴된다.</p>
+<p><img src="https://i.stack.imgur.com/oIMvg.png" alt="float:left image"></p>
+<ol start="3">
+<li><strong>table-cell</strong></li>
+</ol>
+<p>빈칸 없이, 테이블 모양으로 늘어뜨려진다. margin 속성을 주어도 요소간에 공간이 생기지 않는다.</p>
+<p><img src="https://i.stack.imgur.com/BPtXn.png" alt="display:table-cell image"></p>
+<h2 id="visibility"><a href="#visibility" class="headerlink" title="visibility"></a>visibility</h2><p>어떤 요소를 보이게할지 숨길지 결정</p>
+<ul>
+<li>visibility: visible : 기본값, 요소가 보임</li>
+<li>visibility: hidden : 요소가 보이지 않음, <em>공간을 차지함</em></li>
+<li>visibility: collapse : <table> 태그에서만 사용, 행과 열을 숨김.</table></li>
 </ul>
-</li>
-<li><strong>absolute 속성</strong><ul>
-<li>가장 가까운 <strong>조상 요소</strong>에  <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> 에 따라 위치가 결정</li>
-<li>부모요소가  relative일시, <code>left, right, bottom, top</code>은 부모의 영향을 받는다.</li>
-<li>조상 요소가 없을 시에, window의 북서쪽 모서리 끝을 기준으로 정렬됌.</li>
-</ul>
-</li>
-<li><strong>fixed 속성</strong><ul>
-<li>스크롤 되더라도 같은 곳에 위치, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>left</code> 지정</li>
-<li>모바일에서는 고정 엘리먼트 지원이 불안정</li>
-</ul>
-</li>
-</ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>position : <a href="http://ko.learnlayout.com/position.html" target="_blank" rel="noopener">http://ko.learnlayout.com/position.html</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://stackoverflow.com/questions/11805352/floatleft-vs-displayinline-vs-displayinline-block-vs-displaytable-cell" target="_blank" rel="noopener">http://stackoverflow.com/questions/11805352/floatleft-vs-displayinline-vs-displayinline-block-vs-displaytable-cell</a></p>
+<p><a href="http://aboooks.tistory.com/85" target="_blank" rel="noopener">http://aboooks.tistory.com/85</a></p>
 
                     
                         
@@ -260,7 +270,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/CSS/position속성정리/#post-footer"
+                                href="/2017/07/24/CSS/display_visibility_태그정리/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -300,7 +310,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 110 of 151</li>
+        <li class="pagination-number">page 110 of 152</li>
     </ul>
 </div>
 

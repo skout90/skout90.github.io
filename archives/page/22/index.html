@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/06/20/CSS/텍스트 많을 경우 기호 생략/"
-                            aria-label=": 텍스트 많을 경우 생략 기호"
+                            href="/2018/08/22/Vue/자식-컴포넌트의-메서드-호출/"
+                            aria-label=": 자식 컴포넌트의 함수 호출"
                         >
-                            텍스트 많을 경우 생략 기호
+                            자식 컴포넌트의 함수 호출
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-06-20T19:28:10+09:00">
+    <time datetime="2018-08-22T19:28:10+09:00">
 	
-		    2018.06.20
+		    2018.08.22
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/CSS/">CSS</a>
+    <a class="category-link" href="/categories/Vue/">Vue</a>
 
 
     
@@ -227,10 +227,17 @@
             </div>
             
                 <div class="postShorten-content">
-                    <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">height</span>: 48<span class="selector-tag">px</span>;</span><br><span class="line">		</span><br><span class="line"><span class="selector-tag">display</span>: <span class="selector-tag">-webkit-box</span>;</span><br><span class="line"><span class="selector-tag">-webkit-line-clamp</span>: 2;</span><br><span class="line"><span class="selector-tag">-webkit-box-orient</span><span class="selector-pseudo">:vertical</span>;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">overflow</span>: <span class="selector-tag">hidden</span>;</span><br><span class="line"><span class="selector-tag">text-overflow</span>: <span class="selector-tag">ellipsis</span>;</span><br></pre></td></tr></table></figure>
+                    <p>ref 또는 eventbus 를 사용한다.  여기서는 ref를 사용.</p>
+<ul>
+<li><p>부모 컴포넌트</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;custom-full-calendar ref=&quot;calendar&quot; /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  import &#123;CustomFullCalendar&#125; from &apos;@&apos;</span><br><span class="line"> </span><br><span class="line">  export default &#123;</span><br><span class="line">    components: &#123;</span><br><span class="line">        CustomFullCalendar</span><br><span class="line">    &#125;,</span><br><span class="line">	methods: &#123;</span><br><span class="line">      nextWeekDate() &#123;</span><br><span class="line">  		this.$refs.calendar.nextDate() // 자식 컴포넌트의 함수를 호출</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>자식 컴포넌트</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;div class=&quot;custom-full-calendar&quot; /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  import &#123;CustomFullCalendar&#125; from &apos;@&apos;</span><br><span class="line"> </span><br><span class="line">  export default &#123;</span><br><span class="line">	methods: &#123;</span><br><span class="line">      nextDate() &#123;</span><br><span class="line">  		console.log(&apos;다음 날짜 입니다&apos;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
-<p>height 지정,  webkit 브라우저에서는 line-clamp를 사용하고, fallback시 text-overflow: eclipssis가 사용된다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/6572330/is-it-possible-to-use-text-overflowellipsis-on-multiline-text" target="_blank" rel="noopener">https://stackoverflow.com/questions/6572330/is-it-possible-to-use-text-overflowellipsis-on-multiline-text</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/40957008/how-to-access-to-a-child-method-from-the-parent-in-vue-js/47565763#47565763" target="_blank" rel="noopener">https://stackoverflow.com/questions/40957008/how-to-access-to-a-child-method-from-the-parent-in-vue-js/47565763#47565763</a></p>
 
                     
                         
@@ -240,7 +247,7 @@
                     
                         <p>
                             <a
-                                href="/2018/06/20/CSS/텍스트 많을 경우 기호 생략/#post-footer"
+                                href="/2018/08/22/Vue/자식-컴포넌트의-메서드-호출/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -280,7 +287,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 22 of 151</li>
+        <li class="pagination-number">page 22 of 152</li>
     </ul>
 </div>
 

@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/13/Javascript/5.2. Javascript-콜백/"
-                            aria-label=": 05.2. Function 콜백, Promise"
+                            href="/2017/08/15/Web/소켓이란/"
+                            aria-label=": 소켓이란"
                         >
-                            05.2. Function 콜백, Promise
+                            소켓이란
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-13T01:00:00+09:00">
+    <time datetime="2017-08-15T19:28:10+09:00">
 	
-		    2017.08.13
+		    2017.08.15
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/Web/">Web</a>
 
 
     
@@ -227,106 +227,35 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="콜백이란"><a href="#콜백이란" class="headerlink" title="콜백이란?"></a>콜백이란?</h2><p>콜백이란 인자로 함수를 넘겨주고, 인자를 받은 함수가 해당 함수를 호출하는 것을 의미.</p>
-<p>JS에서는 <code>함수가 인자로 전달 될 수 있는 특성</code>을 이용하여 콜백이 동작한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 로직이 끝나면 콜백 함수를 호출</span></span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callbackFunc</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(callbackFunc, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>비동기 처리를 위해서도 콜백이 사용된다.</strong></li>
+                    <h4 id="http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API"><a href="#http-프로토콜-기반으로-웹브라우저와-웹-서버간-양방향-통신을-지원하기-위한-표준-API" class="headerlink" title="http 프로토콜 기반으로 웹브라우저와 웹 서버간 양방향 통신을 지원하기 위한 표준 API"></a>http 프로토콜 기반으로 웹브라우저와 웹 서버간 <code>양방향 통신</code>을 지원하기 위한 표준 API</h4><ul>
+<li>서버와 클라이언트에는 각각 소켓이라는 부분이 있고 이 부분을 통해 서로 정보를 공유한다.</li>
 </ul>
-<p>JS는 본래 비동기적으로 실행이된다. 그래서, 작업이 끝나고 실행되야할 함수를 콜백함수로 넘김으로써, 작업이 끝나고 실행되도록 할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">valueCallback</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> result;</span><br><span class="line">	<span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    	result = <span class="number">10</span>;</span><br><span class="line">    	valueCallback(result);</span><br><span class="line">	&#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">f1(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>2 초 후에, f1 함수 인자로 넘긴, 함수가 실행되는 것을 확인할 수 있다.</p>
-<h1 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h1><p>위 콜백 함수를 좀더 효율적으로 작성할 수 있게 해주는 것이 Promise 이다. Promise는 ES6이상에서는 언어에 내장되어 있으며, 그 이전 버젼에서는 <a href="http://bluebirdjs.com/docs/getting-started.html" target="_blank" rel="noopener">bluebird</a>와 <a href="https://github.com/kriskowal/q" target="_blank" rel="noopener">Q.js</a> 등의 라이브러리를 추가하여 사용할 수 있다.</p>
-<p>Promise 구현체를 사용하여 명세에 따라 정의한 Promise 객체는 모두 <code>then()</code> 메소드를 가지고 있어서 Callback을 사용하지 않고도 절차적으로 동작하는 코드를 짤 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f1 = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; resolve(<span class="number">10</span>); &#125;, <span class="number">2000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br><span class="line">f1().then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h3 id="bluebird"><a href="#bluebird" class="headerlink" title="bluebird"></a>bluebird</h3><p>Promise의 구현체인 bluebird에 대해 알아보자</p>
-<h4 id="코어"><a href="#코어" class="headerlink" title="코어"></a>코어</h4><ul>
-<li><strong>new Promise()</strong></li>
-</ul>
-<p>Promise의 가장 기초가 되는 단위로, <code>new Promise(function(resolve, reject) {...})</code> 의 형태를 가진다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(error) reject(error);</span><br><span class="line">    <span class="keyword">else</span> resolve(success);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>then()</strong></li>
-</ul>
-<p>promise의 함수가 정상적으로 마무리를 했다면 resolve를 실행하는데, 그럼 .then()이 실행된다. 그 전까지 then의 실행은 보류된다.</p>
+<h2 id="기존의-양방향-통신"><a href="#기존의-양방향-통신" class="headerlink" title="기존의 양방향 통신"></a>기존의 양방향 통신</h2><p>http 규격 자체가 서버로의 단방향 통신을 위해 만들어짐. webSocket 이전에는 일반 http request에 트릭을 이용해 실시간인 것 처럼 보이게 하였다.</p>
+<ol>
+<li><p>polling : 클라이언트가 평범한 http request를 계속 날림, but.. 비효율적</p>
+<p><img src="http://2.bp.blogspot.com/-cvWY81etsao/ViZSUVxywxI/AAAAAAAAMHo/wxrd6dIntM8/s320/HttpPolling.gif" alt="img"></p>
+</li>
+<li><p>long polling : 클라이언트가 http request를 날리고 기다림, 서버의 이벤트 response를 받고 연결 종료. but 이벤트의 시간간격이 좁거나 다수 클라이언트 동시 접속시 부하 문제 있음.</p>
+<p><img src="http://2.bp.blogspot.com/-eL9rxi8th2A/ViZSW0ggEwI/AAAAAAAAMH4/k4S4-dRz3t4/s320/HttpLongPolling.gif" alt="img"></p>
+</li>
+<li><p>streaming : 서버로 http request를 날리고, 요청 끊지 않고 필요한 메세지만 보내기를 반복.</p>
+<p><img src="http://4.bp.blogspot.com/-sRVlAdeU-Kw/ViZSWw-wB2I/AAAAAAAAMH0/3CmKGISDV-A/s320/HttpStreaming.gif" alt="img"></p>
+</li>
+</ol>
+<h2 id="Web-Socket"><a href="#Web-Socket" class="headerlink" title="Web Socket"></a>Web Socket</h2><p>HTML5 표준의 일부로 webSocket이 만들어지게 된다.</p>
 <blockquote>
-<p> 위에서 실행했던 함수의 결과값을 매개변수로 갖을 수 있다.</p>
+<p>webSocket이 기존의 일반 TCP Socket과 다른 점은 최초 접속이 일반 http request를 통해 handshaking 과정을 통해 이루어 진다는 점. http request를 그대로 사용하기 때문에 기존 80, 443 포트로 접속하여도 방화벽 열지 않고도 양방형 통신이 가능, CORS 적용 과정도 동일.</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">    <span class="keyword">else</span> resolve(users);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">users</span>)</span>&#123;</span><br><span class="line">    res.send(users);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>catch()</strong></li>
+<h6 id="그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원"><a href="#그러나…-web-socket-미지원-브라우저들이-있음-IE의-경우-11만-지원" class="headerlink" title="그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원"></a>그러나…. web socket 미지원 브라우저들이 있음. IE의 경우 11만 지원</h6><h4 id="지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자"><a href="#지원하면-web-socket을-쓰고-아니면-이전의-트릭을-사용하자" class="headerlink" title="지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!"></a>지원하면 web socket을 쓰고, 아니면 이전의 트릭을 사용하자!</h4><ul>
+<li><p><strong>socket.io(<a href="http://socket.io" target="_blank" rel="noopener">http://socket.io</a>)</strong></p>
+<p>node.js 기반으로 만들어진 기술, 브라우저에 구애 받지 않고 실시간 통신이 가능. 모든 코드가 javascript로 작성되어 있어서 자바 개발자들은 socket.io를 쓸 수 없다. <a href="https://github.com/keesun/mod-socket-io" target="_blank" rel="noopener">자바로 개발이 가능하게 해주는 방법</a>이 몇가지 있긴한 것 같지만 역시 javascript 기반 솔루션은 javascript로 개발해야 문제발생을 줄일 수 있음.</p>
+</li>
+<li><p><strong>sockJS(<a href="http://sockjs.org" target="_blank" rel="noopener">http://sockjs.org</a>)</strong></p>
+<p>springframework에서 websocket 지원. 서버 개발시 스프링 설정에서 일반 webSocket으로 통신할지 SockJS 호환으로 통신할지 결정할 수 있음.</p>
+</li>
 </ul>
-<p>에러가 발생하여 reject가 수행되었을때, 실행된다. catch를 마지막에 연결하면 모든 에러처리를 한꺼번에 할 수도 있다.</p>
-<ul>
-<li><strong>Promise.all()</strong></li>
-</ul>
-<p>Promise들을 병렬로 처리할 수 있게 해준다. then의 매개변수값으로 배열이 들어온다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.all([</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">        <span class="comment">// ....</span></span><br><span class="line">        <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">        <span class="keyword">else</span> resolve(result1);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line">        <span class="comment">// ....</span></span><br><span class="line">        <span class="keyword">if</span>(err) reject(err);</span><br><span class="line">        <span class="keyword">else</span> resolve(result2);</span><br><span class="line">    &#125;</span><br><span class="line">]).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> result1 = result[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> result2 = result[<span class="number">1</span>];</span><br><span class="line">  <span class="comment">// ....</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>spread()</strong></li>
-</ul>
-<p>사용법은 then과 동일하지만 파라미터를 돌려주는 방식이 다르다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">Promise</span>.all([</span><br><span class="line">	<span class="comment">//위와 동일    </span></span><br><span class="line">]).spread(<span class="function"><span class="keyword">function</span>(<span class="params">result1, result2</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>finally</strong>()</li>
-</ul>
-<p>무조건 마지막에 실행된다. 에러가 있어도 무조건 실행이 된다.</p>
-<ul>
-<li><strong>bind</strong>()</li>
-</ul>
-<p>then과 then 사이에서 변수를 공통으로 쓸 수 있게 만들어준다. .bind를 사용한 함수내에서 변수의 사용이 자유롭다.</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">somethingAsync().bind(&#123;&#125;).spread(function (aValue, bValue) &#123;</span><br><span class="line">    <span class="keyword">this</span>.aValue = aValue;</span><br><span class="line">    <span class="keyword">this</span>.bValue = bValue;</span><br><span class="line">    <span class="keyword">return</span> somethingElseAsync(aValue, bValue);</span><br><span class="line">&#125;).then(function (cValue) &#123;</span><br><span class="line">    <span class="comment">// 여기서도 그대로 쓸 수 있다.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.aValue + <span class="keyword">this</span>.bValue + cValue;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Promise.map()</strong></li>
-</ul>
-<p>인자로 literable한 인자를 넣으면, 반복되며 해당 함수를 호출할 수 있게 해준다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promises = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; fileNames.length; ++i) &#123;</span><br><span class="line">    promises.push(fs.readFileAsync(fileNames[i]));</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">Promise</span>.all(promises).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Using Promise.map:</span></span><br><span class="line"><span class="built_in">Promise</span>.map(fileNames, <span class="function"><span class="keyword">function</span>(<span class="params">fileName</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Promise.map awaits for returned promises as well.</span></span><br><span class="line">    <span class="keyword">return</span> fs.readFileAsync(fileName);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"done"</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="프로미스화"><a href="#프로미스화" class="headerlink" title="프로미스화"></a>프로미스화</h4><ul>
-<li><strong>Promise.promisify()</strong></li>
-</ul>
-<p>인자로 받은 해당 함수를 promise wrapper로 감싸 리턴한다.  함수의 마지막 인자는 callback 함수이어야 한다.</p>
-<blockquote>
-<p> readFile을 promise로 바꾸는 예제</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> readFile = <span class="built_in">Promise</span>.promisify(<span class="built_in">require</span>(<span class="string">"fs"</span>).readFile);</span><br><span class="line"></span><br><span class="line">readFile(<span class="string">"myfile.js"</span>, <span class="string">"utf8"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">contents</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">eval</span>(contents);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"The result of evaluating myfile.js"</span>, result);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Error reading file"</span>, e);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Promise.promisifyAll()</strong></li>
-</ul>
-<p>모듈 객체의 함수들을 모두, promise wrapper로 감싸 리턴한다. promisify의 복수형</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">Promise</span>.promisifyAll(<span class="built_in">require</span>(<span class="string">"fs"</span>));</span><br><span class="line"></span><br><span class="line">fs.readFileAsync(<span class="string">"myfile.js"</span>, <span class="string">"utf8"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">contents</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(contents);</span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(e.stack);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<h4 id="동기화-감시"><a href="#동기화-감시" class="headerlink" title="동기화 감시"></a>동기화 감시</h4><ul>
-<li>.isFulfilled / .isRejected / .isPending / .isCancelled</li>
-</ul>
-<p>Promise 안에서 로직을 실행하는 동안, 다음의 상태를 갖는다.</p>
-<blockquote>
-<p>pending</p>
-<p>아직 약속을 수행 중인 상태</p>
-<p>fulfilled</p>
-<p>약속이 지켜진 상태</p>
-<p>rejected</p>
-<p>약속이 못지켜진 상태</p>
-<p>settled</p>
-<p>약속이 지켜졌든 안지켜졌든 결론이 난 상태</p>
-</blockquote>
-<p>상태 값을 확인 할 수 있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">result</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(result.isFulfilled()) &#123; &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%BD%9C%EB%B0%B1%EA%B3%BC-ajax/" target="_blank" rel="noopener">https://www.inflearn.com/course/%EC%A7%80%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%96%B8%EC%96%B4-%EA%B8%B0%EB%B3%B8/%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%BD%9C%EB%B0%B1%EA%B3%BC-ajax/</a></p>
-<p><a href="http://bluebirdjs.com/docs/api-reference.html" target="_blank" rel="noopener">http://bluebirdjs.com/docs/api-reference.html</a></p>
-<p><a href="http://programmingsummaries.tistory.com/325" target="_blank" rel="noopener">http://programmingsummaries.tistory.com/325</a></p>
-<p><a href="https://stackoverflow.com/questions/38340674/javascript-settimeout-callback" target="_blank" rel="noopener">https://stackoverflow.com/questions/38340674/javascript-settimeout-callback</a></p>
-<p><a href="http://html5around.com/wordpress/tutorials/node-js%EC%97%90%EC%84%9C-bluebird-%EA%B8%B0%EC%B4%88-%EC%82%AC%EC%9A%A9%EB%B2%95-callback-%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EB%B2%97%EC%96%B4%EB%82%98%EA%B8%B0/" target="_blank" rel="noopener">http://html5around.com/wordpress/tutorials/node-js%EC%97%90%EC%84%9C-bluebird-%EA%B8%B0%EC%B4%88-%EC%82%AC%EC%9A%A9%EB%B2%95-callback-%EC%A7%80%EC%98%A5%EC%97%90%EC%84%9C-%EB%B2%97%EC%96%B4%EB%82%98%EA%B8%B0/</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://blog.naver.com/PostView.nhn?blogId=myca11&logNo=80146459609" target="_blank" rel="noopener">오바나딩요-Socket이란</a></p>
+<p><a href="http://adrenal.tistory.com/20" target="_blank" rel="noopener">시나몬브레드webSocket 으로 개발하기 전에 알고 있어야 할 것들</a></p>
 
                     
                         
@@ -336,7 +265,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/13/Javascript/5.2. Javascript-콜백/#post-footer"
+                                href="/2017/08/15/Web/소켓이란/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -376,7 +305,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 86 of 151</li>
+        <li class="pagination-number">page 86 of 152</li>
     </ul>
 </div>
 

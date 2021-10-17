@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2018/12/22/Node.js/Bookshelf-Plugins살펴보자/"
-                            aria-label=": Bookshelf plugins를 살펴보자"
+                            href="/2018/12/28/Javascript/this바인딩-분석/"
+                            aria-label=": this 바인딩 분석"
                         >
-                            Bookshelf plugins를 살펴보자
+                            this 바인딩 분석
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-12-22T19:28:10+09:00">
+    <time datetime="2018-12-28T19:28:10+09:00">
 	
-		    2018.12.22
+		    2018.12.28
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Node-js/">Node.js</a>
+    <a class="category-link" href="/categories/Javascript/">Javascript</a>
 
 
     
@@ -227,28 +227,26 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Bookshelf에 다양한 플러그인들이 많은데, 이번기회에 쓸만한 플러그인이 있나 한번 훝어 보기로 했다.</p>
-<p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
-<h3 id="Virtuals"><a href="#Virtuals" class="headerlink" title="Virtuals"></a>Virtuals</h3><p><a href="https://github.com/bookshelf/bookshelf/wiki/Plugin:-Virtuals" target="_blank" rel="noopener">https://github.com/bookshelf/bookshelf/wiki/Plugin:-Virtuals</a></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bs = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([<span class="string">'virtuals'</span>]);</span><br><span class="line"><span class="keyword">var</span> ModelWithVirtuals = bookshelf.Model.extend(&#123;</span><br><span class="line">  virtuals: &#123;</span><br><span class="line">    fullName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.get(<span class="string">'firstName'</span>) + <span class="string">' '</span> + <span class="keyword">this</span>.get(<span class="string">'lastName'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+                    <h2 id="기본-바인딩"><a href="#기본-바인딩" class="headerlink" title="기본 바인딩"></a>기본 바인딩</h2><p>전역함수 내에서 this 호출시 <strong>this = window</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'apple'</span>;</span><br><span class="line"></span><br><span class="line">getFruitName(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
 
-<p>virtuals 안에 새로운 칼럼을 조작해서 만들 수 있다!</p>
-<h3 id="Processor"><a href="#Processor" class="headerlink" title="Processor"></a>Processor</h3><p><a href="https://github.com/bookshelf/bookshelf/wiki/Plugin:-Processor" target="_blank" rel="noopener">https://github.com/bookshelf/bookshelf/wiki/Plugin:-Processor</a></p>
-<p>같은 칼럼을 조작하고 싶을때! 인자로 함수를 넘겨야함.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">bookshelf.plugin(<span class="string">'processor'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> castToDate = <span class="built_in">require</span>(<span class="string">'./processors/to-date'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MyModel = bookshelf.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'things'</span>,</span><br><span class="line">  processors: &#123;</span><br><span class="line">    <span class="comment">// loginDate is a model attribute name</span></span><br><span class="line">    loginDate: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>(value);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="암시적-바인딩"><a href="#암시적-바인딩" class="headerlink" title="암시적 바인딩"></a>암시적 바인딩</h2><h3 id="객체-function-함수-할당시"><a href="#객체-function-함수-할당시" class="headerlink" title="객체 function 함수 할당시"></a>객체 function 함수 할당시</h3><p>객체 내에 function 함수를 호출시 <strong>this = 해당 객체</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj.onPress(); <span class="comment">// "apple"</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="hidden"><a href="#hidden" class="headerlink" title="hidden"></a>hidden</h3><p>패스워드 같은 것을 리턴되지 않게 할 수 있음!</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bs = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([<span class="string">'visibility'</span>]);</span><br><span class="line">Db.Users = Orm.Model.extend(&#123;</span><br><span class="line">  tableName: <span class="string">'users'</span></span><br><span class="line">, <span class="attr">hidden</span>: [<span class="string">'password'</span>, <span class="string">'salt'</span>, <span class="string">'secret'</span>, <span class="string">'hashtype'</span>]</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// toJSON() 할때 이런식으로 하면 해당 칼럼이 빠짐</span></span><br><span class="line">toJSON(&#123; <span class="attr">visibility</span>: <span class="literal">false</span> &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="객체-arrow-function-함수-할당시"><a href="#객체-arrow-function-함수-할당시" class="headerlink" title="객체 arrow function 함수 할당시"></a>객체 arrow function 함수 할당시</h3><p>객체 내 arrow function 함수 호출시 <strong>this = 해당 컨텍스트의 부모 객체</strong></p>
+<blockquote>
+<p>arrow function은 의도적으로 컨텍스트를 할당할 수 있기 때문에 명시적 할당에 더 가깝다고 볼 수도 있다.</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"><span class="keyword">const</span> z = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">z.onPress(); <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="bookshelf-signals"><a href="#bookshelf-signals" class="headerlink" title="bookshelf-signals"></a>bookshelf-signals</h3><p><a href="https://github.com/bogus34/bookshelf-signals" target="_blank" rel="noopener">https://github.com/bogus34/bookshelf-signals</a></p>
-<p>이벤트를 각 모델에 셋팅할 필요 없이 중앙에다가 셋팅할 수 있음.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Signals = <span class="built_in">require</span>(<span class="string">'bookshelf-signals'</span>)</span><br><span class="line"><span class="keyword">const</span> db = <span class="built_in">require</span>(<span class="string">'bookshelf'</span>)(knex).plugin([Signals]);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="title">extend</span> <span class="title">db</span>.<span class="title">Model</span>(</span>&#123;</span><br><span class="line">  tabeName: <span class="string">'users'</span>  </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">db.on(<span class="string">'saved'</span>, User, () =&gt; <span class="built_in">console</span>.log(<span class="string">'user was saved!'</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="객체에-할당된-function-함수를-복사시"><a href="#객체에-할당된-function-함수를-복사시" class="headerlink" title="객체에 할당된 function 함수를 복사시"></a>객체에 할당된 function 함수를 복사시</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    getFruitName: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obj.getFruitName</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br></pre></td></tr></table></figure>
 
-<p>on(String event, [(Class|String) cls], Function handler)</p>
-<p>두번째 인자가 배열인것에 주목!! 로깅을 위한 공통 createdAt 이나 updatedAt 같은것을 이곳에서 한꺼번에 셋팅할 수 있겠다.</p>
-<p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
-<p>그외에도 더 많은 플러그인이 있으니 위 링크 참조</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://bookshelfjs.org/#plugins" target="_blank" rel="noopener">https://bookshelfjs.org/#plugins</a></p>
+<p>getCopyFruitName은 일반 함수이므로 obj.getFruitName을 할당하는 순간, this는 전역 객체가 되어버린다.</p>
+<h2 id="명시적-바인딩"><a href="#명시적-바인딩" class="headerlink" title="명시적 바인딩"></a>명시적 바인딩</h2><p>우리가 의도한대로, this를 바인딩해보자!</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getFruitName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'banana'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obje = &#123;</span><br><span class="line">    name: <span class="string">'apple'</span>,</span><br><span class="line">    onPress: getFruitName</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> getCopyFruitName = obje.onPress</span><br><span class="line"><span class="keyword">const</span> getCorectCopyFruitName = obje.onPress.bind(obje)</span><br><span class="line"></span><br><span class="line">getCopyFruitName() <span class="comment">// banana</span></span><br><span class="line">getCorrectCopyFruitName() <span class="comment">// apple</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://enarastudent.tistory.com/entry/null과-undefined의-차이" target="_blank" rel="noopener">http://enarastudent.tistory.com/entry/null과-undefined의-차이</a></p>
+<p><a href="https://stackoverflow.com/questions/1068834/object-comparison-in-javascript" target="_blank" rel="noopener">https://stackoverflow.com/questions/1068834/object-comparison-in-javascript</a></p>
 
                     
                         
@@ -258,7 +256,7 @@
                     
                         <p>
                             <a
-                                href="/2018/12/22/Node.js/Bookshelf-Plugins살펴보자/#post-footer"
+                                href="/2018/12/28/Javascript/this바인딩-분석/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -298,7 +296,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 13 of 151</li>
+        <li class="pagination-number">page 13 of 152</li>
     </ul>
 </div>
 

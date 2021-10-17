@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/06/12/Angular/11. Angular 이벤트/"
-                            aria-label=": 11. Angular 이벤트"
+                            href="/2017/06/12/Angular/09.1. 바인딩/"
+                            aria-label=": 09.1. 바인딩"
                         >
-                            11. Angular 이벤트
+                            09.1. 바인딩
                         </a>
                     
                 </h1>
@@ -227,22 +227,45 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="Mouse-click-이벤트"><a href="#Mouse-click-이벤트" class="headerlink" title="Mouse click 이벤트"></a>Mouse click 이벤트</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">'&lt;button ion-button (click)="onClick()&gt;버튼&lt;/button&gt;'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> TabsPage &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  &#125;</span><br><span class="line">  onClick() &#123;</span><br><span class="line">    alert(<span class="string">'dd'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <h2 id="단방향-바인딩-One-way-Binding"><a href="#단방향-바인딩-One-way-Binding" class="headerlink" title="단방향 바인딩(One-way Binding)"></a>단방향 바인딩(One-way Binding)</h2><p>외부에 상태 변화가 일어나면 자신의 상태를 변경. 자기 상태를 변경한다고 해서 외부에 전달 안됌.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">    templateUrl: <span class="string">`</span></span><br><span class="line"><span class="string">		&lt;input type="text" [value]="like"&gt;</span></span><br><span class="line"><span class="string">		&#123;&#123; like &#125;&#125;</span></span><br><span class="line"><span class="string">		&lt;button class="&#123;&#123;myclass&#125;&#125;"&gt;&#123;&#123;myclass&#125;&#125;&lt;/button&gt;</span></span><br><span class="line"><span class="string">	`</span>,</span><br><span class="line">    styles: [<span class="string">`</span></span><br><span class="line"><span class="string">	.my-italic &#123; font-style: italic; &#125;`</span>]</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MainPageComponent &#123;</span><br><span class="line">    like: <span class="built_in">string</span> = <span class="string">"lala"</span>;</span><br><span class="line">    myClass = <span class="string">"my-italic"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Mousemove-mouseleave-mouse-over-이벤트-동작"><a href="#Mousemove-mouseleave-mouse-over-이벤트-동작" class="headerlink" title="Mousemove, mouseleave, mouse over 이벤트 동작"></a>Mousemove, mouseleave, mouse over 이벤트 동작</h2><h3 id="지시자-선언"><a href="#지시자-선언" class="headerlink" title="지시자 선언"></a>지시자 선언</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Directive, ElementRef, HostListener, Input &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Directive</span>(&#123;</span><br><span class="line">  selector: <span class="string">'[highlight]'</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HighlightDirective &#123;</span><br><span class="line">  <span class="keyword">private</span> el: HTMLElement;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">el: ElementRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.el = el.nativeElement;</span><br><span class="line">    <span class="keyword">this</span>.el.style.fontSize = <span class="string">"30px"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mousemove'</span>) onMouseMove() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="string">"blue"</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"white"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@HostListener</span>(<span class="string">'mouseleave'</span>) onMouseLeave() &#123;</span><br><span class="line">    <span class="keyword">this</span>.el.style.backgroundColor = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.el.style.color =<span class="string">"black"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://i.imgur.com/dyuaa0U.png" alt="img"></p>
+<blockquote>
+<p>input에 입력을 해도 외부의 값에는 반영이 안되는 것을 알 수 있다.</p>
+</blockquote>
+<ul>
+<li>프로퍼티 바인딩</li>
+</ul>
+<p>[속성] 또는 bind-속성 형태로 사용</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> [value]=<span class="string">"like"</span>&gt;</span><br><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> bind-value=<span class="string">"like"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;button <span class="keyword">class</span>=<span class="string">"&#123;&#123;myclass&#125;&#125;"</span>&gt;&#123;&#123;myclass&#125;&#125;&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;button [ngClass]="myclass"&gt;&#123;&#123;myclass&#125;&#125;&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
 
-<h3 id="템플릿"><a href="#템플릿" class="headerlink" title="템플릿"></a>템플릿</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'member-list'</span>,</span><br><span class="line">  template: <span class="string">` </span></span><br><span class="line"><span class="string">  &lt;div highlight (mouseover)="setLike('like this')"&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123;like&#125;&#125;  </span></span><br><span class="line"><span class="string">  &lt;/div&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MemberListComponent &#123;</span><br><span class="line">  like: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  setLike(likethis: <span class="built_in">string</span>)&#123;</span><br><span class="line">    <span class="keyword">this</span>.like = likethis;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>클래스 바인딩</li>
+</ul>
+<p>CSS로 정의한 클래스 이름에 접근, 할당되야할 값은 <code>반드시 boolean형</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [<span class="keyword">class</span>.positive]=<span class="string">"isPositive"</span>&gt;상태&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Key-이벤트"><a href="#Key-이벤트" class="headerlink" title="Key 이벤트"></a>Key 이벤트</h2><p>특정 키의 이벤트시 동작하는 이벤트</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'key-up4'</span>,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;input #box</span></span><br><span class="line"><span class="string">      (keyup.enter)="update(box.value)"</span></span><br><span class="line"><span class="string">      (blur)="update(box.value)"&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &lt;p&gt;&#123;&#123;value&#125;&#125;&lt;/p&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> KeyUpComponent_v4 &#123;</span><br><span class="line">  value = <span class="string">''</span>;</span><br><span class="line">  update(value: <span class="built_in">string</span>) &#123; <span class="keyword">this</span>.value = value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>스타일 바인딩</li>
+</ul>
+<p>CSS로 정의한 클래스 이름에 접근, 할당 되야할 값은 <code>구체적인 스타일 이름</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div [style.color]=<span class="string">"isPositive? 'blue':'black'"</span>&gt;상태&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
 
-
+<ul>
+<li>이벤트 바인딩</li>
+</ul>
+<p>(이벤트) 또는 bind-이벤트 형태로 사용</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;button (click)=<span class="string">"onSave()"</span>&gt;저장&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;button on-click="onSave()"&gt;저장&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>그외 이벤트 정보 : <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/Events</a></p>
+<p>이벤트 정보 : <a href="https://developer.mozilla.org/en-US/docs/Web/Events" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/Events</a></p>
 </blockquote>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱</p>
-<p><a href="https://angular.io/guide/user-input" target="_blank" rel="noopener">https://angular.io/guide/user-input</a></p>
+<h2 id="양방향-바인딩-Two-way-Binding"><a href="#양방향-바인딩-Two-way-Binding" class="headerlink" title="양방향 바인딩(Two-way Binding)"></a>양방향 바인딩(Two-way Binding)</h2><p>외부&amp;내부 상태변화를 전달 및 반영함. [(ngModel)] 또는 bindon-ngModel을 사용.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> [(ngModel)]=<span class="string">"city"</span>&gt;</span><br><span class="line">&lt;input <span class="keyword">type</span>=<span class="string">"text"</span> bindon-ngModel=<span class="string">"city"</span>&gt;</span><br><span class="line"></span><br><span class="line">&lt;input [value]=<span class="string">"city"</span> (input)=<span class="string">"city=$event.target.value"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>실행 순서상 이벤트 바인딩인 ()가 처리되고, 프로퍼티 바인딩인 []가 처리 된다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>쉽고 빠르게 배우는 Angular2 프로그래밍 - 정진욱 지음</p>
 
                     
                         
@@ -252,7 +275,7 @@
                     
                         <p>
                             <a
-                                href="/2017/06/12/Angular/11. Angular 이벤트/#post-footer"
+                                href="/2017/06/12/Angular/09.1. 바인딩/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -292,7 +315,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 149 of 151</li>
+        <li class="pagination-number">page 149 of 152</li>
     </ul>
 </div>
 

@@ -202,23 +202,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/10/Javascript/5. javascript-Function/"
-                            aria-label=": 05. Function"
+                            href="/2017/09/22/etc/자신의-npmmodule-사용하기/"
+                            aria-label=": 수정한 npm_module 사용하기"
                         >
-                            05. Function
+                            수정한 npm_module 사용하기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-10T19:28:10+09:00">
+    <time datetime="2017-09-22T19:28:10+09:00">
 	
-		    2017.09.10
+		    2017.09.22
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Javascript/">Javascript</a>
+    <a class="category-link" href="/categories/etc/">etc</a>
 
 
     
@@ -227,40 +227,19 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="함수의-선언"><a href="#함수의-선언" class="headerlink" title="함수의 선언"></a><strong>함수의 선언</strong></h3><p>우리가 흔히 사용하는 <code>함수 = Function 객체의 인스턴스</code>이다.  <code>함수이름 = 함수 객체를 가리키는 포인터</code> 이다. 따라서 오버로딩이 불가능하다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수선언</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br><span class="line"><span class="comment">// 함수 표현식</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">v1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;; <span class="comment">// 마지막 ';'</span></span><br><span class="line"><span class="comment">// Funtion 객체 사용(권장X)</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"v1"</span>, <span class="string">"v2"</span>, <span class="string">"return v1 + v2"</span>);</span><br></pre></td></tr></table></figure>
-
-<p>함수 선언식은 코드 실행전에도, 모든 실행 컨텍스트에서 접근이 가능하다.</p>
+                    <p>맘에 드는 npm_module을 수정하고 사용하고 싶을때..</p>
+<ol>
+<li>해당 git repository를 fork 한다</li>
+<li>수정한다.</li>
+<li>pacakge.json에 다음과 같이 등록</li>
+</ol>
 <blockquote>
-<p>why? 함수 선언 호이스팅(끌어 올린다) 과정을 통해 실행 컨텍스트에 추가 되기 때문</p>
+<p>npm install <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a><username>/<repository>/tarball/master –save</repository></username></p>
 </blockquote>
-<p>그렇지만 함수 표현식은 코드실행전 까지 사용이 불가능하다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alert(sum(<span class="number">10</span>, <span class="number">10</span>)); <span class="comment">// 에러</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params">n1, v2</span>) </span>&#123; <span class="keyword">return</span> v1 + v2; &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="특징"><a href="#특징" class="headerlink" title="특징"></a>특징</h3><ul>
-<li><strong>함수는 값이다.</strong></li>
-</ul>
-<p>Javascript에서는 함수도 값이다. <code>var a = function() {}</code> = <code>function a() {}</code> 따라서 객체 안에 저장될 수 있다.(객체 안에 저장되면 메서드라고 불림)</p>
-<ul>
-<li><strong>함수는 인자로 전달될 수 있다.</strong></li>
-</ul>
-<p>함수는 값이기 때문에 인자로 전달 될 수도 있음.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">func, num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> func(num);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">increase</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrease</span> (<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> num - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(increase, <span class="number">1</span>));</span><br><span class="line">alert(calculator(decrease, <span class="number">1</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>함수는 함수의 리턴값으로 사용될 수 있다.</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">calculator</span> (<span class="params">mode</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> functions = &#123;</span><br><span class="line">    <span class="string">'increase'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num+<span class="number">1</span> &#125;,</span><br><span class="line">    <span class="string">'decrease'</span> : <span class="function"><span class="keyword">function</span>(<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num<span class="number">-1</span> &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> functions.mode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">alert(calculator(<span class="string">'increase'</span>)(<span class="number">1</span>)); <span class="comment">// 2</span></span><br><span class="line">alert(calculator(<span class="string">'decrease'</span>)(<span class="number">1</span>)); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
-
-<p>calculator(‘increase’) = function increase(num) { return num+1 }</p>
-<p>calculator(‘increase’)(1) = increase(1)</p>
-<ul>
-<li><strong>함수는 배열의 값으로 사용될 수 있다</strong></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> calculator = [</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num + <span class="number">10</span>; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num * num; &#125;,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">num</span>) </span>&#123; <span class="keyword">return</span> num / <span class="number">10</span>; &#125;</span><br><span class="line">];</span><br><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; calculator.length; i++) &#123;</span><br><span class="line">  num = calculator[i](num);</span><br><span class="line">  <span class="built_in">console</span>.log(num); <span class="comment">// 11, 121, 12.1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank" rel="noopener">https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
-<p>프론트엔드 개발자를 위한 자바스크립트 프로그래밍 - 니콜라스 자카스</p>
+<p>/tarball 이라는것으로 해야 한다. 그래야 gz파일이라는 걸로 다운받아지면서 설치가 가능함.</p>
+<p>내가 수정한 knex-logger</p>
+<p><a href="https://github.com/skout90/knex-logger" target="_blank" rel="noopener">https://github.com/skout90/knex-logger</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm" target="_blank" rel="noopener">https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm</a></p>
 
                     
                         
@@ -270,7 +249,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/10/Javascript/5. javascript-Function/#post-footer"
+                                href="/2017/09/22/etc/자신의-npmmodule-사용하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -310,7 +289,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 59 of 151</li>
+        <li class="pagination-number">page 59 of 152</li>
     </ul>
 </div>
 

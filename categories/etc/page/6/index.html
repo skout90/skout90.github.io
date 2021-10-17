@@ -202,17 +202,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/22/etc/자신의-npmmodule-사용하기/"
-                            aria-label=": 수정한 npm_module 사용하기"
+                            href="/2017/12/07/etc/외부망에서-내PC접속가능하게하기/"
+                            aria-label=": 외부 네트워크에서 내 PC로 접속 가능하게 하기"
                         >
-                            수정한 npm_module 사용하기
+                            외부 네트워크에서 내 PC로 접속 가능하게 하기
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-22T19:28:10+09:00">
+    <time datetime="2017-12-07T19:28:10+09:00">
 	
-		    2017.09.22
+		    2017.12.07
     	
     </time>
     
@@ -227,19 +227,15 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>맘에 드는 npm_module을 수정하고 사용하고 싶을때..</p>
-<ol>
-<li>해당 git repository를 fork 한다</li>
-<li>수정한다.</li>
-<li>pacakge.json에 다음과 같이 등록</li>
-</ol>
-<blockquote>
-<p>npm install <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a><username>/<repository>/tarball/master –save</repository></username></p>
-</blockquote>
-<p>/tarball 이라는것으로 해야 한다. 그래야 gz파일이라는 걸로 다운받아지면서 설치가 가능함.</p>
-<p>내가 수정한 knex-logger</p>
-<p><a href="https://github.com/skout90/knex-logger" target="_blank" rel="noopener">https://github.com/skout90/knex-logger</a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm" target="_blank" rel="noopener">https://stackoverflow.com/questions/13300137/how-to-edit-a-node-module-installed-via-npm</a></p>
+                    <p>NAT와 PAT를 알아야 하는데</p>
+<p>NAT(Network address translation)은 <a href="https://ko.wikipedia.org/wiki/%EC%82%AC%EC%84%A4_%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC" target="_blank" rel="noopener">사설 네트워크</a>에 속한 여러 개의 호스트가 하나의 공인 IP 주소를 사용하여 <a href="https://ko.wikipedia.org/wiki/%EC%9D%B8%ED%84%B0%EB%84%B7" target="_blank" rel="noopener">인터넷</a>에 접속하기 위함으로, 사설 IP를 라우터에서 공인 IP주소로 바꿔준다.</p>
+<p>PAT(Port Address trasnlation)는 한 개의 공인 IP주소와 여러 개의 사설 IP 주소를 포트번호를 사용하여 물린다. 공유기가 바로 이 PAT를 사용한 통신이다.</p>
+<p><strong>그래서 어떻게 외부 망에서 내 PC로 접속 가능하게 하냐면.</strong></p>
+<p>공유기 설정에 들어가서, 공유기 포워딩 기능을 활용하여</p>
+<p>외부에서 공인 IP의 특정 포트로 접속하는 경우, 나의 사설 IP로 포워딩 해준다!</p>
+<p>이때 DDNS(Dynamic Domain Name Service)를 활용하여, 유동 IP에 네이밍을 부여해줄 수 있다.(iptime에서 지원한다고 함)</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>우동사 쫑형</p>
+<p><a href="http://kentj.tistory.com/3" target="_blank" rel="noopener">http://kentj.tistory.com/3</a></p>
 
                     
                         
@@ -249,7 +245,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/22/etc/자신의-npmmodule-사용하기/#post-footer"
+                                href="/2017/12/07/etc/외부망에서-내PC접속가능하게하기/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -289,7 +285,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 6 of 7</li>
+        <li class="pagination-number">page 6 of 8</li>
     </ul>
 </div>
 

@@ -23,6 +23,25 @@
     
     
     <entry>
+      <title>Binary vs Base64 vs Blob vs File</title>
+      <link href="/2021/10/01/etc/base64-binary-blob-file-diff/"/>
+      <url>/2021/10/01/etc/base64-binary-blob-file-diff/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Binary"><a href="#Binary" class="headerlink" title="Binary"></a>Binary</h2><p>바이너리데이터(이진 컴퓨터파일)</p><h2 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h2><p>바이너리 데이터를 텍스트로 바꾸는 64진법 인코딩(BinaryToText), 바이너리 데이터 대비 33%의 데이터 양 증가함.<br>굳이 왜 Base64를 쓰는가? 순수 이진 형식으로 남아있는 경우보다. 전송/저장이 훨씬 쉽다. 순수 이진 데이터는 손상될 확률이 높다.</p><h2 id="Blob-Binary-Large-Object"><a href="#Blob-Binary-Large-Object" class="headerlink" title="Blob(Binary Large Object)"></a>Blob(Binary Large Object)</h2><p>대용량의 바이너리 데이터를 다루기 위한 Object로, 크기/타입/Url로 변경등이 있다.</p><h2 id="File"><a href="#File" class="headerlink" title="File"></a>File</h2><p>Blob의 기능을 상속하여, 사용자 파일시스템을 제어하기 위한 기능이 추가됌. lastModified, name 등.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> etc </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>1. 예제로 보는 리팩터링 시작해보기</title>
       <link href="/2020/06/20/Refactoring/1.%20%EB%A6%AC%ED%8C%A9%ED%84%B0%EB%A7%81-%EC%98%88%EC%8B%9C/"/>
       <url>/2020/06/20/Refactoring/1.%20%EB%A6%AC%ED%8C%A9%ED%84%B0%EB%A7%81-%EC%98%88%EC%8B%9C/</url>

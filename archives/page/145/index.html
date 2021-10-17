@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/07/Spring/scheduler/"
-                            aria-label=": 심플하게 스프링 스케줄러 사용하기"
+                            href="/2017/07/07/Spring/message_converter/"
+                            aria-label=": @RequestBody, @ResponseBody"
                         >
-                            심플하게 스프링 스케줄러 사용하기
+                            @RequestBody, @ResponseBody
                         </a>
                     
                 </h1>
@@ -227,42 +227,37 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Spring Quartz를 사용할때</p>
-<p>@Autowired가 안먹어서, 직접 bean을 찾아 등록해줘야 하는</p>
-<p>번거로움이 있었다.</p>
-<p>스프링 3버전 이상부터 간단히 스케줄러를 사용할 수 있다.</p>
-<ul>
-<li><strong>context-scheduler.xml</strong></li>
+                    <p>JAVA Server에 request/response를 보낼 시에, content-type을 변환해서 송신할 수 있는 기능을 제공해준다.</p>
+<blockquote>
+<p>예를들어 웹페이지에서 json으로 request한 파라미터들을 java에서 받으려면 java object로의 변환이 필요하며 마찬가지로 response 시에도 java object에서 json으로 변환이 필요하다.</p>
+</blockquote>
+<p>이러한 작업들을 해주는 어노테이션이 바로 <code>@RequestBody</code> 와 <code>@ResponseBody</code> 이다. 컨트롤러에 두 어노테이션을 추가해주면, JSON이나 key/value 방식 xml 등으로 송수신 할 수 있다.</p>
+<h2 id="설정-방법"><a href="#설정-방법" class="headerlink" title="설정 방법"></a>설정 방법</h2><ul>
+<li>spring-servlet.xml 설정파일</li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span> <span class="attr">xmlns:task</span>=<span class="string">"http://www.springframework.org/schema/task"</span> <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span> <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.iyl.stock.service"</span> /&gt;</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!-- job bean --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"scheduleJob"</span> <span class="attr">class</span>=<span class="string">"com.iyl.stock.schedule.Schedule"</span> /&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">task:scheduled-tasks</span>&gt;</span> <span class="comment">&lt;!-- scheduled job list --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">task:scheduled</span> <span class="attr">ref</span>=<span class="string">"scheduleJob"</span> <span class="attr">method</span>=<span class="string">"executeJob"</span> <span class="attr">cron</span>=<span class="string">"0/30 * * * * ?"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- add more job here --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">task:scheduled-tasks</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 방법 1 : 직접 정의 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">id</span>=<span class="string">"jacksonMessageConverter"</span> <span class="attr">class</span>=<span class="string">"org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">beans:property</span> <span class="attr">name</span>=<span class="string">"supportedMediaTypes"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">beans:list</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">beans:value</span>&gt;</span>application/json;charset=UTF-8<span class="tag">&lt;/<span class="name">beans:value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">beans:list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">beans:property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">name</span>=<span class="string">"handlerAdapter"</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">beans:property</span> <span class="attr">name</span>=<span class="string">"messageConverters"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">beans:list</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- Json 컨버터 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">beans:ref</span> <span class="attr">bean</span>=<span class="string">"jacksonMessageConverter"</span> /&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">beans:list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">beans:property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 방법 2 : spring 3.1 이상에서 annotaion-driven을 사용하면 자동 등록 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">annotation-driven</span> /&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>Schedule.java</strong></li>
+<li><p>ByteArrayHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 byte 배열 사이의 변환을 처리한다. 컨텐츠 타입은  application/octet-stream이다.</p>
+</li>
+<li><p>StringHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 String 사이의 변환을 처리한다. 컨텐츠 타입은  text/plain;charset=ISO-8859-1이다.</p>
+</li>
+<li><p>FormHttpMessageConverter(*)</p>
+<p>HTML 폼 데이터를 MultiValueMap으로 전달받을 때 사용된다. 지원하는 컨텐  츠 타입은 application-x-www-form-urlencorded이다.</p>
+</li>
+<li><p>SourceHttpMessageConverter(*)</p>
+<p>HTTP 메시지와 javax.xml.transform.Source 사이 변환을 처리한다. 컨텐츠 타  입은 application/xml 또는 text/xml이다.</p>
+</li>
+<li><p>MarshallingHttpMessageConverter(*)</p>
+<p>스프링의 Marshaller와 unMarshaller를 이용해서 XML HTTP 메시지와 객체 사  이의 변환을 처리한다. 컨텐츠 타입은 application/xml 또는 text/xml이다.</p>
+</li>
+<li><p>MappingJacksonHttpMessageConverter(*)</p>
+<p>Jackson 라이브러리를 이용해서 JSON HTTP 메시지와 객체 사이의 변환을 처리한다. 컨텐츠 타입은 applicaion/json이다.</p>
+</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Schedule</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ScheduleService scheduleService;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeJob</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.scheduleService.insertPush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>xml을 더 간단하게 하려면 다음을 추가하고.</p>
-<ul>
-<li><strong>context-schedule.xml</strong></li>
-</ul>
-<blockquote>
-<p>&lt;task:annotation-driven /&gt;</p>
-</blockquote>
-<p>java파일의 함수 위에 다음과 같은 어노테이션과 크론표현식을 추가해주면 끝.</p>
-<ul>
-<li><strong>Schedule.java</strong></li>
-</ul>
-<blockquote>
-<p>​      @Scheduled(cron=”0 19 16 * * ?”)</p>
-</blockquote>
-<p>아직 성능상이나 비효율적인 부분은 공부해야겠지만…</p>
-<p>너무 허무할 정도.</p>
-<p>단, 서비스를 Autowired하기 위해서</p>
-<p>&lt;context:component-scan base-package&gt;를 통해 </p>
-<p>bean을 한 번 더 스캔 후 등록하는데.</p>
-<p>나는 context-common.xml에서 위 작업을 이미 해놓고 있어서..</p>
-<p>이렇게 해도 성능상이나, 그 외 문제는 없을지 체크가 필요한듯..</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://darkhorizon.tistory.com/316" target="_blank" rel="noopener">SPRING 3.X 스케쥴러 사용하기</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://devbox.tistory.com/entry/Spring-RequestBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EA%B3%BC-ReponseBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%EC%82%AC%EC%9A%A9" target="_blank" rel="noopener">http://devbox.tistory.com/entry/Spring-RequestBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EA%B3%BC-ReponseBody-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EC%9D%98-%EC%82%AC%EC%9A%A9</a></p>
 
                     
                         
@@ -272,7 +267,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/07/Spring/scheduler/#post-footer"
+                                href="/2017/07/07/Spring/message_converter/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -312,7 +307,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 145 of 151</li>
+        <li class="pagination-number">page 145 of 152</li>
     </ul>
 </div>
 

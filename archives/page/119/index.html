@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/07/24/Ionic/3.2. modal/"
-                            aria-label=": 03.2. 모달 추가 방법 정리"
+                            href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/"
+                            aria-label=": 03.1. NavController를 통한 페이지 이동시 발생 이벤트"
                         >
-                            03.2. 모달 추가 방법 정리
+                            03.1. NavController를 통한 페이지 이동시 발생 이벤트
                         </a>
                     
                 </h1>
@@ -227,33 +227,50 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>모달 추가 방법 정리</p>
-<h2 id="모달-호출"><a href="#모달-호출" class="headerlink" title="모달 호출"></a>모달 호출</h2><ul>
-<li>호출 컴포넌트</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; ModalController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 이번의 주인공 모달 페이지 추가</span></span><br><span class="line"><span class="keyword">import</span> &#123; DrugboxModal &#125; <span class="keyword">from</span> <span class="string">'../drugbox/drugbox'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HomePage <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  ...</span><br><span class="line">  	<span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">		...</span></span><br><span class="line"><span class="params">		<span class="keyword">public</span> modalCtrl: ModalController</span></span><br><span class="line"><span class="params">    </span>) &#123; ... &#125;</span><br><span class="line">  </span><br><span class="line">  	openDrugboxModal() &#123;</span><br><span class="line">		<span class="keyword">const</span> modal = <span class="keyword">this</span>.modalCtrl.create(DrugboxModal);</span><br><span class="line">		modal.present();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    <h3 id="NavController의-lifecycle-이벤트"><a href="#NavController의-lifecycle-이벤트" class="headerlink" title="NavController의 lifecycle 이벤트"></a>NavController의 lifecycle 이벤트</h3><p>NavController를 사용하여 페이지를 이동할때, 발생하는 이벤트들에 대해 정리해본다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; NavController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line">...</span><br><span class="line">   <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> navCtrl: NavController</span>) &#123;</span><br><span class="line">   &#125;</span><br><span class="line">  openPage(page) &#123;</span><br><span class="line">    <span class="keyword">this</span>.navCtrl.push(page);</span><br><span class="line">  &#125;</span><br><span class="line">   ionViewDidLoad() &#123;</span><br><span class="line">     alert(<span class="string">'최초 로딩됌'</span>);</span><br><span class="line">   &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>템플릿</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row row-center"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col col-center"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">ion-button</span> <span class="attr">block</span> <span class="attr">color</span>=<span class="string">"danger"</span> (<span class="attr">click</span>)=<span class="string">openDrugboxModal()</span>&gt;</span><span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"archive"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">      약물 등록</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="모달"><a href="#모달" class="headerlink" title="모달"></a>모달</h2><ul>
-<li>모달 컴포넌트</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Component &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ViewController &#125; <span class="keyword">from</span> <span class="string">'ionic-angular'</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  templateUrl: <span class="string">'drugbox.html'</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> DrugboxModal &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">private</span> viewCtrl: ViewController</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  closeModal(): <span class="built_in">void</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.viewCtrl.dismiss();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>모달 템플릿</li>
-</ul>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ion-header</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-buttons</span> <span class="attr">start</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> (<span class="attr">click</span>)=<span class="string">"closeModal()"</span> <span class="attr">ion-button</span> <span class="attr">icon-only</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ion-icon</span> <span class="attr">name</span>=<span class="string">"close"</span>&gt;</span><span class="tag">&lt;/<span class="name">ion-icon</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ion-buttons</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ion-title</span>&gt;</span>약품함<span class="tag">&lt;/<span class="name">ion-title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-content</span> <span class="attr">padding</span>&gt;</span>약품함입니다.<span class="tag">&lt;/<span class="name">ion-content</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ion-footer</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">small</span>&gt;</span>약품을 등록해주세요!<span class="tag">&lt;/<span class="name">small</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ion-toolbar</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ion-footer</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="모달-등록"><a href="#모달-등록" class="headerlink" title="모달 등록"></a>모달 등록</h2><ul>
-<li>app.module.ts</li>
-</ul>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">import</span> &#123; DrugboxModal &#125; <span class="keyword">from</span> <span class="string">'../pages/drugbox/drugbox'</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="meta">@NgModule</span>(&#123;</span><br><span class="line">  declarations: [</span><br><span class="line">    ...</span><br><span class="line">    DrugboxModal</span><br><span class="line">  ],</span><br><span class="line">  ....</span><br><span class="line">    entryComponents: [</span><br><span class="line">    ...</span><br><span class="line">    DrugboxModal</span><br><span class="line">  ],</span><br><span class="line">  ....</span><br></pre></td></tr></table></figure>
-
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/angularjs-de/ionic2-pizza-service/blob/master/src/pages/order/order.component.ts" target="_blank" rel="noopener">https://github.com/angularjs-de/ionic2-pizza-service/blob/master/src/pages/order/order.component.ts</a></p>
+<h3 id="이벤트"><a href="#이벤트" class="headerlink" title="이벤트"></a>이벤트</h3><table>
+<thead>
+<tr>
+<th>이벤트 메서드 명</th>
+<th>Returns</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ionViewDidLoad</code></td>
+<td>void</td>
+<td>처음 페이지가 로딩되었을때, 캐시된 페이지에서는 동작을 하지 않음.</td>
+</tr>
+<tr>
+<td><code>ionViewWillEnter</code></td>
+<td>void</td>
+<td>페이지에 들어가서, 페이지가 활성활 되었을때</td>
+</tr>
+<tr>
+<td><code>ionViewDidEnter</code></td>
+<td>void</td>
+<td>페이지에 완전히 접근하여 활성화가 되었을때, 캐시 여부와 관계없이 실행 됌.</td>
+</tr>
+<tr>
+<td><code>ionViewWillLeave</code></td>
+<td>void</td>
+<td>페이지를 막 떠나기 시작할때</td>
+</tr>
+<tr>
+<td><code>ionViewDidLeave</code></td>
+<td>void</td>
+<td>페이지 떠나기를 완료하였을 때</td>
+</tr>
+<tr>
+<td><code>ionViewWillUnload</code></td>
+<td>void</td>
+<td>페이지가 제거 돼고, 페이지의 엘리먼트가 제거 됐을때</td>
+</tr>
+</tbody></table>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://ionicframework.com/docs/api/navigation/NavController/" target="_blank" rel="noopener">http://ionicframework.com/docs/api/navigation/NavController/</a></p>
+<p><a href="https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq" target="_blank" rel="noopener">https://www.youtube.com/watch?v=wQTkO0UFfDY&amp;index=12&amp;list=PLAiXlfcSCXYTA8k8AQX0sdRtvpOGkY7yq</a></p>
 
                     
                         
@@ -263,7 +280,7 @@
                     
                         <p>
                             <a
-                                href="/2017/07/24/Ionic/3.2. modal/#post-footer"
+                                href="/2017/07/24/Ionic/3.1. nav_controller_life_cycle_event/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -303,7 +320,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 119 of 151</li>
+        <li class="pagination-number">page 119 of 152</li>
     </ul>
 </div>
 

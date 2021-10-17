@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/08/12/Typescript/typescript-함수스코프/"
-                            aria-label=": Typescript 함수스코프와 this의 이해"
+                            href="/2017/08/12/Typescript/typescript-default-export/"
+                            aria-label=": export class와 default export class"
                         >
-                            Typescript 함수스코프와 this의 이해
+                            export class와 default export class
                         </a>
                     
                 </h1>
@@ -227,16 +227,21 @@
             </div>
             
                 <div class="postShorten-content">
-                    <p>Typescript로 코딩을 하다보면, this로 메서드나 함수를 불러오지 못할 때가 있다.</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Foo &#123;</span><br><span class="line">    bar = <span class="number">123</span>;</span><br><span class="line">    bas() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> Foo();</span><br><span class="line">x.bas();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> y = x.bas;</span><br><span class="line">y();</span><br></pre></td></tr></table></figure>
+                    <h3 id="default-export"><a href="#default-export" class="headerlink" title="default export"></a>default export</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> MyClass &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
 
-<p>1번의 경우는 <code>this</code>가 <code>Foo</code>이며 <code>this.bar</code>의 결과도 올바르게 나오지만,</p>
-<p>2번의 경우는 <code>this</code>가 <code>Window</code>로 나온다. Window는 전역이고, bar는 전역에 있지 않기 때문에, <code>this.bar</code>의 결과는 <code>undefined</code> 가 나온다.</p>
-<h2 id="해결책"><a href="#해결책" class="headerlink" title="해결책"></a>해결책</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Foo &#123;</span><br><span class="line">    bar = <span class="number">123</span>;</span><br><span class="line">    bas = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="keyword">new</span> Foo();</span><br><span class="line">x.bas();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">var</span> y = x.bas;</span><br><span class="line">y();</span><br></pre></td></tr></table></figure>
+<p>export defulat의 경우, 파일당 하나의 default export만 가능하다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyClass <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
 
-<p>위와 같이 <code>= () =&gt;</code> 를 활용하면, this가 <code>Window</code>가 아닌 <code>Foo</code>가 되며, 결과도 정상적으로 나온다.</p>
-<h2 id="결론"><a href="#결론" class="headerlink" title="결론"></a>결론</h2><p>해당 함수의 실행 스코프가 바뀌어도, <code>= () =&gt;</code>를 활용하면, 동일한 스코프를 유지시켜 준다.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.youtube.com/watch?v=tvocUcbCupA&amp;hd=1" target="_blank" rel="noopener">https://www.youtube.com/watch?v=tvocUcbCupA&amp;hd=1</a></p>
+<p>다음과 같이 rename을 해줄 수도 있다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MyClassAlias <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="named-export"><a href="#named-export" class="headerlink" title="named export"></a>named export</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyClass.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyClass &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> MyOtherClass &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>export의 경우, 다중 export가 가능하다, 이름도 지정 가능.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;MyClass, MyOtherClass <span class="keyword">as</span> MyOtherClassAlias&#125; <span class="keyword">from</span> <span class="string">"./MyClass"</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="어떤-것을-사용할까"><a href="#어떤-것을-사용할까" class="headerlink" title="어떤 것을 사용할까?"></a>어떤 것을 사용할까?</h3><p>프로젝트가 복잡해질 수록, named export가 유용하다는 의견이 있다. default export의 경우 해당 파일에서만 유효하지만, named export의 경우는 다른 파일들의 클래스에서도 유효하다고 한다.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/questions/33305954/typescript-export-vs-default-export" target="_blank" rel="noopener">https://stackoverflow.com/questions/33305954/typescript-export-vs-default-export</a></p>
 
                     
                         
@@ -246,7 +251,7 @@
                     
                         <p>
                             <a
-                                href="/2017/08/12/Typescript/typescript-함수스코프/#post-footer"
+                                href="/2017/08/12/Typescript/typescript-default-export/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -286,7 +291,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 96 of 151</li>
+        <li class="pagination-number">page 96 of 152</li>
     </ul>
 </div>
 

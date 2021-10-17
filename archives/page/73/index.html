@@ -202,10 +202,10 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/"
-                            aria-label=": 03.1. Object 내장객체"
+                            href="/2017/09/01/Javascript/3. javascript-Object/"
+                            aria-label=": 03. Object"
                         >
-                            03.1. Object 내장객체
+                            03. Object
                         </a>
                     
                 </h1>
@@ -227,126 +227,67 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="속성"><a href="#속성" class="headerlink" title="속성"></a>속성</h3><ul>
-<li><strong>Object.prototype</strong></li>
-</ul>
-<p>모든 객체는 Object.prototype으로부터 메소드 및 속성을 상속, <strong>모든 객체를 만들면, 해당 속성/메서드가 상속되어 있다.</strong></p>
-<p>다음 코드를 보자</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">    name   : <span class="string">"child of earth"</span>,</span><br><span class="line">  	age    : <span class="number">0</span>,</span><br><span class="line">	nature : <span class="string">"cool"</span>,</span><br><span class="line">  	eat    : <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name + <span class="string">"is eating"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> narendra = <span class="built_in">Object</span>.create(person);</span><br><span class="line">narendra.name = <span class="string">"Narendra Sisdoiya"</span>;</span><br><span class="line">narendra.age = <span class="number">29</span>;</span><br><span class="line">narendra.eat();</span><br><span class="line"></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"eat"</span>); <span class="comment">// false</span></span><br><span class="line">narendra.hasOwnProperty(<span class="string">"name"</span>); <span class="comment">// true</span></span><br><span class="line">narendra.hasOwnPropery(<span class="string">"nature"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+                    <p>Object는 데이터들을 묶는 구조이다. 순서없는 컬렉션이라고도 볼 수 있다. property는 원시값, 객체, 함수를 가질 수 있다.</p>
+<h3 id="선언-방법"><a href="#선언-방법" class="headerlink" title="선언 방법"></a>선언 방법</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"junho"</span>, <span class="attr">age</span>: <span class="number">29</span> &#125;;</span><br><span class="line">person.name;</span><br><span class="line">person[<span class="string">'name'</span>];</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://image.slidesharecdn.com/142752725-javascript-prototype-and-module-pattern-140501064654-phpapp02/95/javascript-prototype-and-module-pattern-4-638.jpg?cb=1398951030" alt="object prototype에 대한 이미지 검색결과"></p>
-<p>내장 객체인 Object와, Object.prototype이 있다.</p>
-<blockquote>
-<p>자세한 내용은 상속과 prototype 포스팅 참조</p>
-</blockquote>
+<h1 id="객체-생성"><a href="#객체-생성" class="headerlink" title="객체 생성"></a>객체 생성</h1><ul>
+<li><strong>팩토리 패턴</strong></li>
+</ul>
+<p>특정 객체 생성 과정 추상화</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreatePerson</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">  	o.name = name;</span><br><span class="line">  	o.age = age;</span><br><span class="line">  	o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = CreatePerson(<span class="string">'junho'</span>, <span class="number">28</span>);</span><br></pre></td></tr></table></figure>
+
+<p>그러나, 객체가 어떤 타입인지 알 수 없는 단점이 존재한다. 무조건 Object일것이기 때문에</p>
 <ul>
-<li><strong>Object.prototype.constructor</strong></li>
+<li><strong>생성자 패턴</strong></li>
 </ul>
-<p>객체의 프로토타입을 생성하는 함수, 객체의 타입을 파악하는데 쓰이지만, <code>instance of</code> 연산자가 더 안전하다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;&#125;;</span><br><span class="line">o.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">o <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = [];</span><br><span class="line">a.constructor === <span class="built_in">Array</span>; <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> <span class="built_in">Number</span>(<span class="number">3</span>);</span><br><span class="line">n.constructor === <span class="built_in">Number</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.prototype.__proto__</strong></li>
-</ul>
-<p>객체가 초기화될 때 프로토타입으로 사용된 객체, 즉 상속받은 내용들이 들어있다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br><span class="line">a.__proto__ === <span class="built_in">Object</span>.prototype; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="메서드"><a href="#메서드" class="headerlink" title="메서드"></a>메서드</h3><ul>
-<li><strong>Object.hasOwnPropery()</strong></li>
-</ul>
-<p>상속받지 않은, 순수한 자신의 프로퍼티 여부를 확인한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">o = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">o.prop = <span class="string">'exists'</span>;</span><br><span class="line">o.hasOwnProperty(<span class="string">'prop'</span>);             <span class="comment">// returns true</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'toString'</span>);         <span class="comment">// returns false</span></span><br><span class="line">o.hasOwnProperty(<span class="string">'hasOwnProperty'</span>);   <span class="comment">// returns false</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.create()</strong></li>
-</ul>
-<p>constructor 깨짐 없이 깔끔하게, prototype을 적용하여 객체를 생성한다. 아래와 같은 로직과 일치한다. 이때 넘겨준 객체 o는 prototype의 원리와 같이 객체를 공유하게 된다. </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">object</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">  	F.prototype = o;</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  	<span class="keyword">this</span>.age = age;</span><br><span class="line">  	<span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">'junho'</span>, <span class="number">28</span>); <span class="comment">// new를 사용해야 한다!</span></span><br><span class="line">Person(<span class="string">'junho'</span>, <span class="number">28</span>); <span class="comment">// window 객체에 해당 프로퍼티 들이 추가된다.</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>Object.create(프로토타입이 될 객체, 추가할 프로퍼티 객체)</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123; <span class="attr">name</span>: <span class="string">"hi"</span>, <span class="attr">friends</span> : [<span class="string">"hi"</span>, <span class="string">"ho"</span>] &#125;</span><br><span class="line"><span class="comment">// p1, p2는 person 객체를 공유하게 된다.</span></span><br><span class="line"><span class="keyword">var</span> p1 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">Object</span>.create(person);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p3 = <span class="built_in">Object</span>.create(person, &#123; <span class="attr">name</span> : &#123; <span class="attr">value</span> : <span class="string">"Gre"</span>&#125; &#125;)</span><br><span class="line"><span class="comment">// 두번째 파라미터는 Object.defineProperties와 유사하다.</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>생성자 함수를 만들어 create를 사용할 경우</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Shape - 상위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Shape</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">this</span>.y = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 상위클래스 메서드</span></span><br><span class="line">Shape.prototype.move = <span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.x += x;</span><br><span class="line">  <span class="keyword">this</span>.y += y;</span><br><span class="line">  <span class="built_in">console</span>.info(<span class="string">'Shape moved.'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rectangle - 하위클래스</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Rectangle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  Shape.call(<span class="keyword">this</span>); <span class="comment">// super 생성자 호출.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 하위클래스는 상위클래스를 확장</span></span><br><span class="line">Rectangle.prototype = <span class="built_in">Object</span>.create(Shape.prototype);</span><br><span class="line">Rectangle.prototype.constructor = Rectangle;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> rect = <span class="keyword">new</span> Rectangle();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Rectangle?'</span>, rect <span class="keyword">instanceof</span> Rectangle); <span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'Is rect an instance of Shape?'</span>, rect <span class="keyword">instanceof</span> Shape); <span class="comment">// true</span></span><br><span class="line">rect.move(<span class="number">1</span>, <span class="number">1</span>); <span class="comment">// Outputs, 'Shape moved.'</span></span><br></pre></td></tr></table></figure>
-
+<p>new 연산자의 과정</p>
 <ol>
-<li><code>Object.create(Shape.prototype)</code> : create의 인자로 프로토타입으로 쓰일 객체를 넘겨줘야 한다.</li>
-<li><code>Shape.call(this)</code> : 상속 포스팅에도 설명했듯이, Shape의 this인자들을 Rectangle 컨텍스트에서 생성하게 하여 자신의 프로퍼티를 가지게 된다.</li>
+<li>객체 생성</li>
+<li>생성자의 this값에 객체 할당</li>
+<li>객체에 프로퍼티 추가.</li>
+<li>새 객체 반환</li>
 </ol>
-<ul>
-<li><strong>Object.defineProperties()</strong></li>
-</ul>
-<p>데이터 프로퍼티와, 접근자 프로퍼티 를 셋팅한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperties(obj, &#123;</span><br><span class="line">  <span class="string">'_x'</span>: &#123;</span><br><span class="line">    value: <span class="number">0</span>,</span><br><span class="line">    writable: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'x'</span>: &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._x;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">this</span>._x = newValue+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">'_y'</span>: &#123; ... &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>configurable, enumerable 와 같은 속성을 설정하지 않으면 default로 false가 할당된다.</p>
-<blockquote>
-<p>언제 사용할까?</p>
 </blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// defineProperties 사용하지 않을때</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.imFunc = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 결과 : imFunc</span></span><br></pre></td></tr></table></figure>
+<p>생성자 패턴에도 문제가 있는데, 아래처럼 여러 Person을 생성할 경우, this.sayName의 경우 똑같은 일을 함에도 불구하고 내부적으로는 <code>this.sayName = new Function()</code> 이 실행되어 Function 인스턴스가 2개 존재하게 된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 계속</span></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">'junho'</span>, <span class="number">28</span>);</span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">'lia'</span>, <span class="number">24</span>);</span><br><span class="line">alert(person.sayName == person2.sayName); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
 
-<p>for in문에서 순회하고 싶지 않아도, 함수가 나온다. 이때 사용해보자</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>.prototype, <span class="string">'imFunc'</span>, &#123;</span><br><span class="line">	enumerable: <span class="literal">false</span>,</span><br><span class="line">  	configurable: <span class="literal">false</span>,</span><br><span class="line">  	writable: <span class="literal">false</span>,</span><br><span class="line">  	value: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="built_in">console</span>.log(<span class="string">'aa'</span>);</span><br><span class="line">  	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> b <span class="keyword">in</span> a) &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(b);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// imFunc가 순회되지 않는다!</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.getOwnPropertyDescriptor()</strong></li>
+<p><em>위 문제를 해결하기 위한 생성자 패턴은 prototype을 배운 후에 더 공부해보자(Prototype과 상속 포스팅참조)</em></p>
+<h3 id="프로퍼티"><a href="#프로퍼티" class="headerlink" title="프로퍼티"></a>프로퍼티</h3><ul>
+<li><strong>데이터 프로퍼티</strong><ul>
+<li>[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)</li>
+<li>[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)</li>
+<li>[[Writable]] : 값 바꿀 수 있음 (default true)</li>
+<li>[[value]] : 프로퍼티의 실제 데이터 값 (default undefined)</li>
 </ul>
-<p>접근자/데이터 프로퍼티 객체를 읽어온다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 위 예제에서 이어짐</span></span><br><span class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, <span class="string">"_x"</span>);</span><br><span class="line">alert(descriptor.value); <span class="comment">// 0</span></span><br><span class="line">alert(descriptor.configurable); <span class="comment">// false</span></span><br><span class="line">alert(descriptor.get);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>Object.preventExtensions(), Object.isExtensible()</strong></li>
+</li>
 </ul>
-<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능.</p>
-<ul>
-<li><strong>Object.seal(), Object.isSealed()</strong></li>
-</ul>
-<p>새로운 프로퍼티를 추가할 수 없도록한다. 값 수정은 가능하지만, configurable 값은 false로 바꾼다.</p>
-<ul>
-<li><strong>Object.getOwnPropertyNames()</strong></li>
-</ul>
-<blockquote>
-<p>파라미터 : object</p>
-<p>리턴 :  문자열 배열</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>];</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(arr).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2", "length"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Array-like object</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="number">0</span>: <span class="string">'a'</span>, <span class="number">1</span>: <span class="string">'b'</span>, <span class="number">2</span>: <span class="string">'c'</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.getOwnPropertyNames(obj).sort()); </span><br><span class="line"><span class="comment">// logs ["0", "1", "2"]</span></span><br></pre></td></tr></table></figure>
+<p>프로퍼티 저장시, 위 4가지 값이 할당 된다. 데이터 프로퍼티를 셋팅하기 위해서 Object.defineProperty를 이용하면 된다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(person, <span class="string">'name'</span>, &#123;</span><br><span class="line">    writable : <span class="literal">false</span>,</span><br><span class="line">  	value : <span class="string">'junho'</span></span><br><span class="line">&#125;);</span><br><span class="line">alert(person.name); <span class="comment">// junho</span></span><br><span class="line">person.name = <span class="string">'lia'</span>;</span><br><span class="line">alert(person.name); <span class="comment">// junho</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><strong>Object.getPrototypeOf()</strong></li>
+<li><strong>접근자 프로퍼티</strong><ul>
+<li>[[Configurable]] : 프로퍼티의 삭제, 속성 변경 할 수 있는 여부 (default true)</li>
+<li>[[Enumerable]] : for_in 루프에서 해당 프로퍼티 반환할 수 있음(default true)</li>
 </ul>
-<p>prototype을 리턴한다.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// TypeError: "foo" is not an object (ES5 code)</span></span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf(<span class="string">'foo'</span>);</span><br><span class="line"><span class="comment">// String.prototype                  (ES2015 code)</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>getter/setter 함수로 구성된다. 프로퍼티 값 바꿀 때 부수적 절차 필요한 경우 사용된다. 데이터 프로퍼티와는 달리 실제 데이터가 없다. 정의 위해서는 반드시 Object.defineProperty를 이용해야 한다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> book = &#123; <span class="attr">_year</span> : <span class="number">2004</span>, <span class="attr">edition</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="built_in">Object</span>.defineProperty(book, <span class="string">"year"</span>, &#123;</span><br><span class="line">   <span class="keyword">get</span>: function() &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">this</span>._year;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">       <span class="keyword">if</span>(newValue &gt; <span class="number">2004</span>) &#123;</span><br><span class="line">           <span class="keyword">this</span>._year = newValue;</span><br><span class="line">           <span class="keyword">this</span>.edition += (newValue - <span class="number">2004</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   enumerable: <span class="literal">true</span>,</span><br><span class="line">   configurable: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">book.year = <span class="number">2005</span>;</span><br><span class="line">alert(book.edition); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><ul>
-<li><strong>Object.assign()</strong></li>
-</ul>
-<p>Object 병합하기</p>
-<blockquote>
-<p>파라미터 : 타겟, 소스</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</span><br><span class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, 타겟 오브젝트, 그 자체도 변화합니다.</span></span><br></pre></td></tr></table></figure>
+<p>getter만 지정시 읽기전용이되며, setter만 지정시 프로퍼티를 읽을때 undefined를 반환한다.</p>
+<h3 id="객체-반복"><a href="#객체-반복" class="headerlink" title="객체 반복"></a>객체 반복</h3><p><strong>객체</strong>에는 <strong>in</strong>을 쓰고, <strong>배열</strong>에는 <strong>of</strong> 를 쓰자. 배열의 인덱스는 number지만, in을 쓸 경우 string형으로 리턴되기 때문이다. 겪어보지는 않았지만, 루프문이 무작위로 도는 경우도 있다고 한다.</p>
+<p>객<strong>체인</strong><br>배<strong>열오</strong></p>
+<p><del>체인열오!</del></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> people = &#123;<span class="string">'name'</span>:<span class="string">'junho'</span>, <span class="string">'old'</span>: <span class="number">5</span>&#125;;</span><br><span class="line"><span class="keyword">for</span>(key <span class="keyword">in</span> people) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'key : '</span> + key + <span class="string">'value : '</span> + people[key]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><strong>Object.freeze()</strong></li>
-</ul>
-<p>객체를 읽기전용으로 바꾼다. 프로퍼티 추가/삭제/변경, 이나 enumerability, configyrability 등의 속성 변경 또한 막는다.</p>
-<h3 id="ES8"><a href="#ES8" class="headerlink" title="ES8"></a>ES8</h3><ul>
-<li><strong>Object.entries()</strong></li>
-</ul>
-<p>열거 가능한 객체를 [key, value] 배열로 만들어 리턴함</p>
-<blockquote>
-<p>파라미터 : key, value 쌍의 객체</p>
-<p>리턴 : key, value 쌍의 배열</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">foo</span>: <span class="string">'bar'</span>, <span class="attr">baz</span>: <span class="number">42</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(obj));</span><br><span class="line"><span class="comment">// [ ['foo', 'bar'], ['baz', 42] ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">a</span>: <span class="number">5</span>, <span class="attr">b</span>: <span class="number">7</span>, <span class="attr">c</span>: <span class="number">9</span>&#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(obj)) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj).forEach(<span class="function">(<span class="params">[key, value]</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key + <span class="string">' '</span> + value); <span class="comment">// "a 5", "b 7", "c 9"     </span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
+<p>in 연산자에선 [[Enumberable]] 프로퍼티가 true 인 프로퍼티들이 모두 리턴된다. 프로토타입의 변수들 역시 리턴된다.</p>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67" target="_blank" rel="noopener">https://medium.com/@bluesh55/javascript-prototype-이해하기-f8e67c286b67</a></p>
 <p><a href="http://unikys.tistory.com/320" target="_blank" rel="noopener">http://unikys.tistory.com/320</a></p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/</a></p>
+<p>프론트엔드 개발자를 위한 Javascript - 니콜라스 자카스</p>
 
                     
                         
@@ -356,7 +297,7 @@
                     
                         <p>
                             <a
-                                href="/2017/09/01/Javascript/3.1. javascript-Object내장객체/#post-footer"
+                                href="/2017/09/01/Javascript/3. javascript-Object/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -396,7 +337,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 73 of 151</li>
+        <li class="pagination-number">page 73 of 152</li>
     </ul>
 </div>
 
